@@ -25,7 +25,7 @@ module Jcic
 
     config.generators do |g|
       g.stylesheets false
-      g.javascript false
+      g.javascripts false
       g.helper false
       g.test_framework false
     end

@@ -1,0 +1,17 @@
+<h1>会员登录</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(:session, :url => login_path) do |f| %>
+
+      <%= f.label :account, "登录名" %>
+      <%= f.text_field :account, :class => "form-control" %>
+
+      <%= f.label :password, "密码" %>
+      <%= f.password_field :password, :class => "form-control" %>
+
+      <%= f.submit "登录", :class => "btn btn-primary col-md-3" %>
+      
+    <% end %>
+  </div>
+</div>

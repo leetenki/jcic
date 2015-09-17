@@ -11,15 +11,42 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150831032103) do
+ActiveRecord::Schema.define(version: 20150901023550) do
 
-  create_table "users", force: :cascade do |t|
-    t.string   "email"
+  create_table "projects", force: :cascade do |t|
+    t.integer  "trader_id"
+    t.string   "china_company_name"
+    t.string   "china_company_code"
+    t.string   "visa_type"
+    t.integer  "total_people"
+    t.string   "representative_name_english"
+    t.string   "representative_name_chinese"
+    t.string   "date_arrival"
+    t.string   "date_leaving"
+    t.string   "status",                      default: "uncommitted"
+    t.datetime "created_at",                                          null: false
+    t.datetime "updated_at",                                          null: false
+  end
+
+  add_index "projects", ["trader_id", "created_at"], name: "index_projects_on_trader_id_and_created_at"
+  add_index "projects", ["trader_id"], name: "index_projects_on_trader_id"
+
+  create_table "traders", force: :cascade do |t|
+    t.string   "account"
+    t.string   "password_backup"
     t.string   "password_digest"
+    t.string   "company_name"
+    t.string   "person_name"
+    t.string   "telephone"
+    t.string   "fax"
+    t.string   "qq"
+    t.string   "bank"
+    t.string   "address"
+    t.string   "email"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "traders", ["account"], name: "index_traders_on_account", unique: true
 
 end

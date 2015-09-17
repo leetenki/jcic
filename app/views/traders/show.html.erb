@@ -1,0 +1,61 @@
+<div class="container">
+  <div class="col-md-8 col-md-offset-2">
+    <table class="trader-info table">
+      <caption>
+        <span>　账户资料　</span>
+        <%= link_to fa_icon("edit"), edit_trader_path(@trader), :method => :get, :class => "update" %>
+        <%= link_to fa_icon("trash"), @trader, :method => :delete, :data => { :confirm => "确定删除此账户吗？" }, :class => "delete" %>
+      </caption>
+
+      <tbody>
+        <tr>
+          <td>公司名</td>
+          <td><%= @trader.company_name %></td>
+        </tr>
+        <tr>
+          <td>担当者</td>
+          <td><%= @trader.person_name %></td>
+        </tr>
+        <tr>
+          <td>账号</td>
+          <td><%= @trader.account %></td>
+        </tr>      
+        <tr>
+          <td>密码</td>
+          <td><%= @trader.password_backup %></td>
+        </tr>
+        <tr>
+          <td>QQ</td>
+          <td><%= @trader.qq %></td>
+        </tr>
+        <tr>
+          <td>电子邮件</td>
+          <td><%= @trader.email %></td>
+        </tr>
+        <tr>
+          <td>電話</td>
+          <td><%= @trader.telephone %></td>
+        </tr>
+        <tr>
+          <td>FAX</td>
+          <td><%= @trader.fax %></td>
+        </tr>
+        <tr>
+          <td>銀行账户</td>
+          <td><%= @trader.bank %></td>
+        </tr>
+        <tr>
+          <td>公司地址</td>
+          <td><%= @trader.address %></td>
+        </tr>
+        <tr>
+          <td>最终更新</td>
+          <td><%= @trader.updated_at.strftime("%Y/%m/%d %H:%M") %></td>
+        </tr>
+        <tr>
+          <td class="footer" colspan="2"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

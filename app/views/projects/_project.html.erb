@@ -1,0 +1,12 @@
+<% unless project.id.nil? %>
+  <tr id="<%= project.id %>" class="warning">
+    <td><%= project.china_company_name %></td>
+    <td><%= project.representative_name_chinese %></td>
+    <td><%= project.total_people %></td>
+    <td><%= project.date_arrival %></td>
+    <td><%= project.status %></td>
+    <td><%= project.created_at %></td>
+  </tr>
+<% end %>
+
+

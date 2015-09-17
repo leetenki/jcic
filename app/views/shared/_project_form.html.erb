@@ -1,0 +1,29 @@
+<%= form_for(@project) do |f| %>
+  <%= render 'shared/error_messages', :object => f.object %>
+
+  <%= f.label :china_company_name %>
+  <%= f.text_field :china_company_name, :class => 'form-control', :placeholder => "中国东方旅行社" %>
+
+  <%= f.label :china_company_code %>
+  <%= f.text_field :china_company_code, :class => 'form-control', :placeholder => "CTS-0071" %>
+
+  <%= f.label :visa_type %>
+  <%= f.text_field :visa_type, :class => 'form-control', :placeholder => "普通签证" %>
+
+  <%= f.label :total_people %>
+  <%= f.text_field :total_people, :class => 'form-control', :placeholder => "1" %>
+
+  <%= f.label :representative_name_chinese %>
+  <%= f.text_field :representative_name_chinese, :class => 'form-control' %>
+
+  <%= f.label :representative_name_english %>
+  <%= f.text_field :representative_name_english, :class => 'form-control' %>
+
+  <%= f.label :date_arrival %>
+  <%= f.text_field :date_arrival, :class => 'form-control' %>
+
+  <%= f.label :date_leaving %>
+  <%= f.text_field :date_leaving, :class => 'form-control' %>
+
+  <%= f.submit "申请", :class => "btn btn-primary" %>
+<% end %>

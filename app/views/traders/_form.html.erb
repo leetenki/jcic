@@ -1,0 +1,38 @@
+<%= form_for(trader) do |f| %>
+      <%= render :partial => "shared/error_messages", :locals => {:object => f.object} %>
+
+      <%= f.label :account, "账号" %> <i class="fa fa-exclamation-triangle"></i>
+      <%= f.text_field :account, :class => 'form-control' %>
+
+      <%= f.label :password, "密码" %> <i class="fa fa-exclamation-triangle"></i>
+      <%= f.text_field :password, :class => 'form-control' %>
+
+      <%= f.label :password_confirmation, "密码确认" %> <i class="fa fa-exclamation-triangle"></i>
+      <%= f.text_field :password_confirmation, :class => 'form-control' %>
+
+      <%= f.label :company_name, "公司名" %> <i class="fa fa-exclamation-triangle"></i>
+      <%= f.text_field :company_name, :class => 'form-control' %>
+
+      <%= f.label :person_name, "担当者" %> <i class="fa fa-exclamation-triangle"></i>
+      <%= f.text_field :person_name, :class => 'form-control' %>
+
+      <%= f.label :telephone, "电话号码" %>
+      <%= f.text_field :telephone, :class => 'form-control' %>
+
+      <%= f.label :fax, "FAX" %>
+      <%= f.text_field :fax, :class => 'form-control' %>
+
+      <%= f.label :email, "E-mail" %>
+      <%= f.text_field :email, :class => 'form-control' %>
+
+      <%= f.label :qq, "QQ号码" %>
+      <%= f.text_field :qq, :class => 'form-control' %>
+
+      <%= f.label :address, "公司地址" %>
+      <%= f.text_field :address, :class => 'form-control' %>
+
+      <%= f.label :bank, "银行账户" %>
+      <%= f.text_field :bank, :class => 'form-control' %>
+
+      <%= f.submit button_text, :class => "btn btn-large btn-primary" %>
+<% end %>

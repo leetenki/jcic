@@ -1,0 +1,24 @@
+<h1>合作伙伴一览</h1>
+<div class="row">
+  <div class="container col-md-10 col-md-offset-1">
+    <% if @traders.any? %>
+      <table class="table trader-info trader-info-hover">
+        <thead>
+          <tr class="thead">
+            <th>ID</th>
+            <th>公司</th>
+            <th>代表</th>
+            <th>QQ</th>
+            <th>账号</th>
+            <th>密码</th>
+            <th>合同</th>
+            <th>更新时间</th>
+          </tr>
+        </thead>
+          <%= render @traders %>
+        <tbody>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+</div>
