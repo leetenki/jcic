@@ -1,0 +1,37 @@
+<%= form_for(company_code) do |f| %>
+      <%= render :partial => "shared/error_messages", :locals => {:object => f.object} %>
+
+      <%= f.label :code, "指定番号" %>
+      <%= f.text_field :code, :class => 'form-control' %>
+
+      <%= f.label :name, "旅行社名称" %>
+      <%= f.text_field :name, :class => 'form-control' %>
+
+      <%= f.label :locate, "管轄" %>
+      <%= f.text_field :locate, :class => 'form-control' %>
+
+      <%= f.label :status, "状态" %>
+      <% if (company_code.status == "working") %>
+            <span id="status_icon" class="fa fa-check-circle-o"></span>
+      <% else %>
+            <span id="status_icon" class="fa fa-close"></span>            
+      <% end %>
+      <div class="form-group">
+            <div id='mode' class="btn-group" data-toggle="buttons">
+                <label class="btn btn-info <%= 'active' if(company_code.status=='working') %>" onclick="changeClass('status_icon', 'fa fa-check-circle-o')">
+                    <input type="radio" autocomplete="off" value="working" name="company_code[status]"><i class="fa fa-check-circle-o"></i> 有效
+                </label>
+                <label class="btn btn-info <%= 'active' if(company_code.status=='stopped') %>" onclick="changeClass('status_icon', 'fa fa-close')">
+                    <input type="radio" autocomplete="off" value="stopped" name="company_code[status]"><i class="fa fa-close"></i> 停止
+                </label>
+            </div>
+      </div>
+
+      <%= f.label :address, "地址" %>
+      <%= f.text_field :address, :class => 'form-control' %>
+
+      <%= f.label :memo, "其他" %>
+      <%= f.text_field :memo, :class => 'form-control' %>
+
+      <%= f.submit button_text, :class => "btn btn-large btn-primary" %>
+<% end %>

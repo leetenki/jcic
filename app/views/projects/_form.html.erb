@@ -1,0 +1,177 @@
+<%= form_for(project) do |f| %>
+      <!--************************* identity ***************************-->
+      <div id="identity_container" class="dashed_container col-md-6 col-md-offset-3">
+            <div id="title">
+                  <i class="fa fa-user-plus"></i> 电签表
+            </div>
+
+            <%= render :partial => "shared/error_messages", :locals => {:object => f.object} %>
+
+            <!-- Company Name -->
+            <div id="china_company_container">
+                  <%= f.label :china_company_name, "中国旅行社名" %> <i id="china_company_check"></i>
+                  <%= f.text_field(
+                              :china_company_name, :class => 'form-control',
+                              :maxlength => "30",
+                              :id => "company_input", :autocomplete => "off", :placeholder => "飞鹤国际旅行社", 
+                              :onfocus=>"updateIconOnlyCheck('china_company_check', validateCompanyName, 'china_company_container')", 
+                              :oninput=>"updateIconOnlyCheck('china_company_check', validateCompanyName, 'china_company_container')", 
+                              :onchange=>"updateIcon('china_company_check', validateCompanyName, 'china_company_container')", 
+                              :onblur => "updateIcon('china_company_check', validateCompanyName, 'china_company_container')" 
+                  ) %>
+                  <div class="container" id="suggest_container"><div id="suggest" style="display:none;"></div></div>
+                  <input type="hidden" id="company_data_json" value="<%= @company_codes.to_json({:only => [:name, :search_text]}) %>">
+            </div>
+       
+            <!-- Visa Type -->
+            <%= f.label :visa_type, "签证种类" %> <i id="visa_type_check"></i>
+            <div class="form-group">
+                  <div id='visaType' class="btn-group" data-toggle="buttons" onchange="updateIcon('visa_type_check', validateVisaType)">
+                      <label class="btn btn-primary <%= 'active' if(project.visa_type == 'group') %>">
+                          <input type="radio" autocomplete="off" value="group" name="project[visa_type]"><%= visa_type_str("group") %>
+                      </label>
+                      <label class="btn btn-primary <%= 'active' if(project.visa_type == 'individual') %>">
+                          <input type="radio" autocomplete="off" value="individual" name="project[visa_type]"><%= visa_type_str("individual") %>
+                      </label>
+                      <label class="btn btn-primary <%= 'active' if(project.visa_type == '3years') %>">
+                          <input type="radio" autocomplete="off" value="3years" name="project[visa_type]"><%= visa_type_str("3years") %>
+                      </label>
+                      <label class="btn btn-primary <%= 'active' if(project.visa_type == '5years') %>">
+                          <input type="radio" autocomplete="off" value="5years" name="project[visa_type]"><%= visa_type_str("5years") %>
+                      </label>
+                  </div>
+            </div>
+
+
+            <!-- Representative Name -->
+            <div id="chinese_name_container">
+                  <%= f.label :representative_name_chinese, "代表人全名(简体字)" %> <i id="chinese_name_check"></i>
+                  <%= f.text_field(
+                        :representative_name_chinese, :class => 'form-control', :placeholder => "李庆新", :autocomplete => "off",
+                        :id => "chineseName",
+                        :maxlength => "10",
+                        :onfocus => "updateIconOnlyCheck('chinese_name_check', validateChineseName, 'chinese_name_container')",
+                        :oninput => "updateIconOnlyCheck('chinese_name_check', validateChineseName, 'chinese_name_container')",
+                        :onblur => "updateIcon('chinese_name_check', validateChineseName, 'chinese_name_container')",
+                        :onchange => "updateIcon('chinese_name_check', validateChineseName, 'chinese_name_container')"
+                  ) %>
+            </div>
+
+
+            <!-- Representative Name(english) -->
+            <div id="english_name_container">
+                  <%= f.label :representative_name_english, "代表人全名(拼音)" %> <i id="english_name_check"></i>
+                  <%= f.text_field(
+                        :representative_name_english, :class => 'form-control', :placeholder => "LI QINGXIN", :autocomplete => "off",
+                        :id => "englishName",
+                        :maxlength => "30",
+                        :onfocus => "updateIconOnlyCheck('english_name_check', validateEnglishName, 'english_name_container')",
+                        :oninput => "updateIconOnlyCheck('english_name_check', validateEnglishName, 'english_name_container')",
+                        :onblur => "updateIcon('english_name_check', validateEnglishName, 'english_name_container')",
+                        :onchange => "updateIcon('english_name_check', validateEnglishName, 'english_name_container')"                  
+                  ) %>
+            </div>
+
+            <!-- total people -->
+            <div id="total_people_container">
+                  <%= f.label :total_people, "总人数" %> <i id="total_people_check"></i>
+                  <%= f.number_field(
+                        :total_people, :placeholder => 1, :class => 'form-control', :maxlength => "3", :value => 1, :min => 1, :max => 999, :autocomplete => "off",
+                        :id => "totalPeople",
+                        :onchange => "updateIcon('total_people_check', validateTotalPeople, 'total_people_container')",
+                        :oninput => "updateIconOnlyCheck('total_people_check', validateTotalPeople, 'total_people_container')",
+                        :onfocus => "updateIconOnlyCheck('total_people_check', validateTotalPeople, 'total_people_container')",
+                        :onblur => "updateIcon('total_people_check', validateTotalPeople, 'total_people_container')"
+                  ) %>
+            </div>
+
+            <!-- date arrival -->
+            <div id="date_arrival_container">
+                  <%= f.label :date_arrival, "日本入境日期" %> <i id="date_arrival_check"></i> <i class="fa fa-chevron-down long"></i>
+                  <%= f.text_field(
+                        :date_arrival, :placeholder => Date.today.strftime("%Y/%m/%d"), :class => 'form-control datepicker', :autocomplete => "off",
+                        :id => "dateArrival",
+                        :maxlength => "10",
+                        :oninput => "updateIconOnlyCheck('date_arrival_check', validateDateArrival, 'date_arrival_container')",
+                        :onfocus => "updateIconOnlyCheck('date_arrival_check', validateDateArrival, 'date_arrival_container')",
+                        :onchange => "updateIcon('date_arrival_check', validateDateArrival, 'date_arrival_container')",
+                        :onblur => "updateIcon('date_arrival_check', validateDateArrival, 'date_arrival_container')",
+                  ) %>
+            </div>
+
+            <!-- date leaving -->
+            <div id="date_leaving_container">
+                  <%= f.label :date_leaving, "日本出境日期" %> <i id="date_leaving_check"></i> <i class="fa fa-chevron-down long"></i>
+                  <%= f.text_field(
+                        :date_leaving, :placeholder => Date.today.strftime("%Y/%m/%d"), :class => 'form-control datepicker', :autocomplete => "off",
+                        :id => "dateLeaving",
+                        :maxlength => "10",
+                        :oninput => "updateIconOnlyCheck('date_leaving_check', validateDateLeaving, 'date_leaving_container')",
+                        :onfocus => "updateIconOnlyCheck('date_leaving_check', validateDateLeaving, 'date_leaving_container')",
+                        :onchange => "updateIcon('date_leaving_check', validateDateLeaving, 'date_leaving_container')",
+                        :onblur => "updateIcon('date_leaving_check', validateDateLeaving, 'date_leaving_container')",
+                  ) %>
+            </div>
+      </div>
+
+
+      <!--************************* schedules ***************************-->
+      <div id="schedules_container" class="dashed_container col-md-10 col-md-offset-1">
+            <div id="title">
+                  <i class="fa fa-plane"></i> 旅程表
+            </div>
+            <table class="table">
+                  <tbody>
+                        <tr>
+                              <td class="col col-md-2 date">
+                                    日期<br/>
+                                    <textarea name="project[schedules][0][date]" readonly line-height="3" autocomplete="off" class="form-control datepicker" placeholder="<%= Date.today.strftime('%Y/%m/%d') %>&#13;&#10;(<%= chinese_week_day(Date.today.wday) %>)"><%= Date.today.strftime('%Y/%m/%d') %>&#13;&#10;(<%= chinese_week_day(Date.today.wday) %>)</textarea>
+                              </td>
+                              <td class="col col-md-6">
+                                    行动计划<br/>
+                                    <textarea name="project[schedules][0][plan]" class="form-control" line-height="3" placeholder="上海浦东机场出发,前往东京成田机场. 东京都内观光."></textarea>                                    
+                              </td>
+                              <td class="col col-md-4">
+                                    住宿<br/>
+                                    <textarea name="project[schedules][0][hotel]" class="form-control" placeholder="〒106-0032 東京都港区六本木7丁目18−11 飞鹤国际宾馆"></textarea>                                                                        
+                              </td>
+                        </tr>
+                        <tr>
+                              <td class="col col-md-2 date">
+                                    日期<br/>
+                                    <textarea readonly line-height="3" class="form-control datepicker" placeholder="<%= Date.today.strftime('%Y/%m/%d') %>&#13;&#10;(<%= chinese_week_day(Date.today.wday) %>)"></textarea>
+                              </td>
+                              <td class="col col-md-6">
+                                    行动计划<br/>
+                                    <textarea class="form-control" line-height="3" placeholder=""></textarea>                                    
+                              </td>
+                              <td class="col col-md-4">
+                                    住宿<br/>
+                                    <textarea class="form-control" placeholder=""></textarea>                                                                        
+                              </td>
+                        </tr>
+                  </tbody>
+            </table>
+      </div>
+
+      <!--************************* clients ***************************-->
+      <div id="clients_container" class="dashed_container col-md-10 col-md-offset-1">
+            <div id="title">
+                  <i class="fa fa-list"></i> 名单
+            </div>
+      </div>
+
+
+      <div class="col-md-4 col-md-offset-4">
+            <%= f.submit button_text, :class => "btn btn-large btn-primary" %>
+      </div>
+<% end %>
+
+<!-- alert form -->
+<div class="alert alert-danger alert-panel" id="failed-alert">
+  <div class="title"><strong>对不起，未填写完毕，请再次确认.</strong></div><br/>
+  <ul>
+        <content>
+        </content>
+  <ul>
+</div>

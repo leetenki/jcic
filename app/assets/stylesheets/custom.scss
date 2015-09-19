@@ -1,5 +1,6 @@
-@import "bootstrap-sprockets";
+  @import "bootstrap-sprockets";
 @import "bootstrap";
+@import 'bootstrap-datetimepicker';
 
 /* universal */
 
@@ -114,6 +115,18 @@ input {
   display: inline;
   .form-control {
     color: $state-danger-text;
+    background-color: #f2dcdc;
+  }
+}
+.field_ok {
+  .form-control {
+    background-color: #dcf2dc;
+  } 
+}
+
+#visaType {
+  label.active {
+    background-color: #00aa00;
   }
 }
 
@@ -137,11 +150,69 @@ input {
     text-align: center;
   }
   th {
-    background-color: #9b59b6;
+    background-color: #505050;
   }
   tr {
     background-color: #7070a0;
   }
+}
+
+.alert-panel {
+  position: fixed;
+  z-index: 10;
+  display: none;
+}
+
+#success-alert {
+  left: 50%;
+  top: 50%;
+  width: 300px;
+  height: 100px;
+  margin-left: -150px;
+  margin-top: -50px;
+  text-align:center;  
+}
+
+#failed-alert {
+  left: 50%;
+  top: 50%;
+  width: 350px;
+  height: 300px;
+  margin-left: -175px;
+  margin-top: -180px;
+
+  div.title {
+    text-align:center; 
+  }
+}
+
+
+.company-info {
+  color: #ffffff;
+  tbody, caption, tr, td, th {
+    border: #ffffff 1px solid;
+  }
+  margin-top: 30px;
+
+  th {
+    background-color: #505050;
+  }
+  tr:not(.stopped) {
+    background-color: #0099a0;
+  }
+  tr:not(.stopped):hover {
+    background-color: #0077a0;
+  }
+  tr.stopped {
+    background-color: #e74c3c;  
+  }
+  tr.stopped:hover {
+    background-color: #c0392b;
+  }
+}
+
+.project-info {
+  margin-top: 30px;
 }
 
 .trader-info-hover {
@@ -186,6 +257,68 @@ aside {
   }
 }
 
+.datepicker {
+  color: #2e9933;
+  font-weight: bold;
+}
+
+/* dashed_container */
+div.dashed_container {
+  #title {
+    font-size: 20px;
+    text-align: center;
+    background-color: #ffffff;
+    border: #aaaaaa solid 2px;
+    width: 200px;
+    height: 80px;
+    margin: auto;
+    padding-top: 25px;
+    border-radius: 30px;
+    margin-bottom: 15px;
+  }
+  margin-top: 40px;
+  margin-bottom: 20px;
+  border-radius: 30px;
+  border: 2px dashed;
+  padding: 20px 60px 40px 60px;  
+}
+div#identity_container {
+  background-color: #efefef;  
+}
+
+div#schedules_container {
+  padding-left: 15px;
+  padding-right: 15px;
+  background-color: #fffacd; 
+  table {
+    tr, td {
+      color: #888888;
+      border: 0;
+    }
+    td {
+      padding: 10px 5px;
+    }
+    td.date textarea {
+      text-align: center;
+    }
+    textarea.datepicker {
+      background-color: #dcf2dc;
+    }
+    input {
+      height: 100px;
+    }
+    textarea {
+      border-radius: 10px;
+      height: 6em;
+    }
+  } 
+}
+
+div#clients_container {
+  background-color: #e6e6fa;  
+}
+
+
 /* font-awesome */
 .fa-exclamation-circle {
   color: #f00;
@@ -198,4 +331,28 @@ aside {
 }
 .fa-edit {
   color: #88ff00;
+}
+.fa-check-circle-o {
+  color: #009933; 
+}
+.fa-close {
+  color: #e33;
+}
+.fa-chevron-down.long {
+  color: #cccccc;
+  position: relative;
+  float: right;
+  right: 18px;
+  top: 31px;
+}
+.fa-chevron-down.short {
+  color: #cccccc;
+  position: relative;
+  float: right;
+  right: 6px;
+  top: 28px;
+}
+
+.fa-check {
+  color: #55cc33;
 }

@@ -11,7 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150901023550) do
+ActiveRecord::Schema.define(version: 20150918141556) do
+
+  create_table "company_codes", force: :cascade do |t|
+    t.string   "name"
+    t.string   "code"
+    t.string   "locate"
+    t.string   "status"
+    t.string   "memo"
+    t.string   "address"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "search_text"
+  end
 
   create_table "projects", force: :cascade do |t|
     t.integer  "trader_id"
@@ -21,11 +33,12 @@ ActiveRecord::Schema.define(version: 20150901023550) do
     t.integer  "total_people"
     t.string   "representative_name_english"
     t.string   "representative_name_chinese"
-    t.string   "date_arrival"
-    t.string   "date_leaving"
+    t.date     "date_arrival"
+    t.date     "date_leaving"
     t.string   "status",                      default: "uncommitted"
     t.datetime "created_at",                                          null: false
     t.datetime "updated_at",                                          null: false
+    t.integer  "stay_term"
   end
 
   add_index "projects", ["trader_id", "created_at"], name: "index_projects_on_trader_id_and_created_at"

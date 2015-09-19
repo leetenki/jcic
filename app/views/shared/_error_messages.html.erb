@@ -1,10 +1,10 @@
 <% if object.errors.any? %>
   <div id="error_explanation">
     <div class="alert alert-danger">
-      The form contains <%= pluralize(object.errors.count, "error") %>
+      有<%= object.errors.count %>项错误
     </div>
     <ul>
-      <% object.errors.full_messages.each do |message| %>
+      <% object.errors.each do |item, message| %>
         <li><%= message %></li>
       <% end %>
     </ul>

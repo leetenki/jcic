@@ -1,4 +1,4 @@
-<h1>合作伙伴一览</h1>
+<h1><i class="fa fa-lock"></i> 会员一览</h1>
 <div class="row">
   <div class="container col-md-10 col-md-offset-1">
     <% if @traders.any? %>
@@ -15,8 +15,8 @@
             <th>更新时间</th>
           </tr>
         </thead>
-          <%= render @traders %>
         <tbody>
+          <%= render @traders %>
         </tbody>
       </table>
     <% end %>

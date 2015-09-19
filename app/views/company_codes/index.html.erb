@@ -1,0 +1,39 @@
+<h1><i class="fa fa-book"></i> 中国旅行社名簿</h1>
+
+<div class="row">
+
+  <div class="container col-md-8 col-md-offset-2">
+    <% if @company_codes.any? %>
+      <table class="table company-info company-info-hover">
+        <caption>
+          <!-- search box -->
+          <div class="input-group col-md-8 col-md-offset-2">
+            <input type="text" class="form-control" placeholder="请输入旅行社情报.." id="company_keyword" oninput="updateCompanyTable()" onchange="updateCompanyTable()">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button" onclick="updateCompanyTable()"><i class="fa fa-search"></i> 搜索</button>
+            </span>
+          </div>          
+        </caption>
+
+        <thead>
+          <tr class="thead">
+            <th>指定番号</th>
+            <th>旅行会社名</th>
+            <th>管轄</th>
+            <th>其他</th>
+          </tr>
+        </thead>
+
+        <tbody id="company_tbody_dynamic">
+          <%= render @company_codes %>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+</div>
+
+<!-- alert form -->
+<div class="alert alert-success alert-panel" id="success-alert">
+  <strong>拷贝完毕 </strong><br/><br/>
+  Succeed to copy the text to clipboard.
+</div>

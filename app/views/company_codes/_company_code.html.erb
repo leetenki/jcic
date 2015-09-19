@@ -1,0 +1,11 @@
+<% unless company_code.id.nil? %>
+  <tr id="<%= company_code.id %>" class="<%= company_code.status %>">
+    <td class='d_clip_button col-md-2' data-clipboard-text='<%= company_code.code %>' onclick="openAlert()">
+      <%= company_code.code %>
+    </td>
+    <td class="col-md-5" onclick="location.href='/company_codes/<%= company_code.id %>/edit'"><%= company_code.name %></td>
+    <td class="col-md-2"><%= company_code.locate %></td>
+    <td class="col-md-3"><%= company_code.memo %></td>
+    <input type="hidden" value="<%= company_code.search_text %>" />
+  </tr>
+<% end %>

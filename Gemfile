@@ -4,6 +4,9 @@ source 'https://rubygems.org'
 #custom
 gem 'bootstrap-sass'
 gem 'font-awesome-rails'
+gem 'bootstrap-datetimepicker-rails'
+gem 'jquery-ui-rails'
+gem 'zeroclipboard-rails'
 #gem 'bcrypt', '~> 3.1.7'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

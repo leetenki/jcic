@@ -2,12 +2,12 @@ class TradersController < ApplicationController
   before_action :logged_in_admin, :only => [:index, :show, :new, :create, :edit, :update, :destroy]
   #before_action :logged_in_trader , :only => [:show]
 
-  def show
-    @trader = Trader.find(params[:id])
-  end
-
   def index
     @traders = Trader.all
+  end
+
+  def show
+    @trader = Trader.find(params[:id])
   end
 
   #create account
@@ -58,6 +58,7 @@ class TradersController < ApplicationController
   end
 
   #common function
+  private
   def trader_params
     params.require(:trader).permit(:company_name, :person_name, :telephone, :fax, :email, :qq, :bank, :address, :bank, :password, :account, :password_confirmation)
   end

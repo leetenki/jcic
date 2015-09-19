@@ -1,15 +1,36 @@
+require 'chinese_converter'
+include ChineseConverter
+
 class ProjectsController < ApplicationController
-  before_action :logged_in, :only => [:create, :index]
+  before_action :logged_in, :only => [:new, :create, :index]
+
+  #create new project
+  def new
+    @project = current_trader.projects.build
+    @company_codes = CompanyCode.where("status = ?", "working")
+    @company_codes.each do |c|
+      c.search_text = c.code+ChineseConverter.simplized(c.locate+c.name)
+    end
+  end
 
   def create
     @project = current_trader.projects.build(project_params)
+    #@project.valid?
+    #render :text => @project.errors.messages 
+
+    render :text => params;
+=begin
     if(@project.save)
-      flash[:success] = "Add #{@project.china_company_name} #{@project.china_company_code} to list"
+      flash[:success] = "电子签证申请完毕，请再次检查. 1工作日之内将发行签证."
       redirect_to projects_path
     else
-      @projects = current_trader.projects
-      render 'projects/index'
+      @company_codes = CompanyCode.where("status = ?", "working")
+      @company_codes.each do |c|
+        c.search_text = c.code+ChineseConverter.simplized(c.locate+c.name)
+      end
+      render 'new'
     end
+=end
   end
 
   def index

@@ -8,8 +8,8 @@ class CreateProjects < ActiveRecord::Migration
       t.integer :total_people
       t.string :representative_name_english
       t.string :representative_name_chinese
-      t.string :date_arrival
-      t.string :date_leaving
+      t.date :date_arrival
+      t.date :date_leaving
       t.string :status, :default => "uncommitted"
 
       t.timestamps null: false

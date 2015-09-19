@@ -1,0 +1,27 @@
+#suggest_container {
+    position: relative;
+    width: 100%;    
+}
+#suggest {
+    margin-left: -15px;
+    margin-top: -15px;
+    position: absolute;
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCFF;
+    width: 100%;
+    z-index: 10;
+}
+#suggest div {
+    padding: 3px 12px 3px 12px;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+}
+#suggest div.select{
+    color: #000000;
+    background-color: #eeeeee;
+}
+#suggest div.over{
+    background-color: #aaddFF;
+}

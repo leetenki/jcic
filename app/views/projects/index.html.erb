@@ -1,40 +1,33 @@
-<% if logged_in? %>
-  <div class="row">
-    <aside class="col-md-3">
+<h1><i class="fa fa-users"></i> 电签名单</h1>
 
-      <section class="trader_info">
-        <%= render 'shared/trader_info' %>
-      </section>
+<div class="row">
+  <div class="container col-md-10 col-md-offset-1">
 
-      <section class="project_form">
-        <%= render 'shared/project_form' %>
-      </section>
+    <% if @projects.any? %>
+      <table class="project-info table table-striped table-bordered table-hover">
+        <caption>
+          <a href="projects/new" class="btn btn-success btn-large">
+            <i class="fa fa-user-plus"></i> 追加
+          </a>
+        </caption>
+        <thead>
+          <tr>
+            <th>中国旅行社</th>
+            <th>代表人</th>
+            <th>在留期间</th>
+            <th>签证</th>
+            <th>旅程</th>
+            <th>名单</th>
+            <th>状态</th>
+            <th>其他</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= render @projects %>
+        </tbody>
+      </table>
+    <% end %>
 
-    </aside>
-    <div class="container col-md-9">
-      <% if @projects.any? %>
-        <table class="table table-striped table-bordered table-hover ">
-          <thead>
-            <tr>
-              <th>中方旅行社(<%= @projects.count %>)</th>
-              <th>代表者名</th>
-              <th>人数</th>
-              <th>入境日期</th>
-              <th>申请状态</th>
-              <th>登录日期</th>
-            </tr>
-          </thead>
 
-          <tbody>
-            <%= render @projects %>
-          </tbody>
-        </table>
-      <% end %>
-    </div>
   </div>
-<% else %>
-  <div class="center jumbotron">
-    <h1>Log in to edit visa</h1>
-    <%= link_to "Log in", login_path, :class => "btn btn-lg btn-primary" %>
-  </div>
-<% end %>
+</div>

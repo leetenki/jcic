@@ -1,11 +1,13 @@
 <% unless project.id.nil? %>
   <tr id="<%= project.id %>" class="warning">
-    <td><%= project.china_company_name %></td>
-    <td><%= project.representative_name_chinese %></td>
-    <td><%= project.total_people %></td>
-    <td><%= project.date_arrival %></td>
-    <td><%= project.status %></td>
-    <td><%= project.created_at %></td>
+    <td class="col-md-3"><%= project.china_company_name %></td>
+    <td class="col-md-2"><%= project.representative_name_chinese %><br/>(<%= project.representative_name_english %>)</td>
+    <td class="col-md-2"><%= project.date_arrival.strftime("%Y/%m/%d") %> ~ <br/><%= project.date_leaving.strftime("%Y/%m/%d") %></td>
+    <td class="col-md-1"><%= visa_type_str(project.visa_type) %></td>
+    <td class="col-md-1"><%= "7天" %></td>
+    <td class="col-md-1"><%= "5人" %></td>
+    <td class="col-md-1"><%= "未申請" %></td>
+    <td class="col-md-1"><button class="btn btn-primary">修改</button></td>
   </tr>
 <% end %>
 

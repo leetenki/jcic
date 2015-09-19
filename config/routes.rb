@@ -6,8 +6,10 @@ Rails.application.routes.draw do
   get 'signup', :to => 'traders#new'
   root :to => 'static_pages#home'
 
+
   resources :traders
   resources :projects
+  resources :company_codes, :only => [:index, :edit, :update]
   resources :sessions, :only => [:new, :create, :destroy]
 
   # The priority is based upon order of creation: first created -> highest priority.
