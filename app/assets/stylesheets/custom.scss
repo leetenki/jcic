@@ -174,6 +174,8 @@ input {
   text-align:center;  
 }
 
+
+
 #failed-alert {
   left: 50%;
   top: 50%;
@@ -307,10 +309,20 @@ div.dashed_container {
     margin-bottom: 15px;
   }
   margin-top: 40px;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
   border-radius: 30px;
   border: 2px dashed;
   padding: 20px 60px 40px 60px;  
+
+  span.number {
+    color: #4488ff;
+  }
+  span.index, span.date-index {
+    position: absolute;
+    color: #c0c0c0;
+    margin-left: -16px;
+    margin-top: 30px;
+  }
 }
 div#identity_container {
   background-color: #e6e6fa;
@@ -381,10 +393,144 @@ div#clients_container {
     cursor: pointer;
     color: #81BEF7;
   }
+  .gender_type {
+    width: 100%;
+  }
+
+  .gender_type label.btn-default {
+    width: 50%;
+  }  
+}
+
+#now_loading {
+  position: fixed;
+  width: 200px;
+  height: 200px;
+  left: 50%;
+  top: 50%;
+  margin-left: -100px;
+  margin-top: -100px;
+  display: none;
+  z-index: 9999;
 }
 
 .errors-container {
   padding-top: 20px;
+}
+
+#excel_button {
+  float: right;
+  margin-top: -90px;
+  margin-right: 5px;
+  border-radius: 30px;
+}
+
+#excel_area {
+  height: 300px;
+}
+
+.company-name-cell {
+  text-align: center;
+  border-radius: 30px;
+  font-size: 12px;
+}
+
+.origin-company-name-cell {
+  border: solid 2px black;
+  background-color: #dfdfdf;
+  text-align: center;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+
+.date-arrival-cell {
+  background-color: orange;
+  width: 70%;
+  margin-top: 5px;
+  color: #ffffff;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 14px;
+  padding: 3px;
+  display: inline-block;
+}
+
+.visa-type-cell {
+  background-color: green;
+  width: 26%;
+  margin-top: 5px;
+  color: #ffffff;
+  text-align: center;
+  float: right;
+  border-radius: 6px;
+  font-size: 13px;
+  padding: 3px;
+  display: inline-block;
+}
+
+.presentative-name-cell {
+  border: solid 2px #666666;
+  background-color: #dfdfdf;
+  position: relative;
+  left: 5%;
+  width: 90%;
+
+  text-align: center;
+  border-radius: 6px;
+  font-size: 12px;
+  padding: 3px;
+  display: inline-block;  
+}
+
+.total-people-cell {
+  position: relative;
+  float: right;
+  right: 5%;
+  width: 40%;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 12px;
+  padding: 3px;
+  display: inline-block;  
+}
+
+.status-cell {
+  position: relative;
+  left: 5%;
+  width: 90%;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 12px;
+  padding: 3px;
+  display: inline-block;  
+}
+
+.status-cell.committed {
+  background-color: gray;
+  color: #ffffff;
+
+}
+.status-cell.waiting {
+  color: #ffffff;
+  background-color: #674ed8;  
+}
+.status-cell.uncommitted {
+  color: #ffffff;
+  background-color: #4ed867;  
+}
+
+
+.created-cell {
+  color: gray;
+  border-color: gray;
+  position: relative;
+  width: 100%;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 10px;
+  padding: 3px;
+  display: inline-block;  
 }
 
 /* font-awesome */

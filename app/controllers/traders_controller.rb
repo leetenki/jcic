@@ -3,7 +3,7 @@ class TradersController < ApplicationController
   #before_action :logged_in_trader , :only => [:show]
 
   def index
-    @traders = Trader.all
+    @traders = Trader.all.order("id desc")
   end
 
   def show

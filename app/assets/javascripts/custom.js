@@ -14,7 +14,7 @@ function initBirthdayPicker(picker) {
   });
 }
 
-$(document).ready(function(){
+$(document).ready(function(){  
   // init datepicker
   $( ".datepicker:not(.birthdaypicker)" ).datepicker({
     minDate: new Date(),
@@ -37,13 +37,24 @@ $(document).ready(function(){
   if(clientsContainer && identityContainer && schedulesContainer) {
     initialValidation();
   }
+
+  // init now_loading
+  $("#nav-content li").click(function() {
+    $("#now_loading")[0].style.display = "block";
+  });  
+  $("#new-project").click(function() {
+    $("#now_loading")[0].style.display = "block";
+  });  
+  $(".modify-project").click(function() {
+    $("#now_loading")[0].style.display = "block";
+  });  
 });
 
 
 // function to open panel
 function openAlert() {
   $(".alert-panel").fadeIn(700, function(){
-    $(".alert-panel").fadeOut(2200, function(){
+    $(".alert-panel").fadeOut(5200, function(){
     });
   });
 }
@@ -161,7 +172,9 @@ function validateTotalPeople() {
 
 function validateDateArrival() {
   var valid = false;
-  var dateArrival = document.getElementById("dateArrival").value;
+  var dateArrival = replaceDateStr(document.getElementById("dateArrival").value);
+  $("#dateArrival")[0].value = dateArrival;
+
   var today = getAbsoluteToday();
 
   if(ckDate(dateArrival)) {
@@ -186,7 +199,9 @@ function validateDateArrival() {
 
 function validateDateLeaving() {
   var valid = false;
-  var dateLeaving = document.getElementById("dateLeaving").value;
+  var dateLeaving = replaceDateStr(document.getElementById("dateLeaving").value);
+  $("#dateLeaving")[0].value = dateLeaving;
+
   var today = getAbsoluteToday()
 
   if(ckDate(dateLeaving)) {
@@ -403,13 +418,21 @@ function validateEnglishNameById(id) {
 }
 
 function validatePassportNo(id) {
-  var inputText = $("#" + id + " input")[0].value;
+  var passportValid = true;
 
+  var inputText = $("#" + id + " input")[0].value;
   if(inputText.length >= 8 && inputText.length <= 11 && !CheckLength(inputText, 1)) {
-    return true
+
+    $(".passport_no_container:not(#" + id + ") input").each(function() { 
+      if(this.value == inputText) {
+        passportValid = false;
+      }
+    });
   } else {
-    return false;
+    passportValid = false;
   }
+
+  return passportValid;
 }
 
 function validateHometown(id) {
@@ -422,8 +445,11 @@ function validateHometown(id) {
   }
 }
 
+
 function validateBirthday(id) {
-  var inputText = $("#" + id + " input")[0].value; 
+  var inputText = replaceDateStr($("#" + id + " input")[0].value);
+  $("#" + id + " input")[0].value = inputText;
+
   if(ckDate(inputText) && (new Date(inputText).getTime()) < getAbsoluteToday().getTime()) {
     return true;
   } else {
@@ -470,7 +496,7 @@ function validateAndUpdateFieldOnlyCheck(id, className, callbackValidation) {
   return valid;
 }
 
-
+// function to regenerate schedules table
 function regenerateScheduleTable() {
   var lastDay = new Date(document.getElementById("dateLeaving").value);
   var firstDay = new Date(document.getElementById("dateArrival").value);
@@ -507,6 +533,7 @@ function regenerateScheduleTable() {
   }
 
   // revalidate
+  $("#schedules-total").text($("#schedules_container tr").length);
   validateDatesAndUpdateIcon();
 }
 
@@ -576,6 +603,16 @@ function overwriteHiddenValueInClients() {
   }
 }
 
+// function to recompute index of rows
+function reComputeClientsIndex() {
+  $("#clients-total").text($("#clients_container table tr").length);  
+
+  var i = 1;
+  $("#clients_container table .index").each(function() {
+    $(this).text(i++);
+  });
+}
+
 // function to add new client row to table
 function addClientRow() {
   index = 0;
@@ -589,6 +626,11 @@ function addClientRow() {
 
   $("#totalPeople")[0].value = $("#clients_container table tr").length;
   updateIcon('total_people_check', validateTotalPeople, 'total_people_container');
+
+  // update clients number
+  reComputeClientsIndex();
+
+  return "client_" + index;
 }
 
 function removeClientRow(id) {
@@ -598,6 +640,9 @@ function removeClientRow(id) {
 
     $("#totalPeople")[0].value = $("#clients_container table tr").length;
     updateIcon('total_people_check', validateTotalPeople, 'total_people_container');
+
+    // update clients number
+    reComputeClientsIndex();
   }
 }
 
@@ -615,6 +660,10 @@ function createClientTag(index) {
   tdNode = document.createElement("td");
   tdNode.setAttribute("class", "col col-md-2 col-sm-2 col-xs-2")
   trNode.appendChild(tdNode);
+
+  var indexNode = document.createElement("span");
+  indexNode.setAttribute("class", "index");
+  tdNode.appendChild(indexNode);
 
   containerNode = document.createElement("div");
   containerNode.setAttribute("id", "clients_chinese_name_container_" + index);
@@ -867,6 +916,11 @@ function createScheduleTag(index, dateText) {
   dateTdNode.setAttribute("class", "col col-md-2 col-sm-2 col-lg-2 date");
   trNode.appendChild(dateTdNode);
 
+  var dateIndexNode = document.createElement("span");
+  dateIndexNode.setAttribute("class", "date-index");
+  dateIndexNode.appendChild(document.createTextNode($("#schedules_container tr").length));
+  dateTdNode.appendChild(dateIndexNode);
+
   var dateContainerNode = document.createElement("div");
   dateContainerNode.setAttribute("id", "schedules_date_container_" + index);
   dateContainerNode.setAttribute("class", "date_container");
@@ -1039,6 +1093,14 @@ function CheckLength(str,flg) {
   return false;
 }
 
+function replaceDateStr(originalDateStr) {
+  if(originalDateStr) {
+    return originalDateStr.replace(/[-+:;,_~=\s]{1,}/g, "/");
+  } else {
+    return originalDateStr;
+  }
+}
+
 function ckDate(datestr) {
   if(!datestr.match(/^\d{4}\/\d{1,2}\/\d{1,2}$/)){
     return false;
@@ -1167,129 +1229,248 @@ function initialValidation() {
 
 // validate before sending
 $(function() {
-    $('#new_project, .edit_project').submit(function() {
-        var failedMessage = "";
+  $('#new_project, .edit_project').submit(function() {
+    reduceClientsTable();
+    var failedMessage = "";
 
-        // validate identity information
-        if(!updateIcon('china_company_check', validateCompanyName, 'china_company_container')) {
-          failedMessage += "<li>中国旅行社名不正确.</li>";
-        }
-        if(!updateIcon('visa_type_check', validateVisaType)) {
-          failedMessage += "<li>签证种类未选.</li>";
-        }
-        if(!updateIcon('chinese_name_check', validateChineseName, 'chinese_name_container')) {
-          failedMessage += "<li>代表人全名(简体字)不正确.</li>";          
-        }
-        if(!updateIcon('english_name_check', validateEnglishName, 'english_name_container')) {
-          failedMessage += "<li>代表人全名(拼音)不正确.</li>";                    
-        }
-        if($("#clients_container table tr").length == 0) {
-          failedMessage += "<li>人数不可为零.</li>";                              
-        } else {
-          $("#totalPeople")[0].value = $("#clients_container table tr").length;
-          if(!updateIcon('total_people_check', validateTotalPeople, 'total_people_container')) {
-            failedMessage += "<li>总人数不正确.</li>";                              
-          }
-        }
-        if(!updateIcon('date_arrival_check', validateDateArrival, 'date_arrival_container')) {
-          failedMessage += "<li>日本入境日期不正确.</li>";                                        
-        }
-        if(!updateIcon('date_leaving_check', validateDateLeaving, 'date_leaving_container')) {
-          failedMessage += "<li>日本出境日期不正确.</li>";                                                  
-        }
+    // validate identity information
+    if(!updateIcon('china_company_check', validateCompanyName, 'china_company_container')) {
+      failedMessage += "<li>中国旅行社名不正确.</li>";
+    }
+    if(!updateIcon('visa_type_check', validateVisaType)) {
+      failedMessage += "<li>签证种类未选.</li>";
+    }
+    if(!updateIcon('chinese_name_check', validateChineseName, 'chinese_name_container')) {
+      failedMessage += "<li>代表人全名(简体字)不正确.</li>";          
+    }
+    if(!updateIcon('english_name_check', validateEnglishName, 'english_name_container')) {
+      failedMessage += "<li>代表人全名(拼音)不正确.</li>";                    
+    }
+    if($("#clients_container table tr").length == 0) {
+      failedMessage += "<li>人数不可为零.</li>";                              
+    } else {
+      $("#totalPeople")[0].value = $("#clients_container table tr").length;
+      if(!updateIcon('total_people_check', validateTotalPeople, 'total_people_container')) {
+        failedMessage += "<li>总人数不正确.</li>";                              
+      }
+    }
+    if(!updateIcon('date_arrival_check', validateDateArrival, 'date_arrival_container')) {
+      failedMessage += "<li>日本入境日期不正确.</li>";                                        
+    }
+    if(!updateIcon('date_leaving_check', validateDateLeaving, 'date_leaving_container')) {
+      failedMessage += "<li>日本出境日期不正确.</li>";                                                  
+    }
 
-        // validate schedules
-        if(!validateDatesAndUpdateIcon()) {
-          failedMessage += "<li>旅程表日期不正确.</li>";                                     
-        }
+    // validate schedules
+    if(!validateDatesAndUpdateIcon()) {
+      failedMessage += "<li>旅程表日期不正确.</li>";                                     
+    }
 
-        var planValid = true;
-        $("#schedules_container table .plan_container").each(function() {
-          if(!validateAndUpdateField(this.attributes.id.value, 'plan_container', validatePlan)) {
-            planValid = false;
-          }
-        });
-        if(!planValid) {
-          failedMessage += "<li>行动计划不可空虚，必须200字以内.</li>";          
-        }
-
-
-        var hotelValid = true;
-        $("#schedules_container table .hotel_container").each(function() {
-          if(!validateAndUpdateField(this.attributes.id.value, 'hotel_container', validateHotel)) {
-            hotelValid = false;
-          }
-        });
-        if(!hotelValid) {
-          failedMessage += "<li>住宿不可空虚，必须100字以内.</li>";          
-        }
-
-        var chineseNameValid = true;
-        $(".chinese_name_container").each(function() {
-          if(!validateAndUpdateField(this.attributes.id.value, 'chinese_name_container', validateChineseNameById)) {
-            chineseNameValid = false;
-          }
-        })
-        if(!chineseNameValid) {
-          failedMessage += "<li>中文名必须填写简体字，10字以内.</li>";          
-        }
-
-        var englishNameValid = true;
-        $(".english_name_container").each(function() {
-          if(!validateAndUpdateField(this.attributes.id.value, 'english_name_container', validateEnglishNameById)) {
-            englishNameValid = false;
-          }
-        })
-        if(!englishNameValid) {
-          failedMessage += "<li>英文名必须填写半角拼英，30字以内.</li>";          
-        }
-
-        var genderValid = true;
-        $(".gender_container").each(function() {
-          if(!validateAndUpdateField(this.attributes.id.value, 'gender_container', validateGender)) {
-            genderValid = false;
-          }
-        })
-        if(!genderValid) {
-          failedMessage += "<li>性别未选择，不可空虚.</li>";          
-        }
-
-        var hometownValid = true;
-        $(".hometown_container").each(function() {
-          if(!validateAndUpdateField(this.attributes.id.value, 'hometown_container', validateHometown)) {
-            hometownValid = false;
-          }
-        })
-        if(!hometownValid) {
-          failedMessage += "<li>签发地点不可空虚，必须10字以内.</li>";          
-        }
-
-        var birthdayValid = true;
-        $(".birthday_container").each(function() {
-          if(!validateAndUpdateField(this.attributes.id.value, 'birthday_container', validateBirthday)) {
-            birthdayValid = false;
-          }
-        })
-        if(!birthdayValid) {
-          failedMessage += "<li>出生日期形式不正确.</li>";          
-        }
-
-        var passportNoValid = true;
-        $(".passport_no_container").each(function() {
-          if(!validateAndUpdateField(this.attributes.id.value, 'passport_no_container', validatePassportNo)) {
-            passportNoValid = false;
-          }
-        })
-        if(!passportNoValid) {
-          failedMessage += "<li>护照号必须半角英文字母或数字，8～11位.</li>";          
-        }
-
-        if(failedMessage.length > 0) {
-          $("#failed-alert content").html(failedMessage)
-          openAlert();
-          return false;
-        } else {
-          return true;
-        }
+    var planValid = true;
+    $("#schedules_container table .plan_container").each(function() {
+      if(!validateAndUpdateField(this.attributes.id.value, 'plan_container', validatePlan)) {
+        planValid = false;
+      }
     });
+    if(!planValid) {
+      failedMessage += "<li>行动计划不可空虚，必须200字以内.</li>";          
+    }
+
+
+    var hotelValid = true;
+    $("#schedules_container table .hotel_container").each(function() {
+      if(!validateAndUpdateField(this.attributes.id.value, 'hotel_container', validateHotel)) {
+        hotelValid = false;
+      }
+    });
+    if(!hotelValid) {
+      failedMessage += "<li>住宿不可空虚，必须100字以内.</li>";          
+    }
+
+    // validate clients table
+    var chineseNameValid = true;
+    $(".chinese_name_container").each(function() {
+      if(!validateAndUpdateField(this.attributes.id.value, 'chinese_name_container', validateChineseNameById)) {
+        chineseNameValid = false;
+      }
+    })
+    if(!chineseNameValid) {
+      failedMessage += "<li>中文名必须填写简体字，10字以内.</li>";          
+    }
+
+    var englishNameValid = true;
+    $(".english_name_container").each(function() {
+      if(!validateAndUpdateField(this.attributes.id.value, 'english_name_container', validateEnglishNameById)) {
+        englishNameValid = false;
+      }
+    })
+    if(!englishNameValid) {
+      failedMessage += "<li>英文名必须填写半角拼英，30字以内.</li>";          
+    }
+
+    var genderValid = true;
+    $(".gender_container").each(function() {
+      if(!validateAndUpdateField(this.attributes.id.value, 'gender_container', validateGender)) {
+        genderValid = false;
+      }
+    })
+    if(!genderValid) {
+      failedMessage += "<li>性别未选择，不可空虚.</li>";          
+    }
+
+    var hometownValid = true;
+    $(".hometown_container").each(function() {
+      if(!validateAndUpdateField(this.attributes.id.value, 'hometown_container', validateHometown)) {
+        hometownValid = false;
+      }
+    })
+    if(!hometownValid) {
+      failedMessage += "<li>签发地点不可空虚，必须10字以内.</li>";          
+    }
+
+    var birthdayValid = true;
+    $(".birthday_container").each(function() {
+      if(!validateAndUpdateField(this.attributes.id.value, 'birthday_container', validateBirthday)) {
+        birthdayValid = false;
+      }
+    })
+    if(!birthdayValid) {
+      failedMessage += "<li>出生日期形式不正确.</li>";          
+    }
+
+    var passportNoValid = true;
+    $(".passport_no_container").each(function() {
+      if(!validateAndUpdateField(this.attributes.id.value, 'passport_no_container', validatePassportNo)) {
+        passportNoValid = false;
+      }
+    })
+    if(!passportNoValid) {
+      failedMessage += "<li>护照号必须半角英文字母或数字，不可重复.</li>";          
+    }
+
+    if(failedMessage.length > 0) {
+      $("#failed-alert content").html(failedMessage)
+      openAlert();
+      return false;
+    } else {
+      $("#now_loading")[0].style.display = "block";
+      return true;
+    }
+  });
+
+  // modal process
+  $('#modal-panel').on('shown.bs.modal', function () {
+    $('#excel_area').focus()
+  })
+  $("button#parse-button").click(function(e){
+      var excelText = $('#excel_area')[0].value;
+      var rowItems = parseExcelText(excelText);
+      if(rowItems.length > 0) {
+        reduceClientsTable();
+        var i = 0;
+        if($("#clients_container table tr").length == 1 && isEmptyRow($("#clients_container table tr")[0].id)) {
+          fillRow($("#clients_container table tr")[0].id, rowItems[i]);
+          i++;
+        }
+        for(; i < rowItems.length; i++) {
+          var id = addClientRow();
+          fillRow(id, rowItems[i]);
+        }
+
+        // validate clients table
+        $(".chinese_name_container").each(function() {
+          validateAndUpdateField(this.attributes.id.value, 'chinese_name_container', validateChineseNameById);
+        });
+        $(".english_name_container").each(function() {
+          validateAndUpdateField(this.attributes.id.value, 'english_name_container', validateEnglishNameById);
+        });
+        $(".gender_container").each(function() {
+          validateAndUpdateField(this.attributes.id.value, 'gender_container', validateGender);
+        });
+        $(".hometown_container").each(function() {
+          validateAndUpdateField(this.attributes.id.value, 'hometown_container', validateHometown);
+        });
+        $(".birthday_container").each(function() {
+          validateAndUpdateField(this.attributes.id.value, 'birthday_container', validateBirthday);
+        });
+        $(".passport_no_container").each(function() {
+          validateAndUpdateField(this.attributes.id.value, 'passport_no_container', validatePassportNo);
+        });
+
+        $('#modal-panel').modal('hide');
+        alert("成功读取" + rowItems.length + "份个人资料,请确认.");
+      } else {
+        alert("您填入的表格不符合Excel文件格式!")
+      }
+  });
 });
+
+// function to fill row from excel items
+function fillRow(id, rowItem) {
+  $("#"+id+" .chinese_name_container input")[0].value = rowItem.chineseName;
+  $("#"+id+" .english_name_container input")[0].value = rowItem.englishName;
+  if(rowItem.gender.match(/[男1]|male|man|men|boy/i)) {
+    $("#"+id+" .gender_container .gender_type label")[0].className += " active";
+    $("#"+id+" .gender_container .gender_type input")[0].checked = true;
+  } else if(rowItem.gender.match(/[女2]|female|woman|women|girl/i)) {
+    $("#"+id+" .gender_container .gender_type label")[1].className += " active";
+    $("#"+id+" .gender_container .gender_type input")[1].checked = true;
+  }
+  $("#"+id+" .hometown_container input")[0].value = rowItem.hometown;
+  $("#"+id+" .birthday_container input")[0].value = rowItem.birthday;
+  $("#"+id+" .passport_no_container input")[0].value = rowItem.passportNo;  
+}
+
+// function to parse excel text file
+function parseExcelText(excelText) {
+  var rowItems = [];
+
+  var lines = excelText.split(/\r\n|\r|\n/);
+  for (var i = 0; i < lines.length; i++) {
+    items = lines[i].split(/[ ]{3,}|[,\t]/);
+    for(passportIndex = 5; passportIndex < items.length; passportIndex++) {
+      // match passport
+      if(items[passportIndex].match(/[A-Z]{1,3}[0-9]{6,}/)) {
+        rowItems.push({
+          passportNo: items[passportIndex],
+          birthday: items[passportIndex-1],
+          hometown: items[passportIndex-2],
+          gender: items[passportIndex-3],
+          englishName: items[passportIndex-4],
+          chineseName: items[passportIndex-5]
+        });
+      }
+    }
+  }
+
+  return rowItems;
+}
+
+// function to check if tr row empty
+function isEmptyRow(id) {
+  if(!$("#"+id+" .chinese_name_container input")[0].value 
+      && !$("#"+id+" .english_name_container input")[0].value
+      && ($("#"+id+" .gender_container .gender_type label")[0].className.indexOf("active")==-1 && $("#"+id+" .gender_container .gender_type label")[1].className.indexOf("active")==-1)
+      && !$("#"+id+" .hometown_container input")[0].value
+      && !$("#"+id+" .birthday_container input")[0].value
+      && !$("#"+id+" .passport_no_container input")[0].value) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// auto remove unused rowItems
+function reduceClientsTable() {
+  var deleteFinished = false;
+
+  $($("#clients_container table tr").get().reverse()).each(function() {
+    if(!deleteFinished) {
+      if(isEmptyRow(this.id) && $("#clients_container table tr").length > 1) {
+        removeClientRow(this.id);
+      } else {
+        deleteFinished = true;
+      }
+    }
+  });
+}

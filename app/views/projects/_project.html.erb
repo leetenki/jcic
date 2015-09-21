@@ -1,15 +1,41 @@
 <% unless project.id.nil? %>
   <tr id="<%= project.id %>" class="">
-    <td class="col-md-3"><%= project.china_company_name %></td>
-    <td class="col-md-2"><%= project.representative_name_chinese %><br/>(<%= project.representative_name_english %>)</td>
-    <td class="col-md-2"><%= project.date_arrival.strftime("%Y/%m/%d") %> ~ <br/><%= project.date_leaving.strftime("%Y/%m/%d") %></td>
-    <td class="col-md-1"><%= visa_type_str(project.visa_type) %></td>
-    <td class="col-md-1"><%= project.stay_term.to_s + "天" %></td>
-    <td class="col-md-1"><%= "人" %></td>
-    <td class="col-md-1"><%= "未申請" %></td>
-    <td class="col-md-1 btn-container">
-        <%= link_to "修改", edit_project_path(project), :method => :get, :class => "btn btn-primary btn-xs" %>
+    <td class="col-md-5 col-sm-5 col-xs-5">
+        <% if is_admin? %>
+            <div class="origin-company-name-cell" onclick="location.href='/traders/<%= project.trader.id %>'"><%= project.trader.company_name %>(<%= project.trader.person_name %>)</div>        
+        <% end %>
+
+        <div class="bg-primary company-name-cell"><%= project.china_company_name %></div>
+        <div class="date-arrival-cell"><%= project.date_arrival.strftime("%Y/%m/%d") %>〜<%= project.date_leaving.strftime("%Y/%m/%d") %></div>
+        <div class="visa-type-cell"><%= visa_type_str(project.visa_type) %></div>
+    </td>
+
+    <td class="col-md-3 col-sm-3 col-xs-3">
+        <div class="presentative-name-cell"><%= project.representative_name_chinese %> ( <%= project.representative_name_english %> ) </div>
+        <div class="total-people-cell">共<%= project.total_people .to_s+ "名" %></div>
+    </td>
+
+    <td class="col-md-2 col-sm-2 col-xs-2">
+        <div class="status-cell <%= project.status %>"><%= status_type_str(project.status) %></div>
+        <div class="created-cell"><%= project.updated_at.strftime("%Y/%m/%d %H:%M") %></div>
+        <% if is_admin? %>
+            <center>
+                <button class="btn btn-default btn-xs" onclick="location.href='/update_status?id=<%= project.id %>&amp;status=uncommitted'">申请</button>
+                <button class="btn btn-default btn-xs" onclick="location.href='/update_status?id=<%= project.id %>&amp;status=waiting'">等待</button>
+                <button class="btn btn-default btn-xs" onclick="location.href='/update_status?id=<%= project.id %>&amp;status=committed'">完了</button>
+            </center>
+        <% end %>
+    </td>
+
+
+    <td class="col-md-2 col-sm-2 col-xs-2 btn-container">
+    <% if !is_admin? && (project.status == "committed" || project.date_arrival < Date.today) %>
+        <div class="btn btn-primary btn-xs" disabled="disabled">修改</div>
+        <div class="btn btn-danger btn-xs" disabled="disabled">删除</div>
+    <% else %>
+        <%= link_to "修改", edit_project_path(project), :method => :get, :class => "btn btn-primary btn-xs modify-project" %>
         <%= link_to "删除", project, :method => :delete, :data => { :confirm => "删除后将无法复原! 您确定删除此电签吗？" }, :class => "btn btn-danger btn-xs" %>
+    <% end %>
     </td>
   </tr>
 <% end %>

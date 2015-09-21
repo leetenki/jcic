@@ -1,4 +1,11 @@
-<h1><i class="fa fa-users"></i> 电签名单</h1>
+<h1>
+  <i class="fa fa-users"></i> 
+  <% if is_admin? %>
+    所有电签
+  <% else %>
+    申请签证
+  <% end %>
+</h1>
 
 <div class="row">
   <div class="container col-md-10 col-md-offset-1">
@@ -6,19 +13,15 @@
     <% if @projects.any? %>
       <table class="project-info table">
         <caption>
-          <a href="projects/new" class="btn btn-success btn-large">
+          <a href="projects/new" class="btn btn-success btn-large" id="new-project">
             <i class="fa fa-user-plus"></i> 追加
           </a>
         </caption>
         <thead>
           <tr>
-            <th>中国旅行社</th>
+            <th>中国旅行社 （ 入境／入境／签证 ）</th>
             <th>代表人</th>
-            <th>在留期间</th>
-            <th>签证</th>
-            <th>旅程</th>
-            <th>名单</th>
-            <th>状态</th>
+              <th>状态</th>
             <th>其他</th>
           </tr>
         </thead>
@@ -26,6 +29,10 @@
           <%= render @projects %>
         </tbody>
       </table>
+    <% else %>
+        <a href="projects/new" class="btn btn-success btn-large" id="new-project">
+          <i class="fa fa-user-plus"></i> 新建
+        </a>    
     <% end %>
 
 

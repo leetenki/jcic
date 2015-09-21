@@ -4,8 +4,8 @@ include Utility
 class Project < ActiveRecord::Base
   #relationships
   belongs_to :trader
-  has_many :schedules, :dependent => :destroy
-  has_many :clients, :dependent => :destroy
+  has_many :schedules, -> { order("id") }, :dependent => :destroy
+  has_many :clients, -> { order("id") }, :dependent => :destroy
   accepts_nested_attributes_for :schedules
   accepts_nested_attributes_for :clients
 

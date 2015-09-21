@@ -2,7 +2,7 @@ require 'chinese_converter'
 include ChineseConverter
 
 class ProjectsController < ApplicationController
-  before_action :logged_in, :only => [:new, :create, :index, :edit, :update]
+  before_action :logged_in, :only => [:new, :create, :index, :edit, :update, :destroy]
   before_action :init_company_codes, :only => [:new, :create, :edit, :update]
 
   #create new project
@@ -50,7 +50,12 @@ class ProjectsController < ApplicationController
 
   #edit
   def edit
-    @project = current_trader.projects.find(params[:id])
+    if(is_admin?)
+      @project = Project.find(params[:id])
+    else
+      @project = current_trader.projects.find(params[:id])
+    end
+
   end
 
   def update
@@ -58,7 +63,11 @@ class ProjectsController < ApplicationController
     destroy_ids = [];
     client_destroy_ids = [];
 
-    @project = current_trader.projects.find_by(:id => params[:id])
+    if(is_admin?)
+      @project = Project.find_by(:id => params[:id])
+    else
+      @project = current_trader.projects.find_by(:id => params[:id])
+    end
     @project.assign_attributes(project_params)
 
     if(@project.valid?)
@@ -123,10 +132,15 @@ class ProjectsController < ApplicationController
 
   #destroy
   def destroy
-    @project = current_trader.projects.find_by(:id => params[:id])
+    if(is_admin?)
+      @project = Project.find_by(:id => params[:id])
+    else
+      @project = current_trader.projects.find_by(:id => params[:id])
+    end
+
     if(@project.nil?)
       flash[:danger] = "对不起，您所选择的电签不存在."
-    elsif(@project.status == "completed" || @project.date_arrival < Date.today)
+    elsif(!is_admin? && (@project.status == "completed" || @project.date_arrival < Date.today))
       flash[:danger] = "对不起，您所选择的电签表已无法删除."        
     else
       @project.destroy
@@ -137,11 +151,24 @@ class ProjectsController < ApplicationController
 
   def index
     if logged_in?
-      @project = current_trader.projects.build
-      @projects = current_trader.projects
+      if(is_admin?)
+        @projects = Project.all.order("id desc")
+      else
+        @projects = current_trader.projects.order("id desc")
+      end
     end
   end
 
+  def update_status
+    if(is_admin?)
+      @project = Project.find_by(:id => params[:id]);
+      @project.status = params[:status]
+      @project.save
+      flash[:success] = " 状态修改为 '" + status_type_str(params[:status]) + "' (@trader.id = " + @project.trader.id.to_s + ", " + @project.trader.company_name.to_s + ", " + @project.trader.person_name +  ")  (@project.id = " + @project.id.to_s + ", " + @project.china_company_name.to_s + ", " + @project.created_at.to_s + ")"
+    end
+
+    redirect_to projects_path
+  end
 
   private
   @company_codes

@@ -1,7 +1,8 @@
 <h1><i class="fa fa-sign-in"></i> 会员登录</h1>
 
+<br/>
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
+  <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3">
     <%= form_for(:session, :url => login_path) do |f| %>
 
       <%= f.label :account, "登录名" %>
@@ -10,7 +11,7 @@
       <%= f.label :password, "密码" %>
       <%= f.password_field :password, :class => "form-control" %>
 
-      <%= f.submit " 登录", :class => "btn btn-primary col-md-3" %>
+      <%= f.submit " 登录", :class => "btn btn-primary col-md-3 col-sm-3 col-xs-6" %>
       
     <% end %>
   </div>

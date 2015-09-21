@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get 'signup', :to => 'traders#new'
   root :to => 'static_pages#home'
 
+  get 'update_status', :to => "projects#update_status"
 
   resources :traders
   resources :projects

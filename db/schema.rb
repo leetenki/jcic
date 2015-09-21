@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 20150921000024) do
     t.datetime "updated_at", null: false
   end
 
+  add_index "schedules", ["project_id", "date"], name: "unique_schedule", unique: true
   add_index "schedules", ["project_id"], name: "index_schedules_on_project_id"
 
   create_table "traders", force: :cascade do |t|

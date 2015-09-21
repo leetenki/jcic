@@ -124,7 +124,7 @@
       <!--************************* schedules ***************************-->
       <div id="schedules_container" class="dashed_container col-md-10 col-md-offset-1">
             <div id="title">
-                  <i class="fa fa-plane"></i> 旅程表
+                  <i class="fa fa-plane"></i> 旅程表 <span class="number" id="schedules-total"><%= f.object.schedules.length %></span> 天
             </div>
  
             <table class="table">
@@ -132,6 +132,7 @@
                         <%= f.fields_for :schedules do |schedules_field| %>
                         <tr>
                               <td class="col col-md-2 col-sm-2 col-lg-2 date">
+                                    <span class="date-index"><%= schedules_field.index+1 %></span>
                                     <div id="schedules_date_container_<%= schedules_field.index %>" class="date_container">
                                           <%= schedules_field.label :date, "日期" %> <i id="schedules_date_<%= schedules_field.index %>"></i>
                                           <%= schedules_field.text_area(
@@ -183,14 +184,16 @@
       <!--************************* clients ***************************-->
       <div id="clients_container" class="dashed_container col-md-10 col-md-offset-1">
             <div id="title">
-                  <i class="fa fa-list"></i> 名单
+                  <i class="fa fa-list"></i> 名单 <span class="number" id="clients-total"><%= f.object.clients.length %></span> 人
             </div>
+            <div id="excel_button" class="btn btn-info" data-toggle="modal" data-target="#modal-panel">+ Excel</div>
 
             <table class="table">
                   <tbody>
                         <%= f.fields_for :clients do |clients_field| %>
                         <tr id="client_<%= clients_field.index %>">
                               <td class="col col-md-2 col-sm-2 col-xs-2">
+                                    <span class="index"><%= clients_field.index+1 %></span>
                                     <div id="clients_chinese_name_container_<%= clients_field.index %>" class="chinese_name_container">
                                           <%= clients_field.label :name_chinese, "中文名" %> <i id="clients_chinese_name_<%= clients_field.index %>"></i>
                                           <%= clients_field.text_field(
@@ -293,16 +296,45 @@
       </div>
 
 
-      <div class="col-md-4 col-md-offset-4">
-            <%= f.submit button_text, :class => "btn btn-large btn-primary" %>
+      <div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4">
+            <%= f.submit button_text, :class => "btn btn-lg btn-primary" %>
       </div>
 <% end %>
 
-<!-- alert form -->
+<!-- *************************** alert form ***************************** -->
 <div class="alert alert-danger alert-panel" id="failed-alert">
   <div class="title"><strong>对不起，未填写完毕，请再次确认.</strong></div><br/>
   <ul>
         <content>
         </content>
   <ul>
+</div>
+
+
+
+
+<!-- **************************** excel area ***************************** -->
+<div class="modal fade" id="modal-panel" tabindex="-1">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+                <h5 class="modal-title" id="modal-label">您可以从Excel文件读取名单. 请打开Excel文件，选择全文后，复制与粘贴到此处.</h5>
+            </div>
+
+
+            <div class="modal-body">
+                  <textarea id="excel_area" class="form-control" placeholder="中文名&#009;&#009;英文名&#009;&#009;性别&#009;&#009;签发&#009;&#009;出生日期&#009;&#009;护照号&#13;&#10;李庆新&#009;&#009;LI QINXIN&#009;&#009;男&#009;&#009;苏州&#009;&#009;1950/1/1&#009;&#009;G171717171&#13;&#10;李天琦&#009;&#009;LI TIANQI&#009;&#009;男&#009;&#009;苏州&#009;&#009;1989/7/7&#009;&#009;G101010101&#13;&#10;苏飞鹤&#009;&#009;SU FEIHE&#009;&#009;女&#009;&#009;苏州&#009;&#009;1995/1/1&#009;&#009;G181818181&#13;&#10;苏零　&#009;&#009;SU LING&#009;&#009;女&#009;&#009;上海&#009;&#009;1990/9/9&#009;&#009;G291919191&#13;&#10;"></textarea>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="parse-button">确定</button>
+            </div>
+        </div>
+    </div>
 </div>
