@@ -139,6 +139,7 @@
                                                 :readonly => true,
                                                 :class => "form-control datepicker",
                                                 :onchange => "validateDatesAndUpdateIcon()",
+                                                :maxlength => "25",
                                                 :placeholder => Date.today.strftime('%Y/%m/%d') + "\n ( " + chinese_week_day(Date.today.wday) + " )",
                                           ) %>
                                     </div>
@@ -153,6 +154,7 @@
                                                 :onblur => "validateAndUpdateField('schedules_plan_container_#{schedules_field.index}', 'plan_container', validatePlan)",
                                                 :onchange => "validateAndUpdateField('schedules_plan_container_#{schedules_field.index}', 'plan_container', validatePlan)",
                                                 :class => "form-control",
+                                                :maxlength => "200",
                                                 :placeholder => "上海浦东机场出发,前往东京成田机场. 东京都内观光.",
                                           ) %>
                                     </div>
@@ -167,6 +169,7 @@
                                                 :onblur => "validateAndUpdateField('schedules_hotel_container_#{schedules_field.index}', 'hotel_container', validateHotel)",
                                                 :onchange => "validateAndUpdateField('schedules_hotel_container_#{schedules_field.index}', 'hotel_container', validateHotel)",
                                                 :class => "form-control",
+                                                :maxlength => "100",
                                                 :placeholder => "〒106-0032 東京都港区六本木7丁目18−11 飞鹤国际宾馆",
                                           ) %>
                                     </div>
@@ -197,7 +200,8 @@
                                                 :oninput => "validateAndUpdateFieldOnlyCheck('clients_chinese_name_container_#{clients_field.index}', 'chinese_name_container', validateChineseNameById)",
                                                 :onfocus => "validateAndUpdateFieldOnlyCheck('clients_chinese_name_container_#{clients_field.index}', 'chinese_name_container', validateChineseNameById)",                                          
                                                 :onchange => "validateAndUpdateField('clients_chinese_name_container_#{clients_field.index}', 'chinese_name_container', validateChineseNameById)",
-                                                :onblur => "validateAndUpdateField('clients_chinese_name_container_#{clients_field.index}', 'chinese_name_container', validateChineseNameById)",                                                                                              
+                                                :onblur => "validateAndUpdateField('clients_chinese_name_container_#{clients_field.index}', 'chinese_name_container', validateChineseNameById)",
+                                                :maxlength => "10",
                                                 ) %>
                                     </div>
                               </td>
@@ -212,6 +216,7 @@
                                                 :onfocus => "validateAndUpdateFieldOnlyCheck('clients_english_name_container_#{clients_field.index}', 'english_name_container', validateEnglishNameById)",
                                                 :onchange => "validateAndUpdateField('clients_english_name_container_#{clients_field.index}', 'english_name_container', validateEnglishNameById)",
                                                 :onblur => "validateAndUpdateField('clients_english_name_container_#{clients_field.index}', 'english_name_container', validateEnglishNameById)",
+                                                :maxlength => "30",
                                           ) %>
                                     </div>
                               </td>
@@ -240,7 +245,8 @@
                                                 :oninput => "validateAndUpdateFieldOnlyCheck('clients_hometown_container_#{clients_field.index}', 'hometown_container', validateHometown)",
                                                 :onfocus => "validateAndUpdateFieldOnlyCheck('clients_hometown_container_#{clients_field.index}', 'hometown_container', validateHometown)",
                                                 :onchange => "validateAndUpdateField('clients_hometown_container_#{clients_field.index}', 'hometown_container', validateHometown)",
-                                                :onblur => "validateAndUpdateField('clients_hometown_container_#{clients_field.index}', 'hometown_container', validateHometown)"                                                                                                
+                                                :onblur => "validateAndUpdateField('clients_hometown_container_#{clients_field.index}', 'hometown_container', validateHometown)",                                                                                                
+                                                :maxlength => "10",
                                           ) %>
                                     </div>
                               </td>
@@ -274,6 +280,7 @@
                                                 :onfocus => "validateAndUpdateFieldOnlyCheck('clients_passport_no_container_#{clients_field.index}', 'passport_no_container', validatePassportNo)",
                                                 :onchange => "validateAndUpdateField('clients_passport_no_container_#{clients_field.index}', 'passport_no_container', validatePassportNo)",                                                                                                
                                                 :onblur => "validateAndUpdateField('clients_passport_no_container_#{clients_field.index}', 'passport_no_container', validatePassportNo)",
+                                                :maxlength => "11",
                                           ) %>
                                     </div>
                               </td>

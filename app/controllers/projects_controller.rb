@@ -41,7 +41,7 @@ class ProjectsController < ApplicationController
 
     if(!@project.errors.any?)
       @project.save
-      flash[:success] = "电子签证申请完毕，请再次检查. 1工作日之内将发行签证."
+      flash[:success] = "电子签证申请完毕，请再次检查. 1工作日之后将无法修改."
       redirect_to projects_path
     else
       render 'new'

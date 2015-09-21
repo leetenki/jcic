@@ -592,11 +592,13 @@ function addClientRow() {
 }
 
 function removeClientRow(id) {
-  $("#" + id).remove();
-  overwriteHiddenValueInClients();
+  if($("#clients_container table tr").length > 1) {
+    $("#" + id).remove();
+    overwriteHiddenValueInClients();
 
-  $("#totalPeople")[0].value = $("#clients_container table tr").length;
-  updateIcon('total_people_check', validateTotalPeople, 'total_people_container');
+    $("#totalPeople")[0].value = $("#clients_container table tr").length;
+    updateIcon('total_people_check', validateTotalPeople, 'total_people_container');
+  }
 }
 
 // function to build tr tag for client
@@ -639,6 +641,7 @@ function createClientTag(index) {
   inputTag.setAttribute("onchange", "validateAndUpdateField('clients_chinese_name_container_" + index + "', 'chinese_name_container', validateChineseNameById)");
   inputTag.setAttribute("onblur", "validateAndUpdateField('clients_chinese_name_container_" + index + "', 'chinese_name_container', validateChineseNameById)");
   inputTag.setAttribute("type", "text");
+  inputTag.setAttribute("maxlength", "10");
   inputTag.setAttribute("name", "project[clients_attributes][" + index + "][name_chinese]");
   inputTag.setAttribute("id", "project_clients_attributes_" + index + "_name_chinese")
   containerNode.appendChild(inputTag);
@@ -669,6 +672,7 @@ function createClientTag(index) {
   inputTag.setAttribute("autocomplete", "off");
   inputTag.setAttribute("class", "form-control");
   inputTag.setAttribute("placeholder", "");
+  inputTag.setAttribute("maxlength", "30");  
   inputTag.setAttribute("oninput", "validateAndUpdateFieldOnlyCheck('clients_english_name_container_" + index + "', 'english_name_container', validateEnglishNameById)");
   inputTag.setAttribute("onfocus", "validateAndUpdateFieldOnlyCheck('clients_english_name_container_" + index + "', 'english_name_container', validateEnglishNameById)");
   inputTag.setAttribute("onchange", "validateAndUpdateField('clients_english_name_container_" + index + "', 'english_name_container', validateEnglishNameById)");
@@ -760,6 +764,7 @@ function createClientTag(index) {
   inputTag.setAttribute("autocomplete", "off");
   inputTag.setAttribute("class", "form-control");
   inputTag.setAttribute("placeholder", "");
+  inputTag.setAttribute("maxlength", "10");  
   inputTag.setAttribute("oninput", "validateAndUpdateFieldOnlyCheck('clients_hometown_container_" + index + "', 'hometown_container', validateHometown)");
   inputTag.setAttribute("onfocus", "validateAndUpdateFieldOnlyCheck('clients_hometown_container_" + index + "', 'hometown_container', validateHometown)");
   inputTag.setAttribute("onchange", "validateAndUpdateField('clients_hometown_container_" + index + "', 'hometown_container', validateHometown)");
@@ -839,6 +844,7 @@ function createClientTag(index) {
   inputTag.setAttribute("autocomplete", "off");
   inputTag.setAttribute("class", "form-control");
   inputTag.setAttribute("placeholder", "");
+  inputTag.setAttribute("maxlength", "11");  
   inputTag.setAttribute("oninput", "validateAndUpdateFieldOnlyCheck('clients_passport_no_container_" + index + "', 'passport_no_container', validatePassportNo)");
   inputTag.setAttribute("onfocus", "validateAndUpdateFieldOnlyCheck('clients_passport_no_container_" + index + "', 'passport_no_container', validatePassportNo)");
   inputTag.setAttribute("onchange", "validateAndUpdateField('clients_passport_no_container_" + index + "', 'passport_no_container', validatePassportNo)");
@@ -886,7 +892,9 @@ function createScheduleTag(index, dateText) {
   dateTextareaNode.setAttribute("name", "project[schedules_attributes][" + index + "][date]");
   dateTextareaNode.setAttribute("id", "project_schedules_attributes_" + index + "_date");
   dateTextareaNode.setAttribute("value", dateText);
-  dateTextareaNode.appendChild(document.createTextNode(dateText))
+  dateTextareaNode.setAttribute("maxlength", "25");
+  dateTextareaNode.appendChild(document.createTextNode(dateText));
+  dateTextareaNode.setAttribute("maxlength", "25");
   dateContainerNode.appendChild(dateTextareaNode);
 
   //plan tag
@@ -920,6 +928,7 @@ function createScheduleTag(index, dateText) {
   planTextareaNode.setAttribute("placeholder", "");
   planTextareaNode.setAttribute("name", "project[schedules_attributes][" + index + "][plan]");
   planTextareaNode.setAttribute("id", "project_schedules_attributes_" + index + "_plan");
+  planTextareaNode.setAttribute("maxlength", "200");
   planContainerNode.appendChild(planTextareaNode);
 
   // hotel tag
@@ -953,6 +962,7 @@ function createScheduleTag(index, dateText) {
   hotelTextareaNode.setAttribute("placeholder", "");
   hotelTextareaNode.setAttribute("name", "project[schedules_attributes][" + index + "][hotel]");
   hotelTextareaNode.setAttribute("id", "project_schedules_attributes_" + index + "_hotel");
+  hotelTextareaNode.setAttribute("maxlength", "100");
   hotelContainerNode.appendChild(hotelTextareaNode);
 
   return trNode;
@@ -1156,7 +1166,6 @@ function initialValidation() {
 }
 
 // validate before sending
-/*
 $(function() {
     $('#new_project, .edit_project').submit(function() {
         var failedMessage = "";
@@ -1174,8 +1183,13 @@ $(function() {
         if(!updateIcon('english_name_check', validateEnglishName, 'english_name_container')) {
           failedMessage += "<li>代表人全名(拼音)不正确.</li>";                    
         }
-        if(!updateIcon('total_people_check', validateTotalPeople, 'total_people_container')) {
-          failedMessage += "<li>总人数不正确.</li>";                              
+        if($("#clients_container table tr").length == 0) {
+          failedMessage += "<li>人数不可为零.</li>";                              
+        } else {
+          $("#totalPeople")[0].value = $("#clients_container table tr").length;
+          if(!updateIcon('total_people_check', validateTotalPeople, 'total_people_container')) {
+            failedMessage += "<li>总人数不正确.</li>";                              
+          }
         }
         if(!updateIcon('date_arrival_check', validateDateArrival, 'date_arrival_container')) {
           failedMessage += "<li>日本入境日期不正确.</li>";                                        
@@ -1210,6 +1224,65 @@ $(function() {
           failedMessage += "<li>住宿不可空虚，必须100字以内.</li>";          
         }
 
+        var chineseNameValid = true;
+        $(".chinese_name_container").each(function() {
+          if(!validateAndUpdateField(this.attributes.id.value, 'chinese_name_container', validateChineseNameById)) {
+            chineseNameValid = false;
+          }
+        })
+        if(!chineseNameValid) {
+          failedMessage += "<li>中文名必须填写简体字，10字以内.</li>";          
+        }
+
+        var englishNameValid = true;
+        $(".english_name_container").each(function() {
+          if(!validateAndUpdateField(this.attributes.id.value, 'english_name_container', validateEnglishNameById)) {
+            englishNameValid = false;
+          }
+        })
+        if(!englishNameValid) {
+          failedMessage += "<li>英文名必须填写半角拼英，30字以内.</li>";          
+        }
+
+        var genderValid = true;
+        $(".gender_container").each(function() {
+          if(!validateAndUpdateField(this.attributes.id.value, 'gender_container', validateGender)) {
+            genderValid = false;
+          }
+        })
+        if(!genderValid) {
+          failedMessage += "<li>性别未选择，不可空虚.</li>";          
+        }
+
+        var hometownValid = true;
+        $(".hometown_container").each(function() {
+          if(!validateAndUpdateField(this.attributes.id.value, 'hometown_container', validateHometown)) {
+            hometownValid = false;
+          }
+        })
+        if(!hometownValid) {
+          failedMessage += "<li>签发地点不可空虚，必须10字以内.</li>";          
+        }
+
+        var birthdayValid = true;
+        $(".birthday_container").each(function() {
+          if(!validateAndUpdateField(this.attributes.id.value, 'birthday_container', validateBirthday)) {
+            birthdayValid = false;
+          }
+        })
+        if(!birthdayValid) {
+          failedMessage += "<li>出生日期形式不正确.</li>";          
+        }
+
+        var passportNoValid = true;
+        $(".passport_no_container").each(function() {
+          if(!validateAndUpdateField(this.attributes.id.value, 'passport_no_container', validatePassportNo)) {
+            passportNoValid = false;
+          }
+        })
+        if(!passportNoValid) {
+          failedMessage += "<li>护照号必须半角英文字母或数字，8～11位.</li>";          
+        }
 
         if(failedMessage.length > 0) {
           $("#failed-alert content").html(failedMessage)
@@ -1220,4 +1293,3 @@ $(function() {
         }
     });
 });
-*/
