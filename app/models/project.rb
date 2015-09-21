@@ -1,8 +1,16 @@
+require 'utility.rb'
+include Utility
+
 class Project < ActiveRecord::Base
   #relationships
   belongs_to :trader
+  has_many :schedules, :dependent => :destroy
+  has_many :clients, :dependent => :destroy
+  accepts_nested_attributes_for :schedules
+  accepts_nested_attributes_for :clients
 
   #validation
+  validates :trader_id, :presence => true
   validate :validate_china_company_name
   validate :validate_china_company_code
   validate :validate_visa_type
@@ -45,7 +53,7 @@ class Project < ActiveRecord::Base
       errors.add(:representative_name_chinese, "您未输入代表人名（简体字）.")
     elsif(representative_name_chinese.length > 10)
       errors.add(:representative_name_chinese, "代表人名（简体字）不可超过10字.")   
-    elsif(!zenkaku?(representative_name_chinese))
+    elsif(hankaku?(representative_name_chinese))
       errors.add(:representative_name_chinese, "中文名只可输入简体字.")      
     end
   end
@@ -63,7 +71,7 @@ class Project < ActiveRecord::Base
   def validate_dates
     date_valid = true
     if(!date_arrival.present? || date_arrival < Date.today)
-      errors.add(:date_arrival, "日本出境日期不正确.");
+      errors.add(:date_arrival, "日本入境日期不正确.");
       date_valid = false
     end
 

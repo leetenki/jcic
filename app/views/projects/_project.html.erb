@@ -1,13 +1,16 @@
 <% unless project.id.nil? %>
-  <tr id="<%= project.id %>" class="warning">
+  <tr id="<%= project.id %>" class="">
     <td class="col-md-3"><%= project.china_company_name %></td>
     <td class="col-md-2"><%= project.representative_name_chinese %><br/>(<%= project.representative_name_english %>)</td>
     <td class="col-md-2"><%= project.date_arrival.strftime("%Y/%m/%d") %> ~ <br/><%= project.date_leaving.strftime("%Y/%m/%d") %></td>
     <td class="col-md-1"><%= visa_type_str(project.visa_type) %></td>
-    <td class="col-md-1"><%= "7天" %></td>
-    <td class="col-md-1"><%= "5人" %></td>
+    <td class="col-md-1"><%= project.stay_term.to_s + "天" %></td>
+    <td class="col-md-1"><%= "人" %></td>
     <td class="col-md-1"><%= "未申請" %></td>
-    <td class="col-md-1"><button class="btn btn-primary">修改</button></td>
+    <td class="col-md-1 btn-container">
+        <%= link_to "修改", edit_project_path(project), :method => :get, :class => "btn btn-primary btn-xs" %>
+        <%= link_to "删除", project, :method => :delete, :data => { :confirm => "删除后将无法复原! 您确定删除此电签吗？" }, :class => "btn btn-danger btn-xs" %>
+    </td>
   </tr>
 <% end %>
 

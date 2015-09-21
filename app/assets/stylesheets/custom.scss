@@ -124,9 +124,10 @@ input {
   } 
 }
 
-#visaType {
-  label.active {
+#visaType, .gender_type {
+  label.active, label.active:hover {
     background-color: #00aa00;
+    color: #ffffff;
   }
 }
 
@@ -213,6 +214,35 @@ input {
 
 .project-info {
   margin-top: 30px;
+  border: 3px #cccccc solid;
+
+  th {
+    background-color: #333333;
+    text-align: center;
+    color: #CEF6F5;
+  }
+
+
+  td, th, tr {
+    border: 1px #cccccc solid;
+  }
+  tr {
+    background-color: #fefefe;
+    color: #000000;
+  }
+
+  tr:not(.thead):hover {
+    background-color: #FBF5EF;
+  }
+
+
+  td.btn-container {
+    text-align: center;
+    line-height: 25px;
+
+    .btn {
+    }
+  }
 }
 
 .trader-info-hover {
@@ -283,13 +313,15 @@ div.dashed_container {
   padding: 20px 60px 40px 60px;  
 }
 div#identity_container {
-  background-color: #efefef;  
+  background-color: #e6e6fa;
 }
 
 div#schedules_container {
   padding-left: 15px;
   padding-right: 15px;
-  background-color: #fffacd; 
+  background-color: #e6e6fa;
+
+  /*background-color: #fffacd; */
   table {
     tr, td {
       color: #888888;
@@ -300,9 +332,6 @@ div#schedules_container {
     }
     td.date textarea {
       text-align: center;
-    }
-    textarea.datepicker {
-      background-color: #dcf2dc;
     }
     input {
       height: 100px;
@@ -315,9 +344,48 @@ div#schedules_container {
 }
 
 div#clients_container {
-  background-color: #e6e6fa;  
+  padding-left: 15px;
+  padding-right: 15px;
+  background-color: #e6e6fa;
+
+  table {
+    .remove_client {
+      display: inline-block;
+      position: absolute;
+      float: right;
+      right: 3px;
+      margin-top: 18px;
+      color: #bcbcbc;
+      font-size: 25px;
+    }
+    .remove_client:hover {
+      color: #ffa0a0;
+      cursor: pointer;
+    }
+    tr, td {
+      color: #888888;
+      border: 0;
+    }
+    td {
+      padding: 10px 5px;
+    }
+  } 
+  .add_client {
+    float: bottom right;
+    position: absolute;
+    bottom: 15px;
+    right: 30px;
+    color: #c0c0c0;
+  }
+  .add_client:hover {
+    cursor: pointer;
+    color: #81BEF7;
+  }
 }
 
+.errors-container {
+  padding-top: 20px;
+}
 
 /* font-awesome */
 .fa-exclamation-circle {
@@ -342,7 +410,7 @@ div#clients_container {
   color: #cccccc;
   position: relative;
   float: right;
-  right: 18px;
+  right: 5px;
   top: 31px;
 }
 .fa-chevron-down.short {

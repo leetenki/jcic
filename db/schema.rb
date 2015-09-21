@@ -11,7 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150918141556) do
+ActiveRecord::Schema.define(version: 20150921000024) do
+
+  create_table "clients", force: :cascade do |t|
+    t.integer  "project_id"
+    t.string   "name_chinese"
+    t.string   "name_english"
+    t.string   "gender"
+    t.string   "hometown"
+    t.date     "birthday"
+    t.string   "passport_no"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "clients", ["project_id"], name: "index_clients_on_project_id"
 
   create_table "company_codes", force: :cascade do |t|
     t.string   "name"
@@ -41,8 +55,20 @@ ActiveRecord::Schema.define(version: 20150918141556) do
     t.integer  "stay_term"
   end
 
+  add_index "projects", ["trader_id", "china_company_code", "visa_type", "total_people", "representative_name_english", "date_arrival", "date_leaving"], name: "unique_project_condition", unique: true
   add_index "projects", ["trader_id", "created_at"], name: "index_projects_on_trader_id_and_created_at"
   add_index "projects", ["trader_id"], name: "index_projects_on_trader_id"
+
+  create_table "schedules", force: :cascade do |t|
+    t.integer  "project_id"
+    t.date     "date"
+    t.text     "plan"
+    t.text     "hotel"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "schedules", ["project_id"], name: "index_schedules_on_project_id"
 
   create_table "traders", force: :cascade do |t|
     t.string   "account"

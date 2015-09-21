@@ -1,11 +1,31 @@
 <%= form_for(project) do |f| %>
+
+      <div class="col-md-6 col-md-offset-3 errors-container"><%= render :partial => "shared/error_messages", :locals => {:object => f.object} %></div>
       <!--************************* identity ***************************-->
       <div id="identity_container" class="dashed_container col-md-6 col-md-offset-3">
             <div id="title">
                   <i class="fa fa-user-plus"></i> 电签表
             </div>
 
-            <%= render :partial => "shared/error_messages", :locals => {:object => f.object} %>
+       
+            <!-- Visa Type -->
+            <%= f.label :visa_type, "签证种类" %> <i id="visa_type_check"></i>
+            <div class="form-group">
+                  <div id='visaType' class="btn-group" data-toggle="buttons" onchange="updateIcon('visa_type_check', validateVisaType)">
+                      <label class="btn btn-default <%= 'active' if(project.visa_type == 'group') %>">
+                          <input type="radio" autocomplete="off" value="group" name="project[visa_type]" <%= 'checked' if(project.visa_type == 'group') %>><%= visa_type_str("group") %>
+                      </label>
+                      <label class="btn btn-default <%= 'active' if(project.visa_type == 'individual') %>">
+                          <input type="radio" autocomplete="off" value="individual" name="project[visa_type]" <%= 'checked' if(project.visa_type=='individual') %>><%= visa_type_str("individual") %>
+                      </label>
+                      <label class="btn btn-default <%= 'active' if(project.visa_type == '3years') %>">
+                          <input type="radio" autocomplete="off" value="3years" name="project[visa_type]" <%= 'checked' if(project.visa_type == '3years') %>><%= visa_type_str("3years") %>
+                      </label>
+                      <label class="btn btn-default <%= 'active' if(project.visa_type == '5years') %>">
+                          <input type="radio" autocomplete="off" value="5years" name="project[visa_type]" <%= 'checked' if(project.visa_type == '5years') %>><%= visa_type_str("5years") %>
+                      </label>
+                  </div>
+            </div>
 
             <!-- Company Name -->
             <div id="china_company_container">
@@ -22,26 +42,6 @@
                   <div class="container" id="suggest_container"><div id="suggest" style="display:none;"></div></div>
                   <input type="hidden" id="company_data_json" value="<%= @company_codes.to_json({:only => [:name, :search_text]}) %>">
             </div>
-       
-            <!-- Visa Type -->
-            <%= f.label :visa_type, "签证种类" %> <i id="visa_type_check"></i>
-            <div class="form-group">
-                  <div id='visaType' class="btn-group" data-toggle="buttons" onchange="updateIcon('visa_type_check', validateVisaType)">
-                      <label class="btn btn-primary <%= 'active' if(project.visa_type == 'group') %>">
-                          <input type="radio" autocomplete="off" value="group" name="project[visa_type]"><%= visa_type_str("group") %>
-                      </label>
-                      <label class="btn btn-primary <%= 'active' if(project.visa_type == 'individual') %>">
-                          <input type="radio" autocomplete="off" value="individual" name="project[visa_type]"><%= visa_type_str("individual") %>
-                      </label>
-                      <label class="btn btn-primary <%= 'active' if(project.visa_type == '3years') %>">
-                          <input type="radio" autocomplete="off" value="3years" name="project[visa_type]"><%= visa_type_str("3years") %>
-                      </label>
-                      <label class="btn btn-primary <%= 'active' if(project.visa_type == '5years') %>">
-                          <input type="radio" autocomplete="off" value="5years" name="project[visa_type]"><%= visa_type_str("5years") %>
-                      </label>
-                  </div>
-            </div>
-
 
             <!-- Representative Name -->
             <div id="chinese_name_container">
@@ -52,8 +52,8 @@
                         :maxlength => "10",
                         :onfocus => "updateIconOnlyCheck('chinese_name_check', validateChineseName, 'chinese_name_container')",
                         :oninput => "updateIconOnlyCheck('chinese_name_check', validateChineseName, 'chinese_name_container')",
-                        :onblur => "updateIcon('chinese_name_check', validateChineseName, 'chinese_name_container')",
-                        :onchange => "updateIcon('chinese_name_check', validateChineseName, 'chinese_name_container')"
+                        :onblur => "autoCompleteFirstChineseName()",
+                        :onchange => "autoCompleteFirstChineseName()"
                   ) %>
             </div>
 
@@ -67,8 +67,8 @@
                         :maxlength => "30",
                         :onfocus => "updateIconOnlyCheck('english_name_check', validateEnglishName, 'english_name_container')",
                         :oninput => "updateIconOnlyCheck('english_name_check', validateEnglishName, 'english_name_container')",
-                        :onblur => "updateIcon('english_name_check', validateEnglishName, 'english_name_container')",
-                        :onchange => "updateIcon('english_name_check', validateEnglishName, 'english_name_container')"                  
+                        :onblur => "autoCompleteFirstEnglishName()",
+                        :onchange => "autoCompleteFirstEnglishName()"
                   ) %>
             </div>
 
@@ -76,40 +76,46 @@
             <div id="total_people_container">
                   <%= f.label :total_people, "总人数" %> <i id="total_people_check"></i>
                   <%= f.number_field(
-                        :total_people, :placeholder => 1, :class => 'form-control', :maxlength => "3", :value => 1, :min => 1, :max => 999, :autocomplete => "off",
+                        :total_people, :placeholder => 1, :class => 'form-control', :maxlength => "3", :min => 1, :max => 999, :autocomplete => "off",
                         :id => "totalPeople",
-                        :onchange => "updateIcon('total_people_check', validateTotalPeople, 'total_people_container')",
+                        :onchange => "initClientTableFromTotalPeople()",
                         :oninput => "updateIconOnlyCheck('total_people_check', validateTotalPeople, 'total_people_container')",
                         :onfocus => "updateIconOnlyCheck('total_people_check', validateTotalPeople, 'total_people_container')",
-                        :onblur => "updateIcon('total_people_check', validateTotalPeople, 'total_people_container')"
+                        :onblur => "initClientTableFromTotalPeople()"
                   ) %>
             </div>
 
             <!-- date arrival -->
             <div id="date_arrival_container">
                   <%= f.label :date_arrival, "日本入境日期" %> <i id="date_arrival_check"></i> <i class="fa fa-chevron-down long"></i>
+                  <% dateArrival = "" %>
+                  <% dateArrival = project.date_arrival.strftime("%Y/%m/%d") if(!project.date_arrival.nil?) %>
                   <%= f.text_field(
                         :date_arrival, :placeholder => Date.today.strftime("%Y/%m/%d"), :class => 'form-control datepicker', :autocomplete => "off",
                         :id => "dateArrival",
                         :maxlength => "10",
                         :oninput => "updateIconOnlyCheck('date_arrival_check', validateDateArrival, 'date_arrival_container')",
                         :onfocus => "updateIconOnlyCheck('date_arrival_check', validateDateArrival, 'date_arrival_container')",
-                        :onchange => "updateIcon('date_arrival_check', validateDateArrival, 'date_arrival_container')",
-                        :onblur => "updateIcon('date_arrival_check', validateDateArrival, 'date_arrival_container')",
+                        :onchange => "updateIcon('date_arrival_check', validateDateArrivalAndRegenerateSchedules, 'date_arrival_container')",
+                        :onblur => "updateIcon('date_arrival_check', validateDateArrivalAndRegenerateSchedules, 'date_arrival_container')",
+                        :value => dateArrival,
                   ) %>
             </div>
 
             <!-- date leaving -->
             <div id="date_leaving_container">
                   <%= f.label :date_leaving, "日本出境日期" %> <i id="date_leaving_check"></i> <i class="fa fa-chevron-down long"></i>
+                  <% dateLeaving = "" %>
+                  <% dateLeaving = project.date_leaving.strftime("%Y/%m/%d") if(!project.date_leaving.nil?) %>
                   <%= f.text_field(
                         :date_leaving, :placeholder => Date.today.strftime("%Y/%m/%d"), :class => 'form-control datepicker', :autocomplete => "off",
                         :id => "dateLeaving",
                         :maxlength => "10",
                         :oninput => "updateIconOnlyCheck('date_leaving_check', validateDateLeaving, 'date_leaving_container')",
                         :onfocus => "updateIconOnlyCheck('date_leaving_check', validateDateLeaving, 'date_leaving_container')",
-                        :onchange => "updateIcon('date_leaving_check', validateDateLeaving, 'date_leaving_container')",
-                        :onblur => "updateIcon('date_leaving_check', validateDateLeaving, 'date_leaving_container')",
+                        :onchange => "updateIcon('date_leaving_check', validateDateLeavingAndRegenerateSchedules, 'date_leaving_container')",
+                        :onblur => "updateIcon('date_leaving_check', validateDateLeavingAndRegenerateSchedules, 'date_leaving_container')",
+                        :value => dateLeaving,
                   ) %>
             </div>
       </div>
@@ -120,36 +126,53 @@
             <div id="title">
                   <i class="fa fa-plane"></i> 旅程表
             </div>
+ 
             <table class="table">
                   <tbody>
+                        <%= f.fields_for :schedules do |schedules_field| %>
                         <tr>
-                              <td class="col col-md-2 date">
-                                    日期<br/>
-                                    <textarea name="project[schedules][0][date]" readonly line-height="3" autocomplete="off" class="form-control datepicker" placeholder="<%= Date.today.strftime('%Y/%m/%d') %>&#13;&#10;(<%= chinese_week_day(Date.today.wday) %>)"><%= Date.today.strftime('%Y/%m/%d') %>&#13;&#10;(<%= chinese_week_day(Date.today.wday) %>)</textarea>
+                              <td class="col col-md-2 col-sm-2 col-lg-2 date">
+                                    <div id="schedules_date_container_<%= schedules_field.index %>" class="date_container">
+                                          <%= schedules_field.label :date, "日期" %> <i id="schedules_date_<%= schedules_field.index %>"></i>
+                                          <%= schedules_field.text_area(
+                                                :date, :autocomplete => "off",
+                                                :readonly => true,
+                                                :class => "form-control datepicker",
+                                                :onchange => "validateDatesAndUpdateIcon()",
+                                                :placeholder => Date.today.strftime('%Y/%m/%d') + "\n ( " + chinese_week_day(Date.today.wday) + " )",
+                                          ) %>
+                                    </div>
                               </td>
-                              <td class="col col-md-6">
-                                    行动计划<br/>
-                                    <textarea name="project[schedules][0][plan]" class="form-control" line-height="3" placeholder="上海浦东机场出发,前往东京成田机场. 东京都内观光."></textarea>                                    
+                              <td class="col col-md-6 col-sm-6 col-lg-6 ">
+                                    <div id="schedules_plan_container_<%= schedules_field.index %>" class="plan_container">
+                                          <%= schedules_field.label :plan, "行动计划" %> <i id="schedules_plan_<%= schedules_field.index %>"></i>
+                                          <%= schedules_field.text_area(
+                                                :plan, :autocomplete => "off",
+                                                :oninput => "validateAndUpdateFieldOnlyCheck('schedules_plan_container_#{schedules_field.index}', 'plan_container', validatePlan)",
+                                                :onfocus => "validateAndUpdateFieldOnlyCheck('schedules_plan_container_#{schedules_field.index}', 'plan_container', validatePlan)",
+                                                :onblur => "validateAndUpdateField('schedules_plan_container_#{schedules_field.index}', 'plan_container', validatePlan)",
+                                                :onchange => "validateAndUpdateField('schedules_plan_container_#{schedules_field.index}', 'plan_container', validatePlan)",
+                                                :class => "form-control",
+                                                :placeholder => "上海浦东机场出发,前往东京成田机场. 东京都内观光.",
+                                          ) %>
+                                    </div>
                               </td>
-                              <td class="col col-md-4">
-                                    住宿<br/>
-                                    <textarea name="project[schedules][0][hotel]" class="form-control" placeholder="〒106-0032 東京都港区六本木7丁目18−11 飞鹤国际宾馆"></textarea>                                                                        
+                              <td class="col col-md-4 col-sm-4 col-lg-4 ">
+                                    <div id="schedules_hotel_container_<%= schedules_field.index %>" class="hotel_container">
+                                          <%= schedules_field.label :hotel, "住宿" %> <i id="schedules_hotel_<%= schedules_field.index %>"></i>
+                                          <%= schedules_field.text_area(
+                                                :hotel, :autocomplete => "off",
+                                                :oninput => "validateAndUpdateFieldOnlyCheck('schedules_hotel_container_#{schedules_field.index}', 'hotel_container', validateHotel)",
+                                                :onfocus => "validateAndUpdateFieldOnlyCheck('schedules_hotel_container_#{schedules_field.index}', 'hotel_container', validateHotel)",
+                                                :onblur => "validateAndUpdateField('schedules_hotel_container_#{schedules_field.index}', 'hotel_container', validateHotel)",
+                                                :onchange => "validateAndUpdateField('schedules_hotel_container_#{schedules_field.index}', 'hotel_container', validateHotel)",
+                                                :class => "form-control",
+                                                :placeholder => "〒106-0032 東京都港区六本木7丁目18−11 飞鹤国际宾馆",
+                                          ) %>
+                                    </div>
                               </td>
                         </tr>
-                        <tr>
-                              <td class="col col-md-2 date">
-                                    日期<br/>
-                                    <textarea readonly line-height="3" class="form-control datepicker" placeholder="<%= Date.today.strftime('%Y/%m/%d') %>&#13;&#10;(<%= chinese_week_day(Date.today.wday) %>)"></textarea>
-                              </td>
-                              <td class="col col-md-6">
-                                    行动计划<br/>
-                                    <textarea class="form-control" line-height="3" placeholder=""></textarea>                                    
-                              </td>
-                              <td class="col col-md-4">
-                                    住宿<br/>
-                                    <textarea class="form-control" placeholder=""></textarea>                                                                        
-                              </td>
-                        </tr>
+                        <% end %>
                   </tbody>
             </table>
       </div>
@@ -159,6 +182,107 @@
             <div id="title">
                   <i class="fa fa-list"></i> 名单
             </div>
+
+            <table class="table">
+                  <tbody>
+                        <%= f.fields_for :clients do |clients_field| %>
+                        <tr id="client_<%= clients_field.index %>">
+                              <td class="col col-md-2 col-sm-2 col-xs-2">
+                                    <div id="clients_chinese_name_container_<%= clients_field.index %>" class="chinese_name_container">
+                                          <%= clients_field.label :name_chinese, "中文名" %> <i id="clients_chinese_name_<%= clients_field.index %>"></i>
+                                          <%= clients_field.text_field(
+                                                :name_chinese, :autocomplete => "off",
+                                                :class => "form-control",
+                                                :placeholder => "李庆新",                                       
+                                                :oninput => "validateAndUpdateFieldOnlyCheck('clients_chinese_name_container_#{clients_field.index}', 'chinese_name_container', validateChineseNameById)",
+                                                :onfocus => "validateAndUpdateFieldOnlyCheck('clients_chinese_name_container_#{clients_field.index}', 'chinese_name_container', validateChineseNameById)",                                          
+                                                :onchange => "validateAndUpdateField('clients_chinese_name_container_#{clients_field.index}', 'chinese_name_container', validateChineseNameById)",
+                                                :onblur => "validateAndUpdateField('clients_chinese_name_container_#{clients_field.index}', 'chinese_name_container', validateChineseNameById)",                                                                                              
+                                                ) %>
+                                    </div>
+                              </td>
+                              <td class="col col-md-2 col-sm-2 col-xs-2">
+                                    <div id="clients_english_name_container_<%= clients_field.index %>" class="english_name_container">
+                                          <%= clients_field.label :name_english, "英文名" %> <i id="clients_english_name_<%= clients_field.index %>"></i>
+                                          <%= clients_field.text_field(
+                                                :name_english, :autocomplete => "off",
+                                                :class => "form-control",
+                                                :placeholder => "LI QINGXIN",
+                                                :oninput => "validateAndUpdateFieldOnlyCheck('clients_english_name_container_#{clients_field.index}', 'english_name_container', validateEnglishNameById)",
+                                                :onfocus => "validateAndUpdateFieldOnlyCheck('clients_english_name_container_#{clients_field.index}', 'english_name_container', validateEnglishNameById)",
+                                                :onchange => "validateAndUpdateField('clients_english_name_container_#{clients_field.index}', 'english_name_container', validateEnglishNameById)",
+                                                :onblur => "validateAndUpdateField('clients_english_name_container_#{clients_field.index}', 'english_name_container', validateEnglishNameById)",
+                                          ) %>
+                                    </div>
+                              </td>
+                              <td class="col col-md-2 col-sm-2 col-xs-2">
+                                    <div id="clients_gender_container_<%= clients_field.index %>" class="gender_container">
+                                          <%= clients_field.label :gender, "性别" %> <i id="clients_gender_<%= clients_field.index %>"></i>
+                                          <div class="form-group">
+                                                <div id='gender_type_<%= clients_field.index %>' class="gender_type btn-group" data-toggle="buttons" onchange="validateAndUpdateField('clients_gender_container_<%= clients_field.index %>', 'gender_container', validateGender)">
+                                                    <label class="btn btn-default <%= 'active' if(clients_field.object.gender == 'male') %>">
+                                                        <input type="radio" autocomplete="off" value="male" name="project[clients_attributes][<%= clients_field.index %>][gender]" <%= 'checked' if(clients_field.object.gender == 'male') %>> 男 
+                                                    </label>
+                                                    <label class="btn btn-default <%= 'active' if(clients_field.object.gender == 'female') %>">
+                                                        <input type="radio" autocomplete="off" value="female" name="project[clients_attributes][<%= clients_field.index %>][gender]" <%= 'checked' if(clients_field.object.gender == 'female') %>> 女 
+                                                    </label>
+                                                </div>
+                                          </div>
+                                    </div>
+                              </td>
+                              <td class="col col-md-2 col-sm-2 col-xs-2">
+                                    <div id="clients_hometown_container_<%= clients_field.index %>" class="hometown_container">
+                                          <%= clients_field.label :hometown, "签发地点" %> <i id="clients_hometown_<%= clients_field.index %>"></i>
+                                          <%= clients_field.text_field(
+                                                :hometown, :autocomplete => "off",
+                                                :class => "form-control",
+                                                :placeholder => "上海",
+                                                :oninput => "validateAndUpdateFieldOnlyCheck('clients_hometown_container_#{clients_field.index}', 'hometown_container', validateHometown)",
+                                                :onfocus => "validateAndUpdateFieldOnlyCheck('clients_hometown_container_#{clients_field.index}', 'hometown_container', validateHometown)",
+                                                :onchange => "validateAndUpdateField('clients_hometown_container_#{clients_field.index}', 'hometown_container', validateHometown)",
+                                                :onblur => "validateAndUpdateField('clients_hometown_container_#{clients_field.index}', 'hometown_container', validateHometown)"                                                                                                
+                                          ) %>
+                                    </div>
+                              </td>
+
+                              <td class="col col-md-2 col-sm-2 col-xs-2">
+                                    <div id="clients_birthday_container_<%= clients_field.index %>"class="birthday_container">
+                                          <%= clients_field.label :birthday, "出身日期" %> <i id="clients_birthday_<%= clients_field.index %>"></i> <!--<i class="fa fa-chevron-down long"></i>-->
+                                          <% birthday = "" %>
+                                          <% birthday = clients_field.object.birthday.strftime("%Y/%m/%d") if(!clients_field.object.birthday.nil?) %>
+                                          <%= clients_field.text_field(
+                                                :birthday, :placeholder => Date.new(1970, 1, 1).strftime("%Y/%m/%d"),
+                                                :class => 'form-control datepicker birthdaypicker', :autocomplete => "off",
+                                                :maxlength => "10",
+                                                :oninput => "validateAndUpdateFieldOnlyCheck('clients_birthday_container_#{clients_field.index}', 'birthday_container', validateBirthday)",
+                                                :onfocus => "validateAndUpdateFieldOnlyCheck('clients_birthday_container_#{clients_field.index}', 'birthday_container', validateBirthday)",
+                                                :onchange => "validateAndUpdateField('clients_birthday_container_#{clients_field.index}', 'birthday_container', validateBirthday)",
+                                                :onblur => "validateAndUpdateField('clients_birthday_container_#{clients_field.index}', 'birthday_container', validateBirthday)",
+                                                :value => birthday,
+                                          ) %>
+                                    </div>
+                              </td>
+
+                              <td class="col col-md-2 col-sm-2 col-xs-2">
+                                    <div id="clients_passport_no_container_<%= clients_field.index %>" class="passport_no_container">
+                                          <%= clients_field.label :passport_no, "护照号" %> <i id="clients_passport_no_<%= clients_field.index %>"></i><div class="remove_client" onclick="removeClientRow('client_<%= clients_field.index %>')">×</div>
+                                          <%= clients_field.text_field(
+                                                :passport_no, :autocomplete => "off",
+                                                :class => "form-control",
+                                                :placeholder => "G17108928",
+                                                :oninput => "validateAndUpdateFieldOnlyCheck('clients_passport_no_container_#{clients_field.index}', 'passport_no_container', validatePassportNo)",
+                                                :onfocus => "validateAndUpdateFieldOnlyCheck('clients_passport_no_container_#{clients_field.index}', 'passport_no_container', validatePassportNo)",
+                                                :onchange => "validateAndUpdateField('clients_passport_no_container_#{clients_field.index}', 'passport_no_container', validatePassportNo)",                                                                                                
+                                                :onblur => "validateAndUpdateField('clients_passport_no_container_#{clients_field.index}', 'passport_no_container', validatePassportNo)",
+                                          ) %>
+                                    </div>
+                              </td>
+
+                        </tr>
+                        <% end %>
+                  </tbody>
+            </table>
+            <i class="fa fa-plus-square-o fa-4x add_client" onclick="addClientRow()"></i>
       </div>
 
 
