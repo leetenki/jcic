@@ -12,6 +12,7 @@ table {
   width: 100%;
   border: 1px solid black;
   font-family: "ＭＳ Ｐゴシック", arial, helvetica, clean, sans-serif;  
+  font-family: "Hiragino Sans GB","Hiragino Sans GB W3","STXihei"; webkit-font-smoothing:antialiased;
   border-collapse: collapse;
 }
 tr, th, td {
@@ -83,7 +84,7 @@ table#schedules th {
 }
 table#schedules td {
   border: 1px solid black;
-  font-size: 12px;
+  font-size: 11px;
   vertical-align: top;
   height: 60px;
 }
@@ -161,11 +162,11 @@ table#clients th {
   font-weight: normal;
   text-align: center;
   border: 1px solid black;
-  font-size: 13px;
+  font-size: 12px;
 }
 table#clients td {
   border: 1px solid black;
-  font-size: 12px;
+  font-size: 11px;
   text-align: center;
   height: 30px;
 }
