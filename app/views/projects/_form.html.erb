@@ -131,7 +131,7 @@
                   <tbody>
                         <%= f.fields_for :schedules do |schedules_field| %>
                         <tr>
-                              <td class="col col-md-2 col-sm-2 col-lg-2 date">
+                              <td class="col col-md-2 col-sm-2 col-lg-2 col-xs-3 date">
                                     <span class="date-index"><%= schedules_field.index+1 %></span>
                                     <div id="schedules_date_container_<%= schedules_field.index %>" class="date_container">
                                           <%= schedules_field.label :date, "日期" %> <i id="schedules_date_<%= schedules_field.index %>"></i>
@@ -145,7 +145,7 @@
                                           ) %>
                                     </div>
                               </td>
-                              <td class="col col-md-6 col-sm-6 col-lg-6 ">
+                              <td class="col col-md-6 col-sm-6 col-lg-6 col-xs-5">
                                     <div id="schedules_plan_container_<%= schedules_field.index %>" class="plan_container">
                                           <%= schedules_field.label :plan, "行动计划" %> <i id="schedules_plan_<%= schedules_field.index %>"></i>
                                           <%= schedules_field.text_area(
@@ -160,7 +160,7 @@
                                           ) %>
                                     </div>
                               </td>
-                              <td class="col col-md-4 col-sm-4 col-lg-4 ">
+                              <td class="col col-md-4 col-sm-4 col-lg-4 col-xs-4">
                                     <div id="schedules_hotel_container_<%= schedules_field.index %>" class="hotel_container">
                                           <%= schedules_field.label :hotel, "住宿" %> <i id="schedules_hotel_<%= schedules_field.index %>"></i>
                                           <%= schedules_field.text_area(

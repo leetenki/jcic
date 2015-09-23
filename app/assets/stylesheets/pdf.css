@@ -42,7 +42,7 @@ table#project caption .representative {
 }
 table#project td {
   border: 1px solid black;
-  padding: 14px;
+  padding: 10px;
 }
 table#project td.title {
   width: 30%;

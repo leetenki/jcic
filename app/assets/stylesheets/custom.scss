@@ -15,6 +15,15 @@ section {
 textarea {
   resize: vertical;
 }
+textarea.form-control {
+  font-size: 0.8em;
+}
+.date_container textarea.form-control {
+  font-size: 1.0em;  
+}
+input.form-control {
+  font-size: 0.9em;
+}
 
 .center {
   text-align: center;
@@ -366,7 +375,7 @@ div#schedules_container {
     }
     textarea {
       border-radius: 10px;
-      height: 6em;
+      height: 80px;
     }
   } 
 }
@@ -473,7 +482,7 @@ div#clients_container {
 }
 
 .visa-type-cell {
-  background-color: green;
+  background-color: orange;
   width: 26%;
   margin-top: 5px;
   color: #ffffff;

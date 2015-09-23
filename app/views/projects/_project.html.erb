@@ -1,5 +1,5 @@
 <% unless project.id.nil? %>
-  <tr id="<%= project.id %>" class="" onclick="location.href='<%= project_path(project, :format => "pdf", :id => project.id) %>'">
+  <tr id="<%= project.id %>" class="">
     <td class="col-md-5 col-sm-5 col-xs-5">
         <% if is_admin? %>
             <div class="origin-company-name-cell" onclick="location.href='/traders/<%= project.trader.id %>'"><%= project.trader.company_name %>(<%= project.trader.person_name %>)</div>        
@@ -31,13 +31,26 @@
 
 
     <td class="col-md-2 col-sm-2 col-xs-2 btn-container">
-    <% if !is_admin? && (project.status == "committed" || project.date_arrival < Date.today) %>
-        <div class="btn btn-primary btn-xs" disabled="disabled">修改</div>
-        <div class="btn btn-danger btn-xs" disabled="disabled">删除</div>
-    <% else %>
-        <%= link_to "修改", edit_project_path(project), :method => :get, :class => "btn btn-primary btn-xs modify-project" %>
-        <%= link_to "删除", project, :method => :delete, :data => { :confirm => "删除后将无法复原! 您确定删除此电签吗？" }, :class => "btn btn-danger btn-xs" %>
-    <% end %>
+        <div class="row">
+            <div class="btn-group" class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <% if !is_admin? && (project.status == "committed" || project.date_arrival < Date.today) %>
+                    <div class="btn btn-primary btn-xs col-md-6" disabled="disabled">修改</div>
+                    <div class="btn btn-danger btn-xs col-md-6" disabled="disabled">删除</div>
+                <% else %>
+                    <%= link_to "修改", edit_project_path(project), :method => :get, :class => "btn btn-primary btn-xs modify-project col-md-6" %>
+                    <%= link_to "删除", project, :method => :delete, :data => { :confirm => "删除后将无法复原! 您确定删除此电签吗？" }, :class => "btn btn-danger btn-xs col-md-6" %>
+                <% end %>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="btn-group">
+                     <div class="btn btn-default btn-xs" onclick="location.href='<%= project_path(project, :format => "pdf", :id => project.id) %>'">PDF</div>
+                     <div class="btn btn-default btn-xs" onclick="location.href='<%= project_path(project, :format => "pdf", :id => project.id) %>'">請求</div>
+                </div>
+            </div>
+        </div>
     </td>
   </tr>
 <% end %>

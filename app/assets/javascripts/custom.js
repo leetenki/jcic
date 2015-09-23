@@ -156,12 +156,12 @@ function validateTotalPeople() {
   var totalPeopleTag = document.getElementById("totalPeople");
   totalPeople = parseInt(totalPeopleTag.value, 10);
 
-  if(totalPeople > 0 && totalPeople <= 999) {
+  if(totalPeople > 0 && totalPeople <= 200) {
     totalPeopleTag.value = totalPeople;
   } else if(totalPeople <= 0) {
     totalPeopleTag.value = 1;
-  } else if(totalPeople > 999) {
-    totalPeopleTag.value = 999;
+  } else if(totalPeople > 200) {
+    totalPeopleTag.value = 200;
   } else {
     valid = false;
   } 
@@ -366,6 +366,7 @@ function validateDatesAndUpdateIcon() {
 
 function validatePlan(id) {
   var inputText = $("#" + id + " textarea")[0].value;
+
   if(inputText.length > 0 && inputText.length <= 200) {
     return true
   } else {
@@ -917,7 +918,7 @@ function createScheduleTag(index, dateText) {
 
   // date tag
   var dateTdNode = document.createElement("td");
-  dateTdNode.setAttribute("class", "col col-md-2 col-sm-2 col-lg-2 date");
+  dateTdNode.setAttribute("class", "col col-md-2 col-sm-2 col-lg-2 col-xs-3 date");
   trNode.appendChild(dateTdNode);
 
   var dateIndexNode = document.createElement("span");
@@ -957,7 +958,7 @@ function createScheduleTag(index, dateText) {
 
   //plan tag
   var planTdNode = document.createElement("td");
-  planTdNode.setAttribute("class", "col col-md-6 col-sm-6 col-lg-6");
+  planTdNode.setAttribute("class", "col col-md-6 col-sm-6 col-lg-6 col-xs-5");
   trNode.appendChild(planTdNode);
 
   var planContainerNode = document.createElement("div");
@@ -991,7 +992,7 @@ function createScheduleTag(index, dateText) {
 
   // hotel tag
   var hotelTdNode = document.createElement("td");
-  hotelTdNode.setAttribute("class", "col col-md-4 col-sm-4 col-lg-4");
+  hotelTdNode.setAttribute("class", "col col-md-4 col-sm-4 col-lg-4 col-xs-4");
   trNode.appendChild(hotelTdNode);
 
   var hotelContainerNode = document.createElement("div");
@@ -1099,7 +1100,9 @@ function CheckLength(str,flg) {
 
 function replaceDateStr(originalDateStr) {
   if(originalDateStr) {
-    return originalDateStr.replace(/[-+:;,_~=\s]{1,}/g, "/");
+    var newDateStr = originalDateStr.replace(/[-+:;,_~.=\s年月]{1,}/g, "/");
+    newDateStr = newDateStr.replace(/[日号]{1,}/g, "");
+    return newDateStr;
   } else {
     return originalDateStr;
   }
@@ -1246,6 +1249,16 @@ $(function() {
     }
     if(!updateIcon('chinese_name_check', validateChineseName, 'chinese_name_container')) {
       failedMessage += "<li>代表人全名(简体字)不正确.</li>";          
+    } else {
+      var chineseNameValid = false;
+      $(".chinese_name_container input").each(function() {
+        if(this.value == $("#chineseName")[0].value) {
+          chineseNameValid = true;
+        }
+      })
+      if(!chineseNameValid) {
+        failedMessage += "<li>代表人名不存在名单里.</li>";          
+      }            
     }
     if(!updateIcon('english_name_check', validateEnglishName, 'english_name_container')) {
       failedMessage += "<li>代表人全名(拼音)不正确.</li>";                    
@@ -1272,6 +1285,15 @@ $(function() {
 
     var planValid = true;
     $("#schedules_container table .plan_container").each(function() {
+      var inputText = $("#" + this.attributes.id.value + " textarea")[0].value;
+      if(inputText.match(/[\s]{1,}/g)) {
+        inputText = inputText.replace(/[\s]{1,}/g, " ");
+        if(inputText.match(/^[\s　]{1,}/)) {
+          inputText = inputText.replace(/^[\s　]{1,}/, "");
+        }
+      }
+      $("#" + this.attributes.id.value + " textarea")[0].value = inputText;
+
       if(!validateAndUpdateField(this.attributes.id.value, 'plan_container', validatePlan)) {
         planValid = false;
       }
@@ -1283,6 +1305,15 @@ $(function() {
 
     var hotelValid = true;
     $("#schedules_container table .hotel_container").each(function() {
+      var inputText = $("#" + this.attributes.id.value + " textarea")[0].value;
+      if(inputText.match(/[\s]{1,}/g)) {
+        inputText = inputText.replace(/[\s]{1,}/g, " ");
+        if(inputText.match(/^[\s　]{1,}/)) {
+          inputText = inputText.replace(/^[\s　]{1,}/, "");
+        }
+      }
+      $("#" + this.attributes.id.value + " textarea")[0].value = inputText;
+
       if(!validateAndUpdateField(this.attributes.id.value, 'hotel_container', validateHotel)) {
         hotelValid = false;
       }
