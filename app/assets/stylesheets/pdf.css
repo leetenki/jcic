@@ -22,6 +22,7 @@ tr, th, td {
 
 /* projects table */
 table#project {
+  font-size: 14px;
   margin-top: 30px;
   text-align: left;
 }
@@ -110,14 +111,13 @@ div.visa-company {
 
 /* company signature */
 div.signature {
-  /* background-color: red; */
+  /*background-color: red;*/
   display: table-header-group;
   page-break-inside:avoid;
   float: right;
   text-align: right;
 }
 div.signature .text {
-  letter-spacing: 30px;
   line-height: 20px;
   display: inline-block;
   text-align: left;
@@ -176,16 +176,16 @@ table#clients .chinese-name {
   width: 15%;
 }
 table#clients .english-name {
-  width: 22%;
+  width: 20%;
 }
 table#clients .gender {
   width: 8%;
 }
 table#clients .birthday {
-  width: 14%;
+  width: 17%;
 }
 table#clients .hometown {
-  width: 10%;
+  width: 11%;
 }
 table#clients .visa-type {
   width: 8%;
