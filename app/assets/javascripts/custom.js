@@ -634,7 +634,11 @@ function addClientRow() {
 }
 
 function removeClientRow(id) {
-  if($("#clients_container table tr").length > 1) {
+  if($("#clients_container table tr").length >= 1) {
+    if($("#clients_container table tr").length == 1) {
+      addClientRow();
+    }
+
     $("#" + id).remove();
     overwriteHiddenValueInClients();
 

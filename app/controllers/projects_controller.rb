@@ -1,8 +1,10 @@
 require 'chinese_converter'
+require 'era_ja/time'
+require 'era_ja/date'
 include ChineseConverter
 
 class ProjectsController < ApplicationController
-  before_action :logged_in, :only => [:new, :create, :index, :edit, :update, :destroy]
+  before_action :logged_in, :only => [:new, :create, :index, :edit, :update, :destroy, :show]
   before_action :init_company_codes, :only => [:new, :create, :edit, :update]
 
   #create new project
@@ -155,6 +157,23 @@ class ProjectsController < ApplicationController
         @projects = Project.all.order("id desc")
       else
         @projects = current_trader.projects.order("id desc")
+      end
+    end
+  end
+
+  #create pdf
+  def show
+    @project = Project.find_by(:id => params[:id])
+    @visa_company = CompanyCode.where("code = ?", @project.china_company_code)
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        html = render_to_string :template => "/projects/show"
+        pdf = PDFKit.new(html, :encoding => "UTF-8");
+        pdf.stylesheets << "#{Rails.root}/app/assets/stylesheets/pdf.css"
+
+        send_data pdf.to_pdf, :filename => "#{@project.id}.pdf", :type => "application/pdf", :disposition => "inline"
       end
     end
   end

@@ -1,5 +1,5 @@
 <% unless project.id.nil? %>
-  <tr id="<%= project.id %>" class="">
+  <tr id="<%= project.id %>" class="" onclick="location.href='<%= project_path(project, :format => "pdf", :id => project.id) %>'">
     <td class="col-md-5 col-sm-5 col-xs-5">
         <% if is_admin? %>
             <div class="origin-company-name-cell" onclick="location.href='/traders/<%= project.trader.id %>'"><%= project.trader.company_name %>(<%= project.trader.person_name %>)</div>        
@@ -19,11 +19,13 @@
         <div class="status-cell <%= project.status %>"><%= status_type_str(project.status) %></div>
         <div class="created-cell"><%= project.updated_at.strftime("%Y/%m/%d %H:%M") %></div>
         <% if is_admin? %>
-            <center>
-                <button class="btn btn-default btn-xs" onclick="location.href='/update_status?id=<%= project.id %>&amp;status=uncommitted'">申请</button>
-                <button class="btn btn-default btn-xs" onclick="location.href='/update_status?id=<%= project.id %>&amp;status=waiting'">等待</button>
-                <button class="btn btn-default btn-xs" onclick="location.href='/update_status?id=<%= project.id %>&amp;status=committed'">完了</button>
-            </center>
+            <div class="row">
+                <div class="btn-group col-md-12 col-sm-12 col-xs-12"  data-toggle="buttons">
+                    <button class="btn btn-default btn-xs col-sm-4 col-xs-4" onclick="location.href='/update_status?id=<%= project.id %>&amp;status=uncommitted'">申请</button>
+                    <button class="btn btn-default btn-xs col-sm-4 col-xs-4" onclick="location.href='/update_status?id=<%= project.id %>&amp;status=waiting'">等待</button>
+                    <button class="btn btn-default btn-xs col-sm-4 col-xs-4" onclick="location.href='/update_status?id=<%= project.id %>&amp;status=committed'">完了</button>
+                </div>
+            </div>
         <% end %>
     </td>
 

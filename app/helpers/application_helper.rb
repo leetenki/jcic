@@ -6,9 +6,13 @@ module ApplicationHelper
 
   def status_type_str(status)
     status_str = {"uncommitted" => "正在申请...", "waiting" => "等待状态", "committed" => "发送完毕"};
-    return status_str[status];
+    return status_str[status]
   end
 
+  def gender_str(gender)
+    gender_type_str = {"male" => "男", "female" => "女"}
+    return gender_type_str[gender]
+  end
 
   def chinese_week_day(wday) 
     chinese_week_days = ["星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];

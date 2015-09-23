@@ -254,12 +254,28 @@ input {
 }
 
 h1 {
-  background-color: #ffffff;
-  border: #cccccc 3px solid;
+  /* container gradient */
+  background-color: #cccccc;
+  background-image: -moz-radial-gradient(center 45deg,circle cover, #cde6f9, #6191bf);
+  background-image: -webkit-gradient(radial, 50% 50%, 0, 50% 50%,800, from(#cde6f9), to(#6191bf));
+
+  /*shadow*/
+  -webkit-box-shadow: 2px 2px 2px #aab;
+  -moz-box-shadow: 2px 2px 2px #aab;
+  box-shadow: 2px 2px 2px #aab;
+
+  /* text color */
+  color: #ffffff;
+  -webkit-text-shadow: 2px 2px 2px #333333;
+  -moz-text-shadow: 2px 2px 2px #333333;
+  text-shadow: 2px 2px 2px #333333;
+
+  border: #cde6f9 1px solid;
+  border-radius: 30px;
+
   padding: 30px;
   max-width: 400px;
   margin: 30px auto 0 auto;
-  border-radius: 30px;
 }
 
 /* sidebar */
