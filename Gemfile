@@ -8,7 +8,7 @@ gem 'bootstrap-datetimepicker-rails'
 gem 'jquery-ui-rails'
 gem 'zeroclipboard-rails'
 gem 'pdfkit'
-gem 'wkhtmltopdf'
+#gem 'wkhtmltopdf'
 gem 'wkhtmltopdf-binary'
 gem 'era_ja'
 gem 'rails_12factor', group: :production
