@@ -181,8 +181,8 @@ class ProjectsController < ApplicationController
   def update_status
     if(is_admin?)
       @project = Project.find_by(:id => params[:id]);
-      @project.status = params[:status]
-      @project.save
+      @project.update({:status => params[:status]});
+      #render :text => @project.trader.id
       flash[:success] = " 状态修改为 '" + status_type_str(params[:status]) + "' (@trader.id = " + @project.trader.id.to_s + ", " + @project.trader.company_name.to_s + ", " + @project.trader.person_name +  ")  (@project.id = " + @project.id.to_s + ", " + @project.china_company_name.to_s + ", " + @project.created_at.to_s + ")"
     end
 

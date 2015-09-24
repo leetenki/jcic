@@ -21,8 +21,10 @@ textarea.form-control {
 .date_container textarea.form-control {
   font-size: 1.0em;  
 }
-input.form-control {
-  font-size: 0.9em;
+.identity_container, .schedules_container, .clients_container {
+  input.form-control {
+    font-size: 0.9em;
+  }
 }
 
 .center {
@@ -163,7 +165,7 @@ input {
     background-color: #505050;
   }
   tr {
-    background-color: #7070a0;
+    background-color: #9090a0;
   }
 }
 
@@ -201,6 +203,7 @@ input {
 
 .company-info {
   color: #ffffff;
+  font-size: 0.8em;
   tbody, caption, tr, td, th {
     border: #ffffff 1px solid;
   }
@@ -210,16 +213,16 @@ input {
     background-color: #505050;
   }
   tr:not(.stopped) {
-    background-color: #0099a0;
+    background-color: #77aae0;
   }
   tr:not(.stopped):hover {
-    background-color: #0077a0;
+    background-color: #6688f0;
   }
   tr.stopped {
-    background-color: #e74c3c;  
+    background-color: #c72c1c;  
   }
   tr.stopped:hover {
-    background-color: #c0392b;
+    background-color: #ff192b;
   }
 }
 
