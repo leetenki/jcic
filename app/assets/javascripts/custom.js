@@ -39,15 +39,9 @@ $(document).ready(function(){
   }
 
   // init now_loading
-  $("#nav-content li").click(function() {
+  $(".require-loading").click(function() {
     $("#now_loading")[0].style.display = "block";
-  });  
-  $("#new-project").click(function() {
-    $("#now_loading")[0].style.display = "block";
-  });  
-  $(".modify-project").click(function() {
-    $("#now_loading")[0].style.display = "block";
-  });  
+  })
 });
 
 

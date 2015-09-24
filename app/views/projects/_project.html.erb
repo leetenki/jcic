@@ -37,8 +37,8 @@
                     <div class="btn btn-primary btn-xs col-md-6" disabled="disabled">修改</div>
                     <div class="btn btn-danger btn-xs col-md-6" disabled="disabled">删除</div>
                 <% else %>
-                    <%= link_to "修改", edit_project_path(project), :method => :get, :class => "btn btn-primary btn-xs modify-project col-md-6" %>
-                    <%= link_to "删除", project, :method => :delete, :data => { :confirm => "删除后将无法复原! 您确定删除此电签吗？" }, :class => "btn btn-danger btn-xs col-md-6" %>
+                    <%= link_to "修改", edit_project_path(project), :method => :get, :class => "btn btn-primary btn-xs modify-project col-md-6 require-loading" %>
+                    <%= link_to "删除", project, :method => :delete, :data => { :confirm => "删除后将无法复原! 您确定删除此电签吗？" }, :class => "btn btn-danger btn-xs col-md-6 require-loading" %>
                 <% end %>
             </div>
         </div>
@@ -46,8 +46,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="btn-group">
-                     <div class="btn btn-default btn-xs" onclick="location.href='<%= project_path(project, :format => "pdf", :id => project.id) %>'">PDF</div>
-                     <div class="btn btn-default btn-xs" onclick="location.href='<%= project_path(project, :format => "pdf", :id => project.id) %>'">請求</div>
+                     <div class="btn btn-default btn-xs require-loading" onclick="location.href='<%= project_path(project, :format => "pdf", :id => project.id) %>'">PDF</div>
+                     <div class="btn btn-default btn-xs require-loading" onclick="location.href='<%= project_path(project, :format => "pdf", :id => project.id) %>'">請求</div>
                 </div>
             </div>
         </div>
