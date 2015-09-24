@@ -42,6 +42,8 @@ $(document).ready(function(){
   $(".require-loading").click(function() {
     $("#now_loading")[0].style.display = "block";
   })
+
+  $("#now_loading")[0].style.display = "none";
 });
 
 
