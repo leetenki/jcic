@@ -138,9 +138,8 @@ Suggest.Local.prototype = {
   isMatch: function(value, pattern) {
 
     if (value == null) return null;
-
     var pos = (this.ignoreCase) ?
-      value.toLowerCase().indexOf(pattern.toLowerCase())
+      value.toLowerCase().replace(/[-]/g, "").indexOf(pattern.toLowerCase().replace(/[-]/g, ""))
       : value.indexOf(pattern);
 
     if ((pos == -1) || (this.prefix && pos != 0)) return null;

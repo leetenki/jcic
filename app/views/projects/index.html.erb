@@ -9,20 +9,29 @@
 
 <div class="row">
   <div class="container col-md-10 col-md-offset-1">
-
-    <% if @projects.any? %>
+    <% if is_admin? || @projects.any? %>
       <table class="project-info table">
         <caption>
+
+          <% if is_admin? %>
+            <div class="row" style="text-align:center"><h3>所有的签证 （ 查询结果：<%= @projects.length %>件 ）<h3></div>
+            <div class="row" style="text-align:center">
+              <form action="/projects/index" accept-charset="UTF-8" method="get">
+                <%= render "shared/search_form" %>
+              </form>
+            </div>
+          <% end %>
+
           <a href="projects/new" class="btn btn-success btn-large require-loading" id="new-project">
-            <i class="fa fa-user-plus"></i> 追加
+            <i class="fa fa-user-plus"></i> 申请
           </a>
         </caption>
         <thead>
           <tr>
-            <th>中国旅行社 （ 入境／入境／签证 ）</th>
-            <th>代表人</th>
-              <th>状态</th>
-            <th>其他</th>
+            <th>签证资料</th>
+            <th>状态</th>
+              <th>价格</th>
+            <th>回国报告</th>
           </tr>
         </thead>
         <tbody>
@@ -34,7 +43,5 @@
           <i class="fa fa-user-plus"></i> 新建
         </a>    
     <% end %>
-
-
   </div>
 </div>

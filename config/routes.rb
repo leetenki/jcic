@@ -7,6 +7,11 @@ Rails.application.routes.draw do
   root :to => 'static_pages#home'
 
   get 'update_status', :to => "projects#update_status"
+  get 'update_confirmation', :to => "projects#update_confirmation"
+  get 'update_payment', :to => "projects#update_payment"
+  get 'delete_request(/:id)', :to => "projects#delete_request", :as => "delete_request"
+  get 'cancel_delete_request(/:id)', :to => "projects#cancel_delete_request", :as => "cancel_delete_request"
+  get 'projects/index', :to => "projects#index"
 
   resources :traders
   resources :projects

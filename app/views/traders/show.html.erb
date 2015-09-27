@@ -1,4 +1,36 @@
 <div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <table class="project-info table">
+        <caption>
+          <div class="row" style="text-align:center"><h3><%= @trader.company_name %>的签证 （ 查询结果：<%= @projects.length %>件 ）<h3></div>
+          <div class="row" style="text-align:center">
+            <form action="/traders/<%= @trader.id %>" accept-charset="UTF-8" method="get">
+              <%= render "shared/search_form" %>
+            </form>
+          </div>
+        </caption>
+
+        <% if @projects.any? %>
+          <thead>
+            <tr>
+              <th>签证资料</th>
+              <th>状态</th>
+                <th>价格</th>
+              <th>回国报告</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <%= render @projects %>
+          </tbody>
+        <% end %>
+      </table>
+    </div>
+  </div>
+
+
+
   <div class="col-md-8 col-md-offset-2">
     <table class="trader-info table">
       <caption>
@@ -9,8 +41,8 @@
 
       <tbody>
         <tr>
-          <td>公司名</td>
-          <td><%= @trader.company_name %></td>
+          <td class="col-md-6 col-sm-6">公司名</td>
+          <td class="col-md-6 col-sm-6"><%= @trader.company_name %></td>
         </tr>
         <tr>
           <td>担当者</td>
@@ -25,16 +57,44 @@
           <td><%= @trader.password_backup %></td>
         </tr>
         <tr>
+          <td>電話</td>
+          <td><%= @trader.telephone %></td>
+        </tr>
+        <tr>
+          <td>个人签证单价</td>
+          <td><%= @trader.indivisual_price %> ¥ ／ 人</td>
+        </tr>
+        <tr>
+          <td>团体签证单价</td>
+          <td><%= @trader.group_price_indivisual %> ¥ ／ 人</td>
+        </tr>
+        <tr>
+          <td>团体签证固定价(11〜20人)</td>
+          <td><%= @trader.group_price_11_20 %> ¥ ／ 团</td>
+        </tr>
+        <tr>
+          <td>团体签证固定价(21〜30人)</td>
+          <td><%= @trader.group_price_21_30 %> ¥ ／ 团</td>
+        </tr>
+        <tr>
+          <td>团体签证固定价(31〜40人)</td>
+          <td><%= @trader.group_price_31_40 %> ¥ ／ 团</td>
+        </tr>
+        <tr>
+          <td>3年多次单价</td>
+          <td><%= @trader.year_3_price %> ¥ ／ 人</td>
+        </tr>
+        <tr>
+          <td>5年多次单价</td>
+          <td><%= @trader.year_5_price %> ¥ ／ 人</td>
+        </tr>
+        <tr>
           <td>QQ</td>
           <td><%= @trader.qq %></td>
         </tr>
         <tr>
           <td>电子邮件</td>
           <td><%= @trader.email %></td>
-        </tr>
-        <tr>
-          <td>電話</td>
-          <td><%= @trader.telephone %></td>
         </tr>
         <tr>
           <td>FAX</td>
@@ -49,6 +109,10 @@
           <td><%= @trader.address %></td>
         </tr>
         <tr>
+          <td>申请总数</td>
+          <td><div style="font-weight:bold; color:orange;"><%= @trader.projects.length %> 件</div></td>
+        </tr>        
+        <tr>
           <td>最终更新</td>
           <td><%= @trader.updated_at.strftime("%Y/%m/%d %H:%M") %></td>
         </tr>
@@ -58,4 +122,6 @@
       </tbody>
     </table>
   </div>
+
+
 </div>

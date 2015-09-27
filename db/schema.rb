@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150921000024) do
+ActiveRecord::Schema.define(version: 20150927132906) do
 
   create_table "clients", force: :cascade do |t|
     t.integer  "project_id"
@@ -53,6 +53,17 @@ ActiveRecord::Schema.define(version: 20150921000024) do
     t.datetime "created_at",                                          null: false
     t.datetime "updated_at",                                          null: false
     t.integer  "stay_term"
+    t.string   "japan_airport"
+    t.string   "flight_name"
+    t.string   "china_airport"
+    t.time     "departure_time"
+    t.time     "arrival_time"
+    t.string   "in_charge_person"
+    t.string   "in_charge_phone"
+    t.string   "payment",                     default: "unpaid"
+    t.string   "confirmation",                default: "unconfirmed"
+    t.boolean  "delete_request",              default: false
+    t.string   "ticket_no",                   default: ""
   end
 
   add_index "projects", ["trader_id", "china_company_code", "visa_type", "total_people", "representative_name_english", "date_arrival", "date_leaving"], name: "unique_project_condition", unique: true
@@ -83,8 +94,17 @@ ActiveRecord::Schema.define(version: 20150921000024) do
     t.string   "bank"
     t.string   "address"
     t.string   "email"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.integer  "indivisual_price",       default: 500
+    t.integer  "group_price_indivisual", default: 0
+    t.integer  "group_price_1_10",       default: 0
+    t.integer  "group_price_11_20",      default: 3000
+    t.integer  "group_price_21_30",      default: 6000
+    t.integer  "group_price_31_40",      default: 9000
+    t.integer  "year_3_price",           default: 1000
+    t.integer  "year_5_price",           default: 1000
+    t.integer  "other_price",            default: 5000
   end
 
   add_index "traders", ["account"], name: "index_traders_on_account", unique: true

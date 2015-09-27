@@ -21,10 +21,25 @@ textarea.form-control {
 .date_container textarea.form-control {
   font-size: 1.0em;  
 }
-.identity_container, .schedules_container, .clients_container {
+#identity_container, #schedules_container, #clients_container, #go_back_container {
+  user-select: none; /* CSS3 */
+  -moz-user-select: none; /* Firefox */
+  -webkit-user-select: none; /* Safari、Chromeなど */
+  -ms-user-select: none; /* IE10かららしい */
   input.form-control {
     font-size: 0.9em;
   }
+}
+
+.new_trader, .edit_trader {
+  margin-top: 40px;
+}
+
+input.form-control::-webkit-input-placeholder {
+  color: #eaeaea;
+}
+textarea.form-control::-webkit-input-placeholder {
+  color: #e0e0e0;
 }
 
 .center {
@@ -34,6 +49,39 @@ textarea.form-control {
 .center h1 {
   margin-bottom: 10px;
 }
+
+
+
+/* arrow box when mouse over */
+div.disabled-modify {
+  position: relative;
+}
+.arrow_box {
+  display: none;
+  position: absolute;
+  padding: 20px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;  
+  border-radius: 8px;
+  background: #4B088A;
+  font-weight: bold;
+  color: #fff;
+}
+.arrow_box:after {
+  position: absolute;
+  bottom: 100%;
+  left: 10%;
+  width: 0;
+  height: 0;
+  margin-left: -10px;
+  border: solid transparent;
+  border-color: rgba(51, 51, 51, 0);
+  border-bottom-color: #4B088A;
+  border-width: 10px;
+  pointer-events: none;
+  content: " ";
+}
+
 
 /* typography */
 
@@ -124,18 +172,26 @@ input {
 .field_with_errors {
   @extend .has-error;
   display: inline;
-  .form-control {
+  .form-control,
+  select#project_departure_time_4i,
+  select#project_departure_time_5i,
+  select#project_arrival_time_4i,
+  select#project_arrival_time_5i, {
     color: $state-danger-text;
     background-color: #f2dcdc;
   }
 }
 .field_ok {
-  .form-control {
+  .form-control,
+  select#project_departure_time_4i,
+  select#project_departure_time_5i,
+  select#project_arrival_time_4i,
+  select#project_arrival_time_5i, {
     background-color: #dcf2dc;
   } 
 }
 
-#visaType, .gender_type {
+#visaType, .gender_type, .toggle {
   label.active, label.active:hover {
     background-color: #00aa00;
     color: #ffffff;
@@ -226,6 +282,7 @@ input {
   }
 }
 
+
 .project-info {
   margin-top: 30px;
   border: 3px #cccccc solid;
@@ -244,18 +301,26 @@ input {
     background-color: #fefefe;
     color: #000000;
   }
-
+  tr.deleted {
+    background-color: #eeeeee;
+    color: #000000;  
+  }
   tr:not(.thead):hover {
     background-color: #FBF5EF;
   }
+  tr.deleted:hover {
+    background-color: #eeeeee;
+    color: #000000;  
+  }
 
 
-  td.btn-container {
+  .btn-container {
     text-align: center;
-    line-height: 25px;
-
     .btn {
     }
+  }
+  .btn-group {
+    margin-top: 3px;
   }
 }
 
@@ -324,7 +389,7 @@ aside {
 
 /* dashed_container */
 div.dashed_container {
-  #title {
+  .title {
     font-size: 20px;
     text-align: center;
     background-color: #ffffff;
@@ -352,9 +417,38 @@ div.dashed_container {
     margin-top: 30px;
   }
 }
-div#identity_container {
+div#identity_container, div#partner_container {
   background-color: #e6e6fa;
 }
+
+div#go_back_container {
+  padding-left: 25px;
+  padding-right: 25px;
+  background-color: #e6e6fa;
+  /*background-color: #fffacd; */
+
+  div.cell {
+    padding: 6px;
+    color: #888888;
+  }
+  select {
+    width: 45%;
+    font-size: 0.9em;
+    height: 32px;
+    line-height: 1.42857143;
+    color: #555555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in
+  }
+}
+
 
 div#schedules_container {
   padding-left: 15px;
@@ -463,8 +557,9 @@ div#clients_container {
 }
 
 .origin-company-name-cell {
-  border: solid 2px black;
-  background-color: #dfdfdf;
+  color: white;
+  /* border: solid 2px black; */
+  background-color: purple;
   text-align: center;
   border-radius: 5px;
   margin-bottom: 5px;
@@ -472,26 +567,28 @@ div#clients_container {
 }
 
 .date-arrival-cell {
-  background-color: orange;
+  border: solid 2px #666666;
+  background-color: #dfdfdf;
+
   width: 70%;
   margin-top: 5px;
-  color: #ffffff;
   text-align: center;
   border-radius: 6px;
-  font-size: 14px;
+  font-size: 12px;
   padding: 3px;
   display: inline-block;
 }
 
 .visa-type-cell {
-  background-color: orange;
+  border: solid 2px #666666;
+  background-color: #dfdfdf;
+
   width: 26%;
   margin-top: 5px;
-  color: #ffffff;
   text-align: center;
   float: right;
   border-radius: 6px;
-  font-size: 13px;
+  font-size: 12px;
   padding: 3px;
   display: inline-block;
 }
@@ -500,8 +597,8 @@ div#clients_container {
   border: solid 2px #666666;
   background-color: #dfdfdf;
   position: relative;
-  left: 5%;
-  width: 90%;
+  margin-top: 5px;
+  width: 100%;
 
   text-align: center;
   border-radius: 6px;
@@ -510,17 +607,6 @@ div#clients_container {
   display: inline-block;  
 }
 
-.total-people-cell {
-  position: relative;
-  float: right;
-  right: 5%;
-  width: 40%;
-  text-align: center;
-  border-radius: 6px;
-  font-size: 12px;
-  padding: 3px;
-  display: inline-block;  
-}
 
 .status-cell {
   position: relative;
@@ -536,19 +622,21 @@ div#clients_container {
 .status-cell.committed {
   background-color: gray;
   color: #ffffff;
-
 }
-.status-cell.waiting {
+.status-cell.requesting_delete {
   color: #ffffff;
-  background-color: #674ed8;  
+  background-color: red;  
 }
 .status-cell.uncommitted {
   color: #ffffff;
   background-color: #4ed867;  
 }
+.status-cell.deleted {
+  color: #ffffff;
+  background-color: gray;  
+}
 
-
-.created-cell {
+.small-gray-cell {
   color: gray;
   border-color: gray;
   position: relative;
@@ -559,6 +647,53 @@ div#clients_container {
   padding: 3px;
   display: inline-block;  
 }
+
+.price-cell {
+  width: 100%;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 12px;
+  padding: 3px;
+  display: inline-block;  
+}
+.price-cell.unpaid {
+  background-color: orange;
+  color: #ffffff;
+}
+.price-cell.paid {
+  background-color: gray;
+  color: #ffffff;  
+}
+span.unpaid {
+  color: red;
+}
+span.paid {
+  color: gray;
+}
+
+.confirmation-cell {
+  width: 100%;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 12px;
+  padding: 3px;
+  display: inline-block;  
+}
+.confirmation-cell.unconfirmed {
+  background-color: #fc7860;
+  color: #ffffff;
+}
+.confirmation-cell.confirmed {
+  background-color: gray;
+  color: #ffffff;  
+}
+span.unconfirmed {
+  color: red;
+}
+span.confirmed {
+  color: gray;
+}
+
 
 /* font-awesome */
 .fa-exclamation-circle {

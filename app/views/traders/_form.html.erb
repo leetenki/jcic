@@ -16,8 +16,30 @@
       <%= f.label :person_name, "担当者" %> <i class="fa fa-exclamation-triangle"></i>
       <%= f.text_field :person_name, :class => 'form-control' %>
 
-      <%= f.label :telephone, "电话号码" %>
+      <%= f.label :telephone, "电话号码" %> <i class="fa fa-exclamation-triangle"></i>
       <%= f.text_field :telephone, :class => 'form-control' %>
+
+      <%= f.label :indivisual_price, "个人单价" %> <i class="fa fa-exclamation-triangle"></i>
+      <%= f.text_field :indivisual_price, :class => 'form-control' %>
+
+      <%= f.label :group_price_indivisual, "团体单价" %> <i class="fa fa-exclamation-triangle"></i> ※按固定价算时，请填0
+      <%= f.text_field :group_price_indivisual, :class => 'form-control' %>
+
+      <%= f.label :group_price_11_20, "团体固定价(11~20人)" %> <i class="fa fa-exclamation-triangle"></i> ※按人数单价算时，请填0
+      <%= f.text_field :group_price_11_20, :class => 'form-control' %>
+
+      <%= f.label :group_price_21_30, "团体固定价(21~30人)" %> <i class="fa fa-exclamation-triangle"></i> ※按人数单价算时，请填0
+      <%= f.text_field :group_price_21_30, :class => 'form-control' %>
+
+      <%= f.label :group_price_31_40, "团体固定价(31~40人)" %> <i class="fa fa-exclamation-triangle"></i> ※按人数单价算时，请填0
+      <%= f.text_field :group_price_31_40, :class => 'form-control' %>
+
+      <%= f.label :year_3_price, "3年多次（个人价）" %> <i class="fa fa-exclamation-triangle"></i>
+      <%= f.text_field :year_3_price, :class => 'form-control' %>
+
+      <%= f.label :year_5_price, "5年多次（个人价）" %> <i class="fa fa-exclamation-triangle"></i>
+      <%= f.text_field :year_5_price, :class => 'form-control' %>
+
 
       <%= f.label :fax, "FAX" %>
       <%= f.text_field :fax, :class => 'form-control' %>

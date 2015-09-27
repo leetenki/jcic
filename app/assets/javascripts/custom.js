@@ -10,19 +10,78 @@ function initBirthdayPicker(picker) {
     dayNamesMin: [ "日", "一", "二", "三", "四", "五", "六" ],
     monthNames: [ "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" ],
     monthNamesShort: [ "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" ],
-    dateFormat: 'yy/mm/dd'
+    dateFormat: 'yy/mm/dd',
+    constrainInput: false    
   });
 }
 
+
+// suggestion
+function startSuggest() {
+  jsonData = document.getElementById("company_data_json");
+  if(jsonData) {
+    var company_data_list = JSON.parse(jsonData.value);
+    new Suggest.Local(
+      "company_input",    // from id=company_input
+      "suggest",          // to id=suggest
+      company_data_list, // data list
+      {
+        ignoreCase: true,
+        dispMax: 10,
+        interval: 10,
+        hookBeforeSearch: simplized
+      }
+    );
+  }
+}
+
+// called when confirm button pushed
+function confirmDelete(path) {
+  if(window.confirm('※申请删除后将无法撤回！在您申请后1工作日之内，我们会确认并取消此签证。')) {
+    location.href = path;
+  }  
+}
+
 $(document).ready(function(){  
+  startSuggest();
+
   // init datepicker
+  var minDate = null;
+  if(!isAdmin()) {
+    minDate = "+1";
+  }
   $( ".datepicker:not(.birthdaypicker)" ).datepicker({
-    minDate: new Date(),
+    minDate: minDate,
     showMonthAfterYear: true,
     yearSuffix: "年",
     dayNamesMin: [ "日", "一", "二", "三", "四", "五", "六" ],
     monthNames: [ "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" ],
-    dateFormat: 'yy/mm/dd'
+    monthNamesShort: [ "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" ],
+    dateFormat: 'yy/mm/dd',
+    changeYear: true,
+    changeMonth: true,    
+    constrainInput: false
+  });
+  if(document.getElementById("date_arrival_container") && validateDateArrival()) {
+    $("#date_leaving_container .datepicker").datepicker("option", {
+      minDate: $("#date_arrival_container .datepicker")[0].value,
+    });    
+  }
+  if(document.getElementById("date_leaving_container") && validateDateLeaving()) {
+    $("#date_arrival_container .datepicker").datepicker("option", {
+      maxDate: $("#date_leaving_container .datepicker")[0].value,
+    });    
+  }
+  $( ".free-datepicker" ).datepicker({
+    showMonthAfterYear: true,
+    yearSuffix: "年",
+    dayNamesMin: [ "日", "一", "二", "三", "四", "五", "六" ],
+    monthNames: [ "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" ],
+    monthNamesShort: [ "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" ],
+    dateFormat: 'yy/mm/dd',
+    changeYear: true,
+    changeMonth: true,    
+    constrainInput: false
   });
 
   initBirthdayPicker($(".birthdaypicker"));
@@ -41,15 +100,34 @@ $(document).ready(function(){
   // init now_loading
   $(".require-loading").click(function() {
     $("#now_loading")[0].style.display = "block";
-  })
+  });
+
+  // add validation function to time picker
+  $("#departure_time_container select").change(function(){ 
+    updateIconIgnoreError('departure_time_check', validateDepartureTime, 'departure_time_container') 
+  });
+  $("#arrival_time_container select").change(function(){ 
+    updateIconIgnoreError('arrival_time_check', validateArrivalTime, 'arrival_time_container') 
+  });  
+
+  // add mouseover comment on disabled button
+  $('.disabled-modify').hover(function() {
+    $(this).children('p').show();
+  }, function(){
+    $(this).children('p').hide();
+  });  
 
   $("#now_loading")[0].style.display = "none";
 });
 
 
 // function to open panel
-function openAlert() {
+function openAlert(error) {
   $(".alert-panel").fadeIn(700, function(){
+    if(error) {
+      alert($(".alert-panel li:first").text() + " 请修改.");
+    }
+
     $(".alert-panel").fadeOut(5200, function(){
     });
   });
@@ -60,9 +138,13 @@ function changeClass(id, className) {
   document.getElementById(id).setAttribute("class", className);
 }
 
+function isAdmin() {
+  return !!document.getElementById("admin");
+}
+
 // function to search and redraw table
 function updateCompanyTable() {
-  var keyword = simplized(document.getElementById("company_keyword").value.replace(/(^\s+)|(\s+$)/g, ""));
+  var keyword = simplized(document.getElementById("company_keyword").value.replace(/(^\s+)|(\s+$)|[-]/g, "").toLowerCase());
   var tbody = document.getElementById("company_tbody_dynamic");
 
   for(var i = 0; i < tbody.children.length; i++) {
@@ -76,25 +158,6 @@ function updateCompanyTable() {
     }
   }
 }
-
-// suggestion
-function startSuggest() {
-  jsonData = document.getElementById("company_data_json");
-  if(jsonData) {
-    var company_data_list = JSON.parse(jsonData.value);
-    new Suggest.Local(
-      "company_input",    // from id=company_input
-      "suggest",          // to id=suggest
-      company_data_list, // data list
-      {
-        dispMax: 10,
-        interval: 10,
-        hookBeforeSearch: simplized
-      }
-    );
-  }
-}
-window.addEventListener? window.addEventListener('load', startSuggest, false) :window.attachEvent('onload', startSuggest);
 
 
 /************* validates project form *************/
@@ -117,6 +180,9 @@ function validateVisaType() {
   for(var i = 0; i < visaType.children.length; i++) {
     if(visaType.children[i].className.indexOf("active") != -1) {
       valid = true;
+      if($("#total_people_container input")[0].value) {
+        updateIcon('total_people_check', validateTotalPeople, 'total_people_container')
+      }
       break;
     }
   }
@@ -125,7 +191,7 @@ function validateVisaType() {
 
 function validateChineseName() {
   var valid = true;
-  chineseName = document.getElementById("chineseName").value;
+  chineseName = document.getElementById("chineseName").value.replace(/[!-~]{1,}/g, " ").replace(/[　 ]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
 
   if(chineseName.length <= 1 || chineseName.length > 10) {
     valid = false;
@@ -135,11 +201,45 @@ function validateChineseName() {
   return valid;
 }
 
+function validateInChargePerson() {
+  var valid = true;
+  inputText = document.getElementById("in_charge_person_input").value.replace(/[!-~]{1,}/g, " ").replace(/[　 ]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+
+  if(inputText.length <= 1 || inputText.length > 10) {
+    valid = false;
+  } else if(/*CheckLength(chineseName, 0)*/ !CheckLength(inputText, 1)) {
+    valid = false;
+  }
+  return valid;
+}
+function validateAndReplaceInChargePerson() {
+  inputText = document.getElementById("in_charge_person_input").value.replace(/[!-~]{1,}/g, " ").replace(/[　 ]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+  document.getElementById("in_charge_person_input").value = inputText;
+  return validateInChargePerson();
+}
+
+function validateInChargePhone() {
+  var valid = true;
+  inputText = document.getElementById("in_charge_phone_input").value.replace(/[^0-9]{1,}/g, "-").replace(/^[^0-9]{1,}/, "").replace(/[^0-9]{1,}$/, "");
+
+  if(inputText.length <= 5 || inputText.length > 20) {
+    valid = false;
+  }
+  return valid;
+}
+function validateAndReplaceInChargePhone() {
+  inputText = document.getElementById("in_charge_phone_input").value.replace(/[^0-9]{1,}/g, "-").replace(/^[^0-9]{1,}/, "").replace(/[^0-9]{1,}$/, "");
+  document.getElementById("in_charge_phone_input").value = inputText;
+  return validateInChargePhone();
+}
+
+
+
 function validateEnglishName() {
   var valid = true;
-  englishName = document.getElementById("englishName").value;
+  var englishName = document.getElementById("englishName").value.toUpperCase().replace(/[^ -~]{1,}/g, " ").replace(/[^A-Za-z]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
 
-  if(englishName.length <= 3 || englishName.length > 30) {
+  if(englishName.length <= 2 || englishName.length > 30) {
     valid = false;
   } else if(CheckLength(englishName, 1)) {
     valid = false;
@@ -147,20 +247,94 @@ function validateEnglishName() {
   return valid;
 }
 
+function validateAndReplaceFlightName() {
+  var flightName = document.getElementById("flight_name").value.toUpperCase().replace(/[^0-9A-Z]{1,}/g, "");
+  document.getElementById("flight_name").value = flightName;
+  return validateFlightName();
+}
+function validateFlightName() {
+  var valid = true;
+  var flightName = document.getElementById("flight_name").value.toUpperCase().replace(/[^0-9A-Z]{1,}/g, "");
+  if(flightName.length < 3 || flightName.length > 10) {
+    valid = false;
+  }
+  return valid;
+}
+
+
+function validateAndReplaceJapanAirport() {
+  var japanAirport = document.getElementById("japan_airport").value.replace(/[ -~　]{1,}/g, "");
+  document.getElementById("japan_airport").value = japanAirport;
+  return validateJapanAirport();
+}
+function validateJapanAirport() {
+  var valid = true;
+  var japanAirport = document.getElementById("japan_airport").value.replace(/[ -~　]{1,}/g, "");
+  if(japanAirport.length < 2 || japanAirport.length > 10) {
+    valid = false;
+  }
+  return valid;
+}
+
+
+function validateAndReplaceChinaAirport() {
+  var chinaAirport = document.getElementById("china_airport").value.replace(/[ -~　]{1,}/g, "");
+  document.getElementById("china_airport").value = chinaAirport;
+  return validateChinaAirport();
+}
+function validateChinaAirport() {
+  var valid = true;
+  var chinaAirport = document.getElementById("china_airport").value.replace(/[ -~　]{1,}/g, "");
+  if(chinaAirport.length < 2 || chinaAirport.length > 10) {
+    valid = false;
+  }
+  return valid;
+}
+
+function validateDepartureTime() {
+  var hour = parseInt($("#departure_time_container select")[0].value);
+  var min = parseInt($("#departure_time_container select")[1].value);
+  if(!isNaN(hour) && !isNaN(min) && hour <= 23 && hour >= 0 && min <= 59 && min >= 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+function validateArrivalTime() {
+  var hour = parseInt($("#arrival_time_container select")[0].value);
+  var min = parseInt($("#arrival_time_container select")[1].value);
+  if(!isNaN(hour) && !isNaN(min) && hour <= 23 && hour >= 0 && min <= 59 && min >= 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+
 function validateTotalPeople() {
   var valid = true;
   var totalPeopleTag = document.getElementById("totalPeople");
   totalPeople = parseInt(totalPeopleTag.value, 10);
 
-  if(totalPeople > 0 && totalPeople <= 200) {
+  if(totalPeople > 0 && totalPeople <= 40) {
     totalPeopleTag.value = totalPeople;
   } else if(totalPeople <= 0) {
     totalPeopleTag.value = 1;
-  } else if(totalPeople > 200) {
-    totalPeopleTag.value = 200;
+  } else if(totalPeople > 40) {
+    totalPeopleTag.value = 40;
   } else {
     valid = false;
   } 
+
+  var visaType = null
+  $("#visaType input").each(function() {
+    if(this.checked) {
+      visaType = this.value
+    }
+  });
+  if(visaType && visaType != "group" && totalPeople > 10) {
+    valid = false;
+  }
 
   return valid;
 }
@@ -175,7 +349,7 @@ function validateDateArrival() {
 
   if(ckDate(dateArrival)) {
     var date = new Date(dateArrival);
-    if(date.getTime() >= today.getTime()) {
+    if(isAdmin() || date.getTime() >= addDate(today,1).getTime()) {
       var dateLeaving = document.getElementById("dateLeaving").value;
       if(dateLeaving.length == 0) {
         valid = true;
@@ -202,7 +376,7 @@ function validateDateLeaving() {
 
   if(ckDate(dateLeaving)) {
     var date = new Date(dateLeaving);
-    if(date.getTime() >= today.getTime()) {
+    if(isAdmin() || date.getTime() >= addDate(today,1).getTime()) {
       var dateArrival = document.getElementById("dateArrival").value;
       if(dateArrival.length == 0) {
         valid = true;
@@ -231,7 +405,10 @@ function validateDateArrivalAndRegenerateSchedules() {
   var today = getAbsoluteToday();
   if(ckDate(dateArrival)) {
     var date = new Date(dateArrival);
-    if(date.getTime() >= today.getTime()) {
+    if(isAdmin() || date.getTime() >= addDate(today,1).getTime()) {
+      $("#date_leaving_container .datepicker").datepicker("option", {
+        minDate: $("#date_arrival_container .datepicker")[0].value
+      });
       var dateLeaving = document.getElementById("dateLeaving").value;
       if(dateLeaving.length == 0) {
         valid = true;
@@ -265,7 +442,10 @@ function validateDateLeavingAndRegenerateSchedules() {
 
   if(ckDate(dateLeaving)) {
     var date = new Date(dateLeaving);
-    if(date.getTime() >= today.getTime()) {
+    if(isAdmin() || date.getTime() >= addDate(today,1).getTime()) {
+      $("#date_arrival_container .datepicker").datepicker("option", {
+        maxDate: $("#date_leaving_container .datepicker")[0].value
+      });        
       var dateArrival = document.getElementById("dateArrival").value;
       if(dateArrival.length == 0) {
         valid = true;
@@ -333,14 +513,14 @@ function validateDatesAndUpdateIcon() {
 
       var term = 0;
       $("#schedules_container table .date_container").each(function() {
-        var dateStr = $(this).children("textarea")[0].value.match(/^\d{4}\/\d{1,2}\/\d{1,2}/);
+        var dateStr = $(this).find("textarea")[0].value.match(/^\d{4}\/\d{1,2}\/\d{1,2}/);
         if(!dateStr || dateStr.length <= 0 || !ckDate(dateStr[0]) || ((new Date(dateStr[0])).getTime() != addDate(firstDay, term).getTime())) {
           this.className = "date_container field_with_errors"
-          $(this).children("i")[0].className = "fa fa-close"
+          $(this).find("i")[0].className = "fa fa-close"
           valid = false;
         } else {
           this.className = "date_container field_ok";      
-          $(this).children("i")[0].className = "fa fa-check"
+          $(this).find("i")[0].className = "fa fa-check"
         }
         term += 1;
       });
@@ -361,7 +541,7 @@ function validateDatesAndUpdateIcon() {
 }
 
 function validatePlan(id) {
-  var inputText = $("#" + id + " textarea")[0].value;
+  var inputText = $("#" + id + " textarea")[0].value.replace(/[\s　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "");
 
   if(inputText.length > 0 && inputText.length <= 200) {
     return true
@@ -369,14 +549,26 @@ function validatePlan(id) {
     return false;
   }
 }
+function validateAndReplacePlan(id) {
+  var inputText = $("#" + id + " textarea")[0].value.replace(/[\s　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "");
+  $("#" + id + " textarea")[0].value = inputText;
+
+  return validatePlan(id);
+}
 
 function validateHotel(id) {
-  var inputText = $("#" + id + " textarea")[0].value;
+  var inputText = $("#" + id + " textarea")[0].value.replace(/[\s　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "");
   if(inputText.length > 0 && inputText.length <= 100) {
     return true
   } else {
     return false;
   }
+}
+function validateAndReplaceHotel(id) {
+  var inputText = $("#" + id + " textarea")[0].value.replace(/[\s　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "");
+  $("#" + id + " textarea")[0].value = inputText;
+
+  return validateHotel(id);
 }
 
 
@@ -395,7 +587,7 @@ function validateGender(id) {
 
 
 function validateChineseNameById(id) {
-  var inputText = $("#" + id + " input")[0].value;
+  var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, " ").replace(/[　 ]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
 
   if(inputText.length > 1 && inputText.length <= 10 /*&& !CheckLength(inputText, 0)*/ && CheckLength(inputText, 1)) {
     return true
@@ -403,21 +595,33 @@ function validateChineseNameById(id) {
     return false;
   }
 }
+function validateAndReplaceChineseNameById(id) {
+  var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, " ").replace(/[　 ]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+  $("#" + id + " input")[0].value = inputText;
+
+  return validateChineseNameById(id);
+}
 
 function validateEnglishNameById(id) {
-  var inputText = $("#" + id + " input")[0].value;
+  var inputText = $("#" + id + " input")[0].value.toUpperCase().replace(/[^ -~]{1,}/g, " ").replace(/[^A-Za-z]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
 
-  if(inputText.length > 3 && inputText.length <= 30 && !CheckLength(inputText, 1)) {
+  if(inputText.length > 2 && inputText.length <= 30 && !CheckLength(inputText, 1)) {
     return true
   } else {
     return false;
   }
 }
+function validateAndReplaceEnglishNameById(id) {
+  var inputText = $("#" + id + " input")[0].value.toUpperCase().replace(/[^ -~]{1,}/g, " ").replace(/[^A-Za-z]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+  $("#" + id + " input")[0].value = inputText;
+
+  return validateEnglishNameById(id);
+}
 
 function validatePassportNo(id) {
   var passportValid = true;
 
-  var inputText = $("#" + id + " input")[0].value;
+  var inputText = $("#" + id + " input")[0].value.toUpperCase().replace(/[^0-9A-Z]{1,}/g, "");
   if(inputText.length >= 8 && inputText.length <= 11 && !CheckLength(inputText, 1)) {
 
     $(".passport_no_container:not(#" + id + ") input").each(function() { 
@@ -431,9 +635,15 @@ function validatePassportNo(id) {
 
   return passportValid;
 }
+function validateAndReplacePassportNo(id) {
+  var inputText = $("#" + id + " input")[0].value.toUpperCase().replace(/[^0-9A-Z]{1,}/g, "");
+  $("#" + id + " input")[0].value = inputText;
+
+  return validatePassportNo(id);
+}
 
 function validateHometown(id) {
-  var inputText = $("#" + id + " input")[0].value;
+  var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, " ").replace(/[　 ]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");;
 
   if(inputText.length >= 2 && inputText.length <= 10) {
     return true
@@ -441,7 +651,11 @@ function validateHometown(id) {
     return false;
   }
 }
-
+function validateAndReplaceHometown(id) {
+  var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, " ").replace(/[　 ]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");;
+  $("#" + id + " input")[0].value = inputText;
+  return validateHometown(id);
+}
 
 function validateBirthday(id) {
   var inputText = replaceDateStr($("#" + id + " input")[0].value);
@@ -498,8 +712,11 @@ function regenerateScheduleTable() {
   var lastDay = new Date(document.getElementById("dateLeaving").value);
   var firstDay = new Date(document.getElementById("dateArrival").value);
   var stay_term = subDate(lastDay, firstDay) + 1;
+  lastDayHotel = "已回国，不住宿。";
 
-
+  if($("#schedules_container table tr:last td:last textarea")[0].value == lastDayHotel) {
+    $("#schedules_container table tr:last td:last textarea")[0].value = "";
+  }
   var trs = $("#schedules_container table tr");
   if(stay_term >= trs.length) {
     // reset date
@@ -529,13 +746,30 @@ function regenerateScheduleTable() {
     })
   }
 
+  if($("#schedules_container table tr:last td:last textarea")[0].value == "") {
+    $("#schedules_container table tr:last td:last textarea")[0].value = lastDayHotel;
+  }
+
   // revalidate
   $("#schedules-total").text($("#schedules_container tr").length);
   validateDatesAndUpdateIcon();
+
+  // check plan
+  $("#schedules_container table .plan_container").each(function() {
+    validateAndUpdateFieldIgnoreError(this.attributes.id.value, 'plan_container', validatePlan);
+  });
+
+  // check hotel
+  $("#schedules_container table .hotel_container").each(function() {
+    validateAndUpdateFieldIgnoreError(this.attributes.id.value, 'hotel_container', validateHotel);
+  });  
 }
 
 
 function autoCompleteFirstChineseName() {
+  chineseName = document.getElementById("chineseName").value.replace(/[!-~]{1,}/g, " ").replace(/[　 ]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+  document.getElementById("chineseName").value = chineseName;
+
   if(updateIcon('chinese_name_check', validateChineseName, 'chinese_name_container') && $("#clients_container table tr").length > 0) {
     var firstChineseName = $("#clients_container table .chinese_name_container input")[0];
     if(!firstChineseName.value) {
@@ -549,6 +783,9 @@ function autoCompleteFirstChineseName() {
 }
 
 function autoCompleteFirstEnglishName() {
+  englishName = document.getElementById("englishName").value.toUpperCase().replace(/[^ -~]{1,}/g, " ").replace(/[^A-Za-z]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+  document.getElementById("englishName").value = englishName;
+
   if(updateIcon('english_name_check', validateEnglishName, 'english_name_container') && $("#clients_container table tr").length > 0) {
     var firstEnglishName = $("#clients_container table .english_name_container input")[0];
     if(!firstEnglishName.value) {
@@ -688,8 +925,8 @@ function createClientTag(index) {
   inputTag.setAttribute("placeholder", "");
   inputTag.setAttribute("oninput", "validateAndUpdateFieldOnlyCheck('clients_chinese_name_container_" + index + "', 'chinese_name_container', validateChineseNameById)");
   inputTag.setAttribute("onfocus", "validateAndUpdateFieldOnlyCheck('clients_chinese_name_container_" + index + "', 'chinese_name_container', validateChineseNameById)");
-  inputTag.setAttribute("onchange", "validateAndUpdateField('clients_chinese_name_container_" + index + "', 'chinese_name_container', validateChineseNameById)");
-  inputTag.setAttribute("onblur", "validateAndUpdateField('clients_chinese_name_container_" + index + "', 'chinese_name_container', validateChineseNameById)");
+  inputTag.setAttribute("onchange", "validateAndUpdateField('clients_chinese_name_container_" + index + "', 'chinese_name_container', validateAndReplaceChineseNameById)");
+  inputTag.setAttribute("onblur", "validateAndUpdateField('clients_chinese_name_container_" + index + "', 'chinese_name_container', validateAndReplaceChineseNameById)");
   inputTag.setAttribute("type", "text");
   inputTag.setAttribute("maxlength", "10");
   inputTag.setAttribute("name", "project[clients_attributes][" + index + "][name_chinese]");
@@ -725,8 +962,8 @@ function createClientTag(index) {
   inputTag.setAttribute("maxlength", "30");  
   inputTag.setAttribute("oninput", "validateAndUpdateFieldOnlyCheck('clients_english_name_container_" + index + "', 'english_name_container', validateEnglishNameById)");
   inputTag.setAttribute("onfocus", "validateAndUpdateFieldOnlyCheck('clients_english_name_container_" + index + "', 'english_name_container', validateEnglishNameById)");
-  inputTag.setAttribute("onchange", "validateAndUpdateField('clients_english_name_container_" + index + "', 'english_name_container', validateEnglishNameById)");
-  inputTag.setAttribute("onblur", "validateAndUpdateField('clients_english_name_container_" + index + "', 'english_name_container', validateEnglishNameById)");
+  inputTag.setAttribute("onchange", "validateAndUpdateField('clients_english_name_container_" + index + "', 'english_name_container', validateAndReplaceEnglishNameById)");
+  inputTag.setAttribute("onblur", "validateAndUpdateField('clients_english_name_container_" + index + "', 'english_name_container', validateAndReplaceEnglishNameById)");
   inputTag.setAttribute("type", "text");
   inputTag.setAttribute("name", "project[clients_attributes][" + index + "][name_english]");
   inputTag.setAttribute("id", "project_clients_attributes_" + index + "_name_english")
@@ -817,8 +1054,8 @@ function createClientTag(index) {
   inputTag.setAttribute("maxlength", "10");  
   inputTag.setAttribute("oninput", "validateAndUpdateFieldOnlyCheck('clients_hometown_container_" + index + "', 'hometown_container', validateHometown)");
   inputTag.setAttribute("onfocus", "validateAndUpdateFieldOnlyCheck('clients_hometown_container_" + index + "', 'hometown_container', validateHometown)");
-  inputTag.setAttribute("onchange", "validateAndUpdateField('clients_hometown_container_" + index + "', 'hometown_container', validateHometown)");
-  inputTag.setAttribute("onblur", "validateAndUpdateField('clients_hometown_container_" + index + "', 'hometown_container', validateHometown)");
+  inputTag.setAttribute("onchange", "validateAndUpdateField('clients_hometown_container_" + index + "', 'hometown_container', validateAndReplaceHometown)");
+  inputTag.setAttribute("onblur", "validateAndUpdateField('clients_hometown_container_" + index + "', 'hometown_container', validateAndReplaceHometown)");
   inputTag.setAttribute("type", "text");
   inputTag.setAttribute("name", "project[clients_attributes][" + index + "][hometown]");
   inputTag.setAttribute("id", "project_clients_attributes_" + index + "_hometown")
@@ -897,8 +1134,8 @@ function createClientTag(index) {
   inputTag.setAttribute("maxlength", "11");  
   inputTag.setAttribute("oninput", "validateAndUpdateFieldOnlyCheck('clients_passport_no_container_" + index + "', 'passport_no_container', validatePassportNo)");
   inputTag.setAttribute("onfocus", "validateAndUpdateFieldOnlyCheck('clients_passport_no_container_" + index + "', 'passport_no_container', validatePassportNo)");
-  inputTag.setAttribute("onchange", "validateAndUpdateField('clients_passport_no_container_" + index + "', 'passport_no_container', validatePassportNo)");
-  inputTag.setAttribute("onblur", "validateAndUpdateField('clients_passport_no_container_" + index + "', 'passport_no_container', validatePassportNo)");
+  inputTag.setAttribute("onchange", "validateAndUpdateField('clients_passport_no_container_" + index + "', 'passport_no_container', validateAndReplacePassportNo)");
+  inputTag.setAttribute("onblur", "validateAndUpdateField('clients_passport_no_container_" + index + "', 'passport_no_container', validateAndReplacePassportNo)");
   inputTag.setAttribute("type", "text");
   inputTag.setAttribute("name", "project[clients_attributes][" + index + "][passport_no]");
   inputTag.setAttribute("id", "project_clients_attributes_" + index + "_passport_no")
@@ -977,8 +1214,8 @@ function createScheduleTag(index, dateText) {
   planTextareaNode.setAttribute("autocomplete", "off");
   planTextareaNode.setAttribute("oninput", "validateAndUpdateFieldOnlyCheck('schedules_plan_container_" + index + "', 'plan_container', validatePlan)");
   planTextareaNode.setAttribute("onfocus", "validateAndUpdateFieldOnlyCheck('schedules_plan_container_" + index + "', 'plan_container', validatePlan)");
-  planTextareaNode.setAttribute("onblur", "validateAndUpdateField('schedules_plan_container_" + index + "', 'plan_container', validatePlan)");
-  planTextareaNode.setAttribute("onchange", "validateAndUpdateField('schedules_plan_container_" + index + "', 'plan_container', validatePlan)");
+  planTextareaNode.setAttribute("onblur", "validateAndUpdateField('schedules_plan_container_" + index + "', 'plan_container', validateAndReplacePlan)");
+  planTextareaNode.setAttribute("onchange", "validateAndUpdateField('schedules_plan_container_" + index + "', 'plan_container', validateAndReplacePlan)");
   planTextareaNode.setAttribute("class", "form-control");
   planTextareaNode.setAttribute("placeholder", "");
   planTextareaNode.setAttribute("name", "project[schedules_attributes][" + index + "][plan]");
@@ -1011,8 +1248,8 @@ function createScheduleTag(index, dateText) {
   hotelTextareaNode.setAttribute("autocomplete", "off");
   hotelTextareaNode.setAttribute("oninput", "validateAndUpdateFieldOnlyCheck('schedules_hotel_container_" + index + "', 'hotel_container', validateHotel)");
   hotelTextareaNode.setAttribute("onfocus", "validateAndUpdateFieldOnlyCheck('schedules_hotel_container_" + index + "', 'hotel_container', validateHotel)");
-  hotelTextareaNode.setAttribute("onblur", "validateAndUpdateField('schedules_hotel_container_" + index + "', 'hotel_container', validateHotel)");
-  hotelTextareaNode.setAttribute("onchange", "validateAndUpdateField('schedules_hotel_container_" + index + "', 'hotel_container', validateHotel)");
+  hotelTextareaNode.setAttribute("onblur", "validateAndUpdateField('schedules_hotel_container_" + index + "', 'hotel_container', validateAndReplaceHotel)");
+  hotelTextareaNode.setAttribute("onchange", "validateAndUpdateField('schedules_hotel_container_" + index + "', 'hotel_container', validateAndReplaceHotel)");
   hotelTextareaNode.setAttribute("class", "form-control");
   hotelTextareaNode.setAttribute("placeholder", "");
   hotelTextareaNode.setAttribute("name", "project[schedules_attributes][" + index + "][hotel]");
@@ -1096,8 +1333,14 @@ function CheckLength(str,flg) {
 
 function replaceDateStr(originalDateStr) {
   if(originalDateStr) {
-    var newDateStr = originalDateStr.replace(/[-+:;,_~.=\s年月]{1,}/g, "/");
-    newDateStr = newDateStr.replace(/[日号]{1,}/g, "");
+    var newDateStr = originalDateStr.replace(/[^ -~]{1,}/g, "/").replace(/[^0-9]{1,}/g, "/").replace(/^[^0-9]{1,}/, "");
+    if(newDateStr.match(/[\/]/g) && newDateStr.match(/[\/]/g).length > 2) {
+      newDateStr = newDateStr.replace(/[^0-9]{1,}$/, "");
+    }
+    else if(newDateStr.match(/^\d{1,2}\/\d{1,2}\/\d{4}$/)) {
+      var items = newDateStr.split("/");
+      newDateStr = items[2] + "/" + items[0] + "/" + items[1];
+    }
     return newDateStr;
   } else {
     return originalDateStr;
@@ -1187,6 +1430,13 @@ function initialValidation() {
   updateIconIgnoreError('chinese_name_check', validateChineseName, 'chinese_name_container');
   updateIconIgnoreError('english_name_check', validateEnglishName, 'english_name_container');
   updateIconIgnoreError('total_people_check', validateTotalPeople, 'total_people_container');
+  updateIconIgnoreError('in_charge_person_check', validateInChargePerson, 'in_charge_person_container')
+  updateIconIgnoreError('in_charge_phone_check', validateInChargePhone, 'in_charge_phone_container')
+  updateIconIgnoreError('flight_name_check', validateFlightName, 'flight_name_container') 
+  updateIconIgnoreError('japan_airport_check', validateJapanAirport, 'japan_airport_container') 
+  updateIconIgnoreError('china_airport_check', validateChinaAirport, 'china_airport_container') 
+  updateIconIgnoreError('departure_time_check', validateDepartureTime, 'departure_time_container') 
+  updateIconIgnoreError('arrival_time_check', validateArrivalTime, 'arrival_time_container') 
 
 
   // check plan
@@ -1240,11 +1490,17 @@ $(function() {
     if(!updateIcon('china_company_check', validateCompanyName, 'china_company_container')) {
       failedMessage += "<li>中国旅行社名不正确.</li>";
     }
+    if(!updateIcon('in_charge_person_check', validateInChargePerson, 'in_charge_person_container')) {
+      failedMessage += "<li>中国旅行社担当者姓名不正确.</li>";
+    }
+    if(!updateIcon('in_charge_phone_check', validateInChargePhone, 'in_charge_phone_container')) {
+      failedMessage += "<li>中国旅行社担当者联系电话不正确.</li>";
+    }
     if(!updateIcon('visa_type_check', validateVisaType)) {
       failedMessage += "<li>签证种类未选.</li>";
     }
     if(!updateIcon('chinese_name_check', validateChineseName, 'chinese_name_container')) {
-      failedMessage += "<li>代表人全名(简体字)不正确.</li>";          
+      failedMessage += "<li>代表人姓名(简体字)不正确.</li>";          
     } else {
       var chineseNameValid = false;
       $(".chinese_name_container input").each(function() {
@@ -1264,7 +1520,7 @@ $(function() {
     } else {
       $("#totalPeople")[0].value = $("#clients_container table tr").length;
       if(!updateIcon('total_people_check', validateTotalPeople, 'total_people_container')) {
-        failedMessage += "<li>总人数不正确.</li>";                              
+        failedMessage += "<li>总人数不正确.团体签证可40人以下，其他签证必须为10人以下</li>";                              
       }
     }
     if(!updateIcon('date_arrival_check', validateDateArrival, 'date_arrival_container')) {
@@ -1272,6 +1528,23 @@ $(function() {
     }
     if(!updateIcon('date_leaving_check', validateDateLeaving, 'date_leaving_container')) {
       failedMessage += "<li>日本出境日期不正确.</li>";                                                  
+    }
+
+
+    if(!updateIcon('flight_name_check', validateFlightName, 'flight_name_container')) {
+      failedMessage += "<li>回国航班名称不正确</li>";
+    } 
+    if(!updateIcon('japan_airport_check', validateJapanAirport, 'japan_airport_container')) {
+      failedMessage += "<li>回国航班出发地点不正确</li>";
+    }
+    if(!updateIcon('departure_time_check', validateDepartureTime, 'departure_time_container')) {
+      failedMessage += "<li>回国航班起飞时间不正确</li>";      
+    }
+    if(!updateIcon('china_airport_check', validateChinaAirport, 'china_airport_container')) {
+      failedMessage += "<li>回国航班到达地点不正确</li>";      
+    }
+    if(!updateIcon('arrival_time_check', validateArrivalTime, 'arrival_time_container')) {
+      failedMessage += "<li>回国航班到达时间不正确</li>";            
     }
 
     // validate schedules
@@ -1295,7 +1568,7 @@ $(function() {
       }
     });
     if(!planValid) {
-      failedMessage += "<li>行动计划不可空虚，必须200字以内.</li>";          
+      failedMessage += "<li>行动计划不可空虚，必须填写1〜200字.</li>";          
     }
 
 
@@ -1315,7 +1588,7 @@ $(function() {
       }
     });
     if(!hotelValid) {
-      failedMessage += "<li>住宿不可空虚，必须100字以内.</li>";          
+      failedMessage += "<li>住宿不可空白，必须填写1〜100字.</li>";          
     }
 
     // validate clients table
@@ -1381,7 +1654,7 @@ $(function() {
 
     if(failedMessage.length > 0) {
       $("#failed-alert content").html(failedMessage)
-      openAlert();
+      openAlert(true);
       return false;
     } else {
       $("#now_loading")[0].style.display = "block";
@@ -1399,9 +1672,21 @@ $(function() {
       if(rowItems.length > 0) {
         reduceClientsTable();
         var i = 0;
-        if($("#clients_container table tr").length == 1 && isEmptyRow($("#clients_container table tr")[0].id)) {
-          fillRow($("#clients_container table tr")[0].id, rowItems[i]);
-          i++;
+        if($("#clients_container table tr").length == 1) {
+          if(isEmptyRow($("#clients_container table tr")[0].id)) {
+            fillRow($("#clients_container table tr")[0].id, rowItems[i]);
+            i++;
+          } else {
+            var representativeName = $("#clients_container table tr:first input")[0].value.replace(/[ -~]{1,}/g, "").replace(/[　]{1,}/g, "");
+            for(var k = 0; k < rowItems.length; k++) {
+              if(rowItems[k].chineseName == representativeName.replace(/[ -~]{1,}/g, "").replace(/[　]{1,}/g, "")) {
+                removeClientRow($("#clients_container table tr")[0].id);
+                fillRow($("#clients_container table tr")[0].id, rowItems[i]);
+                i++;
+                break;
+              }
+            }
+          }
         }
         for(; i < rowItems.length; i++) {
           var id = addClientRow();
@@ -1410,22 +1695,22 @@ $(function() {
 
         // validate clients table
         $(".chinese_name_container").each(function() {
-          validateAndUpdateField(this.attributes.id.value, 'chinese_name_container', validateChineseNameById);
+          validateAndUpdateField(this.attributes.id.value, 'chinese_name_container', validateAndReplaceChineseNameById);
         });
         $(".english_name_container").each(function() {
-          validateAndUpdateField(this.attributes.id.value, 'english_name_container', validateEnglishNameById);
+          validateAndUpdateField(this.attributes.id.value, 'english_name_container', validateAndReplaceEnglishNameById);
         });
         $(".gender_container").each(function() {
           validateAndUpdateField(this.attributes.id.value, 'gender_container', validateGender);
         });
         $(".hometown_container").each(function() {
-          validateAndUpdateField(this.attributes.id.value, 'hometown_container', validateHometown);
+          validateAndUpdateField(this.attributes.id.value, 'hometown_container', validateAndReplaceHometown);
         });
         $(".birthday_container").each(function() {
           validateAndUpdateField(this.attributes.id.value, 'birthday_container', validateBirthday);
         });
         $(".passport_no_container").each(function() {
-          validateAndUpdateField(this.attributes.id.value, 'passport_no_container', validatePassportNo);
+          validateAndUpdateField(this.attributes.id.value, 'passport_no_container', validateAndReplacePassportNo);
         });
 
         $('#modal-panel').modal('hide');
@@ -1455,21 +1740,73 @@ function fillRow(id, rowItem) {
 // function to parse excel text file
 function parseExcelText(excelText) {
   var rowItems = [];
-
   var lines = excelText.split(/\r\n|\r|\n/);
-  for (var i = 0; i < lines.length; i++) {
-    items = lines[i].split(/[ ]{3,}|[,\t]/);
-    for(passportIndex = 5; passportIndex < items.length; passportIndex++) {
-      // match passport
-      if(items[passportIndex].match(/[A-Z]{1,3}[0-9]{6,}/)) {
+
+  var chineseNameIndices = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  var englishNameIndices = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  var genderIndices = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  var hometownIndices = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  var birthdayIndices = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  var passportIndices = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  var jobIndices = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  for(var i = 0; i < lines.length; i++) {
+    cols = lines[i].split(/[ ]{3,}|[,\t]/)
+    for(j = 0; j < Math.min(cols.length, chineseNameIndices.length); j++) {
+      if(cols[j].match(/科员|无业|领队|職業|退休|学生|经理|教师|销售|主妇|个体|儿童|普通|主管|财务|专员|审计|主管/) || cols[j].length==0) {
+        jobIndices[j]++;
+      } else if(cols[j].match(/[A-Z]{1,3}[0-9]{6,}/)) {
+        passportIndices[j]++;
+      } else if(cols[j].match(/[0-9]{3,}/)) {
+        birthdayIndices[j]++;          
+      } else if(cols[j].match(/[男女12]|male|man|men|boy|female|woman|women|girl/) && j != 0) {
+        genderIndices[j]++;
+      } else if(cols[j].match(/[A-Za-z]{2,}/)) {
+        englishNameIndices[j]++;
+      } else if(cols[j].match(/[^0-9a-zA-Z]/) && j < 3) {
+        chineseNameIndices[j]++;
+      } else if(j != 0) {
+        hometownIndices[j]++;
+      }
+    }
+  } 
+  var chineseNameIndex = chineseNameIndices.indexOf(Math.max.apply(null, chineseNameIndices));
+  var englishNameIndex = englishNameIndices.indexOf(Math.max.apply(null, englishNameIndices));
+  var hometownIndex = hometownIndices.indexOf(Math.max.apply(null, hometownIndices));
+  var genderIndex = genderIndices.indexOf(Math.max.apply(null, genderIndices));
+  var birthdayIndex = birthdayIndices.indexOf(Math.max.apply(null, birthdayIndices));
+  var passportIndex = passportIndices.indexOf(Math.max.apply(null, passportIndices));
+  var jobIndex = jobIndices.indexOf(Math.max.apply(null, jobIndices));
+
+  if(chineseNameIndex != englishNameIndex != hometownIndex != genderIndex != birthdayIndex != passportIndex != jobIndex) {
+    var maxIndex = Math.max.apply(null, [chineseNameIndex, englishNameIndex, hometownIndex, genderIndex, birthdayIndex, passportIndex, jobIndex]);
+    for (var i = 0; i < lines.length; i++) {
+      items = lines[i].split(/[ ]{3,}|[,\t]/);
+      if(lines[i].match(/[A-Z]{1,3}[0-9]{6,}/) && items.length > maxIndex) {
         rowItems.push({
           passportNo: items[passportIndex],
-          birthday: items[passportIndex-1],
-          hometown: items[passportIndex-2],
-          gender: items[passportIndex-3],
-          englishName: items[passportIndex-4],
-          chineseName: items[passportIndex-5]
+          birthday: items[birthdayIndex],
+          hometown: items[hometownIndex],
+          gender: items[genderIndex],
+          englishName: items[englishNameIndex],
+          chineseName: items[chineseNameIndex]
         });
+      }
+    }
+  } else {
+    for (var i = 0; i < lines.length; i++) {
+      items = lines[i].split(/[ ]{3,}|[,\t]/);
+      for(passportIndex = 5; passportIndex < items.length; passportIndex++) {
+        // match passport
+        if(items[passportIndex].match(/[A-Z]{1,3}[0-9]{6,}/)) {
+          rowItems.push({
+            passportNo: items[passportIndex],
+            birthday: items[passportIndex-1],
+            hometown: items[passportIndex-2],
+            gender: items[passportIndex-3],
+            englishName: items[passportIndex-4],
+            chineseName: items[passportIndex-5]
+          });
+        }
       }
     }
   }

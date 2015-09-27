@@ -7,7 +7,7 @@ class CompanyCodesController < ApplicationController
   def index
     @company_codes = CompanyCode.all
     @company_codes.each do |c|
-      c.search_text = c.code+ChineseConverter.simplized(c.locate+c.name)
+      c.search_text = c.code.gsub(/[-]/, "").downcase + ChineseConverter.simplized(c.locate+c.name+c.memo.to_s)
     end
   end
 

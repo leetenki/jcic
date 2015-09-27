@@ -20,9 +20,7 @@ class Schedule < ActiveRecord::Base
   end
 
   def validate_hotel
-    if(!hotel.present?)
-      errors.add(:hotel, "住宿未填写.")      
-    elsif(hotel.length > 100)
+    if(hotel.length > 100)
       errors.add(:hotel, "住宿不可超出100字.")
     end
   end

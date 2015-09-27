@@ -4,7 +4,7 @@ require 'era_ja/date'
 include ChineseConverter
 
 class ProjectsController < ApplicationController
-  before_action :logged_in, :only => [:new, :create, :index, :edit, :update, :destroy, :show]
+  before_action :logged_in, :only => [:new, :create, :index, :edit, :update, :destroy, :show, :need_delete]
   before_action :init_company_codes, :only => [:new, :create, :edit, :update]
 
   #create new project
@@ -56,8 +56,11 @@ class ProjectsController < ApplicationController
       @project = Project.find(params[:id])
     else
       @project = current_trader.projects.find(params[:id])
+      if(!is_project_editable(@project))
+        flash[:danger] = "对不起，此签证已无法修改."
+        redirect_to projects_path
+      end
     end
-
   end
 
   def update
@@ -65,10 +68,17 @@ class ProjectsController < ApplicationController
     destroy_ids = [];
     client_destroy_ids = [];
 
+    #render :text => project_params
     if(is_admin?)
       @project = Project.find_by(:id => params[:id])
+      @project.record_timestamps = false
     else
       @project = current_trader.projects.find_by(:id => params[:id])
+      if(!is_project_editable(@project))
+        flash[:danger] = "对不起，此签证已无法修改."
+        redirect_to projects_path
+        return
+      end      
     end
     @project.assign_attributes(project_params)
 
@@ -116,14 +126,19 @@ class ProjectsController < ApplicationController
       end
     end
 
-    if(!@project.errors.any?)
+    if(is_admin? || !@project.errors.any?)
       destroy_ids.each do |destroy_id|
         @project.schedules.find_by(:id => destroy_id).destroy;
       end
       client_destroy_ids.each do |client_destroy_id|
         @project.clients.find_by(:id => client_destroy_id).destroy;
       end
-      @project.save
+
+      if(is_admin?)
+        @project.save :validate => false
+      else
+        @project.save
+      end
 
       flash[:success] = "电子签证修改更新完毕."
       redirect_to projects_path
@@ -137,11 +152,11 @@ class ProjectsController < ApplicationController
     if(is_admin?)
       @project = Project.find_by(:id => params[:id])
     else
-      @project = current_trader.projects.find_by(:id => params[:id])
+      @project = nil#current_trader.projects.find_by(:id => params[:id])
     end
 
     if(@project.nil?)
-      flash[:danger] = "对不起，您所选择的电签不存在."
+      flash[:danger] = "对不起，无法删除电签."
     elsif(!is_admin? && (@project.status == "completed" || @project.date_arrival < Date.today))
       flash[:danger] = "对不起，您所选择的电签表已无法删除."        
     else
@@ -154,7 +169,7 @@ class ProjectsController < ApplicationController
   def index
     if logged_in?
       if(is_admin?)
-        @projects = Project.all.order("id desc")
+        @projects = current_trader.search_projects(Project.all, params[:from], params[:to], params[:payment], params[:confirmation], params[:status], params[:delete_request], params[:ticket_no]).order("id desc")
       else
         @projects = current_trader.projects.order("id desc")
       end
@@ -178,15 +193,84 @@ class ProjectsController < ApplicationController
     end
   end
 
+  #updaters 
   def update_status
     if(is_admin?)
       @project = Project.find_by(:id => params[:id]);
-      @project.update({:status => params[:status]});
+      if(params[:status] == "deleted")
+        @project.assign_attributes :status => params[:status], :delete_request => false;
+      else
+        @project.assign_attributes :status => params[:status];
+      end
+
+      @project.record_timestamps = false
+      @project.save :validate => false;
       #render :text => @project.trader.id
       flash[:success] = " 状态修改为 '" + status_type_str(params[:status]) + "' (@trader.id = " + @project.trader.id.to_s + ", " + @project.trader.company_name.to_s + ", " + @project.trader.person_name +  ")  (@project.id = " + @project.id.to_s + ", " + @project.china_company_name.to_s + ", " + @project.created_at.to_s + ")"
     end
 
-    redirect_to projects_path
+    redirect_to request.referrer || projects_path
+  end
+
+  def update_confirmation
+    if(is_admin?)
+      @project = Project.find_by(:id => params[:id])
+      @project.assign_attributes :confirmation => params[:confirmation]
+      flash[:success] = "confirmation 修改为 " + params[:confirmation] + " 状态."
+    else
+      @project = current_trader.projects.find_by(:id => params[:id])
+      @project.assign_attributes :confirmation => "confirmed"
+      flash[:success] = "发送完毕！我们将会马上确认您的回国报告."
+    end
+
+    @project.record_timestamps = false
+    @project.save :validate => false;
+    redirect_to request.referrer || projects_path
+  end
+
+  def update_payment
+    if(is_admin?)
+      @project = Project.find_by(:id => params[:id])
+      @project.assign_attributes :payment => params[:payment]
+      @project.record_timestamps = false
+      @project.save :validate => false;
+      flash[:success] = "payment 修改未 " + params[:payment] + " 状態."
+    end
+
+    redirect_to request.referrer || projects_path
+  end
+
+  def delete_request
+    if(is_admin?)
+      @project = Project.find_by(:id => params[:id])
+      flash[:success] = "delete_request 修改未 " + "true" + " 状態."
+    else
+      @project = current_trader.projects.find_by(:id => params[:id])
+      if(!is_project_deletable(@project))
+        flash[:danger] = "对不起，此签证已无法删除."
+        redirect_to projects_path
+        return
+      else
+        flash[:success] = "申请完毕。我们会在1工作日之内确认并完全删除此签证。"
+      end      
+    end
+
+    @project.record_timestamps = false
+    @project.assign_attributes :delete_request => true
+    @project.save :validate => false;
+    redirect_to request.referrer || projects_path
+  end
+
+  def cancel_delete_request
+    if(is_admin?)
+      @project = Project.find_by(:id => params[:id])
+      @project.record_timestamps = false
+      @project.assign_attributes :delete_request => false
+      @project.save :validate => false;
+      flash[:success] = "delete_request 修改未 " + "false" + " 状態."
+    end
+
+    redirect_to request.referrer || projects_path
   end
 
   private
@@ -195,11 +279,11 @@ class ProjectsController < ApplicationController
   def init_company_codes
     @company_codes = CompanyCode.where("status = ?", "working")
     @company_codes.each do |c|
-      c.search_text = c.code+ChineseConverter.simplized(c.locate+c.name)
+      c.search_text = c.code.gsub(/[-]/, "").downcase + ChineseConverter.simplized(c.locate+c.name)
     end
   end
 
   def project_params
-    params.require(:project).permit(:china_company_name, :china_company_code, :visa_type, :total_people, :representative_name_english, :representative_name_chinese, :date_arrival, :date_leaving, :schedules_attributes => [:id, :date, :plan, :hotel], :clients_attributes => [:id, :name_chinese, :name_english, :gender, :hometown, :birthday, :passport_no])
+    params.require(:project).permit(:china_company_name, :china_company_code, :visa_type, :total_people, :representative_name_english, :representative_name_chinese, :in_charge_person, :in_charge_phone, :japan_airport, :china_airport, :flight_name, :departure_time, :arrival_time, :date_arrival, :date_leaving, :from, :to, :payment, :confirmation, :status, :delete_request, :ticket_no, :schedules_attributes => [:id, :date, :plan, :hotel], :clients_attributes => [:id, :name_chinese, :name_english, :gender, :hometown, :birthday, :passport_no])
   end
 end

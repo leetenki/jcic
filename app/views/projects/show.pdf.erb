@@ -8,8 +8,13 @@
   </caption>
 
   <tr>
-    <td class="title">中連協会員旅行会社名</td>
-    <td class="content" colspan="2">クレーンインターナショナル株式会社</td>
+    <td class="title" rowspan="2">中連協会員旅行会社名</td>
+    <td class="name-title">会社名</td>
+    <td class="content"><%= Constants::JAPAN_SIDE_COMPANY %></td>
+  </tr>
+  <tr>
+    <td class="name-title">指定番号</td>
+    <td class="name-content"><%= Constants::JAPAN_SIDE_CODE %></td>
   </tr>
   <tr>
     <td class="title" rowspan="3">中国側旅行会社名</td>
@@ -56,20 +61,20 @@
 <div class="visa-company">
   <div class="company-name">会社名　: <%= @visa_company[0].name %><span style="color:white;">.</span></div>
   <div class="company-code">送签社号:  <%= @visa_company[0].code %></div>
-  <div class="person-name">担当者　: </div>
-  <div class="phone">電　話　: </div>
+  <div class="person-name">担当者　: <%= @project.in_charge_person %></div>
+  <div class="phone">電　話　: <%= @project.in_charge_phone %></div>
 </div>
 
 
-<!--*********************** 飛鶴サイン ************************-->
+<!--*********************** サイン ************************-->
 <div class="signature">
   <div class="text">
     <div class="phone">日　付 : <%= @project.updated_at.strftime("%Y年%m月%d日") %></div>
-    <div class="company-name">会社名 : クレーンインターナショナル株式会社</div>
-    <div class="person-name">担当者 : 東木　慶新</div>
-    <div class="phone">電　話 : 03-3470-6851</div>
+    <div class="company-name">会社名 : <%= Constants::JAPAN_SIDE_COMPANY %></div>
+    <div class="person-name">担当者 : <%= Constants::JAPAN_SIDE_CHIEF %></div>
+    <div class="phone">電　話 : <%= Constants::JAPAN_SIDE_PHONE %></div>
   </div>
-  <%= image_tag(::Rails.root.join('public','signature.png')) %>
+  <%= image_tag(::Rails.root.join('public', Constants::JAPAN_SIDE_SIGNATURE)) %>
 </div>
 
 
@@ -104,19 +109,19 @@
 <div class="visa-company">
   <div class="company-name">会社名　: <%= @visa_company[0].name %>
   <div class="company-code">送签社号:  <%= @visa_company[0].code %></div>
-  <div class="person-name">担当者　: </div>
-  <div class="phone">電　話　: </div>
+  <div class="person-name">担当者　: <%= @project.in_charge_person %></div>
+  <div class="phone">電　話　: <%= @project.in_charge_phone %></div>
 </div>
 
-<!--*********************** 飛鶴サイン ************************-->
+<!--*********************** サイン ************************-->
 <div class="signature">
   <div class="text">
     <div class="phone">日　付 : <%= @project.updated_at.strftime("%Y年%m月%d日") %></div>
-    <div class="company-name">会社名 : クレーンインターナショナル株式会社</div>
-    <div class="person-name">担当者 : 東木　慶新</div>
-    <div class="phone">電　話 : 03-3470-6851</div>
+    <div class="company-name">会社名 : <%= Constants::JAPAN_SIDE_COMPANY %></div>
+    <div class="person-name">担当者 : <%= Constants::JAPAN_SIDE_CHIEF %></div>
+    <div class="phone">電　話 : <%= Constants::JAPAN_SIDE_PHONE %></div>
   </div>
-  <%= image_tag(::Rails.root.join('public','signature.png')) %>
+  <%= image_tag(::Rails.root.join('public', Constants::JAPAN_SIDE_SIGNATURE)) %>
 </div>
 
 
@@ -166,17 +171,17 @@
 <div class="visa-company">
   <div class="company-name">会社名　: <%= @visa_company[0].name %></div>
   <div class="company-code">送签社号:  <%= @visa_company[0].code %></div>
-  <div class="person-name">担当者　: </div>
-  <div class="phone">電　話　: </div>
+  <div class="person-name">担当者　: <%= @project.in_charge_person %></div>
+  <div class="phone">電　話　: <%= @project.in_charge_phone %></div>
 </div>
 
-<!--*********************** 飛鶴サイン ************************-->
+<!--*********************** サイン ************************-->
 <div class="signature">
   <div class="text">
     <div class="phone">日　付 : <%= @project.updated_at.strftime("%Y年%m月%d日") %></div>
-    <div class="company-name">会社名 : クレーンインターナショナル株式会社</div>
-    <div class="person-name">担当者 : 東木　慶新</div>
-    <div class="phone">電　話 : 03-3470-6851</div>
+    <div class="company-name">会社名 : <%= Constants::JAPAN_SIDE_COMPANY %></div>
+    <div class="person-name">担当者 : <%= Constants::JAPAN_SIDE_CHIEF %></div>
+    <div class="phone">電　話 : <%= Constants::JAPAN_SIDE_PHONE %></div>
   </div>
-  <%= image_tag(::Rails.root.join('public','signature.png')) %>
+  <%= image_tag(::Rails.root.join('public', Constants::JAPAN_SIDE_SIGNATURE)) %>
 </div>

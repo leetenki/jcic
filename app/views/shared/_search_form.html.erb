@@ -1,0 +1,48 @@
+<div class="col-md-3">
+  <input type="text" class="form-control free-datepicker" placeholder="开始日期" name="from"/>
+  <input type="text" class="form-control free-datepicker" placeholder="结束日期" name="to"/>
+</div>
+<div class="col-md-3">
+  <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
+    <label class="btn btn-default col-md-6">
+      <input type="radio" value="paid" name="payment"/>入金済
+    </label>
+    <label class="btn btn-default col-md-6">
+      <input type="radio" value="unpaid" name="payment"/>未入金
+    </label>
+  </div>
+  <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%" class="btn-group toggle">
+    <label class="btn btn-default col-md-6">
+      <input type="radio" value="confirmed" name="confirmation"/>已帰国
+    </label>
+    <label class="btn btn-default col-md-6">
+      <input type="radio" value="unconfirmed" name="confirmation"/>未确认
+    </label>
+  </div>
+</div>
+<div class="col-md-4">
+  <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
+    <label class="btn btn-default col-md-4">
+      <input type="radio" value="uncommitted" name="status"/>申請中
+    </label>
+    <label class="btn btn-default col-md-4">
+      <input type="radio" value="committed" name="status"/>已完毕
+    </label>
+    <label class="btn btn-default col-md-4">
+      <input type="radio" value="deleted" name="status"/>无效
+    </label>
+  </div>
+  <input type="text" class="form-control" placeholder="受付番号" name="ticket_no"/>
+</div>
+
+<div class="col-md-2">
+  <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%" class="btn-group toggle">
+    <label class="btn btn-default col-md-6">
+      <input type="radio" value="true" name="delete_request"/>等待
+    </label>
+    <label class="btn btn-default col-md-6">
+      <input type="radio" value="false" name="delete_request"/>普通
+    </label>
+  </div>
+  <input class="btn btn-primary" type="submit"/ value="検索">
+</div>
