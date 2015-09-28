@@ -12,6 +12,7 @@ gem 'pdfkit'
 gem 'wkhtmltopdf-binary'
 gem 'era_ja'
 gem 'rails_12factor', group: :production
+gem 'kaminari'
 #gem 'bcrypt', '~> 3.1.7'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

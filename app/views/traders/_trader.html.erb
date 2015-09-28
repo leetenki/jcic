@@ -1,5 +1,5 @@
 <% unless trader.id.nil? %>
-  <tr id="<%= trader.id %>" onclick="location.href='/traders/<%= trader.id %>'">
+  <tr id="<%= trader.id %>" onclick="location.href='/traders/<%= trader.id %>'" style="cursor:pointer;">
     <td><%= trader.id %></td>
     <td><%= trader.company_name %></td>
     <td><%= trader.person_name %></td>

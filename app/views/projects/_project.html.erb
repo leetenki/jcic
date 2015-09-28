@@ -5,7 +5,7 @@
     <!-- ****************** visa info container ******************* -->
     <td class="col-md-5 col-sm-5 col-xs-5">
         <% if is_admin? %>
-            <div class="origin-company-name-cell" onclick="location.href='/traders/<%= project.trader.id %>'"><%= project.trader.company_name %>(<%= project.trader.person_name %>)</div>        
+            <div class="origin-company-name-cell" style="cursor:pointer;" onclick="location.href='/traders/<%= project.trader.id %>'"><%= project.trader.company_name %>(<%= project.trader.person_name %>)</div>        
         <% end %>
 
         <div class="bg-primary company-name-cell"><%= project.china_company_name %></div>
@@ -23,7 +23,7 @@
     <!-- ******************  status container ******************* -->
     <td class="col-md-3 col-sm-3 col-xs-">
         <div class="status-cell <%= project.delete_request ? "requesting_delete": project.status %>"><%= project.delete_request ? "正在申请删除..." : status_type_str(project.status) %></div>
-        <div class="created-cell small-gray-cell">申请：<%= project.created_at.strftime("%Y/%m/%d %H:%M") %></div>
+        <div class="created-cell small-gray-cell">申请日：<%= project.created_at.strftime("%Y/%m/%d %H:%M") %></div>
 
         <% if is_admin? || !is_project_disabled(project) %>
             <div class="row">

@@ -8,7 +8,7 @@ class TradersController < ApplicationController
 
   def show
     @trader = Trader.find(params[:id])
-    @projects = @trader.search_projects(@trader.projects, params[:from], params[:to], params[:payment], params[:confirmation], params[:status], params[:delete_request], params[:ticket_no]).order("id desc")
+    @projects = @trader.search_projects(@trader.projects, params[:from], params[:to], params[:payment], params[:confirmation], params[:status], params[:delete_request], params[:ticket_no]).order("id desc").page(params[:page])
   end
 
   #create account

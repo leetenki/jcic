@@ -22,9 +22,12 @@
             </div>
           <% end %>
 
-          <a href="/projects/new" class="btn btn-success btn-large require-loading" id="new-project">
-            <i class="fa fa-user-plus"></i> 申请
-          </a>
+          <div style="text-align:center; height:60px;">
+            <a href="/projects/new" style="position:absolute; left:20px; margin-top:20px;" class="btn btn-success btn-large require-loading" id="new-project">
+              <i class="fa fa-user-plus"></i> 申请
+            </a>
+            <%= paginate @projects, :window => 5 %>
+          </div>
         </caption>
         <thead>
           <tr>

@@ -42,6 +42,15 @@ function confirmDelete(path) {
   }  
 }
 
+function toggleTable(id) {
+  if($("#" + id)[0].style.display == "none") {
+    $("#" + id)[0].style.display = "table-row-group"
+  } else {
+    $("#" + id)[0].style.display = "none"
+  }
+  console.log();
+}
+
 $(document).ready(function(){  
   startSuggest();
 

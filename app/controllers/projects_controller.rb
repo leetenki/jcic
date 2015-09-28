@@ -169,9 +169,9 @@ class ProjectsController < ApplicationController
   def index
     if logged_in?
       if(is_admin?)
-        @projects = current_trader.search_projects(Project.all, params[:from], params[:to], params[:payment], params[:confirmation], params[:status], params[:delete_request], params[:ticket_no]).order("id desc")
+        @projects = current_trader.search_projects(Project.all, params[:from], params[:to], params[:payment], params[:confirmation], params[:status], params[:delete_request], params[:ticket_no]).order("id desc").page(params[:page])
       else
-        @projects = current_trader.projects.order("id desc")
+        @projects = current_trader.projects.order("id desc").page(params[:page])
       end
     end
   end

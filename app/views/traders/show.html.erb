@@ -1,45 +1,14 @@
 <div class="container">
-  <div class="row">
-    <div class="col-md-10 col-md-offset-1">
-      <table class="project-info table">
-        <caption>
-          <div class="row" style="text-align:center"><h3><%= @trader.company_name %>的签证 （ 查询结果：<%= @projects.length %>件 ）<h3></div>
-          <div class="row" style="text-align:center">
-            <form action="/traders/<%= @trader.id %>" accept-charset="UTF-8" method="get">
-              <%= render "/shared/search_form" %>
-            </form>
-          </div>
-        </caption>
-
-        <% if @projects.any? %>
-          <thead>
-            <tr>
-              <th>签证资料</th>
-              <th>状态</th>
-                <th>价格</th>
-              <th>回国报告</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <%= render @projects %>
-          </tbody>
-        <% end %>
-      </table>
-    </div>
-  </div>
-
-
 
   <div class="col-md-8 col-md-offset-2">
     <table class="trader-info table">
-      <caption>
-        <span>　账户资料　</span>
+      <caption onclick="toggleTable('trader_table_body')" style="cursor:pointer;" >
+        <span>（<%= @trader.company_name %>）的账户资料　</span>
         <%= link_to fa_icon("edit"), edit_trader_path(@trader), :method => :get, :class => "update" %>
         <%= link_to fa_icon("trash"), @trader, :method => :delete, :data => { :confirm => "确定删除此账户吗？" }, :class => "delete" %>
       </caption>
 
-      <tbody>
+      <tbody id="trader_table_body" style="display:none">
         <tr>
           <td class="col-md-6 col-sm-6">公司名</td>
           <td class="col-md-6 col-sm-6"><%= @trader.company_name %></td>
@@ -116,12 +85,45 @@
           <td>最终更新</td>
           <td><%= @trader.updated_at.strftime("%Y/%m/%d %H:%M") %></td>
         </tr>
-        <tr>
-          <td class="footer" colspan="2"></td>
-        </tr>
       </tbody>
+      <tr>
+        <td class="footer" colspan="2"></td>
+      </tr>
     </table>
   </div>
 
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <table class="project-info table">
+        <caption>
+          <div class="row" style="text-align:center"><h3><%= @trader.company_name %>的签证 （ 查询结果：<%= @projects.length %>件 ）<h3></div>
+          <div class="row" style="text-align:center">
+            <form action="/traders/<%= @trader.id %>" accept-charset="UTF-8" method="get">
+              <%= render "/shared/search_form" %>
+            </form>
+          </div>
+
+          <div style="text-align:center; height:70px;">
+            <%= paginate @projects, :window => 5 %>
+          </div>          
+        </caption>
+
+        <% if @projects.any? %>
+          <thead>
+            <tr>
+              <th>签证资料</th>
+              <th>状态</th>
+                <th>价格</th>
+              <th>回国报告</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <%= render @projects %>
+          </tbody>
+        <% end %>
+      </table>
+    </div>
+  </div>
 
 </div>

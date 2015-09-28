@@ -2,6 +2,8 @@ class Trader < ActiveRecord::Base
   #relationship
   has_many :projects
 
+  paginates_per Constants::PAGENATION_COUNT
+
   #children method
   def between_dates(from, to)
     if from.present? && to.present?

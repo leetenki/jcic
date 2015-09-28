@@ -12,4 +12,5 @@ module Constants
   FAX_FOR_CONTACT = "03-3470-8615"
 
   EDITABLE_HOUR = 24
+  PAGENATION_COUNT = 100
 end

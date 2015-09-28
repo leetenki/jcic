@@ -9,6 +9,7 @@ class Project < ActiveRecord::Base
   accepts_nested_attributes_for :schedules
   accepts_nested_attributes_for :clients
 
+  paginates_per Constants::PAGENATION_COUNT
 
   #validation
   validates :trader_id, :presence => true
