@@ -48,19 +48,19 @@ class Trader < ActiveRecord::Base
       projects = projects.where('payment == ?', payment)
     end
 
-    if(confirmation)
+    if(!!confirmation)
       projects = projects.where('confirmation == ?', confirmation)
     end
 
-    if(status)
+    if(!!status)
       projects = projects.where('status == ?', status)
     end
 
-    if(delete_request)
+    if(!!delete_request)
       projects = projects.where('delete_request == ?', delete_request == "true")
     end
 
-    if(ticket_no)
+    if(!!ticket_no)
       projects = projects.where("ticket_no like '%" + ticket_no + "%'")
     end
 
