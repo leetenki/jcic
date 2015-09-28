@@ -45,19 +45,19 @@ class Trader < ActiveRecord::Base
     end
 
     if(!!payment)
-      projects = projects.where('payment == ?', payment)
+      projects = projects.where('payment = ?', payment)
     end
 
     if(!!confirmation)
-      projects = projects.where('confirmation == ?', confirmation)
+      projects = projects.where('confirmation = ?', confirmation)
     end
 
     if(!!status)
-      projects = projects.where('status == ?', status)
+      projects = projects.where('status = ?', status)
     end
 
     if(!!delete_request)
-      projects = projects.where('delete_request == ?', delete_request == "true")
+      projects = projects.where('delete_request = ?', delete_request == "true")
     end
 
     if(!!ticket_no)
