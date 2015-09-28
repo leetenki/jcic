@@ -6,7 +6,7 @@
           <div class="row" style="text-align:center"><h3><%= @trader.company_name %>的签证 （ 查询结果：<%= @projects.length %>件 ）<h3></div>
           <div class="row" style="text-align:center">
             <form action="/traders/<%= @trader.id %>" accept-charset="UTF-8" method="get">
-              <%= render "shared/search_form" %>
+              <%= render "/shared/search_form" %>
             </form>
           </div>
         </caption>
