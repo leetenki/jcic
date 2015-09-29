@@ -21,7 +21,7 @@
 
 
     <!-- ******************  status container ******************* -->
-    <td class="col-md-3 col-sm-3 col-xs-">
+    <td class="col-md-3 col-sm-3 col-xs-3">
         <div class="status-cell <%= project.delete_request ? "requesting_delete": project.status %>"><%= project.delete_request ? "正在申请删除..." : status_type_str(project.status) %></div>
         <div class="created-cell small-gray-cell">申请日：<%= project.created_at.strftime("%Y/%m/%d %H:%M") %></div>
 

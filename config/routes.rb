@@ -13,6 +13,9 @@ Rails.application.routes.draw do
   get 'cancel_delete_request(/:id)', :to => "projects#cancel_delete_request", :as => "cancel_delete_request"
   get 'projects/index', :to => "projects#index"
 
+  get 'admin/api_projects_need_update', :to => "admin#projects_need_update"
+  get 'admin/project_json/(:id)', :to => "admin#project_json"
+
   resources :traders
   resources :projects
   resources :company_codes, :only => [:index, :edit, :update]
