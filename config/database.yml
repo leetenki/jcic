@@ -23,6 +23,9 @@ test:
 production:
   <<: *default
   adapter: postgresql
+  database: JCIC
+  username: leetenki
+  password: 1234567890
   encoding: unicode
   pool: 5  
 #  database: db/production.sqlite3
