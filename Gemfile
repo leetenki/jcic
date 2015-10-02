@@ -11,7 +11,7 @@ gem 'pdfkit'
 #gem 'wkhtmltopdf'
 gem 'wkhtmltopdf-binary'
 gem 'era_ja'
-#gem 'rails_12factor', group: :production
+gem 'rails_12factor', group: :production
 gem 'kaminari'
 #gem 'bcrypt', '~> 3.1.7'
 
