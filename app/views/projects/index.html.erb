@@ -3,9 +3,20 @@
   <% if is_admin? %>
     所有电签
   <% else %>
-    申请签证
+    签证主页
   <% end %>
 </h1>
+<div style="position: absolute; margin-top: -110px;  right:20px; width: 230px; height:155px; border: solid 2px gray; border-radius: 20px; color:gray">
+  <div style="text-align:center; padding:8px; font-size:1.1em;">価格表</div>
+  <ul style="list-style:none; font-size:0.8em;">
+    <li>个人签证 : <%= current_trader.indivisual_price %> ¥ / 人</li>
+    <li>３年多次 : <%= current_trader.year_3_price %> ¥ / 人</li>
+    <li>５年多次 : <%= current_trader.year_5_price %> ¥ / 人</li>
+    <li>团体签证 (11〜20人) : <%= current_trader.group_price_11_20 %> ¥</li>
+    <li>团体签证 (21〜30人) : <%= current_trader.group_price_21_30 %> ¥</li>
+    <li>团体签证 (31〜40人) : <%= current_trader.group_price_31_40 %> ¥</li>
+  </ul>
+</div>
 
 <div class="row">
   <div class="container col-md-10 col-md-offset-1">

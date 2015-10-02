@@ -18,6 +18,7 @@
         <% if logged_in? %> 
           <% if is_admin? %>
             <!-- admin menu -->
+            <li><%= link_to " 控制面板", "admin/project_json", :class => "fa fa-search require-loading" %></li>
             <li><%= link_to " 电子签证", projects_path, :class => 'fa fa-users require-loading' %></li>
             <li><%= link_to " 旅行社名单", company_codes_path, :class => 'fa fa-book require-loading' %></li>
             <li><%= link_to " 注册会员", signup_path, :class => 'fa fa-plus require-loading' %></li>
