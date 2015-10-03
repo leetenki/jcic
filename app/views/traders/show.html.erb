@@ -4,8 +4,8 @@
     <table class="trader-info table">
       <caption onclick="toggleTable('trader_table_body')" style="cursor:pointer;" >
         <span>（<%= @trader.company_name %>）的账户资料　</span>
-        <%= link_to fa_icon("edit"), edit_trader_path(@trader), :method => :get, :class => "update" %>
-        <%= link_to fa_icon("trash"), @trader, :method => :delete, :data => { :confirm => "确定删除此账户吗？" }, :class => "delete" %>
+        <%= link_to fa_icon("edit"), edit_trader_path(@trader), :method => :get, :class => "update", :onclick => "toggleTable('trader_table_body'); return false;" %>
+        <%= link_to fa_icon("trash"), @trader, :method => :delete, :data => { :confirm => "确定删除此账户吗？" }, :class => "delete", :onclick => "toggleTable('trader_table_body'); return false;" %>
       </caption>
 
       <tbody id="trader_table_body" style="display:none">
