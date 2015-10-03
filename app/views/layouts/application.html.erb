@@ -7,7 +7,11 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<img src="/loading4.gif" id="now_loading" onload="(function(){console.log(document.getElementById('now_loading').setAttribute('display', 'block')})()"/>
+<script>
+  alert(document.getElementById("now_loading"))
+</script>
+
+<img src="/loading4.gif" id="now_loading"/>
 
 <%= render 'layouts/header' %>
 <div class="container">
