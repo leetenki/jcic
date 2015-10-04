@@ -134,11 +134,18 @@ $(document).ready(function(){
 function openAlert(error) {
   $(".alert-panel").fadeIn(700, function(){
     if(error) {
-      alert($(".alert-panel li:first").text() + " 请修改.");
-    }
+      //alert($(".alert-panel li:first").text() + " 请修改.");
+      var fadeOut = function() {
+        document.removeEventListener("click", fadeOut);
+        $(".alert-panel").fadeOut(1500, function(){
+        });        
+      }
+      document.addEventListener("click", fadeOut)
 
-    $(".alert-panel").fadeOut(5200, function(){
-    });
+    } else {
+      $(".alert-panel").fadeOut(3200, function(){
+      });
+    }
   });
 }
 
@@ -677,6 +684,23 @@ function validateBirthday(id) {
   }
 }
 
+function validateJob(id) {
+  var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, " ").replace(/[　 ]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+
+  if(inputText.length > 1 && inputText.length <= 10 /*&& !CheckLength(inputText, 0)*/ && CheckLength(inputText, 1)) {
+    return true
+  } else {
+    return false;
+  }
+}
+function validateAndReplaceJob(id) {
+  var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, " ").replace(/[　 ]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+  $("#" + id + " input")[0].value = inputText;
+
+  return validateJob(id);
+}
+
+
 function validateAndUpdateField(id, className, callbackValidation) {
   var valid = callbackValidation(id);
   if(valid) {
@@ -905,7 +929,7 @@ function createClientTag(index) {
 
   // chinese name tag
   tdNode = document.createElement("td");
-  tdNode.setAttribute("class", "col col-md-2 col-sm-2 col-xs-2")
+  //tdNode.setAttribute("class", "col col-md-2 col-sm-2 col-xs-2")
   trNode.appendChild(tdNode);
 
   var indexNode = document.createElement("span");
@@ -982,7 +1006,8 @@ function createClientTag(index) {
 
   // gender tag
   tdNode = document.createElement("td");
-  tdNode.setAttribute("class", "col col-md-2 col-sm-2 col-xs-2")
+  //tdNode.setAttribute("class", "col col-md-2 col-sm-2 col-xs-2")
+  tdNode.setAttribute("class", "col col-xs-2")
   trNode.appendChild(tdNode);
 
   containerNode = document.createElement("div");
@@ -1037,7 +1062,7 @@ function createClientTag(index) {
 
   // hometown tag
   tdNode = document.createElement("td");
-  tdNode.setAttribute("class", "col col-md-2 col-sm-2 col-xs-2")
+  //tdNode.setAttribute("class", "col col-md-2 col-sm-2 col-xs-2")
   trNode.appendChild(tdNode);
 
   containerNode = document.createElement("div");
@@ -1073,7 +1098,8 @@ function createClientTag(index) {
 
   // birthday tag
   tdNode = document.createElement("td");
-  tdNode.setAttribute("class", "col col-md-2 col-sm-2 col-xs-2")
+  //tdNode.setAttribute("class", "col col-md-2 col-sm-2 col-xs-2")
+  tdNode.setAttribute("class", "col col-sm-2 col-xs-2")  
   trNode.appendChild(tdNode);
 
   containerNode = document.createElement("div");
@@ -1111,7 +1137,7 @@ function createClientTag(index) {
 
   // passport_no tag
   tdNode = document.createElement("td");
-  tdNode.setAttribute("class", "col col-md-2 col-sm-2 col-xs-2")
+  //tdNode.setAttribute("class", "col col-md-2 col-sm-2 col-xs-2")
   trNode.appendChild(tdNode);
 
   containerNode = document.createElement("div");
@@ -1130,12 +1156,6 @@ function createClientTag(index) {
   iconNode.setAttribute("id", "clients_passport_no_" + index);
   containerNode.appendChild(iconNode);
 
-  var closeNode = document.createElement("div");
-  closeNode.setAttribute("class", "remove_client");
-  closeNode.setAttribute("onclick", "removeClientRow('client_" + index + "')")
-  closeNode.appendChild(document.createTextNode("×"));
-  containerNode.appendChild(closeNode);
-
   inputTag = document.createElement("input");
   inputTag.setAttribute("autocomplete", "off");
   inputTag.setAttribute("class", "form-control");
@@ -1148,6 +1168,51 @@ function createClientTag(index) {
   inputTag.setAttribute("type", "text");
   inputTag.setAttribute("name", "project[clients_attributes][" + index + "][passport_no]");
   inputTag.setAttribute("id", "project_clients_attributes_" + index + "_passport_no")
+  containerNode.appendChild(inputTag);
+
+
+
+  // job tag
+  tdNode = document.createElement("td");
+  tdNode.setAttribute("class", "col col-md-1")
+  trNode.appendChild(tdNode);
+
+  containerNode = document.createElement("div");
+  containerNode.setAttribute("id", "clients_job_container_" + index);
+  containerNode.setAttribute("class", "job_container field_ok");
+  tdNode.appendChild(containerNode);
+
+  labelNode = document.createElement("label");
+  labelNode.setAttribute("for", "project_clients_attributes_" + index + "_job");
+  labelNode.appendChild(document.createTextNode("职业"))
+  containerNode.appendChild(labelNode);
+
+  containerNode.appendChild(document.createTextNode(" "));
+
+  iconNode = document.createElement("i");
+  iconNode.setAttribute("id", "clients_job_" + index);
+  iconNode.setAttribute("class", "fa fa-check");
+  containerNode.appendChild(iconNode);
+
+  var closeNode = document.createElement("div");
+  closeNode.setAttribute("class", "remove_client");
+  closeNode.setAttribute("onclick", "removeClientRow('client_" + index + "')")
+  closeNode.appendChild(document.createTextNode("×"));
+  containerNode.appendChild(closeNode);
+
+  inputTag = document.createElement("input");
+  inputTag.setAttribute("autocomplete", "off");
+  inputTag.setAttribute("class", "form-control");
+  inputTag.setAttribute("placeholder", "");
+  inputTag.setAttribute("value", "科员");
+  inputTag.setAttribute("maxlength", "10");  
+  inputTag.setAttribute("oninput", "validateAndUpdateFieldOnlyCheck('clients_job_container_" + index + "', 'job_container', validateJob)");
+  inputTag.setAttribute("onfocus", "validateAndUpdateFieldOnlyCheck('clients_job_container_" + index + "', 'job_container', validateJob)");
+  inputTag.setAttribute("onchange", "validateAndUpdateField('clients_job_container_" + index + "', 'job_container', validateAndReplaceJob)");
+  inputTag.setAttribute("onblur", "validateAndUpdateField('clients_job_container_" + index + "', 'job_container', validateAndReplaceJob)");
+  inputTag.setAttribute("type", "text");
+  inputTag.setAttribute("name", "project[clients_attributes][" + index + "][job]");
+  inputTag.setAttribute("id", "project_clients_attributes_" + index + "_job")
   containerNode.appendChild(inputTag);
 
   return trNode;  
@@ -1487,6 +1552,11 @@ function initialValidation() {
   $(".passport_no_container").each(function() {
     validateAndUpdateFieldIgnoreError(this.attributes.id.value, 'passport_no_container', validatePassportNo);
   })
+
+  // check all job
+  $(".job_container").each(function() {
+    validateAndUpdateFieldIgnoreError(this.attributes.id.value, 'job_container', validateJob);
+  })
 }
 
 // validate before sending
@@ -1651,6 +1721,16 @@ $(function() {
       failedMessage += "<li>出生日期形式不正确.</li>";          
     }
 
+    var jobValid = true;
+    $(".job_container").each(function() {
+      if(!validateAndUpdateField(this.attributes.id.value, 'job_container', validateJob)) {
+        jobValid = false;
+      }
+    })
+    if(!jobValid) {
+      failedMessage += "<li>职业不正确.</li>";          
+    }
+
     var passportNoValid = true;
     $(".passport_no_container").each(function() {
       if(!validateAndUpdateField(this.attributes.id.value, 'passport_no_container', validatePassportNo)) {
@@ -1744,6 +1824,7 @@ function fillRow(id, rowItem) {
   $("#"+id+" .hometown_container input")[0].value = rowItem.hometown;
   $("#"+id+" .birthday_container input")[0].value = rowItem.birthday;
   $("#"+id+" .passport_no_container input")[0].value = rowItem.passportNo;  
+  $("#"+id+" .job_container input")[0].value = rowItem.job;  
 }
 
 // function to parse excel text file
@@ -1797,7 +1878,8 @@ function parseExcelText(excelText) {
           hometown: items[hometownIndex],
           gender: items[genderIndex],
           englishName: items[englishNameIndex],
-          chineseName: items[chineseNameIndex]
+          chineseName: items[chineseNameIndex],
+          job: items[jobIndex],
         });
       }
     }
@@ -1813,7 +1895,8 @@ function parseExcelText(excelText) {
             hometown: items[passportIndex-2],
             gender: items[passportIndex-3],
             englishName: items[passportIndex-4],
-            chineseName: items[passportIndex-5]
+            chineseName: items[passportIndex-5],
+            job: items.length > passportIndex+1? items[passportIndex+1]: "科员",
           });
         }
       }

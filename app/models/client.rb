@@ -10,6 +10,7 @@ class Client < ActiveRecord::Base
   validate :validate_hometown
   validate :validate_passport_no
   validate :validate_birthday
+  validate :validate_job
 
   def validate_name_chinese
     if(!name_chinese.present?)
@@ -55,7 +56,7 @@ class Client < ActiveRecord::Base
     elsif(!hankaku?(passport_no))
       errors.add(:passport_no, "护照号止可输入英文字母或数字.")        
     elsif(passport_no.length < 8 || passport_no.length > 11)
-      #only 8 or 9 or 10 or 11 digit
+      #only 8 or 9 or 10 or 11 digits
       errors.add(:passport_no, "护照号位数不正确.")
     end
   end  
@@ -65,4 +66,14 @@ class Client < ActiveRecord::Base
       errors.add(:birthday, "出身日期不正确.");
     end
   end
+
+  def validate_job
+    if(!job.present?)
+      errors.add(:job, "您未输入职业.")
+    elsif(job.length > 10)
+      errors.add(:job, "职业不可超过10字.")   
+    elsif(hankaku?(job))
+      errors.add(:job, "职业只可输入简体汉字.")      
+    end
+  end  
 end

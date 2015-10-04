@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151004052109) do
+ActiveRecord::Schema.define(version: 20151004062956) do
 
   create_table "clients", force: :cascade do |t|
     t.integer  "project_id"
@@ -21,8 +21,9 @@ ActiveRecord::Schema.define(version: 20151004052109) do
     t.string   "hometown"
     t.date     "birthday"
     t.string   "passport_no"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.string   "job",          default: "科员"
   end
 
   add_index "clients", ["project_id"], name: "index_clients_on_project_id"

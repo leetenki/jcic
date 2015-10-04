@@ -284,6 +284,10 @@ class ProjectsController < ApplicationController
   end
 
   def project_params
-    params.require(:project).permit(:china_company_name, :china_company_code, :visa_type, :total_people, :representative_name_english, :representative_name_chinese, :in_charge_person, :in_charge_phone, :japan_airport, :china_airport, :flight_name, :departure_time, :arrival_time, :date_arrival, :date_leaving, :from, :to, :payment, :confirmation, :status, :delete_request, :ticket_no, :schedules_attributes => [:id, :date, :plan, :hotel], :clients_attributes => [:id, :name_chinese, :name_english, :gender, :hometown, :birthday, :passport_no])
+    params.require(:project).permit(
+      :china_company_name, :china_company_code, :visa_type, :total_people, :representative_name_english, :representative_name_chinese, :in_charge_person, :in_charge_phone, :japan_airport, :china_airport, :flight_name, :departure_time, :arrival_time, :date_arrival, :date_leaving, :from, :to, :payment, :confirmation, :status, :delete_request, :ticket_no, 
+      :schedules_attributes => [:id, :date, :plan, :hotel], 
+      :clients_attributes => [:id, :name_chinese, :name_english, :gender, :hometown, :birthday, :passport_no, :job]
+    )
   end
 end

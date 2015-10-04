@@ -109,7 +109,7 @@
                             </div>
                         </div>
                     <% elsif project.confirmation == "unconfirmed" %>
-                        <a data-confirm="请用FAX传真回国报告后，选择OK。我们将会马上确认!" class="btn btn-xs btn-primary" href="/update_confirmation?id=<%= project.id %>&amp;confirmation=confirmed">立即发送</a>
+                        <a data-confirm="请用FAX传真回国报告后，选择OK。我们将会立即确认!" class="btn btn-xs btn-primary" href="/update_confirmation?id=<%= project.id %>&amp;confirmation=confirmed">立即发送</a>
                     <% end %>
                 </div>
             <% end %>

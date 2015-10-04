@@ -303,7 +303,7 @@
 
 
       <!--************************* clients ***************************-->
-      <div id="clients_container" class="dashed_container col-md-10 col-md-offset-1">
+      <div id="clients_container" class="dashed_container col-md-12 col-sm-12 col-xs-12">
             <div class="title">
                   <i class="fa fa-list"></i> 名单 <span class="number" id="clients-total"><%= f.object.clients.length %></span> 人
             </div>
@@ -313,7 +313,7 @@
                   <tbody>
                         <%= f.fields_for :clients do |clients_field| %>
                         <tr id="client_<%= clients_field.index %>">
-                              <td class="col col-md-2 col-sm-2 col-xs-2">
+                              <td>
                                     <span class="index"><%= clients_field.index+1 %></span>
                                     <div id="clients_chinese_name_container_<%= clients_field.index %>" class="chinese_name_container">
                                           <%= clients_field.label :name_chinese, "中文名" %> <i id="clients_chinese_name_<%= clients_field.index %>"></i>
@@ -344,7 +344,7 @@
                                           ) %>
                                     </div>
                               </td>
-                              <td class="col col-md-2 col-sm-2 col-xs-2">
+                              <td class="col col-xs-2">
                                     <div id="clients_gender_container_<%= clients_field.index %>" class="gender_container">
                                           <%= clients_field.label :gender, "性别" %> <i id="clients_gender_<%= clients_field.index %>"></i>
                                           <div class="form-group">
@@ -359,7 +359,7 @@
                                           </div>
                                     </div>
                               </td>
-                              <td class="col col-md-2 col-sm-2 col-xs-2">
+                              <td>
                                     <div id="clients_hometown_container_<%= clients_field.index %>" class="hometown_container">
                                           <%= clients_field.label :hometown, "签发地点" %> <i id="clients_hometown_<%= clients_field.index %>"></i>
                                           <%= clients_field.text_field(
@@ -375,7 +375,7 @@
                                     </div>
                               </td>
 
-                              <td class="col col-md-2 col-sm-2 col-xs-2">
+                              <td class="col col-sm-2 col-xs-2">
                                     <div id="clients_birthday_container_<%= clients_field.index %>"class="birthday_container">
                                           <%= clients_field.label :birthday, "出身日期" %> <i id="clients_birthday_<%= clients_field.index %>"></i> <!--<i class="fa fa-chevron-down long"></i>-->
                                           <% birthday = "" %>
@@ -393,9 +393,9 @@
                                     </div>
                               </td>
 
-                              <td class="col col-md-2 col-sm-2 col-xs-2">
+                              <td>
                                     <div id="clients_passport_no_container_<%= clients_field.index %>" class="passport_no_container">
-                                          <%= clients_field.label :passport_no, "护照号" %> <i id="clients_passport_no_<%= clients_field.index %>"></i><div class="remove_client" onclick="removeClientRow('client_<%= clients_field.index %>')">×</div>
+                                          <%= clients_field.label :passport_no, "护照号" %> <i id="clients_passport_no_<%= clients_field.index %>"></i>
                                           <%= clients_field.text_field(
                                                 :passport_no, :autocomplete => "off",
                                                 :class => "form-control",
@@ -405,6 +405,22 @@
                                                 :onchange => "validateAndUpdateField('clients_passport_no_container_#{clients_field.index}', 'passport_no_container', validateAndReplacePassportNo)",                                                                              
                                                 :onblur => "validateAndUpdateField('clients_passport_no_container_#{clients_field.index}', 'passport_no_container', validateAndReplacePassportNo)",
                                                 :maxlength => "11",
+                                          ) %>
+                                    </div>
+                              </td>
+
+                              <td class="col col-md-1">
+                                    <div id="clients_job_container_<%= clients_field.index %>" class="job_container">
+                                          <%= clients_field.label :job, "职业" %> <i id="clients_job_<%= clients_field.index %>"></i><div class="remove_client" onclick="removeClientRow('client_<%= clients_field.index %>')">×</div>
+                                          <%= clients_field.text_field(
+                                                :job, :autocomplete => "off",
+                                                :class => "form-control",
+                                                :placeholder => "科员",
+                                                :oninput => "validateAndUpdateFieldOnlyCheck('clients_job_container_#{clients_field.index}', 'job_container', validateJob)",
+                                                :onfocus => "validateAndUpdateFieldOnlyCheck('clients_job_container_#{clients_field.index}', 'job_container', validateJob)",
+                                                :onchange => "validateAndUpdateField('clients_job_container_#{clients_field.index}', 'job_container', validateAndReplaceJob)",
+                                                :onblur => "validateAndUpdateField('clients_job_container_#{clients_field.index}', 'job_container', validateAndReplaceJob)",
+                                                :maxlength => "10",
                                           ) %>
                                     </div>
                               </td>
@@ -449,7 +465,7 @@
 
 
             <div class="modal-body">
-                  <textarea id="excel_area" class="form-control" placeholder="李庆新&#009;&#009;LI QINXIN&#009;&#009;男&#009;&#009;苏州&#009;&#009;1950/1/1&#009;&#009;G171717171"></textarea>
+                  <textarea id="excel_area" class="form-control" placeholder="李庆新&#009;&#009;LI QINXIN&#009;&#009;男&#009;&#009;苏州&#009;&#009;1950/1/1&#009;&#009;G171717171&#009;&#009;总经理"></textarea>
             </div>
 
             <div class="modal-footer">
