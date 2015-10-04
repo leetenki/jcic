@@ -4,10 +4,12 @@
     <td><%= trader.company_name %></td>
     <td><%= trader.person_name %></td>
     <td><%= trader.qq %></td>
-    <td><%= trader.account %></td>
-    <td><%= trader.password_backup %></td>
     <td><%= trader.projects.count %></td>
-    <td><%= trader.updated_at.strftime("%Y/%m/%d %H:%M") %></td>
+    <td>
+        <% if trader.projects.any? %>
+            <%= trader.projects.last.created_at.strftime("%Y/%m/%d %H:%M") %>
+        <% end %>
+    </td>
   </tr>
 <% end %>
 

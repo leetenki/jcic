@@ -151,6 +151,22 @@ function openAlert(error) {
   });
 }
 
+function set_all_projects_paid() {
+  if(window.confirm('※确定后，以下所有签证单将会转为已支付状态。请注意。')) {
+    location.href = "/admin/paid_all?trader_id=" + encodeURIComponent(document.getElementById("trader_selector").value) + "&from=" + encodeURIComponent(document.getElementById("payment_from").value) + "&to=" + encodeURIComponent(document.getElementById("payment_to").value);  
+  }
+}
+
+function set_all_projects_unpaid() {
+  if(window.confirm('※确定后，以下所有签证单将会转为未支付状态。请注意。')) {
+    location.href = "/admin/unpaid_all?trader_id=" + encodeURIComponent(document.getElementById("trader_selector").value) + "&from=" + encodeURIComponent(document.getElementById("payment_from").value) + "&to=" + encodeURIComponent(document.getElementById("payment_to").value);  
+  }
+}
+
+function compute_invoice() {
+  location.href = "/admin/invoice?trader_id=" + encodeURIComponent(document.getElementById("trader_selector").value) + "&from=" + encodeURIComponent(document.getElementById("payment_from").value) + "&to=" + encodeURIComponent(document.getElementById("payment_to").value);    
+}
+
 // function to change element's class
 function changeClass(id, className) {
   document.getElementById(id).setAttribute("class", className);
@@ -747,7 +763,7 @@ function regenerateScheduleTable() {
   var lastDay = new Date(document.getElementById("dateLeaving").value);
   var firstDay = new Date(document.getElementById("dateArrival").value);
   var stay_term = subDate(lastDay, firstDay) + 1;
-  lastDayHotel = "已回国，不住宿。";
+  lastDayHotel = "帰国。";
 
   if($("#schedules_container table tr:last td:last textarea")[0].value == lastDayHotel) {
     $("#schedules_container table tr:last td:last textarea")[0].value = "";

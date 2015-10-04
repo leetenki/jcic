@@ -1,70 +1,3 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
-
-
-#init and admin and trader
-Trader.create(
-  :account => "admin",
-  :email => "toukyouniversityoftechnology@gmail.com",
-  :password => "1234567890",
-  :password_backup => "1234567890",
-  :company_name => "飞鹤国际旅行社",
-  :person_name => "李庆新",
-  :telephone => "08036991566",
-);
-
-Trader.create(
-  :account => "leetenki",
-  :qq => "140713694",
-  :email => "connect@qq.com",
-  :password => "1234567890",
-  :password_backup => "1234567890",
-  :company_name => "QQ国际旅行社",
-  :person_name => "李天琦",
-  :telephone => "08036991566",
-);
-
-
-#init china company code
-data = File.read("db/china_code.txt")
-data.lines.each do |line|
-  items = line.split("\t");
-
-  code = items[0].split(" ")[0]
-  locate = items[2];
-
-  if(items[1].include?("【停止】"))
-    name = items[1].split("【停止】")[1]
-    status = "stopped"
-  else
-    name = items[1]
-    status = "working"
-  end
-
-  memo = nil;
-  if !items[3].nil?
-    memo = items[3].split("\n")[0]
-  end
-
-  CompanyCode.create(
-    :name => name,
-    :code => code,
-    :locate => locate,
-    :memo => memo,
-    :status => status,
-    :address => nil,
-  );
-end
-
-
-
-
-#init_traders
 accounts = [
   {
     :company_name => "AIM大阪",
@@ -915,25 +848,11 @@ accounts.each do |account|
 #  account[:password_backup] = [*1..9, *'A'..'Z', *'a'..'z'].sample(8).join
   account[:password_backup] = [*1..9].sample(8).join
   account[:password] = account[:password_backup]
-
-  Trader.create(
-    :account => account[:account],
-    :qq => account[:qq],
-    :email => account[:email],
-    :password => account[:password],
-    :password_backup => account[:password_backup],
-    :company_name => account[:company_name],
-    :person_name => account[:person_name],
-    :telephone => account[:telephone],
-    :indivisual_price => account[:indivisual_price],
-    :group_price_indivisual => account[:group_price_indivisual],
-    :group_price_11_20 => account[:group_price_11_20],
-    :group_price_21_30 => account[:group_price_21_30],
-    :group_price_31_40 => account[:group_price_31_40],
-    :year_3_price => account[:year_3_price],
-    :year_5_price => account[:year_5_price],
-  );
 end
+#p names
+
+
+
 
 
 

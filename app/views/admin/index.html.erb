@@ -1,6 +1,6 @@
 <h1>
   <i class="fa fa-dollar"></i> 
-  請求書作成
+  請求書
 </h1>
 
 
@@ -10,22 +10,28 @@
       <table class="project-info table">
         <caption>
 
+          <% if !@waiting %>
+            <div class="row" style="text-align:center"><h3>查询结果：<%= @projects.length %>件<h3></div>
+          <% end %>
 
-          <div class="row" style="text-align:center"><h3>所有的签证 （ 查询结果：<%= @projects.length %>件 ）<h3></div>
+
           <div class="row" style="text-align:center">
             <form action="/admin" accept-charset="UTF-8" method="get">
               <div class="col-md-4 col-sm-4 col-xs-4">
-                <select name="trader_id" class="form">
+                <select name="trader_id" class="form-control" id="trader_selector">
+                  <option value="*" <%= "selected=selected" if params[:trader_id] == "*" %>>全部</option>
                   <% @traders.each do |trader| %>
-                    <option value="<%= trader.id %>"><%= trader.company_name %></option>
+                    <option value="<%= trader.id %>" <%= "selected=selected" if params[:trader_id] == trader.id.to_s %>><%= trader.company_name %></option>
                   <% end %>
                 </select>
               </div>
-              <div class="col-md-3 col-sm-3 col-xs-3">
-                <input type="text" class="form-control free-datepicker" placeholder="开始日期" name="from"/>
+              <div class="col-md-1 col-sm-1 col-xs-1" style="text-align:right; margin-top:5px;">from:</div>
+              <div class="col-md-2 col-sm-2 col-xs-2">
+                <input id="payment_from" type="text" class="form-control free-datepicker" placeholder="开始日期" name="from" value="<%= params[:from] %>"/>
               </div>
-              <div class="col-md-3 col-sm-3 col-xs-3">
-                <input type="text" class="form-control free-datepicker" placeholder="结束日期" name="to"/>
+              <div class="col-md-1 col-sm-1 col-xs-1" style="text-align:right; margin-top:5px;">to:</div>
+              <div class="col-md-2 col-sm-2 col-xs-2">
+                <input id="payment_to" type="text" class="form-control free-datepicker" placeholder="结束日期" name="to" value="<%= params[:to] %>"/>
               </div>
               <div class="col-md-2 col-sm-2 col-xs-2">
                 <input class="btn btn-primary require-loading" type="submit" value="検索"/>
@@ -33,27 +39,42 @@
             </form>
           </div>
 
+          <% if !@waiting %>
+            <div class="row" style="text-align:center; padding: 15px; margin: 5px; border: 1px gray dotted; border-radius: 30px;">
+              <% total_price = 0 %>
+              <% total_count = 0 %>
+              <% @projects.each do |project| %>
+                <% if project.payment == "unpaid" && project.status != "deleted" && !project.delete_request %>
+                  <% total_price += get_project_price(project) %>
+                  <% total_count += 1 %>
+                <% end %>
+              <% end %>
 
-
-          <div style="text-align:center; height:60px;">
-            <%= paginate @projects, :window => 5 %>
-          </div>
+              <div class="col-md-2 col-sm-2 col-xs-2">未払い分：</div>
+              <div class="col-md-2 col-sm-2 col-xs-2">合計<b style="color:orange"> <%= total_count.to_s %> </b>件</div>
+              <div class="col-md-2 col-sm-2 col-xs-2">総額<b style="color:orange;"> <%= total_price.to_s %> </b>円</div>
+              <div class="col-md-2 col-sm-2 col-xs-2"><button onclick="compute_invoice()" class="btn btn-primary require-loading">請求書作成</button></div>
+              <div class="col-md-2 col-sm-2 col-xs-2"><button onclick="set_all_projects_paid()" class="btn btn-success">全て入金済</button></div>
+              <div class="col-md-2 col-sm-2 col-xs-2"><button onclick="set_all_projects_unpaid()" class="btn btn-danger">全て未入金</button></div>
+            </div>
+          <% end %>
         </caption>
 
 
+        <% if !@waiting %>
+          <thead>
+            <tr>
+              <th>签证资料</th>
+              <th>状态</th>
+                <th>价格</th>
+              <th>回国报告</th>
+            </tr>
+          </thead>
 
-        <thead>
-          <tr>
-            <th>签证资料</th>
-            <th>状态</th>
-              <th>价格</th>
-            <th>回国报告</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <%= render @projects %>
-        </tbody>
+          <tbody>
+            <%= render @projects %>
+          </tbody>
+        <% end %>
       </table>
 
   </div>

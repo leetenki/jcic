@@ -70,7 +70,7 @@ class Trader < ActiveRecord::Base
   end
 
   #before_save
-  before_save { self.email = email.downcase }
+  before_save { self.email = email.downcase if email.present? }
 
   #validation name, email, password(password + password_confirmation -> password_digest)
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -78,7 +78,6 @@ class Trader < ActiveRecord::Base
   validates :person_name, :presence => true
   validates :account, :presence => true
   validates :password_backup, :presence => true
-  validates :telephone, :presence => true
   validates :indivisual_price, :presence => true
   validates :group_price_indivisual, :presence => true
   validates :group_price_11_20, :presence => true
@@ -88,6 +87,7 @@ class Trader < ActiveRecord::Base
   validates :year_5_price, :presence => true
   has_secure_password
 
+  #validates :telephone, :presence => true
   #validates :email, :presence => true, :length => { :maximum => 255 }, :format => { :with => VALID_EMAIL_REGEX }, :uniqueness => { :case_sensitive => true }
   #validates :fax, :presence => true
   #validates :qq, :presence => true

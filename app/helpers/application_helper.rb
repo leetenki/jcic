@@ -62,7 +62,7 @@ module ApplicationHelper
     total_price = 0
     people = project.clients.length
 
-    if(project.status == "deleted")
+    if(project.status == "deleted" || project.delete_request)
       total_price = 0
     elsif(project.visa_type == "individual")
       total_price = project.trader.indivisual_price * people
@@ -74,7 +74,7 @@ module ApplicationHelper
       if(project.trader.group_price_indivisual != 0)
         total_price = project.trader.group_price_indivisual * people
       elsif(people <= 10)
-        total_price = project.trader.indivisual_price * people
+        total_price = [project.trader.indivisual_price * people, project.trader.group_price_11_20].min
       elsif(people <= 20)
         total_price = project.trader.group_price_11_20
       elsif(people <= 30)

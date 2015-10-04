@@ -95,7 +95,7 @@
   </thead>
 
   <tbody>
-    <% @project.schedules.each do |schedule| %>
+    <% @project.schedules.each_with_index do |schedule, index| %>
       <tr>
         <td class="date"><%= schedule.date.strftime("%Y-%m-%d") %></td>
         <td class="plan"><%= schedule.plan %></td>

@@ -79,8 +79,12 @@
     <!-- ****************** price and payment container ******************* -->
     <td class="col-md-2 col-sm-2 col-xs-2">
         <% if is_admin? || (project.delete_request == false && project.status != "deleted") %>
-            <div class="price-cell <%= project.payment %>">¥<%= get_project_price(project) %> <%= payment_type_str(project.payment) %></div>
-            <div class="small-gray-cell">期限：<span class="<%= project.payment %>"><%= get_payment_deadline(project).strftime("%Y/%m/%d") %></span></div>
+            <% if project.status == "deleted" || project.delete_request == true %>
+                <div class="price-cell paid"><strike>¥0</strike></div>
+            <% else %>
+                <div class="price-cell <%= project.payment %>">¥<%= get_project_price(project) %> <%= payment_type_str(project.payment) %></div>
+                <div class="small-gray-cell">期限：<span class="<%= project.payment %>"><%= get_payment_deadline(project).strftime("%Y/%m/%d") %></span></div>
+            <% end %>
             <% if is_admin? %>
                 <div class="row">
                     <div class="btn-group col-md-12 col-sm-12 col-xs-12"  data-toggle="buttons">
@@ -98,8 +102,12 @@
     <td class="col-md-2 col-sm-2 col-xs-2">
         <% if is_admin? || (project.delete_request == false && project.status != "deleted")%>
             <% if is_admin? || Date.today > project.date_leaving %>
-                <div class="confirmation-cell <%= project.confirmation %>"><%= confirmation_type_str(project.confirmation) %></div>
-                <div class="small-gray-cell">期限：<span class="<%= project.confirmation %>"><%= (project.date_leaving + 7).strftime("%Y/%m/%d") %></span></div>
+                <% if project.status == "deleted" || project.delete_request == true %>
+                    <div class="confirmation-cell confirmed"><strike>回国报告</strike></div>
+                <% else %>
+                    <div class="confirmation-cell <%= project.confirmation %>"><%= confirmation_type_str(project.confirmation) %></div>
+                    <div class="small-gray-cell">期限：<span class="<%= project.confirmation %>"><%= (project.date_leaving + 7).strftime("%Y/%m/%d") %></span></div>
+                <% end %>
                 <div class="btn-container">
                     <% if is_admin? %>
                         <div class="row">
