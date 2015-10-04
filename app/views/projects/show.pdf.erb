@@ -98,8 +98,8 @@
     <% @project.schedules.each_with_index do |schedule, index| %>
       <tr>
         <td class="date"><%= schedule.date.strftime("%Y-%m-%d") %></td>
-        <td class="plan"><%= schedule.plan %></td>
-        <td class="hotel"><%= schedule.hotel %></td>
+        <td class="plan"><%= schedule.plan.gsub("。", ".").gsub(/[、，]/, ",").gsub("（", "(").gsub("）", ")") %></td>
+        <td class="hotel"><%= schedule.hotel.gsub("。", ".").gsub(/[、，]/, ",").gsub("（", "(").gsub("）", ")") %></td>
       </tr>
     <% end %>
   </tbody>
