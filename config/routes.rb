@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
   get 'admin/api_projects_need_update', :to => "admin#projects_need_update"
   get 'admin/project_json/(:id)', :to => "admin#project_json"
+  get 'admin', :to => "admin#index", :as => "admin"
 
   resources :traders
   resources :projects

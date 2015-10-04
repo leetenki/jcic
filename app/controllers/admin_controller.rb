@@ -1,5 +1,10 @@
 class AdminController < ApplicationController
-  before_action :logged_in_admin, :only => [:projects_need_update, :project_json]
+  before_action :logged_in_admin, :only => [:index, :projects_need_update, :project_json]
+
+  def index
+    @traders = Trader.where("id <> 1")
+    @projects = Project.all.page(params[:page])
+  end
 
   def projects_need_update
     text = Project.all.to_json({:only => [:clients => [:id]] })
@@ -10,4 +15,5 @@ class AdminController < ApplicationController
     text = Project.find_by(:id => params[:id]).to_json({:include => [:schedules, :clients]})
     render :text => text;
   end
+
 end
