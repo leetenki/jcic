@@ -14,6 +14,11 @@ module ApplicationHelper
     return payment_str[payment]
   end
 
+  def activation_type_str(activation)
+    activation_str = {true => "有效", false => "停止"}
+    return activation_str[activation]
+  end
+
   def confirmation_type_str(confirmation)
     confirmation_str = {"unconfirmed" => "未确认回国", "confirmed" => "已确认回国"}
     return confirmation_str[confirmation]

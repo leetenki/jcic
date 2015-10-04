@@ -80,6 +80,10 @@
         <tr>
           <td>申请总数</td>
           <td><div style="font-weight:bold; color:orange;"><%= @trader.projects.length %> 件</div></td>
+        </tr>
+        <tr>
+          <td>状态</td>
+          <td><%= activation_type_str(@trader.activation) %></td>
         </tr>        
         <tr>
           <td>最终更新</td>

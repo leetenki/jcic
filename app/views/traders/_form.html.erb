@@ -56,5 +56,16 @@
       <%= f.label :bank, "银行账户" %>
       <%= f.text_field :bank, :class => 'form-control' %>
 
+
+      <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
+        <label class="btn btn-default col-md-4 col-sm-4 <%= 'active' if trader.activation %>">
+          <input type="radio" value="true" name="trader[activation]" <%= 'selected=selected' if trader.activation %> />有效
+        </label>
+        <label class="btn btn-default col-md-4 col-sm-4 <%= 'active' if !trader.activation %>">
+          <input type="radio" value="false" name="trader[activation]" <%= 'selected=selected' if !trader.activation %> />停止
+        </label>
+      </div>
+
+
       <%= f.submit button_text, :class => "btn btn-large btn-primary" %>
 <% end %>

@@ -5,12 +5,18 @@ class SessionsController < ApplicationController
   def create
     @trader = Trader.find_by(:account => params[:session][:account])
     if(@trader && @trader.authenticate(params[:session][:password]))
-      session[:trader_id] = @trader.id
-      flash[:info] = "#{@trader.company_name} #{@trader.person_name} 欢迎您登录飞鹤旅签证网！"
-      if(is_admin?)
-        redirect_to projects_path
-      elsif(is_trader?)
-        redirect_to projects_path
+      if(@trader.activation)
+        session[:trader_id] = @trader.id
+        session[:updated_at] = Time.now
+        flash[:info] = "#{@trader.company_name}，欢迎您登录飞鹤国际签证网！"
+        if(is_admin?)
+          redirect_to projects_path
+        elsif(is_trader?)
+          redirect_to projects_path
+        end
+      else
+        flash[:danger] = "对不起，您的账户被冻结，暂时不能使用。"
+        render "new"        
       end
     else
       flash[:danger] = "对不起，您的账户与密码不正确。"
@@ -20,6 +26,7 @@ class SessionsController < ApplicationController
 
   def destroy
     session[:trader_id] = nil
+    session[:updated_at] = nil
     redirect_to login_path
   end
 end

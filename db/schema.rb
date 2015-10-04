@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150927132906) do
+ActiveRecord::Schema.define(version: 20151004052109) do
 
   create_table "clients", force: :cascade do |t|
     t.integer  "project_id"
@@ -82,6 +82,16 @@ ActiveRecord::Schema.define(version: 20150927132906) do
   add_index "schedules", ["project_id", "date"], name: "unique_schedule", unique: true
   add_index "schedules", ["project_id"], name: "index_schedules_on_project_id"
 
+  create_table "sessions", force: :cascade do |t|
+    t.string   "session_id", null: false
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true
+  add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at"
+
   create_table "traders", force: :cascade do |t|
     t.string   "account"
     t.string   "password_backup"
@@ -105,6 +115,7 @@ ActiveRecord::Schema.define(version: 20150927132906) do
     t.integer  "year_3_price",           default: 1000
     t.integer  "year_5_price",           default: 1000
     t.integer  "other_price",            default: 5000
+    t.boolean  "activation",             default: true
   end
 
   add_index "traders", ["account"], name: "index_traders_on_account", unique: true
