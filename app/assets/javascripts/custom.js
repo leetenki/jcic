@@ -132,15 +132,17 @@ $(document).ready(function(){
 
 // function to open panel
 function openAlert(error) {
-  $(".alert-panel").fadeIn(700, function(){
+  $(".alert-panel").fadeIn(300, function(){
     if(error) {
       //alert($(".alert-panel li:first").text() + " 请修改.");
       var fadeOut = function() {
         document.removeEventListener("click", fadeOut);
-        $(".alert-panel").fadeOut(1500, function(){
+        document.removeEventListener("touchstart", fadeOut);
+        $(".alert-panel").fadeOut(300, function(){
         });        
       }
       document.addEventListener("click", fadeOut)
+      document.addEventListener("touchstart", fadeOut, false)
 
     } else {
       $(".alert-panel").fadeOut(3200, function(){
