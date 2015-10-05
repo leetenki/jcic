@@ -38,7 +38,25 @@ table.details th {
   width: 7%;
 }
 .during {
-  width: 30%;
+  width: 31%;
 }
 
 
+table.conclusion {
+  margin-top: 30px;
+  width: 100%;
+  text-align: center;
+}
+table.conclusion, table.conclusion th, table.conclusion td {
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+table.conclusion th {
+  padding: 10px;
+  font-size: 15px;
+}
+table.conclusion td {
+  padding: 10px;
+  font-size: 17px;
+  font-weight: bold;
+}
