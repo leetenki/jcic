@@ -45,6 +45,7 @@ class AdminController < ApplicationController
       redirect_to "/admin?" + URI.encode_www_form([["trader_id", params[:trader_id]], ["from", params[:from]], ["to", params[:to]]])
       return
     else 
+      @projects = @projects.order("id")
       @trader = Trader.find_by(:id => params[:trader_id])
       html = render_to_string(:template => "/admin/invoice.pdf.erb")
       pdf = PDFKit.new(html, :encoding => "UTF-8"); 

@@ -20,7 +20,7 @@ table.details th {
   width: 4%;
 }
 .company {
-  width: 30%;
+  width: 29%;
 }
 .date {
   width: 7%;
@@ -32,7 +32,13 @@ table.details th {
   width: 4%;
 }
 .unit {
-  width: 5%;
+  width: 6%;
+}
+.amount {
+  width: 7%;
+}
+.during {
+  width: 30%;
 }
 
 

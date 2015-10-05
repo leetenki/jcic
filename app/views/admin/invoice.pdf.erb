@@ -131,6 +131,7 @@
 
   <tbody>
     <% @projects.each_with_index do |project, index| %>
+
       <% if project[:delete_request] || project[:status] == "deleted" %>
         <tr style="text-decoration:line-through">
       <% else %>
@@ -145,6 +146,134 @@
         <td class="amount">¥<%= get_project_price(project) %></td>
         <td class="during"><%= project[:date_arrival].to_era("%O%E年%m月%d日") %>から<%= project[:date_leaving].to_era("%O%E年%m月%d日") %></td>
       </tr>
+      <% if project[:delete_request] || project[:status] == "deleted" %>
+        <tr style="text-decoration:line-through">
+      <% else %>
+        <tr>
+      <% end %>
+        <td class="no"><%= index + 1 %></td>
+        <td class="company"><%= project[:china_company_name] %></td>
+        <td class="date"><%= project[:created_at].strftime("%m月%d日") %></td>
+        <td class="description"><%= visa_type_str_short(project[:visa_type]) %> <%= project[:representative_name_chinese] %></td>
+        <td class="pax"><%= project[:total_people] %>人</td>
+        <td class="unit">¥<%= get_unit_price(project) %></td>
+        <td class="amount">¥<%= get_project_price(project) %></td>
+        <td class="during"><%= project[:date_arrival].to_era("%O%E年%m月%d日") %>から<%= project[:date_leaving].to_era("%O%E年%m月%d日") %></td>
+      </tr>
+      <% if project[:delete_request] || project[:status] == "deleted" %>
+        <tr style="text-decoration:line-through">
+      <% else %>
+        <tr>
+      <% end %>
+        <td class="no"><%= index + 1 %></td>
+        <td class="company"><%= project[:china_company_name] %></td>
+        <td class="date"><%= project[:created_at].strftime("%m月%d日") %></td>
+        <td class="description"><%= visa_type_str_short(project[:visa_type]) %> <%= project[:representative_name_chinese] %></td>
+        <td class="pax"><%= project[:total_people] %>人</td>
+        <td class="unit">¥<%= get_unit_price(project) %></td>
+        <td class="amount">¥<%= get_project_price(project) %></td>
+        <td class="during"><%= project[:date_arrival].to_era("%O%E年%m月%d日") %>から<%= project[:date_leaving].to_era("%O%E年%m月%d日") %></td>
+      </tr>
+      <% if project[:delete_request] || project[:status] == "deleted" %>
+        <tr style="text-decoration:line-through">
+      <% else %>
+        <tr>
+      <% end %>
+        <td class="no"><%= index + 1 %></td>
+        <td class="company"><%= project[:china_company_name] %></td>
+        <td class="date"><%= project[:created_at].strftime("%m月%d日") %></td>
+        <td class="description"><%= visa_type_str_short(project[:visa_type]) %> <%= project[:representative_name_chinese] %></td>
+        <td class="pax"><%= project[:total_people] %>人</td>
+        <td class="unit">¥<%= get_unit_price(project) %></td>
+        <td class="amount">¥<%= get_project_price(project) %></td>
+        <td class="during"><%= project[:date_arrival].to_era("%O%E年%m月%d日") %>から<%= project[:date_leaving].to_era("%O%E年%m月%d日") %></td>
+      </tr>
+      <% if project[:delete_request] || project[:status] == "deleted" %>
+        <tr style="text-decoration:line-through">
+      <% else %>
+        <tr>
+      <% end %>
+        <td class="no"><%= index + 1 %></td>
+        <td class="company"><%= project[:china_company_name] %></td>
+        <td class="date"><%= project[:created_at].strftime("%m月%d日") %></td>
+        <td class="description"><%= visa_type_str_short(project[:visa_type]) %> <%= project[:representative_name_chinese] %></td>
+        <td class="pax"><%= project[:total_people] %>人</td>
+        <td class="unit">¥<%= get_unit_price(project) %></td>
+        <td class="amount">¥<%= get_project_price(project) %></td>
+        <td class="during"><%= project[:date_arrival].to_era("%O%E年%m月%d日") %>から<%= project[:date_leaving].to_era("%O%E年%m月%d日") %></td>
+      </tr>
+      <% if project[:delete_request] || project[:status] == "deleted" %>
+        <tr style="text-decoration:line-through">
+      <% else %>
+        <tr>
+      <% end %>
+        <td class="no"><%= index + 1 %></td>
+        <td class="company"><%= project[:china_company_name] %></td>
+        <td class="date"><%= project[:created_at].strftime("%m月%d日") %></td>
+        <td class="description"><%= visa_type_str_short(project[:visa_type]) %> <%= project[:representative_name_chinese] %></td>
+        <td class="pax"><%= project[:total_people] %>人</td>
+        <td class="unit">¥<%= get_unit_price(project) %></td>
+        <td class="amount">¥<%= get_project_price(project) %></td>
+        <td class="during"><%= project[:date_arrival].to_era("%O%E年%m月%d日") %>から<%= project[:date_leaving].to_era("%O%E年%m月%d日") %></td>
+      </tr>
+      <% if project[:delete_request] || project[:status] == "deleted" %>
+        <tr style="text-decoration:line-through">
+      <% else %>
+        <tr>
+      <% end %>
+        <td class="no"><%= index + 1 %></td>
+        <td class="company"><%= project[:china_company_name] %></td>
+        <td class="date"><%= project[:created_at].strftime("%m月%d日") %></td>
+        <td class="description"><%= visa_type_str_short(project[:visa_type]) %> <%= project[:representative_name_chinese] %></td>
+        <td class="pax"><%= project[:total_people] %>人</td>
+        <td class="unit">¥<%= get_unit_price(project) %></td>
+        <td class="amount">¥<%= get_project_price(project) %></td>
+        <td class="during"><%= project[:date_arrival].to_era("%O%E年%m月%d日") %>から<%= project[:date_leaving].to_era("%O%E年%m月%d日") %></td>
+      </tr>
+      <% if project[:delete_request] || project[:status] == "deleted" %>
+        <tr style="text-decoration:line-through">
+      <% else %>
+        <tr>
+      <% end %>
+        <td class="no"><%= index + 1 %></td>
+        <td class="company"><%= project[:china_company_name] %></td>
+        <td class="date"><%= project[:created_at].strftime("%m月%d日") %></td>
+        <td class="description"><%= visa_type_str_short(project[:visa_type]) %> <%= project[:representative_name_chinese] %></td>
+        <td class="pax"><%= project[:total_people] %>人</td>
+        <td class="unit">¥<%= get_unit_price(project) %></td>
+        <td class="amount">¥<%= get_project_price(project) %></td>
+        <td class="during"><%= project[:date_arrival].to_era("%O%E年%m月%d日") %>から<%= project[:date_leaving].to_era("%O%E年%m月%d日") %></td>
+      </tr>
+      <% if project[:delete_request] || project[:status] == "deleted" %>
+        <tr style="text-decoration:line-through">
+      <% else %>
+        <tr>
+      <% end %>
+        <td class="no"><%= index + 1 %></td>
+        <td class="company"><%= project[:china_company_name] %></td>
+        <td class="date"><%= project[:created_at].strftime("%m月%d日") %></td>
+        <td class="description"><%= visa_type_str_short(project[:visa_type]) %> <%= project[:representative_name_chinese] %></td>
+        <td class="pax"><%= project[:total_people] %>人</td>
+        <td class="unit">¥<%= get_unit_price(project) %></td>
+        <td class="amount">¥<%= get_project_price(project) %></td>
+        <td class="during"><%= project[:date_arrival].to_era("%O%E年%m月%d日") %>から<%= project[:date_leaving].to_era("%O%E年%m月%d日") %></td>
+      </tr>
+      <% if project[:delete_request] || project[:status] == "deleted" %>
+        <tr style="text-decoration:line-through">
+      <% else %>
+        <tr>
+      <% end %>
+        <td class="no"><%= index + 1 %></td>
+        <td class="company"><%= project[:china_company_name] %></td>
+        <td class="date"><%= project[:created_at].strftime("%m月%d日") %></td>
+        <td class="description"><%= visa_type_str_short(project[:visa_type]) %> <%= project[:representative_name_chinese] %></td>
+        <td class="pax"><%= project[:total_people] %>人</td>
+        <td class="unit">¥<%= get_unit_price(project) %></td>
+        <td class="amount">¥<%= get_project_price(project) %></td>
+        <td class="during"><%= project[:date_arrival].to_era("%O%E年%m月%d日") %>から<%= project[:date_leaving].to_era("%O%E年%m月%d日") %></td>
+      </tr>
+
+
     <% end %>
   </tbody>
 </table>
