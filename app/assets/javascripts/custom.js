@@ -108,7 +108,7 @@ $(document).ready(function(){
 
   // init now_loading
   $(".require-loading").click(function() {
-    $("#now_loading")[0].style.display = "block";
+    //$("#now_loading")[0].style.display = "block";
   });
 
   // add validation function to time picker
