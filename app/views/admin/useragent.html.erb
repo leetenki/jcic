@@ -1,0 +1,7 @@
+<% user_agent = UserAgent.parse(request.env["HTTP_USER_AGENT"]) %><br/>
+App: <b><%= user_agent.application %></b> # Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:22.0)<br/> 
+Browser: <b><%= user_agent.browser %></b> # Firefox<br/>
+Version: <b><%= user_agent.version %></b> # 22.0<br/>
+Platform: <b><%= user_agent.platform %></b> # Macintosh<br/>
+Mobile: <b><%= user_agent.mobile? %></b> # False<br/>
+OS: <b><%= user_agent.os %></b> # OS X 10.8<br/>

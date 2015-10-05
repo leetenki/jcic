@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   get 'admin/paid_all', :to => "admin#paid_all"
   get 'admin/unpaid_all', :to => "admin#unpaid_all"
   get 'admin/invoice', :to => "admin#invoice"
+  get 'admin/useragent', :to => "admin#useragent"
+
 
   resources :traders
   resources :projects

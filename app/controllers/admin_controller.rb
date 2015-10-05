@@ -64,6 +64,10 @@ class AdminController < ApplicationController
     render :text => text;
   end
 
+  #action to testing and detect user agent
+  def useragent    
+  end
+
 
 private
   def initial_search
