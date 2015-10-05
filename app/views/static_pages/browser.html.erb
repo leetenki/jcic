@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JCIC</title>
+  <link rel="shortcut icon" type="image/x-icon" href="/ico.png" />
+</head>
+<body>
+  <div style="text-align:center; margin: 30px 0;">
+    <div style="border: dashed 2px black; padding: 30px; display: inline-block; background-color: #caea9a">
+      ※对不起，您使用的浏览器是内核为较落后的<%= @user_agent.browser %>。<br/>
+      由于安全问题，我们不准许<%= @user_agent.browser %>系列浏览器访问飞鹤网。<br/>
+      我们推荐您使用以下高级浏览器。请您任意下载一个浏览器后，<br/>
+      用新浏览器再次访问此网站。（若您正在使用360极速版浏览器，<br/>
+      您需要将鼠标移动到空白处点右键后，选择“切换到极速模式”）
+    </div>
+  </div>
+
+  <table style="width:100%; text-align:center; color:#999999">
+    <tr>
+      <td style="padding-bottom: 50px;">
+        <a href="http://www.apple.com/cn/safari/"><img src="safari.jpg" style="width:200px;"></a><br/>Safari网络浏览器
+      </td>
+      <td style="padding-bottom: 50px;">
+        <a href="http://ie.sogou.com/"><img src="sougo.png" style="width:200px;"></a><br/>搜狗智能高速浏览器
+      </td>
+      <td style="padding-bottom: 50px;">
+        <a href="http://www.firefox.com.cn/download/"><img src="firefox.png" style="width:200px;"></a><br/>火狐高速浏览器
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="http://www.google.cn/intl/zh-CN/chrome/browser/desktop/index.html"><img src="chrome.png" style="width:180px;"></a><br/>谷歌极速浏览器
+      </td>
+      <td>
+        <a href="http://browser.qq.com/"><img src="qq.jpg" style="width:200px;"></a><br/>QQ新内核浏览器
+      </td>
+      <td>
+        <a href="http://chrome.360.cn/"><img src="360.png" style="width:200px;"></a><br/>360极速版浏览器
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

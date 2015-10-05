@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  before_action :logged_in_admin, :only => [:index, :paid_all, :unpaid_all, :invoice, :projects_need_update, :project_json]
+  before_action :logged_in_admin, :only => [:index, :paid_all, :unpaid_all, :invoice, :useragent, :projects_need_update, :project_json]
   before_action :initial_search, :only => [:paid_all, :unpaid_all]
 
   def index

@@ -1,5 +1,9 @@
 class SessionsController < ApplicationController
   def new
+    @user_agent = UserAgent.parse(request.env["HTTP_USER_AGENT"])
+    if(!@user_agent.browser.match(/Chrome|Firefox|Safari/))
+      render '/static_pages/browser', :layout => false
+    end
   end
 
   def create
