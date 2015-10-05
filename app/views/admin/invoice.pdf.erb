@@ -1,1 +1,154 @@
-<div class="head">請求書</div>
+<!-- ************************** calculation ********************** -->
+<% total_price = 0 %>
+<% total_count = 0 %>
+<% @projects.each do |project| %>
+  <% if project.payment == "unpaid" && project.status != "deleted" && !project.delete_request %>
+    <% total_price += get_project_price(project) %>
+    <% total_count += 1 %>
+  <% end %>
+<% end %>
+
+
+
+<!-- ************************** header *************************** -->
+<div style="padding-left: 10px;"><%= image_tag(::Rails.root.join('public','small_jcic_logo.jpg'), :style => "width:  180px") %></div>
+<div style="position:absolute; top: 0px; right: 0px;">
+  <table style="font-size:12px;">
+    <tr>
+      <td style="padding-right:40px;">発行日:</td>
+      <td style=""><%= Date.today.strftime("%Y年%m月%d日") %></td>
+    </tr>
+    <tr>
+      <td>請求期間:</td>
+      <td style="font-size: 0.9em;"><%= Date.parse(params[:from]).strftime("%Y年%m月%d日") %> ~ <%= Date.parse(params[:to]).strftime("%Y年%m月%d日") %></td>
+    </tr>
+    <tr>
+      <td>伝票番号:</td>
+      <td style=""><%= Time.now.strftime("%Y%m%d%H%M%S") %></td>
+    </tr>
+    <tr>
+      <td>担当:</td>
+      <td style=""><%= Constants::JAPAN_SIDE_CHIEF %></td>
+    </tr>
+  </table>
+</div>
+
+<!-- ************************** title *************************** -->
+<div class="head" style="text-align:center; font-size:27px; font-weight:bold; margin-top:40px;">
+  <span style="border-bottom: 1px solid black; padding-bottom: 2px;"> 　<%= Date.parse(params[:to]).month %>　月　份　御　請　求　書 　</span>
+  <br><span style="font-size: 20px;">INVOICE</span>
+</div>
+
+<!-- ************************** info *************************** -->
+<table style="width:100%; margin-top: 30px;">
+  <tr>
+    <td style="border: 1px solid black; width: 50%; padding: 10px; font-size:20px; text-align:center"><%= @trader.company_name %> 様</td>
+    <td style="width: 50%; padding-left:50px; font-size:14px;" rowspan="3">
+      <%= Constants::INVOICE_COMPANY_NAME%><br/>
+      <%= Constants::INVOICE_COMPANY_ADDRESS_1 %><br/>
+      <%= Constants::INVOICE_COMPANY_ADDRESS_2 %><br/>      
+      電話 : <%= Constants::INVOICE_COMPANY_PHONE %><br/>     
+      FAX : <%= Constants::INVOICE_COMPANY_FAX %><br/>
+      <div style="position:absolute; margin-top: -80px; margin-left: 130px;"><%= image_tag(::Rails.root.join('public','jcic_sign.png'), :style => "width:  85px") %></div>
+    </td>
+  </tr>
+
+  <tr>
+    <td style="height:20px"> </td>
+  </tr>
+
+  <tr>
+    <td rowspan="2" style="border: 1px solid black; width: 40%; padding: 15px; font-size:23px; text-align:center">
+      ¥ <%= total_price.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\1,').reverse %>
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td style="height:20px;"></td>
+    <td style="width: 50%; padding-left:50px; font-size:14px;" rowspan="2">
+      <span style="font-weight:bold">振込先:</span><br/>
+      <%= Constants::INVOICE_COMPANY_BANK_1 %><br/>
+      <%= Constants::INVOICE_COMPANY_BANK_2 %><br/>
+      <span style="font-size:12px"><%= Constants::INVOICE_COMPANY_BANK_3 %></span>
+    </td>
+  </tr>
+
+  <tr>
+    <td rowspan="2" style="border: 1px solid black; width: 40%; font-size:13px; font-weight:bold; text-align:center">
+      <div style="width:56%; float:left; padding-top: 10px;  padding-bottom: 10px; border-right: 1px solid black; line-height:20px;">
+        支払い期限 : <br/>
+        Payment Due Date : 
+      </div>
+      <div style="width:44%; float:right; text-align:center; margin-top: 20px; font-size:16px; text-decoration: underline">
+        <%= Date.parse(params[:to]).next_month.strftime("%Y年%m月10日") %>
+      </div>
+    </td>
+  </tr>
+
+  <tr>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td></td>
+    <td style="width: 50%; padding-left:50px; font-size:13px; line-height:18px;">
+      <span style="font-weight:bold;">ENGLISH (英文) : </span><br/>
+      Bank Account :<%= Constants::INVOICE_COMPANY_BANK_ENGLISH_1 %><br/>
+      <%= Constants::INVOICE_COMPANY_BANK_ENGLISH_2 %><br/>
+      Branch Code: <%= Constants::INVOICE_COMPANY_BANK_ENGLISH_3 %><br/>
+      Account No. : <%= Constants::INVOICE_COMPANY_BANK_ENGLISH_4 %><br/>
+      Account Name: <span style="font-size:11px;"><%= Constants::INVOICE_COMPANY_BANK_ENGLISH_5 %></span><br/>
+      Bank Swift Code: <%= Constants::INVOICE_COMPANY_BANK_ENGLISH_6 %>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2" style="width: 100%; font-size:15px;line-height:23px; padding: 25px 25px 25px 0;">
+      *尚振込み手数料はお客様にてご負担お願い致します<br/>
+      下記の通りご請求申し上げます。               
+    </td>
+  </tr>
+</table>
+
+
+<!-- ************************** details *************************** -->
+<table class="details">
+  <thead>
+    <tr>
+      <th class="no">数次<br/>View</th>
+      <th class="company">公司<br/>Company</th>
+      <th class="date">日付<br/>Dates</th>
+      <th class="description">明細<br/>Descriptions</th>
+      <th class="pax">人数<br/>Pax</th>
+      <th class="unit">单价<br/>Unit</th>
+      <th class="amount">金額<br/>Amount</th>
+      <th class="during">期间<br/>During</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @projects.each_with_index do |project, index| %>
+      <% if project[:delete_request] || project[:status] == "deleted" %>
+        <tr style="text-decoration:line-through">
+      <% else %>
+        <tr>
+      <% end %>
+        <td class="no"><%= index + 1 %></td>
+        <td class="company"><%= project[:china_company_name] %></td>
+        <td class="date"><%= project[:created_at].strftime("%m月%d日") %></td>
+        <td class="description"><%= visa_type_str_short(project[:visa_type]) %> <%= project[:representative_name_chinese] %></td>
+        <td class="pax"><%= project[:total_people] %>人</td>
+        <td class="unit">¥<%= get_unit_price(project) %></td>
+        <td class="amount">¥<%= get_project_price(project) %></td>
+        <td class="during"><%= project[:date_arrival].to_era("%O%E年%m月%d日") %>から<%= project[:date_leaving].to_era("%O%E年%m月%d日") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+
+

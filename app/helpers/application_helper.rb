@@ -4,6 +4,11 @@ module ApplicationHelper
     return visa_type_table[visa_type] 
   end
 
+  def visa_type_str_short(visa_type)
+    visa_type_table = {"individual" => "个人", "group" => "团体", "3years" => "三年", "5years" => "五年"}
+    return visa_type_table[visa_type] 
+  end
+
   def status_type_str(status)
     status_str = {"uncommitted" => "正在申请...", "waiting" => "正在等待", "committed" => "已发送完毕", "deleted" => "已删除"};
     return status_str[status]
@@ -86,6 +91,40 @@ module ApplicationHelper
 
     return total_price;
   end
+
+  def get_unit_price(project)
+    people = project.clients.length
+    unit_price = 0
+
+    if(project.status == "deleted" || project.delete_request)
+      unit_price = 0
+    elsif(project.visa_type == "individual")
+      unit_price = project.trader.indivisual_price
+    elsif(project.visa_type == "3years")
+      unit_price = project.trader.year_3_price
+    elsif(project.visa_type == "5years")
+      unit_price = project.trader.year_5_price
+    elsif(project.visa_type == "group")
+      if(project.trader.group_price_indivisual != 0)
+        unit_price = project.trader.group_price_indivisual
+      elsif(people <= 10)
+        if(project.trader.indivisual_price * people > project.trader.group_price_11_20)
+          unit_price = project.trader.group_price_11_20
+        else
+          unit_price = project.trader.indivisual_price
+        end
+      elsif(people <= 20)
+        unit_price = project.trader.group_price_11_20
+      elsif(people <= 30)
+        unit_price = project.trader.group_price_21_30
+      elsif(people <= 40)
+        unit_price = project.trader.group_price_31_40
+      end
+    end
+
+    return unit_price;
+  end
+
 
   def get_payment_deadline(project)
     return Date.new(project.created_at.year, project.created_at.month+1, 10) 

@@ -1,0 +1,38 @@
+table.details {
+  text-align: center;
+  width: 100%;
+  border-collapse: collapse;
+}
+table.details td {
+  padding: 5px 0;
+  text-align: center;
+  font-size: 10px;
+  border: solid 1px black;
+  font-weight: normal;
+}
+table.details th {
+  font-size: 11px;
+  background-color: #dddddd;
+  border: solid 1px black;
+  font-weight: bold;
+}
+.no {
+  width: 4%;
+}
+.company {
+  width: 30%;
+}
+.date {
+  width: 7%;
+}
+.description {
+  width: 12%;
+}
+.pax {
+  width: 4%;
+}
+.unit {
+  width: 5%;
+}
+
+
