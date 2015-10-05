@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
   before_action :logged_in_admin, :only => [:index, :paid_all, :unpaid_all, :invoice, :projects_need_update, :project_json]
-  before_action :initial_search, :only => [:paid_all, :unpaid_all, :invoice]
+  before_action :initial_search, :only => [:paid_all, :unpaid_all]
 
   def index
     if !params[:trader_id].present? && !params[:from].present? && !params[:to].present?
@@ -45,7 +45,7 @@ class AdminController < ApplicationController
       redirect_to "/admin?" + URI.encode_www_form([["trader_id", params[:trader_id]], ["from", params[:from]], ["to", params[:to]]])
       return
     else 
-      @projects = @projects.order("id")
+      @projects = search_projects(params[:trader_id], params[:from], params[:to]).order("id asc")   
       @trader = Trader.find_by(:id => params[:trader_id])
       html = render_to_string(:template => "/admin/invoice.pdf.erb")
       pdf = PDFKit.new(html, :encoding => "UTF-8"); 

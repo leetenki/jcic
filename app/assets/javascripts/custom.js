@@ -164,7 +164,7 @@ function set_all_projects_unpaid() {
 }
 
 function compute_invoice() {
-  location.href = "/admin/invoice?trader_id=" + encodeURIComponent(document.getElementById("trader_selector").value) + "&from=" + encodeURIComponent(document.getElementById("payment_from").value) + "&to=" + encodeURIComponent(document.getElementById("payment_to").value);    
+  window.open().location.href = "/admin/invoice?trader_id=" + encodeURIComponent(document.getElementById("trader_selector").value) + "&from=" + encodeURIComponent(document.getElementById("payment_from").value) + "&to=" + encodeURIComponent(document.getElementById("payment_to").value);    
 }
 
 // function to change element's class
