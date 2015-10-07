@@ -70,9 +70,7 @@ class AdminController < ApplicationController
 
   def set_project_committed
     @project = Project.find(params[:id])
-    p params
     @project.assign_attributes({:status => "committed", :system_code => params[:system_code]})
-    p @project.system_code
     @project.record_timestamps = false
     @project.save :validate => false;
     render :text => "succeeded to update project " + @project.id.to_s
@@ -96,7 +94,7 @@ class AdminController < ApplicationController
   def set_delete_requesting_projects_deleted
     @projects = Project.where("delete_request = ?", true).order("id asc")
     @projects.each do |project|
-      project.assign_attributes(:status => "deleted", :delete_request => false)
+      project.assign_attributes({:status => "deleted", :delete_request => false})
       project.record_timestamps = false
       project.save :validate => false;
     end
