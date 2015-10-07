@@ -70,7 +70,9 @@ class AdminController < ApplicationController
 
   def set_project_committed
     @project = Project.find(params[:id])
-    @project.assign_attributes(:status => "committed", :system_code => params[:system_code])
+    p params
+    @project.assign_attributes({:status => "committed", :system_code => params[:system_code]})
+    p @project.system_code
     @project.record_timestamps = false
     @project.save :validate => false;
     render :text => "succeeded to update project " + @project.id.to_s

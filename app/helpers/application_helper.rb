@@ -25,7 +25,7 @@ module ApplicationHelper
   end
 
   def confirmation_type_str(confirmation)
-    confirmation_str = {"unconfirmed" => "未确认回国", "confirmed" => "已确认回国"}
+    confirmation_str = {"unconfirmed" => "未确认回国", "confirmed" => "已发送"}
     return confirmation_str[confirmation]
   end
 
