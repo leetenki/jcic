@@ -16,6 +16,7 @@ gem 'kaminari'
 gem 'unicorn'
 gem 'activerecord-session_store'
 gem 'useragent', '~> 0.15.2'
+gem 'carrierwave'
 #gem 'bcrypt', '~> 3.1.7'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

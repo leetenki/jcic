@@ -2,6 +2,9 @@ require 'utility'
 include Utility
 
 class Project < ActiveRecord::Base
+  #uploader
+  mount_uploader :pdf, PdfUploader
+
   #relationships
   belongs_to :trader
   has_many :schedules, -> { order("id") }, :dependent => :destroy
@@ -165,6 +168,16 @@ class Project < ActiveRecord::Base
 
     if(visa_type.present? && visa_type != "group" && total_people > 10)
       errors.add(:total_people, "除团体签证以外，人数不可超过10人.");      
+    end
+
+    self.total_man = 0
+    self.total_woman = 0
+    self.clients.each do |client|
+      if client.gender == "male"
+        self.total_man += 1
+      else
+        self.total_woman += 1
+      end
     end
   end
 

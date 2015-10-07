@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151004062956) do
+ActiveRecord::Schema.define(version: 20151006193446) do
 
   create_table "clients", force: :cascade do |t|
     t.integer  "project_id"
@@ -65,6 +65,10 @@ ActiveRecord::Schema.define(version: 20151004062956) do
     t.string   "confirmation",                default: "unconfirmed"
     t.boolean  "delete_request",              default: false
     t.string   "ticket_no",                   default: ""
+    t.integer  "total_man",                   default: 0
+    t.integer  "total_woman",                 default: 0
+    t.string   "system_code"
+    t.string   "pdf"
   end
 
   add_index "projects", ["trader_id", "china_company_code", "visa_type", "total_people", "representative_name_english", "date_arrival", "date_leaving"], name: "unique_project_condition", unique: true

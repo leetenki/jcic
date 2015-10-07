@@ -6,6 +6,7 @@ include ChineseConverter
 class ProjectsController < ApplicationController
   before_action :logged_in, :only => [:new, :create, :index, :edit, :update, :destroy, :show, :need_delete]
   before_action :init_company_codes, :only => [:new, :create, :edit, :update]
+  before_action :logged_in_admin, :only => [:store_pdf]
 
   #create new project
   def new
@@ -53,9 +54,9 @@ class ProjectsController < ApplicationController
   #edit
   def edit
     if(is_admin?)
-      @project = Project.find(params[:id])
+      @project = Project.includes(:clients, :schedules).find(params[:id])
     else
-      @project = current_trader.projects.find(params[:id])
+      @project = current_trader.projects.includes(:clients, :schedules).find(params[:id])
       if(!is_project_editable(@project))
         flash[:danger] = "对不起，此签证已无法修改."
         redirect_to projects_path
@@ -69,6 +70,7 @@ class ProjectsController < ApplicationController
     client_destroy_ids = [];
 
     #render :text => project_params
+#=begin
     if(is_admin?)
       @project = Project.find_by(:id => params[:id])
       @project.record_timestamps = false
@@ -145,6 +147,7 @@ class ProjectsController < ApplicationController
     else
       render 'new'
     end
+#=end
   end
 
   #destroy
@@ -169,16 +172,20 @@ class ProjectsController < ApplicationController
   def index
     if logged_in?
       if(is_admin?)
-        @projects = current_trader.search_projects(Project.all, params[:from], params[:to], params[:payment], params[:confirmation], params[:status], params[:delete_request], params[:ticket_no]).order("id desc").page(params[:page])
+        @projects = current_trader.search_projects(Project.all, params[:from], params[:to], params[:payment], params[:confirmation], params[:status], params[:delete_request], params[:ticket_no]).order("id desc").page(params[:page]).includes(:clients, :schedules)
       else
-        @projects = current_trader.projects.order("id desc").page(params[:page])
+        @projects = current_trader.projects.order("id desc").page(params[:page]).includes(:clients, :schedules)
       end
     end
   end
 
   #create pdf
   def show
-    @project = Project.find_by(:id => params[:id])
+    if(is_admin?)
+      @project = Project.includes(:clients, :schedules).find_by(:id => params[:id])
+    else
+      @project = current_trader.projects.includes(:clients, :schedules).find_by(:id => params[:id])
+    end
     @visa_company = CompanyCode.where("code = ?", @project.china_company_code)
 
     respond_to do |format|
@@ -271,6 +278,14 @@ class ProjectsController < ApplicationController
     end
 
     redirect_to request.referrer || projects_path
+  end
+
+  def store_pdf
+    @project = Project.find_by(:id => params[:project][:id])
+    @project.record_timestamps = false
+    @project.assign_attributes :pdf => params[:project][:pdf]
+    @project.save :validate => false;
+    render :text => "Succeed to upload file " + @project.pdf.url;
   end
 
   private

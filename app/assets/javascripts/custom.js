@@ -54,6 +54,20 @@ function toggleTable(id) {
 $(document).ready(function(){  
   startSuggest();
 
+
+
+  // add before onload
+  if(document.getElementById("send_button")) {
+    window.onbeforeunload = function() {
+      return "离开后您填写的内容将会消失。您确认要离开此网页吗？";
+    };
+    $(document).ready(function() {
+      $('#send_button').click(function() {
+        window.onbeforeunload = null;
+      });
+    });
+  }
+
   // init datepicker
   var minDate = null;
   if(!isAdmin()) {
@@ -148,6 +162,9 @@ function openAlert(error) {
   $(".alert-panel").fadeIn(300, function(){
     if(error) {
       //alert($(".alert-panel li:first").text() + " 请修改.");
+      window.onbeforeunload = function() {
+        return "离开后您填写的内容将会消失。您确认要离开此网页吗？";
+      };
       var fadeOut = function() {
         document.removeEventListener("click", fadeOut);
         document.removeEventListener("touchstart", fadeOut);
@@ -776,7 +793,7 @@ function regenerateScheduleTable() {
   var lastDay = new Date(document.getElementById("dateLeaving").value);
   var firstDay = new Date(document.getElementById("dateArrival").value);
   var stay_term = subDate(lastDay, firstDay) + 1;
-  lastDayHotel = "帰国。";
+  lastDayHotel = "帰国済.";
 
   if($("#schedules_container table tr:last td:last textarea")[0].value == lastDayHotel) {
     $("#schedules_container table tr:last td:last textarea")[0].value = "";
@@ -1510,7 +1527,7 @@ function formatDate(date) {
   if ( day < 10 ) {  
   　　day = '0' + day;  
   }      
-  var str = year + '/' + month + '/' + day + "\n ( " + chinese_week_days[date.getDay()] + " ) ";  
+  var str = year + '/' + month + '/' + day + "\r\n ( " + chinese_week_days[date.getDay()] + " ) ";  
 
   return str;
 }

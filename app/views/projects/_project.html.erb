@@ -15,17 +15,34 @@
         <% if is_admin? %>
             <div class="created-cell small-gray-cell">更新：<%= project.updated_at.strftime("%Y/%m/%d %H:%M") %></div>
         <% end %>
-        
+        <% if project.system_code.present? %>
+            <div class="created-cell small-gray-cell">受付编号：<%= project.system_code %></div>        
+        <% end %>
     </td>
 
 
 
     <!-- ******************  status container ******************* -->
     <td class="col-md-3 col-sm-3 col-xs-3">
-        <div class="status-cell <%= project.delete_request ? "requesting_delete": project.status %>"><%= project.delete_request ? "正在申请删除..." : status_type_str(project.status) %></div>
-        <div class="created-cell small-gray-cell">申请日：<%= project.created_at.strftime("%Y/%m/%d %H:%M") %></div>
+        <div class="status-cell <%= project.delete_request ? "requesting_delete": project.status %>">
+            <%= project.delete_request ? "正在申请删除..." : status_type_str(project.status) %>
+        </div>
+        <div class="created-cell small-gray-cell">申请时间：<%= project.created_at.strftime("%Y/%m/%d %H:%M") %></div>
 
         <% if is_admin? || !is_project_disabled(project) %>
+            <div class="row">
+                <div class="btn-group col-md-12 col-sm-12 col-xs-12"  data-toggle="buttons">
+                    <button class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6" onclick="window.open().location.href='/projects/<%= project.id %>.pdf'">身元保証</button>
+                    <% if project.pdf.present? %>
+                        <button class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6" onclick="window.open().location.href='<%= project.pdf.url %>'">帰国報告</button>
+                    <% else %>
+                        <div class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6 disabled-modify" disabled="disabled">
+                            帰国報告<p class="arrow_box">正在制作，我们需要1～2小时时间向中联协申请，请稍等。</p>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="btn-group col-md-12 col-sm-12 col-xs-12"  data-toggle="buttons">
                     <!-- modify -->
@@ -50,13 +67,6 @@
                     <% if is_admin? %>
                         <!--<button class="btn btn-success btn-xs col-md-6 col-sm-6 col-xs-6" onclick="location.href='<%= cancel_delete_request_path(project) %>'">回复</button>-->
                     <% end %>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="btn-group col-md-12 col-sm-12 col-xs-12"  data-toggle="buttons">
-                    <button class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6" onclick="location.href='/projects/<%= project.id %>.pdf'">帰国報告</button>
-                    <button class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6" onclick="location.href='/projects/<%= project.id %>.pdf'">身元保証</button>
                 </div>
             </div>
         <% end %>

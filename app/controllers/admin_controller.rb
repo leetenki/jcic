@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  before_action :logged_in_admin, :only => [:index, :paid_all, :unpaid_all, :invoice, :useragent, :projects_need_update, :project_json]
+  before_action :logged_in_admin, :only => [:index, :paid_all, :unpaid_all, :invoice, :useragent, :get_uncommitted_projects, :set_project_committed, :upload_pdf, :get_delete_requesting_projects, :get_delete_requesting_committed_projects, :set_delete_requesting_projects_deleted]
   before_action :initial_search, :only => [:paid_all, :unpaid_all]
 
   def index
@@ -9,7 +9,7 @@ class AdminController < ApplicationController
       params[:to] = Date.new(last_month.year, last_month.month, -1).strftime("%Y/%m/%d");
       @waiting = true
     else
-      @projects = search_projects(params[:trader_id], params[:from], params[:to]).order("id desc")
+      @projects = search_projects(params[:trader_id], params[:from], params[:to]).order("id desc").includes(:clients, :schedules)
     end
 
     @traders = Trader.where("id <> 1")
@@ -54,14 +54,51 @@ class AdminController < ApplicationController
     end
   end
 
-  def projects_need_update
-    text = Project.all.to_json({:only => [:clients => [:id]] })
+  ####################### APIs #######################
+  def get_uncommitted_projects
+    @projects = Project.where("status = 'uncommitted' and delete_request = ?", false).order("id asc").includes(:clients, :schedules)
+    @result = []
+    @projects.each do |project| #check if not editable
+      if(!is_project_editable(project))
+        @result.push(project)
+      end
+    end
+
+    text = @result.to_json({:include => [:schedules, :clients]})
     render :text => text;
   end
 
-  def project_json
-    text = Project.find_by(:id => params[:id]).to_json({:include => [:schedules, :clients]})
+  def set_project_committed
+    @project = Project.find(params[:id])
+    @project.assign_attributes(:status => "committed", :system_code => params[:system_code])
+    @project.record_timestamps = false
+    @project.save :validate => false;
+    render :text => "succeeded to update project " + @project.id.to_s
+  end
+
+  def upload_pdf
+  end
+
+  def get_delete_requesting_projects
+    @projects = Project.where("delete_request = ?", true).order("id asc").includes(:clients, :schedules)    
+    text = @projects.to_json({:include => [:schedules, :clients]})
     render :text => text;
+  end
+
+  def get_delete_requesting_committed_projects
+    @projects = Project.where("delete_request = ? and system_code IS NOT NULL and status = 'committed'", true).order("id asc").includes(:clients, :schedules)    
+    text = @projects.to_json({:include => [:schedules, :clients]})
+    render :text => text;
+  end
+
+  def set_delete_requesting_projects_deleted
+    @projects = Project.where("delete_request = ?", true).order("id asc")
+    @projects.each do |project|
+      project.assign_attributes(:status => "deleted", :delete_request => false)
+      project.record_timestamps = false
+      project.save :validate => false;
+    end
+    render :text => "succeeded to delete " + @projects.length.to_s + " projects."
   end
 
   #action to testing and detect user agent
@@ -72,7 +109,7 @@ class AdminController < ApplicationController
 private
   def initial_search
     @traders = Trader.where("id <> 1")
-    @projects = search_projects(params[:trader_id], params[:from], params[:to]).order("id desc")   
+    @projects = search_projects(params[:trader_id], params[:from], params[:to]).order("id desc").includes(:clients, :schedules)
   end
 
   def search_projects(id, from, to)

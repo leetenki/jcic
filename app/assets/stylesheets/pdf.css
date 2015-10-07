@@ -58,44 +58,42 @@ table#project td.name-content {
 }
 
 /* schedules table */
-table#schedules {
+table.schedules {
   /* can be removed */
-  page-break-before: always;
-  margin-top: 170px;    
 }
-table#schedules caption .title {
+table.schedules caption .title {
   font-size: 22px;
   font-weight: bold;
   padding: 10px;
 }
-table#schedules caption .title-date {
+table.schedules caption .title-date {
   font-size: 15px;
   text-align: right;
   padding: 5px;
 }
-table#schedules caption .title-date .text {
+table.schedules caption .title-date .text {
   color: #ff0000;
 }
-table#schedules th {
+table.schedules th {
   font-weight: normal;
   text-align: center;
   border: 1px solid black;
   font-size: 13px;
 }
-table#schedules td {
+table.schedules td {
   border: 1px solid black;
-  font-size: 11px;
+  font-size: 10px;
   vertical-align: top;
   height: 60px;
 }
-table#schedules .date {
+table.schedules .date {
   width: 14%;
   text-align: center;
 }
-table#schedules .plan {
+table.schedules .plan {
   width: 43%;
 }
-table#schedules .hotel {
+table.schedules .hotel {
   width: 43%;
 }
 
@@ -103,18 +101,20 @@ table#schedules .hotel {
 /* chinese visa company info */
 div.visa-company {
   line-height: 20px;
-  display: inline-block;
+  /*display: inline-block;*/
   /* background-color: blue; */
   padding: 10px;
+  margin-top: 5px;
   line-height: 20px;
   margin-bottom: -20px;
+  font-size: 17px;
 }
 
 /* company signature */
 div.signature {
   /*background-color: red;*/
-  display: table-header-group;
-  page-break-inside:avoid;
+  /*display: table-header-group;*/
+  /*page-break-inside:avoid;*/
   float: right;
   text-align: right;
 }
@@ -127,68 +127,64 @@ div.signature .text {
 }
 div.signature img {
   float: right;
-  right: 33px;
-  margin-top: -130px;
   position: absolute;
-  width: 33%;
+  width: 30%;
 }
 
 
 /* clients table */
-table#clients {
+table.clients {
   /* can be removed */
-  page-break-before: always;
-  margin-top: 170px;
 }
-table#clients caption .title {
+table.clients caption .title {
   font-size: 22px;
   font-weight: bold;
   padding: 10px;
 }
-table#clients caption .title-date {
+table.clients caption .title-date {
   font-size: 15px;
   text-align: right;
   padding: 5px;
 }
-table#clients caption .representative {
+table.clients caption .representative {
   font-size: 15px;
   text-align: right;
   padding: 2px;  
 }
-table#clients caption .title-date .text {
+table.clients caption .title-date .text {
   color: #ff0000;
 }
-table#clients th {
+table.clients th {
   font-weight: normal;
   text-align: center;
   border: 1px solid black;
   font-size: 12px;
 }
-table#clients td {
+table.clients td {
   border: 1px solid black;
-  font-size: 11px;
+  font-size: 10px;
   text-align: center;
-  height: 30px;
+  height: 25px;
 }
-table#clients .no {
+table.clients .no {
   width: 8%;
 }
-table#clients .chinese-name {
+table.clients .chinese-name {
   width: 15%;
 }
-table#clients .english-name {
+table.clients .english-name {
   width: 20%;
 }
-table#clients .gender {
+table.clients .gender {
   width: 8%;
 }
-table#clients .birthday {
+table.clients .birthday {
   width: 17%;
 }
-table#clients .hometown {
+table.clients .hometown {
   width: 11%;
 }
-table#clients .visa-type {
+table.clients .visa-type {
   width: 8%;
 }
 

@@ -14,6 +14,8 @@ class TradersController < ApplicationController
   #create account
   def new
     @trader = Trader.new
+    @trader.password = [*1..9].sample(8).join;
+    @trader.password_backup = @trader.password;
   end
 
   def create

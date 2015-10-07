@@ -13,9 +13,15 @@ Rails.application.routes.draw do
   get 'delete_request(/:id)', :to => "projects#delete_request", :as => "delete_request"
   get 'cancel_delete_request(/:id)', :to => "projects#cancel_delete_request", :as => "cancel_delete_request"
   get 'projects/index', :to => "projects#index"
+  post 'projects/store_pdf', :to => "projects#store_pdf"
 
-  get 'admin/api_projects_need_update', :to => "admin#projects_need_update"
-  get 'admin/project_json/(:id)', :to => "admin#project_json"
+  get 'admin/get_uncommitted_projects', :to => "admin#get_uncommitted_projects"
+  get 'admin/set_project_committed/(:id)', :to => "admin#set_project_committed"
+  get 'admin/upload_pdf', :to => "admin#upload_pdf"
+  get 'admin/get_delete_requesting_projects', :to => "admin#get_delete_requesting_projects"
+  get 'admin/get_delete_requesting_committed_projects', :to => "admin#get_delete_requesting_committed_projects"
+  get 'admin/set_delete_requesting_projects_deleted', :to => "admin#set_delete_requesting_projects_deleted"
+
   get 'admin', :to => "admin#index", :as => "admin"
   get 'admin/paid_all', :to => "admin#paid_all"
   get 'admin/unpaid_all', :to => "admin#unpaid_all"

@@ -6,6 +6,8 @@ module Constants
   JAPAN_SIDE_PHONE = "03-3470-6851"
   JAPAN_SIDE_CHIEF = "東木慶新"
   JAPAN_SIDE_SIGNATURE = "crane.png"
+  JAPAN_SIDE_ADDRESS_1 = "〒106-0032東京都港区六本⽊7-18-5"
+  JAPAN_SIDE_ADDRESS_2 = "ソフイアビル 212号室"
 
   SELF_COMPANY_NAME = "飞鹤国际旅行社"
   PHONE_FOR_CONTACT = "03-3470-6851"

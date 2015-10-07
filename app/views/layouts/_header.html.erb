@@ -2,7 +2,7 @@
   <div class="container">
 
     <div class="navbar-header">
-      <a class="navbar-brand" id="logo" href="/projects" class="require-loading">
+      <a class="navbar-brand" id="logo" href="/projects">
         飞鹤国际签证网 <i class="fa fa-plane"></i> 
       </a>
 
@@ -24,12 +24,12 @@
             <li><%= link_to " 注册", signup_path, :class => 'fa fa-plus require-loading' %></li>
             <li><%= link_to " 飞鹤会员", traders_path, :class => 'fa fa-lock require-loading' %></li>
           <% else %>
-            <li><%= link_to " 电子签证", projects_path, :class => 'fa fa-users require-loading' %></li>
+            <li><%= link_to " 电子签证", projects_path, :class => 'fa fa-users' %></li>
             <!-- trader menu -->
           <% end %>
 
           <!-- common menu -->
-          <li><%= link_to " 退出", logout_path, :method => :delete, :class => 'fa fa-sign-out require-loading' %></li>
+          <li><%= link_to " 退出", logout_path, :method => :delete, :class => 'fa fa-sign-out' %></li>
         <% else %>
           <li><a href="/login"><i class="fa fa-sign-in require-loading"></i> 登录</a></li>
         <% end %>
