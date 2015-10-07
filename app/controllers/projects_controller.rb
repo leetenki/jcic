@@ -44,7 +44,7 @@ class ProjectsController < ApplicationController
 
     if(!@project.errors.any?)
       @project.save
-      flash[:success] = "签证单提交完毕，请再次检查. " + Constants::EDITABLE_HOUR.to_s + "小时后将无法修改."
+      flash[:success] = "签证单提交完毕，请查看身员保证单. 若有错误，请立即修改. " + Constants::EDITABLE_HOUR.to_s + "小时后您将无法修改."
       redirect_to projects_path
     else
       render 'new'
@@ -205,7 +205,7 @@ class ProjectsController < ApplicationController
     if(is_admin?)
       @project = Project.find_by(:id => params[:id]);
       if(params[:status] == "deleted")
-        @project.assign_attributes :status => params[:status], :delete_request => false;
+        @project.assign_attributes({:status => params[:status], :delete_request => false})
       else
         @project.assign_attributes :status => params[:status];
       end

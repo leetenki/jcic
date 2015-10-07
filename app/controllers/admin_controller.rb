@@ -18,7 +18,7 @@ class AdminController < ApplicationController
   def paid_all
     @projects.each do |project|
       if(project.payment == "unpaid" && project.status != "deleted" && !project.delete_request)
-        project.assign_attributes(:payment => "paid")
+        project.assign_attributes({:payment => "paid"})
         project.record_timestamps = false
         project.save :validate => false
       end
