@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   post 'projects/store_pdf', :to => "projects#store_pdf"
 
   get 'admin/get_uncommitted_projects', :to => "admin#get_uncommitted_projects"
+  get 'admin/get_uncommitted_projects_immediately', :to => "admin#get_uncommitted_projects_immediately"
   get 'admin/set_project_committed/(:id)', :to => "admin#set_project_committed"
   get 'admin/upload_pdf', :to => "admin#upload_pdf"
   get 'admin/get_delete_requesting_projects', :to => "admin#get_delete_requesting_projects"

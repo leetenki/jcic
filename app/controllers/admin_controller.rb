@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  before_action :logged_in_admin, :only => [:index, :paid_all, :unpaid_all, :invoice, :useragent, :get_uncommitted_projects, :set_project_committed, :upload_pdf, :get_delete_requesting_projects, :get_delete_requesting_committed_projects, :set_delete_requesting_projects_deleted]
+  before_action :logged_in_admin, :only => [:index, :paid_all, :unpaid_all, :invoice, :useragent, :get_uncommitted_projects, :get_uncommitted_projects_immediately, :set_project_committed, :upload_pdf, :get_delete_requesting_projects, :get_delete_requesting_committed_projects, :set_delete_requesting_projects_deleted]
   before_action :initial_search, :only => [:paid_all, :unpaid_all]
 
   def index
@@ -65,6 +65,12 @@ class AdminController < ApplicationController
     end
 
     text = @result.to_json({:include => [:schedules, :clients]})
+    render :text => text;
+  end
+
+  def get_uncommitted_projects_immediately
+    @projects = Project.where("status = 'uncommitted' and delete_request = ?", false).order("id asc").includes(:clients, :schedules)
+    text = @projects.to_json({:include => [:schedules, :clients]})
     render :text => text;
   end
 
