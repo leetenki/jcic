@@ -33,24 +33,24 @@ class Project < ActiveRecord::Base
   def validate_japan_airport
     if(!japan_airport.present?)
       errors.add(:japan_airport, "您未输入日本出发地点.")
-    elsif japan_airport.length > 10
-      errors.add(:japan_airport, "日本出发地点不可超过10字.")      
+    elsif japan_airport.length > 5
+      errors.add(:japan_airport, "日本出发地点不可超过5字.")      
     end
   end
 
   def validate_china_airport
     if(!china_airport.present?)
       errors.add(:china_airport, "您未输入中国到达地点.")
-    elsif china_airport.length > 10
-      errors.add(:china_airport, "中国到达地点不可超过10字.")      
+    elsif china_airport.length > 5
+      errors.add(:china_airport, "中国到达地点不可超过5字.")      
     end
   end
 
   def validate_flight_name
     if(!flight_name.present?)
       errors.add(:flight_name, "您未输入回国航班号.")
-    elsif flight_name.length > 20
-      errors.add(:flight_name, "航班号不可超过20字.")      
+    elsif flight_name.length > 10
+      errors.add(:flight_name, "航班号不可超过10字.")      
     end
   end
 
@@ -155,6 +155,8 @@ class Project < ActiveRecord::Base
     if(date_valid)
       if(date_arrival > date_leaving)
         errors.add(:date_leaving, "出境日期小于入境日期.")
+      elsif(visa_type == "individual" && date_leaving > date_arrival+30)
+        errors.add(:date_leaving, "个人签证只可30日以内.")        
       else
         self.stay_term = (date_leaving - date_arrival).to_i + 1
       end

@@ -244,9 +244,9 @@
                         <div id="japan_airport_container">
                               <%= f.label :japan_airport, "出发地点" %> <i id="japan_airport_check"></i>
                               <%= f.text_field(
-                                    :japan_airport, :placeholder => "成田空港", :class => 'form-control', :autocomplete => "off",
+                                    :japan_airport, :placeholder => "成田", :class => 'form-control', :autocomplete => "off",
                                     :id => "japan_airport",
-                                    :maxlength => "10",
+                                    :maxlength => "5",
                                     :oninput => "updateIconOnlyCheck('japan_airport_check', validateJapanAirport, 'japan_airport_container')",
                                     :onfocus => "updateIconOnlyCheck('japan_airport_check', validateJapanAirport, 'japan_airport_container')",
                                     :onchange => "updateIcon('japan_airport_check', validateAndReplaceJapanAirport, 'japan_airport_container')",
@@ -274,9 +274,9 @@
                         <div id="china_airport_container">
                               <%= f.label :china_airport, "到达地点" %> <i id="china_airport_check"></i>
                               <%= f.text_field(
-                                    :china_airport, :placeholder => "上海浦东机场", :class => 'form-control', :autocomplete => "off",
+                                    :china_airport, :placeholder => "上海", :class => 'form-control', :autocomplete => "off",
                                     :id => "china_airport",
-                                    :maxlength => "10",
+                                    :maxlength => "5",
                                     :oninput => "updateIconOnlyCheck('china_airport_check', validateChinaAirport, 'china_airport_container')",
                                     :onfocus => "updateIconOnlyCheck('china_airport_check', validateChinaAirport, 'china_airport_container')",
                                     :onchange => "updateIcon('china_airport_check', validateAndReplaceChinaAirport, 'china_airport_container')",

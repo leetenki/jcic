@@ -334,7 +334,7 @@ function validateAndReplaceJapanAirport() {
 function validateJapanAirport() {
   var valid = true;
   var japanAirport = document.getElementById("japan_airport").value.replace(/[ -~　]{1,}/g, "");
-  if(japanAirport.length < 2 || japanAirport.length > 10) {
+  if(japanAirport.length < 2 || japanAirport.length > 5) {
     valid = false;
   }
   return valid;
@@ -349,7 +349,7 @@ function validateAndReplaceChinaAirport() {
 function validateChinaAirport() {
   var valid = true;
   var chinaAirport = document.getElementById("china_airport").value.replace(/[ -~　]{1,}/g, "");
-  if(chinaAirport.length < 2 || chinaAirport.length > 10) {
+  if(chinaAirport.length < 2 || chinaAirport.length > 5) {
     valid = false;
   }
   return valid;
@@ -420,9 +420,12 @@ function validateDateArrival() {
       } else {
         if(ckDate(dateLeaving)) {
           if(new Date(dateLeaving).getTime() >= date.getTime()) {
-            document.getElementById("date_leaving_container").setAttribute("class", "field_ok")
-            document.getElementById("date_leaving_check").setAttribute("class", "fa fa-check")            
-            valid = true;
+            if($("#visaType input")[1].checked && new Date(dateLeaving).getTime() > addDate(date, 30).getTime()) {
+            } else {
+              document.getElementById("date_leaving_container").setAttribute("class", "field_ok")
+              document.getElementById("date_leaving_check").setAttribute("class", "fa fa-check")            
+              valid = true;
+            }
           }
         }
       }
@@ -447,9 +450,12 @@ function validateDateLeaving() {
       } else {
         if(ckDate(dateArrival)) {
           if(new Date(dateArrival).getTime() <= date.getTime()) {
-            document.getElementById("date_arrival_container").setAttribute("class", "field_ok")
-            document.getElementById("date_arrival_check").setAttribute("class", "fa fa-check")
-            valid = true;
+            if($("#visaType input")[1].checked && date.getTime() > addDate(new Date(dateArrival), 30).getTime()) {
+            } else {
+              document.getElementById("date_arrival_container").setAttribute("class", "field_ok")
+              document.getElementById("date_arrival_check").setAttribute("class", "fa fa-check")
+              valid = true;
+            }
           }
         }
       }
@@ -473,17 +479,26 @@ function validateDateArrivalAndRegenerateSchedules() {
       $("#date_leaving_container .datepicker").datepicker("option", {
         minDate: $("#date_arrival_container .datepicker")[0].value
       });
+      if($("#visaType input")[1].checked) {
+        d = addDate(new Date($("#date_arrival_container .datepicker")[0].value), 30)
+        $("#date_leaving_container .datepicker").datepicker("option", {
+          maxDate: d.getFullYear() + "/" + (d.getMonth()+1) + "/" + d.getDate()
+        });        
+      }
       var dateLeaving = document.getElementById("dateLeaving").value;
       if(dateLeaving.length == 0) {
         valid = true;
       } else {
         if(ckDate(dateLeaving)) {
           if(new Date(dateLeaving).getTime() >= date.getTime()) {
-            document.getElementById("date_leaving_container").setAttribute("class", "field_ok");
-            document.getElementById("date_leaving_check").setAttribute("class", "fa fa-check"); 
-            regenerateScheduleTable();   
-            valid = true;
-            scheduleActive = true;
+            if($("#visaType input")[1].checked && new Date(dateLeaving).getTime() > addDate(date, 30).getTime()) {
+            } else {
+              document.getElementById("date_leaving_container").setAttribute("class", "field_ok");
+              document.getElementById("date_leaving_check").setAttribute("class", "fa fa-check"); 
+              regenerateScheduleTable();   
+              valid = true;
+              scheduleActive = true;
+            }
           }
         }
       }
@@ -509,18 +524,21 @@ function validateDateLeavingAndRegenerateSchedules() {
     if(isAdmin() || date.getTime() >= addDate(today,1).getTime()) {
       $("#date_arrival_container .datepicker").datepicker("option", {
         maxDate: $("#date_leaving_container .datepicker")[0].value
-      });        
+      });
       var dateArrival = document.getElementById("dateArrival").value;
       if(dateArrival.length == 0) {
         valid = true;
       } else {
         if(ckDate(dateArrival)) {
           if(new Date(dateArrival).getTime() <= date.getTime()) {
-            document.getElementById("date_arrival_container").setAttribute("class", "field_ok");
-            document.getElementById("date_arrival_check").setAttribute("class", "fa fa-check");
-            regenerateScheduleTable();
-            valid = true;
-            scheduleActive = true;
+            if($("#visaType input")[1].checked && date.getTime() > addDate(new Date(dateArrival), 30).getTime()) {
+            } else {          
+              document.getElementById("date_arrival_container").setAttribute("class", "field_ok");
+              document.getElementById("date_arrival_check").setAttribute("class", "fa fa-check");
+              regenerateScheduleTable();
+              valid = true;
+              scheduleActive = true;
+            }
           }
         }
       }
@@ -1862,12 +1880,12 @@ $(function() {
 function fillRow(id, rowItem) {
   $("#"+id+" .chinese_name_container input")[0].value = rowItem.chineseName;
   $("#"+id+" .english_name_container input")[0].value = rowItem.englishName;
-  if(rowItem.gender.match(/[男1]|male|man|men|boy/i)) {
-    $("#"+id+" .gender_container .gender_type label")[0].className += " active";
-    $("#"+id+" .gender_container .gender_type input")[0].checked = true;
-  } else if(rowItem.gender.match(/[女2]|female|woman|women|girl/i)) {
+  if(rowItem.gender.match(/[女2fF]|female|woman|women|girl/i)) {
     $("#"+id+" .gender_container .gender_type label")[1].className += " active";
     $("#"+id+" .gender_container .gender_type input")[1].checked = true;
+  } else if(rowItem.gender.match(/[男1mM]|male|man|men|boy/i)) {
+    $("#"+id+" .gender_container .gender_type label")[0].className += " active";
+    $("#"+id+" .gender_container .gender_type input")[0].checked = true;
   }
   $("#"+id+" .hometown_container input")[0].value = rowItem.hometown;
   $("#"+id+" .birthday_container input")[0].value = rowItem.birthday;
@@ -1896,7 +1914,7 @@ function parseExcelText(excelText) {
         passportIndices[j]++;
       } else if(cols[j].match(/[0-9]{3,}/)) {
         birthdayIndices[j]++;          
-      } else if(cols[j].match(/[男女12]|male|man|men|boy|female|woman|women|girl/) && j != 0) {
+      } else if((cols[j].match(/[男女12]|male|man|men|boy|female|woman|women|girl/) || cols[j].match(/^[FfMm]{1}$/)) && j != 0) {
         genderIndices[j]++;
       } else if(cols[j].match(/[A-Za-z]{2,}/)) {
         englishNameIndices[j]++;
