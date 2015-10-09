@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151006193446) do
+ActiveRecord::Schema.define(version: 20151009204835) do
 
   create_table "clients", force: :cascade do |t|
     t.integer  "project_id"
@@ -109,8 +109,8 @@ ActiveRecord::Schema.define(version: 20151006193446) do
     t.string   "bank"
     t.string   "address"
     t.string   "email"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.integer  "indivisual_price",       default: 500
     t.integer  "group_price_indivisual", default: 0
     t.integer  "group_price_1_10",       default: 0
@@ -121,6 +121,7 @@ ActiveRecord::Schema.define(version: 20151006193446) do
     t.integer  "year_5_price",           default: 1000
     t.integer  "other_price",            default: 5000
     t.boolean  "activation",             default: true
+    t.string   "validation_mode",        default: "easy"
   end
 
   add_index "traders", ["account"], name: "index_traders_on_account", unique: true

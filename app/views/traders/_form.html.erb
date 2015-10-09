@@ -58,6 +58,17 @@
 
 
       <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
+        <label class="btn btn-default col-md-4 col-sm-4 <%= 'active' if trader.validation_mode == "easy" %>">
+          <input type="radio" value="easy" name="trader[validation_mode]" <%= 'selected=selected' if trader.validation_mode == "easy" %> />简化填表
+        </label>
+        <label class="btn btn-default col-md-4 col-sm-4 <%= 'active' if trader.validation_mode == "strict" %>">
+          <input type="radio" value="strict" name="trader[validation_mode]" <%= 'selected=selected' if trader.validation_mode == "strict" %> />复杂填表
+        </label>
+      </div>
+
+
+
+      <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
         <label class="btn btn-default col-md-4 col-sm-4 <%= 'active' if trader.activation %>">
           <input type="radio" value="true" name="trader[activation]" <%= 'selected=selected' if trader.activation %> />有效
         </label>

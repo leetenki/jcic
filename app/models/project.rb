@@ -32,7 +32,7 @@ class Project < ActiveRecord::Base
 
   def validate_japan_airport
     if(!japan_airport.present?)
-      errors.add(:japan_airport, "您未输入日本出发地点.")
+      #errors.add(:japan_airport, "您未输入日本出发地点.")
     elsif japan_airport.length > 5
       errors.add(:japan_airport, "日本出发地点不可超过5字.")      
     end
@@ -40,7 +40,7 @@ class Project < ActiveRecord::Base
 
   def validate_china_airport
     if(!china_airport.present?)
-      errors.add(:china_airport, "您未输入中国到达地点.")
+      #errors.add(:china_airport, "您未输入中国到达地点.")
     elsif china_airport.length > 5
       errors.add(:china_airport, "中国到达地点不可超过5字.")      
     end
@@ -48,30 +48,20 @@ class Project < ActiveRecord::Base
 
   def validate_flight_name
     if(!flight_name.present?)
-      errors.add(:flight_name, "您未输入回国航班号.")
+      #errors.add(:flight_name, "您未输入回国航班号.")
     elsif flight_name.length > 10
       errors.add(:flight_name, "航班号不可超过10字.")      
     end
   end
 
   def validate_departure_and_arrival_time
-    time_valid = true
     if(!departure_time.present?)
-      errors.add(:departure_time, "您未输入回国航班出发时间.")
-      time_valid = false;
+      #errors.add(:departure_time, "您未输入回国航班出发时间.")
     end
 
     if(!arrival_time.present?)
-      errors.add(:arrival_time, "您未输入回国航班到达时间.")
-      time_valid = false;
+      #errors.add(:arrival_time, "您未输入回国航班到达时间.")
     end
-=begin
-    if(time_valid)
-      if(arrival_time <= departure_time)
-        errors.add(:arrival_time, "回国航班到达时间小于出发时间.")
-      end
-    end    
-=end
   end
 
   def validate_in_charge_person

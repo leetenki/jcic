@@ -17,7 +17,14 @@ class ProjectsController < ApplicationController
 
   def create
     @project = current_trader.projects.build(project_params)
+    if @project.departure_time.to_s.match(/00:00:00/)
+      @project.departure_time = ""
+    end
+    if @project.arrival_time.to_s.match(/00:00:00/)
+      @project.arrival_time = ""
+    end
 
+    #render :text => @project.errors.messages
     if(@project.valid?)
       #custom check schedules
       if(@project.schedules.length != @project.stay_term)
