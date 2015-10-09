@@ -1908,7 +1908,7 @@ function parseExcelText(excelText) {
   for(var i = 0; i < lines.length; i++) {
     cols = lines[i].split(/[ ]{3,}|[,\t]/)
     for(j = 0; j < Math.min(cols.length, chineseNameIndices.length); j++) {
-      if(cols[j].match(/科员|无业|领队|職業|退休|学生|经理|教师|销售|主妇|个体|儿童|普通|主管|财务|专员|审计|主管|文员|营业|农民|领导|导/) || cols[j].length==0) {
+      if(cols[j].match(/科员|无业|领队|職業|退休|学生|经理|教师|销售|主妇|个体|儿童|普通|主管|财务|专员|审计|主管|文员|营业|农民|领导|导|讲师/) || cols[j].length==0) {
         jobIndices[j]++;
       } else if(cols[j].match(/[A-Z]{1,3}[0-9]{6,}/)) {
         passportIndices[j]++;
@@ -1933,7 +1933,15 @@ function parseExcelText(excelText) {
   var passportIndex = passportIndices.indexOf(Math.max.apply(null, passportIndices));
   var jobIndex = jobIndices.indexOf(Math.max.apply(null, jobIndices));
 
-  if(chineseNameIndex != englishNameIndex != hometownIndex != genderIndex != birthdayIndex != passportIndex != jobIndex) {
+  var doubled = false;
+  index_array = [chineseNameIndex, englishNameIndex, hometownIndex, genderIndex, birthdayIndex, passportIndex, jobIndex]
+  for(var i = 0; i < index_array.length; i++) {
+    if(index_array.indexOf(index_array[i]) != index_array.lastIndexOf(index_array[i])) {
+      doubled = true;
+      break;
+    }
+  }
+  if(!doubled) {
     var maxIndex = Math.max.apply(null, [chineseNameIndex, englishNameIndex, hometownIndex, genderIndex, birthdayIndex, passportIndex, jobIndex]);
     for (var i = 0; i < lines.length; i++) {
       items = lines[i].split(/[ ]{3,}|[,\t]/);
