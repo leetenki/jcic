@@ -13,14 +13,16 @@ class Schedule < ActiveRecord::Base
 
   def validate_plan
     if(!plan.present?)
-      errors.add(:plan, "行动计划未填.")      
+      #errors.add(:plan, "行动计划未填.")      
     elsif(plan.length > 200)
       errors.add(:plan, "行动计划不可超出200字.")
     end
   end
 
   def validate_hotel
-    if(hotel.length > 100)
+    if(!hotel.present?)
+      #errors.add(:plan, "旅馆未填.")
+    elsif(hotel.length > 100)
       errors.add(:hotel, "住宿不可超出100字.")
     end
   end

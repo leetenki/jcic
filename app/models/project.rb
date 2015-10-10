@@ -66,7 +66,7 @@ class Project < ActiveRecord::Base
 
   def validate_in_charge_person
     if(!in_charge_person.present?)
-      errors.add(:in_charge_person, "您未输入公司(送签社)担当者姓名.")
+      #errors.add(:in_charge_person, "您未输入公司(送签社)担当者姓名.")
     elsif in_charge_person.length > 10
       errors.add(:in_charge_person, "公司（送签社）担当者姓名不可超过10字.")      
     end
@@ -74,7 +74,7 @@ class Project < ActiveRecord::Base
 
   def validate_in_charge_phone
     if(!in_charge_phone.present?)
-      errors.add(:in_charge_phone, "您未输入公司担当者的电话号码.")
+      #errors.add(:in_charge_phone, "您未输入公司担当者的电话号码.")
     elsif in_charge_phone.length > 30
       errors.add(:in_charge_phone, "公司担当者电话号码不可超过30位.")      
     end

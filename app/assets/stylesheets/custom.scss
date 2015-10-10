@@ -50,6 +50,9 @@ textarea.form-control::-webkit-input-placeholder {
   margin-bottom: 10px;
 }
 
+#identity_container label {
+  z-index: 0;
+}
 
 .pagination a, .pagination span.current, .pagination span.gap {
     float: left;

@@ -4,10 +4,10 @@
       <div class="col-md-6 col-md-offset-3 errors-container"><%= render :partial => "shared/error_messages", :locals => {:object => f.object} %></div>
 
 
-      <!--************************* partner ***************************-->
-      <div id="partner_container" class="dashed_container col-md-6 col-md-offset-3">
+      <!--************************* identity ***************************-->
+      <div id="identity_container" class="dashed_container col-md-6 col-md-offset-3">
             <div class="title">
-                  <i class="fa fa-building"></i> 送签社资料
+                  <i class="fa fa-user-plus"></i> 签证资料
             </div>
 
             <!-- Company Name -->
@@ -26,7 +26,11 @@
             </div>
 
             <!-- In charge person name -->
-            <div id="in_charge_person_container">
+            <% if project.trader.validation_mode == "simplest" || project.trader.validation_mode == "easy" %>
+                  <div id="in_charge_person_container" style="display:none">
+            <% else %>
+                  <div id="in_charge_person_container">
+            <% end %>
                   <%= f.label :in_charge_person, "担当者姓名" %> <i id="in_charge_person_check"></i>
                   <%= f.text_field(
                               :in_charge_person, :class => 'form-control',
@@ -40,7 +44,11 @@
             </div>
 
             <!-- I charge phone -->
-            <div id="in_charge_phone_container">
+            <% if project.trader.validation_mode == "simplest" || project.trader.validation_mode == "easy" %>
+                  <div id="in_charge_phone_container" style="display:none">
+            <% else %>
+                  <div id="in_charge_phone_container">
+            <% end %>
                   <%= f.label :in_charge_phone, "担当者联系电话" %> <i id="in_charge_phone_check"></i>
                   <%= f.text_field(
                               :in_charge_phone, :class => 'form-control',
@@ -52,14 +60,7 @@
                               :onblur => "updateIcon('in_charge_phone_check', validateAndReplaceInChargePhone, 'in_charge_phone_container')" 
                   ) %>
             </div>
-      </div>
 
-
-      <!--************************* identity ***************************-->
-      <div id="identity_container" class="dashed_container col-md-6 col-md-offset-3">
-            <div class="title">
-                  <i class="fa fa-user-plus"></i> 签证人资料
-            </div>
 
             <!-- Visa Type -->
             <%= f.label :visa_type, "签证种类" %> <i id="visa_type_check"></i>
@@ -81,7 +82,11 @@
             </div>
 
             <!-- Representative Name -->
-            <div id="chinese_name_container">
+            <% if project.trader.validation_mode == "simplest" || project.trader.validation_mode == "easy" || project.trader.validation_mode == "strict" %>
+                  <div id="chinese_name_container" style="display: none">
+            <% else %>
+                  <div id="chinese_name_container">
+            <% end %>
                   <%= f.label :representative_name_chinese, "签证代表人姓名(简体字)" %> <i id="chinese_name_check"></i>
                   <%= f.text_field(
                         :representative_name_chinese, :class => 'form-control', :placeholder => "王飞鹤", :autocomplete => "off",
@@ -96,7 +101,11 @@
 
 
             <!-- Representative Name(english) -->
-            <div id="english_name_container">
+            <% if project.trader.validation_mode == "simplest" || project.trader.validation_mode == "easy" || project.trader.validation_mode == "strict" %>
+                  <div id="english_name_container" style="display: none">
+            <% else %>
+                  <div id="english_name_container">
+            <% end %>
                   <%= f.label :representative_name_english, "签证代表人姓名(拼音)" %> <i id="english_name_check"></i>
                   <%= f.text_field(
                         :representative_name_english, :class => 'form-control', :placeholder => "WANG FEIHE", :autocomplete => "off",
@@ -111,7 +120,11 @@
             </div>
 
             <!-- total people -->
-            <div id="total_people_container">
+            <% if project.trader.validation_mode == "simplest" || project.trader.validation_mode == "easy" || project.trader.validation_mode == "strict" %>
+                  <div id="total_people_container" style="display: none">
+            <% else %>
+                  <div id="total_people_container">
+            <% end %>
                   <%= f.label :total_people, "总人数（团体1～40，其他1～10，※包含代表人）" %> <i id="total_people_check"></i>
                   <%= f.number_field(
                         :total_people, :placeholder => 1, :class => 'form-control', :maxlength => "3", :min => 1, :max => 40, :autocomplete => "off",
@@ -218,7 +231,7 @@
                               </td>
                               <td>
                                     <div id="clients_hometown_container_<%= clients_field.index %>" class="hometown_container">
-                                          <%= clients_field.label :hometown, "签发地点" %> <i id="clients_hometown_<%= clients_field.index %>"></i>
+                                          <%= clients_field.label :hometown, "居住区域" %> <i id="clients_hometown_<%= clients_field.index %>"></i>
                                           <%= clients_field.text_field(
                                                 :hometown, :autocomplete => "off",
                                                 :class => "form-control",
@@ -289,14 +302,16 @@
             <i class="fa fa-plus-square-o fa-4x add_client" onclick="addClientRow()"></i>
       </div>
 
+      <div class="row"><div id="show_schedules" class="col col-md-2 col-md-offset-5 btn btn-default" style="border-radius: 30px; margin-bottom: 30px;" onclick="showSchedulesContainer()">＋ 日程表</div></div>  
+
 
       <!--************************* schedules ***************************-->
-      <div id="schedules_container" class="dashed_container col-md-10 col-md-offset-1">
+      <div id="schedules_container" class="dashed_container col-md-10 col-md-offset-1" style="display:none">
             <div class="title">
-                  <i class="fa fa-bus"></i> 行程表 共 <span class="number" id="schedules-total"><%= f.object.schedules.length %></span> 天
+                  <i class="fa fa-bus"></i> 日程表 共 <span class="number" id="schedules-total"><%= f.object.schedules.length %></span> 天
             </div>
             <% if project.trader.validation_mode == "easy" %>
-                  <div id="undecided_button" class="btn btn-info" onclick="set_all_schedules_undetermined()">未定</div>
+                  <!--<div id="undecided_button" class="btn btn-info" onclick="set_all_schedules_undetermined()">未定</div>-->
             <% end %>
  
             <table class="table">
@@ -355,7 +370,7 @@
 
 
       <!--************************* go back ***************************-->
-      <div id="go_back_container" class="dashed_container col-md-10 col-md-offset-1">
+      <div id="go_back_container" class="dashed_container col-md-10 col-md-offset-1" style="display:none">
             <div class="title">
                   <i class="fa fa-plane"></i> 回国航班
             </div>
@@ -488,4 +503,6 @@
       <div id="easy_validation"></div>
 <% elsif project.trader.validation_mode == "strict" %>
       <div id="strict_validation"></div>
+<% elsif project.trader.validation_mode == "simplest" %>
+      <div id="simplest_validation"></div>
 <% end %>

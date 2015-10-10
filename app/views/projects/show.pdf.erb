@@ -1,12 +1,13 @@
 <%= favicon_link_tag '/ico.png' %>
 
 <!-- ********************* 身元保証 ********************** -->
+<!--
 <div style="text-align:right;">
   登録番号 <%= Constants::JAPAN_SIDE_CODE %><br/>
   <span style="border-bottom: 1px solid red; display:inline-block; padding-top:5px; color:red;"><%= Date.today.to_era(" %O %E 年 %m 月 %d 日 ") %></span>
 </div>
 <div style="font-weight: bold; font-size: 20px;">外務大臣殿</div>
-<div style="font-weight: bold; font-size: 27px; text-align:center; padding: 20px;"><!-- 招 聘 保 証 書 -->身 元 保 証 書 </div>
+<div style="font-weight: bold; font-size: 27px; text-align:center; padding: 20px;">身 元 保 証 書 </div>
 <table style="border: none; width: 40%">
   <caption style="text-align:left;"><b>査証申請人 : </b></caption>
   <tr>
@@ -104,7 +105,7 @@
     <td colspan="2">滞在日程は別紙記載のとおり.</td>
   </tr>
 </table>
-
+-->
 
 <!--*********************** 身元保証 ************************-->
 <div class="head" style="page-break-before: always">身元保証書</div>
@@ -167,13 +168,14 @@
 
 
 <!--*********************** 送签社 ************************-->
-<div class="visa-company">
+<div class="visa-company" style="margin-top: 30px;">
+<!--
   <div class="company-name">会社名　: <%= @visa_company[0].name %><span style="color:white;">.</span></div>
   <div class="company-code">送签社号:  <%= @visa_company[0].code %></div>
   <div class="person-name">担当者　: <%= @project.in_charge_person %></div>
   <div class="phone">電　話　: <%= @project.in_charge_phone %></div>
+-->
 </div>
-
 
 <!--*********************** サイン ************************-->
 <div class="signature">
@@ -274,15 +276,17 @@
 <% end %>
 
 <!--*********************** 送签社 ************************-->
-<% if 15-((schedules_length-13)%15) >= 3 %>
-  <div class="visa-company">
+<% if 15-((schedules_length-13)%15) >= 2 %>
+  <div class="visa-company" style="margin-top: 40px;">
 <% else %>
-  <div class="visa-company" style="page-break-before:always;">
+  <div class="visa-company" style="margin-top: 30px; page-break-before:always;">
 <% end %>
+<!--
   <div class="company-name">会社名　: <%= @visa_company[0].name %>
   <div class="company-code">送签社号:  <%= @visa_company[0].code %></div>
   <div class="person-name">担当者　: <%= @project.in_charge_person %></div>
   <div class="phone">電　話　: <%= @project.in_charge_phone %></div>
+-->
 </div>
 
 <!--*********************** サイン ************************-->
@@ -420,14 +424,16 @@
 
 <!--*********************** 送签社 ************************-->
 <% if 28-((clients_length-24)%28) >= 6 %>
-  <div class="visa-company">
+  <div class="visa-company" style="margin-top: 30px;">
 <% else %>
-  <div class="visa-company" style="page-break-before:always;">
+  <div class="visa-company" style="margin-top: 30px; page-break-before:always;">
 <% end %>
+<!--
   <div class="company-name">会社名　: <%= @visa_company[0].name %></div>
   <div class="company-code">送签社号:  <%= @visa_company[0].code %></div>
   <div class="person-name">担当者　: <%= @project.in_charge_person %></div>
   <div class="phone">電　話　: <%= @project.in_charge_phone %></div>
+-->
 </div>
 
 <!--*********************** サイン ************************-->

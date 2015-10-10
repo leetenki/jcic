@@ -58,6 +58,9 @@
 
 
       <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
+        <label class="btn btn-default col-md-4 col-sm-4 <%= 'active' if trader.validation_mode == "simplest" %>">
+          <input type="radio" value="simplest" name="trader[validation_mode]" <%= 'selected=selected' if trader.validation_mode == "simplest" %> />超级简化
+        </label>
         <label class="btn btn-default col-md-4 col-sm-4 <%= 'active' if trader.validation_mode == "easy" %>">
           <input type="radio" value="easy" name="trader[validation_mode]" <%= 'selected=selected' if trader.validation_mode == "easy" %> />简化填表
         </label>

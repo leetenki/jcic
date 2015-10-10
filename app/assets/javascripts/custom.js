@@ -181,6 +181,19 @@ function openAlert(error) {
   });
 }
 
+function showSchedulesContainer() {
+  $("#schedules_container")[0].style.display = "block";
+  $("#go_back_container")[0].style.display = "block";
+  $("#show_schedules").text("ー 日程表")
+  $("#show_schedules")[0].onclick = hideSchedulesContainer
+}
+function hideSchedulesContainer() {
+  $("#schedules_container")[0].style.display = "none";
+  $("#go_back_container")[0].style.display = "none";
+  $("#show_schedules").text("＋ 日程表")
+  $("#show_schedules")[0].onclick = showSchedulesContainer
+}
+
 function set_all_projects_paid() {
   if(window.confirm('※确定后，以下所有签证单将会转为已支付状态。请注意。')) {
     location.href = "/admin/paid_all?trader_id=" + encodeURIComponent(document.getElementById("trader_selector").value) + "&from=" + encodeURIComponent(document.getElementById("payment_from").value) + "&to=" + encodeURIComponent(document.getElementById("payment_to").value);  
@@ -212,6 +225,10 @@ function isStrictValidation() {
 
 function isEasyValidation() {
   return !!document.getElementById("easy_validation");
+}
+
+function isSimplestValidation() {
+  return !!document.getElementById("simplest_validation");
 }
 
 // function to search and redraw table
@@ -277,7 +294,9 @@ function validateInChargePerson() {
   var valid = true;
   inputText = document.getElementById("in_charge_person_input").value.replace(/[!-~]{1,}/g, " ").replace(/[　 ]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
 
-  if(inputText.length <= 1 || inputText.length > 10) {
+  if((isSimplestValidation() || isEasyValidation()) && inputText.length == 0)
+    valid = true;
+  else if(inputText.length <= 1 || inputText.length > 10) {
     valid = false;
   } else if(/*CheckLength(chineseName, 0)*/ !CheckLength(inputText, 1)) {
     valid = false;
@@ -294,7 +313,9 @@ function validateInChargePhone() {
   var valid = true;
   inputText = document.getElementById("in_charge_phone_input").value.replace(/[^0-9]{1,}/g, "-").replace(/^[^0-9]{1,}/, "").replace(/[^0-9]{1,}$/, "");
 
-  if(inputText.length <= 5 || inputText.length > 20) {
+  if((isSimplestValidation() || isEasyValidation()) && inputText.length == 0) {
+    valid = true;
+  } else if(inputText.length <= 5 || inputText.length > 20) {
     valid = false;
   }
   return valid;
@@ -327,7 +348,7 @@ function validateAndReplaceFlightName() {
 function validateFlightName() {
   var valid = true;
   var flightName = document.getElementById("flight_name").value.toUpperCase().replace(/[^0-9A-Z]{1,}/g, "");
-  if(isEasyValidation() && flightName.length == 0) {
+  if((isSimplestValidation() || isEasyValidation()) && flightName.length == 0) {
   } else if(flightName.length < 3 || flightName.length > 10) {
     valid = false;
   }
@@ -344,7 +365,7 @@ function validateJapanAirport() {
   var valid = true;
   var japanAirport = document.getElementById("japan_airport").value.replace(/[ -~　]{1,}/g, "");
 
-  if(isEasyValidation() && japanAirport.length == 0) {
+  if((isSimplestValidation() || isEasyValidation()) && japanAirport.length == 0) {
   } else if(japanAirport.length < 2 || japanAirport.length > 5) {
     valid = false;
   }
@@ -360,7 +381,7 @@ function validateAndReplaceChinaAirport() {
 function validateChinaAirport() {
   var valid = true;
   var chinaAirport = document.getElementById("china_airport").value.replace(/[ -~　]{1,}/g, "");
-  if(isEasyValidation() && chinaAirport.length == 0) {
+  if((isEasyValidation() || isSimplestValidation()) && chinaAirport.length == 0) {
   } else if(chinaAirport.length < 2 || chinaAirport.length > 5) {
     valid = false;
   }
@@ -371,7 +392,7 @@ function validateDepartureTime() {
   var hour = parseInt($("#departure_time_container select")[0].value);
   var min = parseInt($("#departure_time_container select")[1].value);
 
-  if(isEasyValidation() && (isNaN(hour) || isNaN(min))) {
+  if((isEasyValidation() || isSimplestValidation()) && (isNaN(hour) || isNaN(min))) {
     return true;
   } else if(!isNaN(hour) && !isNaN(min) && hour <= 23 && hour >= 0 && min <= 59 && min >= 0) {
     return true;
@@ -383,7 +404,7 @@ function validateArrivalTime() {
   var hour = parseInt($("#arrival_time_container select")[0].value);
   var min = parseInt($("#arrival_time_container select")[1].value);
 
-  if(isEasyValidation() && (isNaN(hour) || isNaN(min))) {
+  if((isEasyValidation() || isSimplestValidation()) && (isNaN(hour) || isNaN(min))) {
     return true;
   } else if(!isNaN(hour) && !isNaN(min) && hour <= 23 && hour >= 0 && min <= 59 && min >= 0) {
     return true;
@@ -643,7 +664,9 @@ function validateDatesAndUpdateIcon() {
 function validatePlan(id) {
   var inputText = $("#" + id + " textarea")[0].value.replace(/[\s　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "");
 
-  if(inputText.length > 0 && inputText.length <= 200) {
+  if((isSimplestValidation() || isEasyValidation()) && inputText.length == 0) {
+    return true
+  } else if(inputText.length > 0 && inputText.length <= 200) {
     return true
   } else {
     return false;
@@ -658,7 +681,9 @@ function validateAndReplacePlan(id) {
 
 function validateHotel(id) {
   var inputText = $("#" + id + " textarea")[0].value.replace(/[\s　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "");
-  if(inputText.length > 0 && inputText.length <= 100) {
+  if((isSimplestValidation() || isEasyValidation()) && inputText.length == 0) {
+    return true
+  } else if(inputText.length > 0 && inputText.length <= 100) {
     return true
   } else {
     return false;
@@ -829,11 +854,7 @@ function regenerateScheduleTable() {
   var lastDay = new Date(document.getElementById("dateLeaving").value);
   var firstDay = new Date(document.getElementById("dateArrival").value);
   var stay_term = subDate(lastDay, firstDay) + 1;
-  lastDayHotel = "帰国済.";
 
-  if($("#schedules_container table tr:last td:last textarea")[0].value == lastDayHotel) {
-    $("#schedules_container table tr:last td:last textarea")[0].value = "";
-  }
   var trs = $("#schedules_container table tr");
   if(stay_term >= trs.length) {
     // reset date
@@ -861,10 +882,6 @@ function regenerateScheduleTable() {
       $(this).find(".date_container textarea")[0].value = formatDate(addDate(firstDay, i))
       i += 1;
     })
-  }
-
-  if($("#schedules_container table tr:last td:last textarea")[0].value == "") {
-    $("#schedules_container table tr:last td:last textarea")[0].value = lastDayHotel;
   }
 
   // revalidate
@@ -1156,7 +1173,7 @@ function createClientTag(index) {
 
   labelNode = document.createElement("label");
   labelNode.setAttribute("for", "project_clients_attributes_" + index + "_hometown");
-  labelNode.appendChild(document.createTextNode("签发地点"))
+  labelNode.appendChild(document.createTextNode("居住区域"))
   containerNode.appendChild(labelNode)
 
   containerNode.appendChild(document.createTextNode(" "));
@@ -1661,10 +1678,18 @@ function initialValidation() {
   })
 }
 
+
 // validate before sending
 $(function() {
   $('#new_project, .edit_project').submit(function() {
     reduceClientsTable();
+
+    // auto input representative information from clients 1
+    $("#chineseName")[0].value = $("#clients_container .chinese_name_container input")[0].value
+    $("#englishName")[0].value = $("#clients_container .english_name_container input")[0].value
+    $("#totalPeople")[0].value = $("#clients_container table tr").length
+
+
     var failedMessage = "";
 
     // validate identity information
@@ -1810,7 +1835,7 @@ $(function() {
       }
     })
     if(!hometownValid) {
-      failedMessage += "<li>签发地点不可空虚，必须10字以内.</li>";          
+      failedMessage += "<li>居住区域不可空虚，必须10字以内.</li>";          
     }
 
     var birthdayValid = true;
