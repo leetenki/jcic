@@ -1,8 +1,26 @@
 class Trader < ActiveRecord::Base
   #relationship
   has_many :projects
+  has_many :slave_relationships, :class_name => "Relationship", :foreign_key => "slave_id", :dependent => :destroy
+  has_many :slave_traders, :through => :slave_relationships, :source => :slave
+
+  has_one :master_relationships, :class_name => "Relationship", :foreign_key => "master_id", :dependent => :destroy
+  has_one :master_trader, :through => :master_relationships, :source => :master
 
   paginates_per Constants::PAGENATION_COUNT
+
+  #action to add relationship
+  def add_slave(other_trader)
+    slave_relationships.create(:slave_id => other_trader.id)
+  end
+
+  def remove_slave(other_trader)
+    slave_relationships.find_by(:slave_id => other_trader.id).destroy
+  end
+
+  def has_slave(other_trader)
+    slave_traders.include?(other_trader)
+  end
 
   #children method
   def between_dates(from, to)

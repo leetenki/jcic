@@ -1,5 +1,5 @@
 class TradersController < ApplicationController
-  before_action :logged_in_admin, :only => [:index, :show, :new, :create, :edit, :update, :destroy]
+  before_action :logged_in_admin, :only => [:index, :show, :new, :create, :edit, :update, :destroy, :add_slave, :remove_slave]
   #before_action :logged_in_trader , :only => [:show]
 
   def index
@@ -58,6 +58,23 @@ class TradersController < ApplicationController
     end
 
     redirect_to traders_path
+  end
+
+  #relationship manipulation
+  def add_slave
+    @master = Trader.find_by(:id => params[:master_id])
+    @slave = Trader.find_by(:id => params[:slave_id])
+    @master.add_slave(@slave)
+    flash[:success] = "添加完毕！"
+    redirect_to request.referrer || traders_path
+  end
+
+  def remove_slave
+    @master = Trader.find_by(:id => params[:master_id])
+    @slave = @master.slave_relationships.find_by(:id => params[:slave_id])
+    @master.remove_slave(@slave)
+    flash[:success] = "删除完毕！"
+    redirect_to request.referrer || traders_path
   end
 
   #common function

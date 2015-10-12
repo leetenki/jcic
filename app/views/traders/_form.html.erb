@@ -56,6 +56,13 @@
       <%= f.label :bank, "银行账户" %>
       <%= f.text_field :bank, :class => 'form-control' %>
 
+      <%= f.label :master_id, "属于(上家)" %>
+      <select name="trader[master_id]" class="form-control" id="master_selector">
+        <option value="*" <%= "selected=selected" if params[:trader_id] == "*" %>>---</option>
+        <% Trader.all.each do |each_trader| %>
+          <option value="<%= each_trader.id %>" <%= "selected=selected" if params[:trader_id] == each_trader.id.to_s %>><%= each_trader.company_name %></option>
+        <% end %>
+      </select>
 
       <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
         <label class="btn btn-default col-md-4 col-sm-4 <%= 'active' if trader.validation_mode == "simplest" %>">
