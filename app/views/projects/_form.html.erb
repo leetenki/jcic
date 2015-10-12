@@ -34,7 +34,7 @@
                   <%= f.label :in_charge_person, "担当者姓名" %> <i id="in_charge_person_check"></i>
                   <%= f.text_field(
                               :in_charge_person, :class => 'form-control',
-                              :maxlength => "10",
+                              :maxlength => "5",
                               :id => "in_charge_person_input", :autocomplete => "off", :placeholder => "李庆新", 
                               :onfocus=>"updateIconOnlyCheck('in_charge_person_check', validateInChargePerson, 'in_charge_person_container')", 
                               :oninput=>"updateIconOnlyCheck('in_charge_person_check', validateInChargePerson, 'in_charge_person_container')", 
@@ -91,7 +91,7 @@
                   <%= f.text_field(
                         :representative_name_chinese, :class => 'form-control', :placeholder => "王飞鹤", :autocomplete => "off",
                         :id => "chineseName",
-                        :maxlength => "10",
+                        :maxlength => "5",
                         :onfocus => "updateIconOnlyCheck('chinese_name_check', validateChineseName, 'chinese_name_container')",
                         :oninput => "updateIconOnlyCheck('chinese_name_check', validateChineseName, 'chinese_name_container')",
                         :onblur => "autoCompleteFirstChineseName()",
@@ -111,7 +111,7 @@
                         :representative_name_english, :class => 'form-control', :placeholder => "WANG FEIHE", :autocomplete => "off",
                         :id => "englishName",
                         :style => "ime-mode: disabled;",
-                        :maxlength => "30",
+                        :maxlength => "20",
                         :onfocus => "updateIconOnlyCheck('english_name_check', validateEnglishName, 'english_name_container')",
                         :oninput => "updateIconOnlyCheck('english_name_check', validateEnglishName, 'english_name_container')",
                         :onblur => "autoCompleteFirstEnglishName()",
@@ -195,7 +195,7 @@
                                                 :onfocus => "validateAndUpdateFieldOnlyCheck('clients_chinese_name_container_#{clients_field.index}', 'chinese_name_container', validateChineseNameById)",                                          
                                                 :onchange => "validateAndUpdateField('clients_chinese_name_container_#{clients_field.index}', 'chinese_name_container', validateAndReplaceChineseNameById)",
                                                 :onblur => "validateAndUpdateField('clients_chinese_name_container_#{clients_field.index}', 'chinese_name_container', validateAndReplaceChineseNameById)",
-                                                :maxlength => "10",
+                                                :maxlength => "5",
                                                 ) %>
                                     </div>
                               </td>
@@ -210,7 +210,7 @@
                                                 :onfocus => "validateAndUpdateFieldOnlyCheck('clients_english_name_container_#{clients_field.index}', 'english_name_container', validateEnglishNameById)",
                                                 :onchange => "validateAndUpdateField('clients_english_name_container_#{clients_field.index}', 'english_name_container', validateAndReplaceEnglishNameById)",
                                                 :onblur => "validateAndUpdateField('clients_english_name_container_#{clients_field.index}', 'english_name_container', validateAndReplaceEnglishNameById)",
-                                                :maxlength => "30",
+                                                :maxlength => "20",
                                           ) %>
                                     </div>
                               </td>
@@ -240,14 +240,14 @@
                                                 :onfocus => "validateAndUpdateFieldOnlyCheck('clients_hometown_container_#{clients_field.index}', 'hometown_container', validateHometown)",
                                                 :onchange => "validateAndUpdateField('clients_hometown_container_#{clients_field.index}', 'hometown_container', validateAndReplaceHometown)",
                                                 :onblur => "validateAndUpdateField('clients_hometown_container_#{clients_field.index}', 'hometown_container', validateAndReplaceHometown)",                                                                              
-                                                :maxlength => "10",
+                                                :maxlength => "5",
                                           ) %>
                                     </div>
                               </td>
 
                               <td class="col col-sm-2 col-xs-2">
                                     <div id="clients_birthday_container_<%= clients_field.index %>"class="birthday_container">
-                                          <%= clients_field.label :birthday, "出身日期" %> <i id="clients_birthday_<%= clients_field.index %>"></i> <!--<i class="fa fa-chevron-down long"></i>-->
+                                          <%= clients_field.label :birthday, "出生日期" %> <i id="clients_birthday_<%= clients_field.index %>"></i> <!--<i class="fa fa-chevron-down long"></i>-->
                                           <% birthday = "" %>
                                           <% birthday = clients_field.object.birthday.strftime("%Y/%m/%d") if(!clients_field.object.birthday.nil?) %>
                                           <%= clients_field.text_field(
@@ -281,16 +281,16 @@
 
                               <td class="col col-md-1">
                                     <div id="clients_job_container_<%= clients_field.index %>" class="job_container">
-                                          <%= clients_field.label :job, "职业" %> <i id="clients_job_<%= clients_field.index %>"></i><div class="remove_client" onclick="removeClientRow('client_<%= clients_field.index %>')">×</div>
+                                          <%= clients_field.label :job, "备考" %> <i id="clients_job_<%= clients_field.index %>"></i><div class="remove_client" onclick="removeClientRow('client_<%= clients_field.index %>')">×</div>
                                           <%= clients_field.text_field(
                                                 :job, :autocomplete => "off",
                                                 :class => "form-control",
-                                                :placeholder => "科员",
+                                                :placeholder => "",
                                                 :oninput => "validateAndUpdateFieldOnlyCheck('clients_job_container_#{clients_field.index}', 'job_container', validateJob)",
                                                 :onfocus => "validateAndUpdateFieldOnlyCheck('clients_job_container_#{clients_field.index}', 'job_container', validateJob)",
                                                 :onchange => "validateAndUpdateField('clients_job_container_#{clients_field.index}', 'job_container', validateAndReplaceJob)",
                                                 :onblur => "validateAndUpdateField('clients_job_container_#{clients_field.index}', 'job_container', validateAndReplaceJob)",
-                                                :maxlength => "10",
+                                                :maxlength => "5",
                                           ) %>
                                     </div>
                               </td>
@@ -302,11 +302,18 @@
             <i class="fa fa-plus-square-o fa-4x add_client" onclick="addClientRow()"></i>
       </div>
 
-      <div class="row"><div id="show_schedules" class="col col-md-2 col-md-offset-5 btn btn-default" style="border-radius: 30px; margin-bottom: 30px;" onclick="showSchedulesContainer()">＋ 日程表</div></div>  
-
+      <% if project.trader.validation_mode == "simplest" || project.trader.validation_mode == "easy" %>
+            <div class="row">
+                  <div id="show_schedules" class="col col-md-2 col-md-offset-5 btn btn-default" style="border-radius: 30px; margin-bottom: 30px;" onclick="showSchedulesContainer()">+ 详细日程表</div>
+            </div>
+      <% end %>
 
       <!--************************* schedules ***************************-->
-      <div id="schedules_container" class="dashed_container col-md-10 col-md-offset-1" style="display:none">
+      <% if project.trader.validation_mode == "strict" %>
+            <div id="schedules_container" class="dashed_container col-md-10 col-md-offset-1" style="display:block">
+      <% else %>
+            <div id="schedules_container" class="dashed_container col-md-10 col-md-offset-1" style="display:none">
+      <% end %>
             <div class="title">
                   <i class="fa fa-bus"></i> 日程表 共 <span class="number" id="schedules-total"><%= f.object.schedules.length %></span> 天
             </div>
@@ -370,7 +377,11 @@
 
 
       <!--************************* go back ***************************-->
-      <div id="go_back_container" class="dashed_container col-md-10 col-md-offset-1" style="display:none">
+      <% if project.trader.validation_mode == "strict" %>
+            <div id="go_back_container" class="dashed_container col-md-10 col-md-offset-1" style="display:block">
+      <% else %>
+            <div id="go_back_container" class="dashed_container col-md-10 col-md-offset-1" style="display:none">
+      <% end %>
             <div class="title">
                   <i class="fa fa-plane"></i> 回国航班
             </div>

@@ -25,7 +25,7 @@ module ApplicationHelper
   end
 
   def confirmation_type_str(confirmation)
-    confirmation_str = {"unconfirmed" => "未确认回国", "confirmed" => "已发送"}
+    confirmation_str = {"unconfirmed" => "未确认回国", "confirmed" => "已确认"}
     return confirmation_str[confirmation]
   end
 
@@ -40,7 +40,7 @@ module ApplicationHelper
   end
 
   def is_project_editable(project)
-    if(project.status=="uncommitted" && Time.now < (project.updated_at+60*60*Constants::EDITABLE_HOUR))
+    if(project.status=="uncommitted" && Time.now < (project.updated_at+60*Constants::EDITABLE_MIN))
       return true
     else
       return false

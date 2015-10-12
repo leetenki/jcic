@@ -125,10 +125,15 @@ div.signature .text {
   padding-top: 10px;
   padding-bottom: 30px;
 }
-div.signature img {
+div.signature img.signature1 {
   float: right;
   position: absolute;
-  width: 30%;
+  width: 69px;
+}
+div.signature img.signature2 {
+  float: right;
+  position: absolute;
+  width: 85px;
 }
 
 

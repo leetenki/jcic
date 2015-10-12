@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
       if(@trader.activation)
         session[:trader_id] = @trader.id
         session[:updated_at] = Time.now
-        flash[:info] = "#{@trader.company_name}，欢迎您登录飞鹤国际签证网！"
+        flash[:info] = "成功登录#{@trader.company_name}."
         if(is_admin?)
           redirect_to projects_path
         elsif(is_trader?)

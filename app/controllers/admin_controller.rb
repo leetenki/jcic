@@ -57,6 +57,9 @@ class AdminController < ApplicationController
   ####################### APIs #######################
   def get_uncommitted_projects
     @projects = Project.where("status = 'uncommitted' and delete_request = ?", false).order("id asc").includes(:clients, :schedules)
+    if(params[:japan_company].present?)
+      @projects = @projects.where("japan_company = ?", params[:japan_company])
+    end
     @result = []
     @projects.each do |project| #check if not editable
       if(!is_project_editable(project))
@@ -64,13 +67,16 @@ class AdminController < ApplicationController
       end
     end
 
-    text = @result.to_json({:include => [:schedules, :clients]})
+    text = @result.to_json({:include => [:clients, :trader => {:only => [:company_name, :email, :qq]}]})
     render :text => text;
   end
 
   def get_uncommitted_projects_immediately
     @projects = Project.where("status = 'uncommitted' and delete_request = ?", false).order("id asc").includes(:clients, :schedules)
-    text = @projects.to_json({:include => [:schedules, :clients]})
+    if(params[:japan_company].present?)
+      @projects = @projects.where("japan_company = ?", params[:japan_company])
+    end
+    text = @projects.to_json({:include => [:clients, :trader => {:only => [:company_name, :email, :qq]}]})
     render :text => text;
   end
 

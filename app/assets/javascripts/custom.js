@@ -54,8 +54,6 @@ function toggleTable(id) {
 $(document).ready(function(){  
   startSuggest();
 
-
-
   // add before onload
   if(document.getElementById("send_button")) {
     window.onbeforeunload = function() {
@@ -66,6 +64,11 @@ $(document).ready(function(){
         window.onbeforeunload = null;
       });
     });
+  }
+
+  // check alert
+  if($(".unconfirmed_alarm").length > 0) {
+    //alert("您有未确认的回国报告.")
   }
 
   // init datepicker
@@ -184,13 +187,13 @@ function openAlert(error) {
 function showSchedulesContainer() {
   $("#schedules_container")[0].style.display = "block";
   $("#go_back_container")[0].style.display = "block";
-  $("#show_schedules").text("ー 日程表")
+  $("#show_schedules").text("－ 详细日程表")
   $("#show_schedules")[0].onclick = hideSchedulesContainer
 }
 function hideSchedulesContainer() {
   $("#schedules_container")[0].style.display = "none";
   $("#go_back_container")[0].style.display = "none";
-  $("#show_schedules").text("＋ 日程表")
+  $("#show_schedules").text("+ 详细日程表")
   $("#show_schedules")[0].onclick = showSchedulesContainer
 }
 
@@ -280,9 +283,9 @@ function validateVisaType() {
 
 function validateChineseName() {
   var valid = true;
-  chineseName = document.getElementById("chineseName").value.replace(/[!-~]{1,}/g, " ").replace(/[　 ]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+  chineseName = document.getElementById("chineseName").value.replace(/[!-~]{1,}/g, "").replace(/[　 ]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
 
-  if(chineseName.length <= 1 || chineseName.length > 10) {
+  if(chineseName.length <= 1 || chineseName.length > 5) {
     valid = false;
   } else if(/*CheckLength(chineseName, 0)*/ !CheckLength(chineseName, 1)) {
     valid = false;
@@ -292,7 +295,7 @@ function validateChineseName() {
 
 function validateInChargePerson() {
   var valid = true;
-  inputText = document.getElementById("in_charge_person_input").value.replace(/[!-~]{1,}/g, " ").replace(/[　 ]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+  inputText = document.getElementById("in_charge_person_input").value.replace(/[!-~]{1,}/g, "").replace(/[　 ]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
 
   if((isSimplestValidation() || isEasyValidation()) && inputText.length == 0)
     valid = true;
@@ -304,7 +307,7 @@ function validateInChargePerson() {
   return valid;
 }
 function validateAndReplaceInChargePerson() {
-  inputText = document.getElementById("in_charge_person_input").value.replace(/[!-~]{1,}/g, " ").replace(/[　 ]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+  inputText = document.getElementById("in_charge_person_input").value.replace(/[!-~]{1,}/g, "").replace(/[　 ]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
   document.getElementById("in_charge_person_input").value = inputText;
   return validateInChargePerson();
 }
@@ -332,7 +335,7 @@ function validateEnglishName() {
   var valid = true;
   var englishName = document.getElementById("englishName").value.toUpperCase().replace(/[^ -~]{1,}/g, " ").replace(/[^A-Za-z]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
 
-  if(englishName.length <= 2 || englishName.length > 30) {
+  if(englishName.length <= 2 || englishName.length > 20) {
     valid = false;
   } else if(CheckLength(englishName, 1)) {
     valid = false;
@@ -712,16 +715,16 @@ function validateGender(id) {
 
 
 function validateChineseNameById(id) {
-  var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, " ").replace(/[　 ]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+  var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, "").replace(/[　 ]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
 
-  if(inputText.length > 1 && inputText.length <= 10 /*&& !CheckLength(inputText, 0)*/ && CheckLength(inputText, 1)) {
+  if(inputText.length > 1 && inputText.length <= 5 /*&& !CheckLength(inputText, 0)*/ && CheckLength(inputText, 1)) {
     return true
   } else {
     return false;
   }
 }
 function validateAndReplaceChineseNameById(id) {
-  var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, " ").replace(/[　 ]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+  var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, "").replace(/[　 ]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
   $("#" + id + " input")[0].value = inputText;
 
   return validateChineseNameById(id);
@@ -730,7 +733,7 @@ function validateAndReplaceChineseNameById(id) {
 function validateEnglishNameById(id) {
   var inputText = $("#" + id + " input")[0].value.toUpperCase().replace(/[^ -~]{1,}/g, " ").replace(/[^A-Za-z]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
 
-  if(inputText.length > 2 && inputText.length <= 30 && !CheckLength(inputText, 1)) {
+  if(inputText.length > 2 && inputText.length <= 20 && !CheckLength(inputText, 1)) {
     return true
   } else {
     return false;
@@ -768,16 +771,16 @@ function validateAndReplacePassportNo(id) {
 }
 
 function validateHometown(id) {
-  var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, " ").replace(/[　 ]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");;
+  var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, "").replace(/[　 ]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");;
 
-  if(inputText.length >= 2 && inputText.length <= 10) {
+  if(inputText.length >= 2 && inputText.length <= 5) {
     return true
   } else {
     return false;
   }
 }
 function validateAndReplaceHometown(id) {
-  var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, " ").replace(/[　 ]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");;
+  var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, "").replace(/[　 ]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");;
   $("#" + id + " input")[0].value = inputText;
   return validateHometown(id);
 }
@@ -794,16 +797,18 @@ function validateBirthday(id) {
 }
 
 function validateJob(id) {
-  var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, " ").replace(/[　 ]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+  var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, "").replace(/[　 ]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
 
-  if(inputText.length > 1 && inputText.length <= 10 /*&& !CheckLength(inputText, 0)*/ && CheckLength(inputText, 1)) {
+  if((isEasyValidation() || isSimplestValidation()) && inputText.length == 0) {
+    return true;
+  } else if(inputText.length > 1 && inputText.length <= 5 /*&& !CheckLength(inputText, 0)*/ && CheckLength(inputText, 1)) {
     return true
   } else {
     return false;
   }
 }
 function validateAndReplaceJob(id) {
-  var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, " ").replace(/[　 ]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+  var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, "").replace(/[　 ]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
   $("#" + id + " input")[0].value = inputText;
 
   return validateJob(id);
@@ -901,7 +906,7 @@ function regenerateScheduleTable() {
 
 
 function autoCompleteFirstChineseName() {
-  chineseName = document.getElementById("chineseName").value.replace(/[!-~]{1,}/g, " ").replace(/[　 ]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+  chineseName = document.getElementById("chineseName").value.replace(/[!-~]{1,}/g, "").replace(/[　 ]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
   document.getElementById("chineseName").value = chineseName;
 
   if(updateIcon('chinese_name_check', validateChineseName, 'chinese_name_container') && $("#clients_container table tr").length > 0) {
@@ -1062,7 +1067,7 @@ function createClientTag(index) {
   inputTag.setAttribute("onchange", "validateAndUpdateField('clients_chinese_name_container_" + index + "', 'chinese_name_container', validateAndReplaceChineseNameById)");
   inputTag.setAttribute("onblur", "validateAndUpdateField('clients_chinese_name_container_" + index + "', 'chinese_name_container', validateAndReplaceChineseNameById)");
   inputTag.setAttribute("type", "text");
-  inputTag.setAttribute("maxlength", "10");
+  inputTag.setAttribute("maxlength", "5");
   inputTag.setAttribute("name", "project[clients_attributes][" + index + "][name_chinese]");
   inputTag.setAttribute("id", "project_clients_attributes_" + index + "_name_chinese")
   containerNode.appendChild(inputTag);
@@ -1093,7 +1098,7 @@ function createClientTag(index) {
   inputTag.setAttribute("autocomplete", "off");
   inputTag.setAttribute("class", "form-control");
   inputTag.setAttribute("placeholder", "");
-  inputTag.setAttribute("maxlength", "30");  
+  inputTag.setAttribute("maxlength", "20");  
   inputTag.setAttribute("oninput", "validateAndUpdateFieldOnlyCheck('clients_english_name_container_" + index + "', 'english_name_container', validateEnglishNameById)");
   inputTag.setAttribute("onfocus", "validateAndUpdateFieldOnlyCheck('clients_english_name_container_" + index + "', 'english_name_container', validateEnglishNameById)");
   inputTag.setAttribute("onchange", "validateAndUpdateField('clients_english_name_container_" + index + "', 'english_name_container', validateAndReplaceEnglishNameById)");
@@ -1186,7 +1191,7 @@ function createClientTag(index) {
   inputTag.setAttribute("autocomplete", "off");
   inputTag.setAttribute("class", "form-control");
   inputTag.setAttribute("placeholder", "");
-  inputTag.setAttribute("maxlength", "10");  
+  inputTag.setAttribute("maxlength", "5");  
   inputTag.setAttribute("oninput", "validateAndUpdateFieldOnlyCheck('clients_hometown_container_" + index + "', 'hometown_container', validateHometown)");
   inputTag.setAttribute("onfocus", "validateAndUpdateFieldOnlyCheck('clients_hometown_container_" + index + "', 'hometown_container', validateHometown)");
   inputTag.setAttribute("onchange", "validateAndUpdateField('clients_hometown_container_" + index + "', 'hometown_container', validateAndReplaceHometown)");
@@ -1285,7 +1290,7 @@ function createClientTag(index) {
 
   labelNode = document.createElement("label");
   labelNode.setAttribute("for", "project_clients_attributes_" + index + "_job");
-  labelNode.appendChild(document.createTextNode("职业"))
+  labelNode.appendChild(document.createTextNode("备考"))
   containerNode.appendChild(labelNode);
 
   containerNode.appendChild(document.createTextNode(" "));
@@ -1305,7 +1310,7 @@ function createClientTag(index) {
   inputTag.setAttribute("autocomplete", "off");
   inputTag.setAttribute("class", "form-control");
   inputTag.setAttribute("placeholder", "");
-  inputTag.setAttribute("value", "科员");
+  inputTag.setAttribute("value", "");
   inputTag.setAttribute("maxlength", "10");  
   inputTag.setAttribute("oninput", "validateAndUpdateFieldOnlyCheck('clients_job_container_" + index + "', 'job_container', validateJob)");
   inputTag.setAttribute("onfocus", "validateAndUpdateFieldOnlyCheck('clients_job_container_" + index + "', 'job_container', validateJob)");
@@ -1705,6 +1710,7 @@ $(function() {
     if(!updateIcon('visa_type_check', validateVisaType)) {
       failedMessage += "<li>签证种类未选.</li>";
     }
+    /*
     if(!updateIcon('chinese_name_check', validateChineseName, 'chinese_name_container')) {
       failedMessage += "<li>代表人姓名(简体字)不正确.</li>";          
     } else {
@@ -1721,6 +1727,7 @@ $(function() {
     if(!updateIcon('english_name_check', validateEnglishName, 'english_name_container')) {
       failedMessage += "<li>代表人全名(拼音)不正确.</li>";                    
     }
+    */
     if($("#clients_container table tr").length == 0) {
       failedMessage += "<li>人数不可为零.</li>";                              
     } else {
@@ -1754,9 +1761,11 @@ $(function() {
     }
 
     // validate schedules
+    /*
     if(!validateDatesAndUpdateIcon()) {
       failedMessage += "<li>旅程表日期不正确.</li>";                                     
     }
+    */
 
     var planValid = true;
     $("#schedules_container table .plan_container").each(function() {
@@ -1805,7 +1814,7 @@ $(function() {
       }
     })
     if(!chineseNameValid) {
-      failedMessage += "<li>中文名必须填写简体字，10字以内.</li>";          
+      failedMessage += "<li>中文名必须填写简体字，5字以内.</li>";          
     }
 
     var englishNameValid = true;
@@ -1815,7 +1824,7 @@ $(function() {
       }
     })
     if(!englishNameValid) {
-      failedMessage += "<li>英文名必须填写半角拼英，30字以内.</li>";          
+      failedMessage += "<li>英文名必须填写半角拼英，20字以内.</li>";          
     }
 
     var genderValid = true;
@@ -1825,7 +1834,7 @@ $(function() {
       }
     })
     if(!genderValid) {
-      failedMessage += "<li>性别未选择，不可空虚.</li>";          
+      failedMessage += "<li>性别未选择.</li>";          
     }
 
     var hometownValid = true;
@@ -1835,7 +1844,7 @@ $(function() {
       }
     })
     if(!hometownValid) {
-      failedMessage += "<li>居住区域不可空虚，必须10字以内.</li>";          
+      failedMessage += "<li>居住区域不可空虚，必须5字以内.</li>";          
     }
 
     var birthdayValid = true;

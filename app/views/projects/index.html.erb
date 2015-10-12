@@ -46,8 +46,10 @@
           <tr>
             <th>签证资料</th>
             <th>状态</th>
+            <% if is_admin? %>
               <th>价格</th>
-            <th>回国报告</th>
+            <% end %>
+            <th>回国确认</th>
           </tr>
         </thead>
         <tbody>

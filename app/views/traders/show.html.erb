@@ -8,7 +8,7 @@
         <%= link_to fa_icon("trash"), @trader, :method => :delete, :data => { :confirm => "确定删除此账户吗？" }, :class => "delete", :onclick => "toggleTable('trader_table_body'); return false;" %>
       </caption>
 
-      <tbody id="trader_table_body" style="display:none">
+      <tbody id="trader_table_body" style="display:table-row-group">
         <tr>
           <td class="col-md-6 col-sm-6">公司名</td>
           <td class="col-md-6 col-sm-6"><%= @trader.company_name %></td>
@@ -117,7 +117,9 @@
             <tr>
               <th>签证资料</th>
               <th>状态</th>
+              <% if is_admin? %>
                 <th>价格</th>
+              <% end %>
               <th>回国报告</th>
             </tr>
           </thead>

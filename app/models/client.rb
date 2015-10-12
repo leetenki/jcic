@@ -15,9 +15,9 @@ class Client < ActiveRecord::Base
   def validate_name_chinese
     if(!name_chinese.present?)
       errors.add(:name_chinese, "您未输入中文姓名.")
-    elsif(name_chinese.length > 10)
-      errors.add(:name_chinese, "中文姓名不可超过10字.")   
-    elsif(hankaku?(name_chinese))
+    elsif(name_chinese.length > 5)
+      errors.add(:name_chinese, "中文姓名不可超过5字.")
+    elsif(!zenkaku?(name_chinese))
       errors.add(:name_chinese, "中文名只可输入简体汉字.")      
     end
   end
@@ -25,9 +25,9 @@ class Client < ActiveRecord::Base
   def validate_name_english
     if(!name_english.present?)
       errors.add(:name_english, "您未输入英文姓名.")
-    elsif(name_english.length > 30)
-      errors.add(:name_english, "英文姓名不可超过30字.")   
-    elsif(!hankaku?(name_english))
+    elsif(name_english.length > 20)
+      errors.add(:name_english, "英文姓名不可超过20字.")   
+    elsif(name_english.match(/[^a-zA-Z ]/))
       errors.add(:name_english, "英文姓名只可输入英文字母或半角空格.")      
     end
   end
@@ -45,15 +45,17 @@ class Client < ActiveRecord::Base
   def validate_hometown
     if(!hometown.present?)
       errors.add(:hometown, "您未输入签证发行地.")      
-    elsif(hometown.length > 10)
-      errors.add(:hometown, "签证发行地不可超过10字.")
+    elsif(hometown.length > 5)
+      errors.add(:hometown, "居住区域不可超过5字.")
+    elsif(!zenkaku?(hometown))
+      errors.add(:hometown, "居住区域只可输入简体汉字.")      
     end
   end  
 
   def validate_passport_no
     if(!passport_no.present?)
       errors.add(:passport_no, "您未输入旅护照号.")    
-    elsif(!hankaku?(passport_no))
+    elsif(passport_no.match(/[^a-zA-Z0-9]/))
       errors.add(:passport_no, "护照号止可输入英文字母或数字.")        
     elsif(passport_no.length < 8 || passport_no.length > 11)
       #only 8 or 9 or 10 or 11 digits
@@ -69,10 +71,10 @@ class Client < ActiveRecord::Base
 
   def validate_job
     if(!job.present?)
-      errors.add(:job, "您未输入职业.")
-    elsif(job.length > 10)
-      errors.add(:job, "职业不可超过10字.")   
-    elsif(hankaku?(job))
+      #errors.add(:job, "您未输入职业.")
+    elsif(job.length > 5)
+      errors.add(:job, "职业不可超过5字.")
+    elsif(!zenkaku?(job))
       errors.add(:job, "职业只可输入简体汉字.")      
     end
   end  

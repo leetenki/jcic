@@ -36,10 +36,16 @@ textarea.form-control {
 }
 
 input.form-control::-webkit-input-placeholder {
-  color: #eaeaea;
+  color: #d0d0d0;
 }
 textarea.form-control::-webkit-input-placeholder {
-  color: #e0e0e0;
+  color: #d0d0d0;
+}
+.field-ok form-control::-webkit-input-placeholder {
+  color: red;
+}
+.field-ok textarea.form-control::-webkit-input-placeholder {
+  color: red;
 }
 
 .center {
@@ -121,7 +127,7 @@ div.disabled-modify {
 .arrow_box:after {
   position: absolute;
   bottom: 100%;
-  left: 10%;
+  left: 15%;
   width: 0;
   height: 0;
   margin-left: -10px;

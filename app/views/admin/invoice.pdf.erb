@@ -28,7 +28,7 @@
     </tr>
     <tr>
       <td>担当:</td>
-      <td style=""><%= Constants::JAPAN_SIDE_CHIEF %></td>
+      <td style=""><%= Constants::INVOICE_CHIEF_NAME %></td>
     </tr>
   </table>
 </div>
@@ -49,7 +49,7 @@
       <%= Constants::INVOICE_COMPANY_ADDRESS_2 %><br/>      
       電話 : <%= Constants::INVOICE_COMPANY_PHONE %><br/>     
       FAX : <%= Constants::INVOICE_COMPANY_FAX %><br/>
-      <div style="position:absolute; margin-top: -80px; margin-left: 130px;"><%= image_tag(::Rails.root.join('public','jcic_sign.png'), :style => "width:  85px") %></div>
+      <div style="position:absolute; margin-top: -80px; margin-left: 130px;"><%= image_tag(::Rails.root.join('public','jcic_signature2.png'), :style => "width:  80px; opacity:0.8") %></div>
     </td>
   </tr>
 
@@ -141,7 +141,7 @@
           <td class="no"><%= index + 1 %></td>
           <td class="company"><%= project[:china_company_name] %></td>
           <td class="date"><%= project[:created_at].strftime("%m月%d日") %></td>
-          <td class="description"><%= visa_type_str_short(project[:visa_type]) %> <%= project[:representative_name_chinese] %></td>
+          <td class="description">(<%= visa_type_str_short(project[:visa_type]) %>) <%= project[:representative_name_chinese] %></td>
           <td class="pax"><%= project[:total_people] %></td>
           <td class="unit">¥<%= get_unit_price(project) %></td>
           <td class="amount">¥<%= get_project_price(project) %></td>

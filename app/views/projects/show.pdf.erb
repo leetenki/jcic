@@ -1,9 +1,10 @@
 <%= favicon_link_tag '/ico.png' %>
+<% company_info = Constants::JAPAN_SIDE_COMPANY[@project.japan_company.intern] %>
 
 <!-- ********************* 身元保証 ********************** -->
 <!--
 <div style="text-align:right;">
-  登録番号 <%= Constants::JAPAN_SIDE_CODE %><br/>
+  登録番号 <%= company_info[:code] %><br/>
   <span style="border-bottom: 1px solid red; display:inline-block; padding-top:5px; color:red;"><%= Date.today.to_era(" %O %E 年 %m 月 %d 日 ") %></span>
 </div>
 <div style="font-weight: bold; font-size: 20px;">外務大臣殿</div>
@@ -28,32 +29,32 @@
   <tr>
     <td style="width:40%"></td>
     <td style="padding:0; width:15%">会 社</td>
-    <td style="padding:0;"><%= Constants::JAPAN_SIDE_COMPANY %></td>
+    <td style="padding:0;"><%= company_info[:company_name] %></td>
   </tr>
   <tr>
     <td style="width:40%"></td>
     <td style="padding:0; width:15%"></td>
-    <td style="padding:0;">代表取締役社長 <%= Constants::JAPAN_SIDE_CHIEF %></td>
+    <td style="padding:0;">代表取締役社長 <%= company_info[:chief] %></td>
   </tr>
   <tr>
     <td style="width:40%"></td>
     <td style="padding:0; width:15%">住 所</td>
-    <td style="padding:0;"><%= Constants::JAPAN_SIDE_ADDRESS_1 %></td>
+    <td style="padding:0;"><%= company_info[:address_1] %></td>
   </tr>
   <tr>
     <td style="width:40%"></td>
     <td style="padding:0; width:15%"></td>
-    <td style="padding:0;"><%= Constants::JAPAN_SIDE_ADDRESS_2 %></td>
+    <td style="padding:0;"><%= company_info[:address_2] %></td>
   </tr>
   <tr>
     <td style="width:40%"></td>
     <td style="padding:0; width:15%">担当者</td>
-    <td style="padding:0;">本社営業所 <%= Constants::JAPAN_SIDE_CHIEF %></td>
+    <td style="padding:0;">本社営業所 <%= company_info[:chief] %></td>
   </tr>
   <tr>
     <td style="width:40%"></td>
     <td style="padding:0; width:15%"></td>
-    <td style="padding:0;">TEL  <%= Constants::JAPAN_SIDE_PHONE %></td>
+    <td style="padding:0;">TEL  <%= company_info[:phone] %></td>
   </tr>
 </table>
 <br/>
@@ -120,11 +121,11 @@
   <tr>
     <td class="title" rowspan="2">中連協会員旅行会社名</td>
     <td class="name-title">会社名</td>
-    <td class="content"><%= Constants::JAPAN_SIDE_COMPANY %></td>
+    <td class="content"><%= company_info[:company_name] %></td>
   </tr>
   <tr>
     <td class="name-title">指定番号</td>
-    <td class="name-content"><%= Constants::JAPAN_SIDE_CODE %></td>
+    <td class="name-content"><%= company_info[:code] %></td>
   </tr>
   <tr>
     <td class="title" rowspan="3">中国側旅行会社名</td>
@@ -181,11 +182,12 @@
 <div class="signature">
   <div class="text">
     <div class="phone">日　付 : <%= @project.updated_at.strftime("%Y年%m月%d日") %></div>
-    <div class="company-name">会社名 : <%= Constants::JAPAN_SIDE_COMPANY %></div>
-    <div class="person-name">担当者 : <%= Constants::JAPAN_SIDE_CHIEF %></div>
-    <div class="phone">電　話 : <%= Constants::JAPAN_SIDE_PHONE %></div>
+    <div class="company-name">会社名 : <%= company_info[:company_name] %></div>
+    <div class="person-name">担当者 : <%= company_info[:chief] %></div>
+    <div class="phone">電　話 : <%= company_info[:phone] %></div>
   </div>
-  <%= image_tag(::Rails.root.join('public', Constants::JAPAN_SIDE_SIGNATURE), :style => "right:" + (33+rand(0..70)).to_s + "px; margin-top:" + (rand(0..40)-160).to_s + "px;") %>
+  <%= image_tag(::Rails.root.join('public', company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..30)-120).to_s + "px;" + "opacity:" + (Random.rand(0.3)+0.6).to_s + ";" + "-webkit-transform: rotate(" + (Random.rand(360)).to_s + "deg);") %>
+  <%= image_tag(::Rails.root.join('public', company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..20)-120).to_s + "px;" + "opacity:" + (Random.rand(0.2)+0.7).to_s + ";" + "-webkit-transform: rotate(-" + (Random.rand(5)).to_s + "deg);") %>
 </div>
 
 <!--*********************** スケジュール ************************-->
@@ -293,11 +295,12 @@
 <div class="signature">
   <div class="text">
     <div class="phone">日　付 : <%= @project.updated_at.strftime("%Y年%m月%d日") %></div>
-    <div class="company-name">会社名 : <%= Constants::JAPAN_SIDE_COMPANY %></div>
-    <div class="person-name">担当者 : <%= Constants::JAPAN_SIDE_CHIEF %></div>
-    <div class="phone">電　話 : <%= Constants::JAPAN_SIDE_PHONE %></div>
+    <div class="company-name">会社名 : <%= company_info[:company_name] %></div>
+    <div class="person-name">担当者 : <%= company_info[:chief] %></div>
+    <div class="phone">電　話 : <%= company_info[:phone] %></div>
   </div>
-  <%= image_tag(::Rails.root.join('public', Constants::JAPAN_SIDE_SIGNATURE), :style => "right:" + (33+rand(0..70)).to_s + "px; margin-top:" + (rand(0..40)-160).to_s + "px;") %>
+  <%= image_tag(::Rails.root.join('public', company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..30)-120).to_s + "px;" + "opacity:" + (Random.rand(0.3)+0.6).to_s + ";" + "-webkit-transform: rotate(" + (Random.rand(360)).to_s + "deg);") %>
+  <%= image_tag(::Rails.root.join('public', company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..30)-130).to_s + "px;" + "opacity:" + (Random.rand(0.2)+0.7).to_s + ";" + "-webkit-transform: rotate(-" + (Random.rand(5)).to_s + "deg);") %>
 </div>
 
 <!--*********************** 顧客リスト ************************-->
@@ -440,9 +443,10 @@
 <div class="signature">
   <div class="text">
     <div class="phone">日　付 : <%= @project.updated_at.strftime("%Y年%m月%d日") %></div>
-    <div class="company-name">会社名 : <%= Constants::JAPAN_SIDE_COMPANY %></div>
-    <div class="person-name">担当者 : <%= Constants::JAPAN_SIDE_CHIEF %></div>
-    <div class="phone">電　話 : <%= Constants::JAPAN_SIDE_PHONE %></div>
+    <div class="company-name">会社名 : <%= company_info[:company_name] %></div>
+    <div class="person-name">担当者 : <%= company_info[:chief] %></div>
+    <div class="phone">電　話 : <%= company_info[:phone] %></div>
   </div>
-  <%= image_tag(::Rails.root.join('public', Constants::JAPAN_SIDE_SIGNATURE), :style => "right:" + (33+rand(0..70)).to_s + "px; margin-top:" + (rand(0..40)-160).to_s + "px;") %>
+  <%= image_tag(::Rails.root.join('public', company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..30)-120).to_s + "px;" + "opacity:" + (Random.rand(0.3)+0.6).to_s + ";" + "-webkit-transform: rotate(" + (Random.rand(360)).to_s + "deg);") %>
+  <%= image_tag(::Rails.root.join('public', company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..30)-130).to_s + "px;" + "opacity:" + (Random.rand(0.2)+0.7).to_s + ";" + "-webkit-transform: rotate(-" + (Random.rand(5)).to_s + "deg);") %>
 </div>

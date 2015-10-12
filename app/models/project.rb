@@ -29,10 +29,13 @@ class Project < ActiveRecord::Base
   validate :validate_china_airport
   validate :validate_flight_name
   validate :validate_departure_and_arrival_time
+  validate :validate_japan_company
 
   def validate_japan_airport
     if(!japan_airport.present?)
       #errors.add(:japan_airport, "您未输入日本出发地点.")
+    elsif(!zenkaku?(:japan_airport))
+      errors.add(:japan_airport, "日本出发地点只可输入汉字.")
     elsif japan_airport.length > 5
       errors.add(:japan_airport, "日本出发地点不可超过5字.")      
     end
@@ -41,6 +44,8 @@ class Project < ActiveRecord::Base
   def validate_china_airport
     if(!china_airport.present?)
       #errors.add(:china_airport, "您未输入中国到达地点.")
+    elsif(!zenkaku?(china_airport))
+      errors.add(:china_airport, "中国到达地点只可输入汉字.")
     elsif china_airport.length > 5
       errors.add(:china_airport, "中国到达地点不可超过5字.")      
     end
@@ -49,6 +54,8 @@ class Project < ActiveRecord::Base
   def validate_flight_name
     if(!flight_name.present?)
       #errors.add(:flight_name, "您未输入回国航班号.")
+    elsif flight_name.match(/[^a-zA-Z0-9]/)
+      errors.add(:flight_name, "航班号只可输入英文字母与数字.")
     elsif flight_name.length > 10
       errors.add(:flight_name, "航班号不可超过10字.")      
     end
@@ -67,19 +74,20 @@ class Project < ActiveRecord::Base
   def validate_in_charge_person
     if(!in_charge_person.present?)
       #errors.add(:in_charge_person, "您未输入公司(送签社)担当者姓名.")
-    elsif in_charge_person.length > 10
-      errors.add(:in_charge_person, "公司（送签社）担当者姓名不可超过10字.")      
+    elsif in_charge_person.length > 5
+      errors.add(:in_charge_person, "公司（送签社）担当者姓名不可超过5字.")      
     end
   end
 
   def validate_in_charge_phone
     if(!in_charge_phone.present?)
       #errors.add(:in_charge_phone, "您未输入公司担当者的电话号码.")
-    elsif in_charge_phone.length > 30
-      errors.add(:in_charge_phone, "公司担当者电话号码不可超过30位.")      
+    elsif in_charge_phone.match(/[^-0-9]/)
+      errors.add(:in_charge_phone, "公司担当者电话只可输入数字.")
+    elsif in_charge_phone.length > 20
+      errors.add(:in_charge_phone, "公司担当者电话号码不可超过20位.")      
     end
   end
-
 
   def validate_china_company_name
     if(!china_company_name.present?)
@@ -113,8 +121,8 @@ class Project < ActiveRecord::Base
   def validate_representative_name_chinese
     if(!representative_name_chinese.present?)
       errors.add(:representative_name_chinese, "您未输入代表人名（简体字）.")
-    elsif(representative_name_chinese.length > 10)
-      errors.add(:representative_name_chinese, "代表人名（简体字）不可超过10字.")   
+    elsif(representative_name_chinese.length > 5)
+      errors.add(:representative_name_chinese, "代表人名（简体字）不可超过5字.")   
     elsif(hankaku?(representative_name_chinese))
       errors.add(:representative_name_chinese, "中文名只可输入简体字.")      
     end
@@ -123,8 +131,8 @@ class Project < ActiveRecord::Base
   def validate_representative_name_english
     if(!representative_name_english.present?)
       errors.add(:representative_name_english, "您未输入代表人名（拼音）.")
-    elsif(representative_name_english.length > 30)
-      errors.add(:representative_name_english, "代表人名（拼音）不可超过30字.")   
+    elsif(representative_name_english.length > 20)
+      errors.add(:representative_name_english, "代表人名（拼音）不可超过20字.")   
     elsif(!hankaku?(representative_name_english))
       errors.add(:representative_name_english, "代表人名（拼音）只可输入英文字母或半角空格.")      
     end
@@ -170,6 +178,14 @@ class Project < ActiveRecord::Base
       else
         self.total_woman += 1
       end
+    end
+  end
+
+  def validate_japan_company
+    if(visa_type == "group")
+      self.japan_company = Constants::GROUP_VISA[Random.rand(Constants::GROUP_VISA.length)]
+    else
+      self.japan_company = Constants::INDIVIDUAL_VISA[Random.rand(Constants::INDIVIDUAL_VISA.length)]
     end
   end
 

@@ -17,12 +17,7 @@ class ProjectsController < ApplicationController
 
   def create
     @project = current_trader.projects.build(project_params)
-    if @project.departure_time.to_s.match(/00:00:00/)
-      @project.departure_time = ""
-    end
-    if @project.arrival_time.to_s.match(/00:00:00/)
-      @project.arrival_time = ""
-    end
+    regenerate_project
 
     #render :text => @project.errors.messages
     if(@project.valid?)
@@ -51,7 +46,15 @@ class ProjectsController < ApplicationController
 
     if(!@project.errors.any?)
       @project.save
-      flash[:success] = "签证单提交完毕，请仔细查看身员保证单. 若有错误，请立即修改. 30分钟后您将无权修改."      
+      flash[:success] = "签证单提交完毕，请仔细查看身员保证单. 若有错误，请立即修改. 30分钟后您将无权修改."
+      message = "您的订单：#{@project.china_company_name}, #{@project.representative_name_chinese}(他" + @project.clients.length-1).to_s + "人)\r\n价格：" + get_project_price(@project).to_s
+      if(@project.trader.email && @project.trader.email.match(/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/))
+        system("echo '#{message}' | mutt -n -F ~/.mutt/muttrc -s '提交完毕' #{@project.email}");
+      elsif(@project.trader.qq && @project.trader.qq.match(/[0-9]{5,}/))
+        system("echo '#{message}' | mutt -n -F ~/.mutt/muttrc -s '提交完毕' " + @project.trader.qq.match(/[0-9]{5,}/)[0]);
+      end
+      @project.trader.qq
+
       #flash[:success] = "签证单提交完毕，请仔细查看身员保证单. 若有错误，请立即修改. " + Constants::EDITABLE_HOUR.to_s + "小时后您将无权修改."
       redirect_to projects_path
     else
@@ -91,6 +94,7 @@ class ProjectsController < ApplicationController
       end      
     end
     @project.assign_attributes(project_params)
+    regenerate_project
 
     if(@project.valid?)
       #custom validate clients
@@ -150,7 +154,7 @@ class ProjectsController < ApplicationController
         @project.save
       end
 
-      flash[:success] = "电子签证修改更新完毕."
+      flash[:success] = "签证修改完毕,您还有30分钟时间可以检查.若有错误,请立即修改."
       redirect_to projects_path
     else
       render 'new'
@@ -235,7 +239,7 @@ class ProjectsController < ApplicationController
     else
       @project = current_trader.projects.find_by(:id => params[:id])
       @project.assign_attributes :confirmation => "confirmed"
-      flash[:success] = "发送完毕！我们将会马上确认您的回国报告."
+      flash[:success] = "谢谢合作,我们即将向观光厅汇报."
     end
 
     @project.record_timestamps = false
@@ -297,6 +301,21 @@ class ProjectsController < ApplicationController
   end
 
   private
+  def regenerate_project
+    if @project.departure_time.to_s.match(/00:00:00/)
+      @project.departure_time = ""
+    end
+    if @project.arrival_time.to_s.match(/00:00:00/)
+      @project.arrival_time = ""
+    end
+    
+    if(@project.visa_type == "group")
+      @project.japan_company = Constants::GROUP_VISA[Random.rand(Constants::GROUP_VISA.length)]
+    else
+      @project.japan_company = Constants::INDIVIDUAL_VISA[Random.rand(Constants::INDIVIDUAL_VISA.length)]
+    end
+  end
+
   @company_codes
 
   def init_company_codes

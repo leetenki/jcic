@@ -6,6 +6,7 @@
     <td class="col-md-5 col-sm-5 col-xs-5">
         <% if is_admin? %>
             <div class="origin-company-name-cell" style="cursor:pointer;" onclick="location.href='/traders/<%= project.trader.id %>'"><%= project.trader.company_name %>(<%= project.trader.person_name %>)</div>        
+            <div class="bg-primary company-name-cell" style="margin-bottom: 6px;">日本:<%= Constants::JAPAN_SIDE_COMPANY[project.japan_company.intern][:company_name] %></div>
         <% end %>
 
         <div class="bg-primary company-name-cell"><%= project.china_company_name %></div>
@@ -23,7 +24,11 @@
 
 
     <!-- ******************  status container ******************* -->
-    <td class="col-md-3 col-sm-3 col-xs-3">
+    <% if is_admin? %>
+        <td class="col-md-3 col-sm-3 col-xs-3">
+    <% else %>
+        <td class="col-md-4 col-sm-4 col-xs-4">
+    <% end %>
         <div class="status-cell <%= project.delete_request ? "requesting_delete": project.status %>">
             <%= project.delete_request ? "正在申请删除..." : status_type_str(project.status) %>
         </div>
@@ -37,7 +42,7 @@
                         <button class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6" onclick="window.open().location.href='<%= project.pdf.url %>'">帰国報告</button>
                     <% else %>
                         <div class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6 disabled-modify" disabled="disabled">
-                            帰国報告<p class="arrow_box">正在制作，我们需要1～2小时时间向中联协申请，请稍等。</p>
+                            帰国報告<p class="arrow_box">正在制作，我们需要1小时时间向中联协申请，请过后再次查看。</p>
                         </div>
                     <% end %>
                 </div>
@@ -87,36 +92,45 @@
 
 
     <!-- ****************** price and payment container ******************* -->
-    <td class="col-md-2 col-sm-2 col-xs-2">
-        <% if is_admin? || (project.delete_request == false && project.status != "deleted") %>
-            <% if project.status == "deleted" || project.delete_request == true %>
-                <div class="price-cell paid"><strike>¥0</strike></div>
-            <% else %>
-                <div class="price-cell <%= project.payment %>">¥<%= get_project_price(project) %> <%= payment_type_str(project.payment) %></div>
-                <div class="small-gray-cell">期限：<span class="<%= project.payment %>"><%= get_payment_deadline(project).strftime("%Y/%m/%d") %></span></div>
-            <% end %>
-            <% if is_admin? %>
-                <div class="row">
-                    <div class="btn-group col-md-12 col-sm-12 col-xs-12"  data-toggle="buttons">
-                        <button class="btn btn-xs col-sm-6 col-md-6 col-xs-6 btn-default" onclick="location.href='/update_payment?id=<%= project.id %>&amp;payment=unpaid'">未入金</button>
-                        <button class="btn btn-xs col-sm-6 col-md-6 col-xs-6 btn-default" onclick="location.href='/update_payment?id=<%= project.id %>&amp;payment=paid'">已入金</button>
+    <% if is_admin? %>
+        <td class="col-md-2 col-sm-2 col-xs-2">
+            <% if is_admin? || (project.delete_request == false && project.status != "deleted") %>
+                <% if project.status == "deleted" || project.delete_request == true %>
+                    <div class="price-cell paid"><strike>¥0</strike></div>
+                <% else %>
+                    <div class="price-cell <%= project.payment %>">¥<%= get_project_price(project) %> <%= payment_type_str(project.payment) %></div>
+                    <div class="small-gray-cell">期限：<span class="<%= project.payment %>"><%= get_payment_deadline(project).strftime("%Y/%m/%d") %></span></div>
+                <% end %>
+                <% if is_admin? %>
+                    <div class="row">
+                        <div class="btn-group col-md-12 col-sm-12 col-xs-12"  data-toggle="buttons">
+                            <button class="btn btn-xs col-sm-6 col-md-6 col-xs-6 btn-default" onclick="location.href='/update_payment?id=<%= project.id %>&amp;payment=unpaid'">未入金</button>
+                            <button class="btn btn-xs col-sm-6 col-md-6 col-xs-6 btn-default" onclick="location.href='/update_payment?id=<%= project.id %>&amp;payment=paid'">已入金</button>
+                        </div>
                     </div>
-                </div>
+                <% end %>
             <% end %>
-        <% end %>
-    </td>
+        </td>
+    <% end %>
 
 
 
     <!-- ****************** back home container ******************* -->
-    <td class="col-md-2 col-sm-2 col-xs-2">
+    <% if is_admin? %>
+        <td class="col-md-2 col-sm-2 col-xs-2">
+    <% else %>
+        <td class="col-md-3 col-sm-3 col-xs-3">
+    <% end %>
         <% if is_admin? || (project.delete_request == false && project.status != "deleted")%>
             <% if is_admin? || Date.today > project.date_leaving %>
                 <% if project.status == "deleted" || project.delete_request == true %>
                     <div class="confirmation-cell confirmed"><strike>回国报告</strike></div>
                 <% else %>
                     <div class="confirmation-cell <%= project.confirmation %>"><%= confirmation_type_str(project.confirmation) %></div>
-                    <div class="small-gray-cell">期限：<span class="<%= project.confirmation %>"><%= (project.date_leaving + 7).strftime("%Y/%m/%d") %></span></div>
+                    <div class="small-gray-cell">期限：<span class="<%= project.confirmation %>"><%= (project.date_leaving + 3).strftime("%Y/%m/%d") %></span></div>
+                    <% if (!is_admin? && Date.today > (project.date_leaving+3)) %>
+                        <div class="unconfirmed_alarm"></div>
+                    <% end %>
                 <% end %>
                 <div class="btn-container">
                     <% if is_admin? %>
@@ -127,7 +141,7 @@
                             </div>
                         </div>
                     <% elsif project.confirmation == "unconfirmed" %>
-                        <a data-confirm="请用FAX传真回国报告后，选择OK。我们将会立即确认!" class="btn btn-xs btn-primary" href="/update_confirmation?id=<%= project.id %>&amp;confirmation=confirmed">立即发送</a>
+                        <a data-confirm="请联系客人，确认客人已回国后，选择OK。" class="btn btn-xs btn-primary" href="/update_confirmation?id=<%= project.id %>&amp;confirmation=confirmed">以确认</a>
                     <% end %>
                 </div>
             <% end %>
