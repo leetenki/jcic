@@ -136,7 +136,8 @@ private
     end
 
     if(id.present? && id != "*")
-      projects = projects.where("trader_id = ?", id)
+      trader = Trader.find(id);
+      projects = projects.where(:trader_id => trader.slave_trader_ids + [trader.id])
     end
 
     return projects;

@@ -35,7 +35,7 @@
                   <%= f.text_field(
                               :in_charge_person, :class => 'form-control',
                               :maxlength => "5",
-                              :id => "in_charge_person_input", :autocomplete => "off", :placeholder => "李庆新", 
+                              :id => "in_charge_person_input", :autocomplete => "off", :placeholder => "李利", 
                               :onfocus=>"updateIconOnlyCheck('in_charge_person_check', validateInChargePerson, 'in_charge_person_container')", 
                               :oninput=>"updateIconOnlyCheck('in_charge_person_check', validateInChargePerson, 'in_charge_person_container')", 
                               :onchange=>"updateIcon('in_charge_person_check', validateAndReplaceInChargePerson, 'in_charge_person_container')", 
@@ -89,7 +89,7 @@
             <% end %>
                   <%= f.label :representative_name_chinese, "签证代表人姓名(简体字)" %> <i id="chinese_name_check"></i>
                   <%= f.text_field(
-                        :representative_name_chinese, :class => 'form-control', :placeholder => "王飞鹤", :autocomplete => "off",
+                        :representative_name_chinese, :class => 'form-control', :placeholder => "王鹤", :autocomplete => "off",
                         :id => "chineseName",
                         :maxlength => "5",
                         :onfocus => "updateIconOnlyCheck('chinese_name_check', validateChineseName, 'chinese_name_container')",
@@ -190,7 +190,7 @@
                                           <%= clients_field.text_field(
                                                 :name_chinese, :autocomplete => "off",
                                                 :class => "form-control",
-                                                :placeholder => "李庆新",                                       
+                                                :placeholder => "王利",                                       
                                                 :oninput => "validateAndUpdateFieldOnlyCheck('clients_chinese_name_container_#{clients_field.index}', 'chinese_name_container', validateChineseNameById)",
                                                 :onfocus => "validateAndUpdateFieldOnlyCheck('clients_chinese_name_container_#{clients_field.index}', 'chinese_name_container', validateChineseNameById)",                                          
                                                 :onchange => "validateAndUpdateField('clients_chinese_name_container_#{clients_field.index}', 'chinese_name_container', validateAndReplaceChineseNameById)",
@@ -205,7 +205,7 @@
                                           <%= clients_field.text_field(
                                                 :name_english, :autocomplete => "off",
                                                 :class => "form-control",
-                                                :placeholder => "LI QINGXIN",
+                                                :placeholder => "WANG LI",
                                                 :oninput => "validateAndUpdateFieldOnlyCheck('clients_english_name_container_#{clients_field.index}', 'english_name_container', validateEnglishNameById)",
                                                 :onfocus => "validateAndUpdateFieldOnlyCheck('clients_english_name_container_#{clients_field.index}', 'english_name_container', validateEnglishNameById)",
                                                 :onchange => "validateAndUpdateField('clients_english_name_container_#{clients_field.index}', 'english_name_container', validateAndReplaceEnglishNameById)",
@@ -317,6 +317,8 @@
             <div class="title">
                   <i class="fa fa-bus"></i> 日程表 共 <span class="number" id="schedules-total"><%= f.object.schedules.length %></span> 天
             </div>
+            <!--<div id="excel_button2" class="btn btn-default" data-toggle="modal" data-target="#modal-panel2">+ Excel</div>-->
+
             <% if project.trader.validation_mode == "easy" %>
                   <!--<div id="undecided_button" class="btn btn-info" onclick="set_all_schedules_undetermined()">未定</div>-->
             <% end %>
@@ -365,7 +367,7 @@
                                                 :onchange => "validateAndUpdateField('schedules_hotel_container_#{schedules_field.index}', 'hotel_container', validateAndReplaceHotel)",
                                                 :class => "form-control",
                                                 :maxlength => "100",
-                                                :placeholder => "例 : 〒106-0032 東京都港区六本木7丁目18−11 飞鹤国际ホテル",
+                                                :placeholder => "例 : 〒106-0032 東京都港区六本木7丁目18−11 国际ホテル",
                                           ) %>
                                     </div>
                               </td>
@@ -495,7 +497,7 @@
 
 
             <div class="modal-body">
-                  <textarea id="excel_area" class="form-control" placeholder="李庆新&#009;&#009;LI QINXIN&#009;&#009;男&#009;&#009;苏州&#009;&#009;1950/1/1&#009;&#009;G171717171&#009;&#009;总经理"></textarea>
+                  <textarea id="excel_area" class="form-control" placeholder="李利&#009;&#009;LI LI&#009;&#009;男&#009;&#009;上海&#009;&#009;1950/1/1&#009;&#009;G171717171&#009;&#009;经理"></textarea>
             </div>
 
             <div class="modal-footer">
@@ -505,6 +507,35 @@
         </div>
     </div>
 </div>
+
+<!-- schedule modal panel -->
+<!--
+<div class="modal fade" id="modal-panel2" tabindex="-1">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+                <h5 class="modal-title" id="modal-label">您可以从Excel文件读取行程表. 请打开Excel文件，选择全文后，复制与粘贴到此处.</h5>
+            </div>
+
+
+            <div class="modal-body">
+                  <textarea id="excel_area2" class="form-control" placeholder="2016/01/01&#009;&#009;上海浦東からNH272便にて、成田へ到着。&#009;&#009;東京都港区品川3-1港ホテル"></textarea>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="parse-schedules-button">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+
 
 <% if is_admin? %>
       <div id="admin"></div>

@@ -58,9 +58,9 @@
 
       <%= f.label :master_id, "属于(上家)" %>
       <select name="trader[master_id]" class="form-control" id="master_selector">
-        <option value="*" <%= "selected=selected" if params[:trader_id] == "*" %>>---</option>
+        <option value="*" <%= "selected=selected" if !trader.master_relationship %>>---</option>
         <% Trader.all.each do |each_trader| %>
-          <option value="<%= each_trader.id %>" <%= "selected=selected" if params[:trader_id] == each_trader.id.to_s %>><%= each_trader.company_name %></option>
+          <option value="<%= each_trader.id %>" <%= "selected=selected" if trader.master_relationship && trader.master_relationship.master_id == each_trader.id %>><%= each_trader.company_name %></option>
         <% end %>
       </select>
 

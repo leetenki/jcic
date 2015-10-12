@@ -4,7 +4,7 @@ require 'era_ja/date'
 include ChineseConverter
 
 class ProjectsController < ApplicationController
-  before_action :logged_in, :only => [:new, :create, :index, :edit, :update, :destroy, :show, :need_delete]
+  before_action :logged_in, :only => [:new, :create, :index, :edit, :update, :destroy, :show, :need_delete, :signature]
   before_action :init_company_codes, :only => [:new, :create, :edit, :update]
   before_action :logged_in_admin, :only => [:store_pdf]
 
@@ -46,13 +46,13 @@ class ProjectsController < ApplicationController
 
     if(!@project.errors.any?)
       @project.save
-      flash[:success] = "签证单提交完毕，请仔细查看身员保证单. 若有错误，请立即修改. 30分钟后您将无权修改."
-      message = "您的订单：#{@project.china_company_name}, #{@project.representative_name_chinese}(他" + (@project.clients.length-1).to_s + "人)\r\n价格：" + get_project_price(@project).to_s
-      if(@project.trader.email && @project.trader.email.match(/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/))
-        system("echo '#{message}' | mutt -n -F ~/.mutt/muttrc -s '提交完毕' #{@project.trader.email}");
-      elsif(@project.trader.qq && @project.trader.qq.match(/[0-9]{5,}/))
-        system("echo '#{message}' | mutt -n -F ~/.mutt/muttrc -s '提交完毕' " + @project.trader.qq.match(/[0-9]{5,}/)[0]);
-      end
+      flash[:success] = "签证单提交完毕，请仔细查看身元保证書. 若有错误，请立即修改. 30分钟后您将无权修改."
+      #message = "您的订单：#{@project.china_company_name}, #{@project.representative_name_chinese}(他" + (@project.clients.length-1).to_s + "人)\r\n价格：" + get_project_price(@project).to_s
+      #if(@project.trader.email && @project.trader.email.match(/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/))
+        #system("echo '#{message}' | mutt -n -F ~/.mutt/muttrc -s '提交完毕' #{@project.trader.email}");
+      #elsif(@project.trader.qq && @project.trader.qq.match(/[0-9]{5,}/))
+        #system("echo '#{message}' | mutt -n -F ~/.mutt/muttrc -s '提交完毕' " + @project.trader.qq.match(/[0-9]{5,}/)[0]);
+      #end
       #flash[:success] = "签证单提交完毕，请仔细查看身员保证单. 若有错误，请立即修改. " + Constants::EDITABLE_HOUR.to_s + "小时后您将无权修改."
       redirect_to projects_path
     else
@@ -296,6 +296,20 @@ class ProjectsController < ApplicationController
     @project.assign_attributes :pdf => params[:project][:pdf]
     @project.save :validate => false;
     render :text => "Succeed to upload file " + @project.pdf.url;
+  end
+
+  def signature
+    if(is_admin?)
+      @project = Project.find_by(:id => params[:id])
+    else
+      @project = current_trader.projects.find_by(:id => params[:id])
+    end
+    if(!@project)
+      redirect_to request.referrer || projects_path
+    else
+      @japan_company = Constants::JAPAN_SIDE_COMPANY[@project.japan_company.intern]
+      render "signature", :layout => false;
+    end
   end
 
   private

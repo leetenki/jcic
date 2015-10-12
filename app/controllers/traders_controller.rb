@@ -21,6 +21,14 @@ class TradersController < ApplicationController
   def create
     @trader = Trader.new(trader_params)
     @trader.password_backup = params[:trader][:password];
+    if(params[:trader][:master_id] == "*")
+      if(@trader.master_relationship)
+        @trader.master_relationship.destroy
+      end
+    else
+      @trader.create_master_relationship(:master_id => params[:trader][:master_id])
+    end
+
     if @trader.save
       flash[:success] = "成功注册新账户!"
       redirect_to @trader
@@ -38,6 +46,15 @@ class TradersController < ApplicationController
 
   def update
     @trader = Trader.find_by(:id => params[:id])
+
+    if(params[:trader][:master_id] == "*")
+      if(@trader.master_relationship)
+        @trader.master_relationship.destroy
+      end
+    else
+      @trader.create_master_relationship(:master_id => params[:trader][:master_id])
+    end
+
     @trader.password_backup = params[:trader][:password]
     if @trader.update(trader_params)
       flash[:success] = "成功编辑账户!"

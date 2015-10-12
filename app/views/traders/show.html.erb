@@ -82,6 +82,14 @@
           <td><div style="font-weight:bold; color:orange;"><%= @trader.projects.length %> 件</div></td>
         </tr>
         <tr>
+          <td>属于(上家)</td>
+          <td>
+            <% if @trader.master_trader %>
+              <%= @trader.master_trader.company_name %>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
           <td>状态</td>
           <td><%= activation_type_str(@trader.activation) %></td>
         </tr>        

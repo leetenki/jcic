@@ -28,7 +28,7 @@ Rails.application.routes.draw do
   get 'admin/unpaid_all', :to => "admin#unpaid_all"
   get 'admin/invoice', :to => "admin#invoice"
   get 'admin/useragent', :to => "admin#useragent"
-
+  get 'projects/signature/(:id)', :to => "projects#signature"
 
   resources :traders
   resources :projects

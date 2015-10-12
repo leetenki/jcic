@@ -1944,7 +1944,16 @@ $(function() {
         alert("您填入的表格不符合Excel文件格式!")
       }
   });
+  /*
+  $("button#parse-schedules-button").click(function(e){
+      var excelText = $('#excel_area2')[0].value;
+      console.log(excelText)
+      debug = excelText
+  });
+  */
 });
+debug = null;
+
 
 // function to fill row from excel items
 function fillRow(id, rowItem) {

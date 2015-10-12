@@ -6,10 +6,12 @@
     <td class="col-md-5 col-sm-5 col-xs-5">
         <% if is_admin? %>
             <div class="origin-company-name-cell" style="cursor:pointer;" onclick="location.href='/traders/<%= project.trader.id %>'"><%= project.trader.company_name %>(<%= project.trader.person_name %>)</div>        
-            <div class="bg-primary company-name-cell" style="margin-bottom: 6px;">日本:<%= Constants::JAPAN_SIDE_COMPANY[project.japan_company.intern][:company_name] %></div>
         <% end %>
 
-        <div class="bg-primary company-name-cell"><%= project.china_company_name %></div>
+        <div class="bg-primary company-name-cell japan-sign" style="margin-bottom: 6px; cursor:pointer;" onclick="window.open('/projects/signature/<%= project.id %>')">
+            日本 : <%= Constants::JAPAN_SIDE_COMPANY[project.japan_company.intern][:company_name] %>
+        </div>
+        <div class="bg-primary company-name-cell">中国 : <%= project.china_company_name %></div>
         <div class="date-arrival-cell"><%= project.date_arrival.strftime("%Y/%m/%d") %>〜<%= project.date_leaving.strftime("%Y/%m/%d") %></div>
         <div class="visa-type-cell"><%= visa_type_str(project.visa_type) %></div>
         <div class="presentative-name-cell">代表人：<%= project.representative_name_chinese %> ( <%= project.representative_name_english %> ) 共<%= project.total_people %>名</div>
@@ -42,7 +44,7 @@
                         <button class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6" onclick="window.open().location.href='<%= project.pdf.url %>'">帰国報告</button>
                     <% else %>
                         <div class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6 disabled-modify" disabled="disabled">
-                            帰国報告<p class="arrow_box">正在制作，我们需要1小时时间向中联协申请，请过后再次查看。</p>
+                            帰国報告<p class="arrow_box">正在制作，我们需要1小时时间向中联协申请，请稍后再次查看。</p>
                         </div>
                     <% end %>
                 </div>
@@ -64,7 +66,7 @@
                         <button class="btn btn-danger btn-xs col-md-6 col-sm-6 col-xs-6" onclick="confirmDelete('<%= delete_request_path(project) %>')">申请删除</button>
                     <% else %>
                         <div class="btn btn-danger btn-xs col-md-6 col-sm-6 col-xs-6 disabled-modify" disabled="disabled">
-                            删除<p class="arrow_box">对不起，此签证所有手续已办完，您已无法删除。<br/>请联系 <%= Constants::PHONE_FOR_CONTACT + " " + Constants::SELF_COMPANY_NAME %>。</p>
+                            删除<p class="arrow_box">对不起，此签证所有手续已办完，您已无法删除。<br/><!--请联系 <%= Constants::PHONE_FOR_CONTACT + " " + Constants::SELF_COMPANY_NAME %>。</p>-->
                         </div>                
                     <% end %>
 

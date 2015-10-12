@@ -1,0 +1,63 @@
+<html>
+<head>
+  <title>JCIC</title>
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" type="image/x-icon" href="/ico.png" />
+  <style type="text/css">
+    canvas:hover {
+      background: #dddddd;
+    }
+  </style>
+</head>
+
+<body>
+<img id="sign1" src="/<%= @japan_company[:signature_1] %>" style="display:none;"/>
+<img id="sign2" src="/<%= @japan_company[:signature_2] %>" style="display:none;"/>
+<script type="text/javascript">
+<!--
+window.onload = function() {
+  var img1 = document.getElementById("sign1");
+  var img2 = document.getElementById("sign2");
+  // create and customize the canvas
+  var canvas = document.createElement("canvas");
+  canvas.setAttribute("id", "signature-canvas")
+  canvas.width = 550;
+  canvas.height = 180;
+
+  //document.body.appendChild(canvas);
+  var ctx = canvas.getContext("2d");
+  ctx.font = '300 22px/2 Unknown Font, sans-serif';
+  ctx.fillText("日　付 : <%= Date.today.strftime("%Y年%m月%d日") %>", 50, 40)
+  ctx.fillText("会社名 : <%= @japan_company[:company_name] %>", 50, 70)
+  ctx.fillText("担当者 : <%= @japan_company[:chief] %>", 50, 100)
+  ctx.fillText("電　話 : <%= @japan_company[:phone] %>", 50, 130)
+
+  ctx.save();
+  ctx.globalAlpha = 0.6;
+  ctx.drawImage(img1, 100, 50, 95, 95);
+  ctx.drawImage(img2, 280, 20, 125, 125);
+  ctx.restore()
+
+  // get the image data object
+  var image = ctx.getImageData(0, 0, 500, 200);
+  // get the image data values 
+  var imageData = image.data,
+  length = imageData.length;
+  // set every fourth value to 50
+
+  // after the manipulation, reset the data
+  image.data = imageData;
+  // and put the imagedata back to the canvas
+  ctx.putImageData(image, 0, 0);
+  url = canvas.toDataURL()
+
+  var aTag = document.createElement("a")
+  aTag.setAttribute("download", "sign")
+  aTag.setAttribute("href", url)
+  aTag.appendChild(canvas)
+  document.body.appendChild(aTag);
+}
+//-->
+</script>
+</body>
+</html>
