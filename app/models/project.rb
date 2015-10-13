@@ -34,7 +34,7 @@ class Project < ActiveRecord::Base
   def validate_japan_airport
     if(!japan_airport.present?)
       #errors.add(:japan_airport, "您未输入日本出发地点.")
-    elsif(!zenkaku?(:japan_airport))
+    elsif(!zenkaku?(japan_airport))
       errors.add(:japan_airport, "日本出发地点只可输入汉字.")
     elsif japan_airport.length > 5
       errors.add(:japan_airport, "日本出发地点不可超过5字.")      
