@@ -335,7 +335,7 @@ function validateEnglishName() {
   var valid = true;
   var englishName = document.getElementById("englishName").value.toUpperCase().replace(/[^ -~]{1,}/g, " ").replace(/[^A-Za-z]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
 
-  if(englishName.length <= 2 || englishName.length > 20) {
+  if(englishName.length <= 2 || englishName.length > 15) {
     valid = false;
   } else if(CheckLength(englishName, 1)) {
     valid = false;
@@ -733,7 +733,7 @@ function validateAndReplaceChineseNameById(id) {
 function validateEnglishNameById(id) {
   var inputText = $("#" + id + " input")[0].value.toUpperCase().replace(/[^ -~]{1,}/g, " ").replace(/[^A-Za-z]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
 
-  if(inputText.length > 2 && inputText.length <= 20 && !CheckLength(inputText, 1)) {
+  if(inputText.length > 2 && inputText.length <= 15 && !CheckLength(inputText, 1)) {
     return true
   } else {
     return false;
@@ -1098,7 +1098,7 @@ function createClientTag(index) {
   inputTag.setAttribute("autocomplete", "off");
   inputTag.setAttribute("class", "form-control");
   inputTag.setAttribute("placeholder", "");
-  inputTag.setAttribute("maxlength", "20");  
+  inputTag.setAttribute("maxlength", "15");  
   inputTag.setAttribute("oninput", "validateAndUpdateFieldOnlyCheck('clients_english_name_container_" + index + "', 'english_name_container', validateEnglishNameById)");
   inputTag.setAttribute("onfocus", "validateAndUpdateFieldOnlyCheck('clients_english_name_container_" + index + "', 'english_name_container', validateEnglishNameById)");
   inputTag.setAttribute("onchange", "validateAndUpdateField('clients_english_name_container_" + index + "', 'english_name_container', validateAndReplaceEnglishNameById)");
@@ -1824,7 +1824,7 @@ $(function() {
       }
     })
     if(!englishNameValid) {
-      failedMessage += "<li>英文名必须填写半角拼英，20字以内.</li>";          
+      failedMessage += "<li>英文名必须填写半角拼英，15字以内.</li>";          
     }
 
     var genderValid = true;

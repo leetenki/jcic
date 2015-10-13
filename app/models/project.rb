@@ -131,7 +131,7 @@ class Project < ActiveRecord::Base
   def validate_representative_name_english
     if(!representative_name_english.present?)
       errors.add(:representative_name_english, "您未输入代表人名（拼音）.")
-    elsif(representative_name_english.length > 20)
+    elsif(representative_name_english.length > 15)
       errors.add(:representative_name_english, "代表人名（拼音）不可超过20字.")   
     elsif(!hankaku?(representative_name_english))
       errors.add(:representative_name_english, "代表人名（拼音）只可输入英文字母或半角空格.")      

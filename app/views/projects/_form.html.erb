@@ -111,7 +111,7 @@
                         :representative_name_english, :class => 'form-control', :placeholder => "WANG FEIHE", :autocomplete => "off",
                         :id => "englishName",
                         :style => "ime-mode: disabled;",
-                        :maxlength => "20",
+                        :maxlength => "15",
                         :onfocus => "updateIconOnlyCheck('english_name_check', validateEnglishName, 'english_name_container')",
                         :oninput => "updateIconOnlyCheck('english_name_check', validateEnglishName, 'english_name_container')",
                         :onblur => "autoCompleteFirstEnglishName()",
@@ -210,7 +210,7 @@
                                                 :onfocus => "validateAndUpdateFieldOnlyCheck('clients_english_name_container_#{clients_field.index}', 'english_name_container', validateEnglishNameById)",
                                                 :onchange => "validateAndUpdateField('clients_english_name_container_#{clients_field.index}', 'english_name_container', validateAndReplaceEnglishNameById)",
                                                 :onblur => "validateAndUpdateField('clients_english_name_container_#{clients_field.index}', 'english_name_container', validateAndReplaceEnglishNameById)",
-                                                :maxlength => "20",
+                                                :maxlength => "15",
                                           ) %>
                                     </div>
                               </td>

@@ -25,7 +25,7 @@ class Client < ActiveRecord::Base
   def validate_name_english
     if(!name_english.present?)
       errors.add(:name_english, "您未输入英文姓名.")
-    elsif(name_english.length > 20)
+    elsif(name_english.length > 15)
       errors.add(:name_english, "英文姓名不可超过20字.")   
     elsif(name_english.match(/[^a-zA-Z ]/))
       errors.add(:name_english, "英文姓名只可输入英文字母或半角空格.")      
