@@ -3,8 +3,8 @@
 module Constants
 
   #身元保証書用 & 自動入力用
-  GROUP_VISA = [:jcic]
-  INDIVIDUAL_VISA = [:jcic] #:jki
+  GROUP_VISA = [:jki]
+  INDIVIDUAL_VISA = [:jki] #:jki
   JAPAN_SIDE_COMPANY = {
     :jki => {
       :company_name => "株式会社ジェイ・ケイ・アイ",
