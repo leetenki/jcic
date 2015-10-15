@@ -2,10 +2,85 @@
 <% company_info = Constants::JAPAN_SIDE_COMPANY[@project.japan_company.intern] %>
 
 <!--*********************** 身元保証 ************************-->
+<div class="head" style="page-break-before: always">招聘保証書</div>
+<table id="project">
+  <caption>
+    <div class="representative">
+      <span class="text"><%= @project.representative_name_chinese %>他<%= @project.clients.length - 1 %>名 (男<%= @project.total_man %> / 女<%= @project.total_woman %>)</span>
+    </div>
+    <div class="title-date">(<span class="text"><%= @project.date_arrival.to_era("%O%E年%m月%d日") %>〜<%= @project.date_leaving.to_era("%O%E年%m月%d日") %></span>)</div>
+  </caption>
+
+  <tr>
+    <td class="title" rowspan="2">中連協会員旅行会社名</td>
+    <td class="name-title">会社名</td>
+    <td class="content"><%= company_info[:company_name] %></td>
+  </tr>
+  <tr>
+    <td class="name-title">指定番号</td>
+    <td class="name-content"><%= company_info[:code] %></td>
+  </tr>
+  <tr>
+    <td class="title" rowspan="3">中国側旅行会社名</td>
+    <td class="name-title">会社名</td>
+    <td class="name-content"><%= @visa_company[0].name %></td>
+  </tr>
+  <tr>
+    <td class="name-title">指定番号</td>
+    <td class="name-content"><%= @visa_company[0].code %></td>
+  </tr>
+  <tr>
+    <td class="name-title">管轄公館</td>
+    <td class="content"><%= @visa_company[0].locate %></td>
+  </tr>
+  <tr>
+    <td class="title">査証種別</td>
+    <td class="content" colspan="2"><%= visa_type_str(@project.visa_type) %></td>
+  </tr>
+  <tr>
+    <td class="title" rowspan="2">査証申請人(代表)氏名</td>
+    <td class="name-tile">简体字</td>
+    <td class="name-content"><%= @project.representative_name_chinese %></td>
+  </tr>
+  <tr>
+    <td class="name-title">ピンイン</td>
+    <td class="name-content"><%= @project.representative_name_english %></td>
+  </tr>
+  <tr>
+    <td class="title">代表者を除く申請人数</td>
+    <td class="content" colspan="2"><%= @project.clients.length - 1 %>名</td>
+  </tr>
+  <tr>
+    <td class="title">日本入国予定日</td>
+    <td class="content" colspan="2"><%= @project.date_arrival.strftime("%Y年%m月%d日") %></td>
+  </tr>
+  <tr>
+    <td class="title">日本出国予定日</td>
+    <td class="content" colspan="2"><%= @project.date_leaving.strftime("%Y年%m月%d日") %></td>
+  </tr>
+</table>
+<div class="visa-company" style="margin-top: 30px;">
+</div>
+
+<div class="visa-company" style="margin-top: 30px;">
+</div>
+
+<!--*********************** サイン ************************-->
+<div class="signature">
+  <div class="text">
+    <div class="phone">日　付 : <%= @project.updated_at.strftime("%Y年%m月%d日") %></div>
+    <div class="company-name">会社名 : <%= company_info[:company_name] %></div>
+    <div class="person-name">担当者 : <%= company_info[:chief] %></div>
+    <div class="phone">電　話 : <%= company_info[:phone] %></div>
+  </div>
+  <%= image_tag(::Rails.root.join('public', company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..30)-110).to_s + "px;" + "opacity:" + (Random.rand(0.2)+0.6).to_s + ";" + "-webkit-transform: rotate(" + (Random.rand(360)).to_s + "deg);") %>
+  <%= image_tag(::Rails.root.join('public', company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..20)-120).to_s + "px;" + "opacity:" + (Random.rand(0.2)+0.5).to_s + ";" + "-webkit-transform: rotate(-" + (Random.rand(5)).to_s + "deg);") %>
+</div>
+
 <!--*********************** スケジュール ************************-->
 <% schedules_length = @project.schedules.length %>
 <% if schedules_length <= 13 %>
-  <table class="schedules" style="">
+  <table class="schedules" style="page-break-before:always; margin-top: 170px;">
     <caption>
       <div class="title">滞在予定表</div>
       <div class="title-date">(<span class="text"><%= @project.date_arrival.to_era("%O%E年%m月%d日") %>〜<%= @project.date_leaving.to_era("%O%E年%m月%d日") %></span>)</div>

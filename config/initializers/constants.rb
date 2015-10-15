@@ -9,8 +9,8 @@ module Constants
     :jki => {
       :company_name => "株式会社ジェイ・ケイ・アイ",
       :code => "0712-001",
-      #:phone => "03-3835-1195",
-      :phone => "090-9845-1588",
+      :phone => "03-3835-1195",
+      #:phone => "090-9845-1588",
       :chief => "申宏伟",
       :signature_1 => "jki_signature1.png",
       :signature_2 => "jki_signature2.png",
