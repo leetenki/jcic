@@ -39,7 +39,7 @@
         <% if is_admin? || !is_project_disabled(project) %>
             <div class="row">
                 <div class="btn-group col-md-12 col-sm-12 col-xs-12"  data-toggle="buttons">
-                    <button class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6" onclick="window.open().location.href='/projects/<%= project.id %>.pdf'">身元保証</button>
+                    <button class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6" onclick="location.href='/projects/<%= project.id %>.pdf'">身元保証</button>
                     <% if project.pdf.present? %>
                         <button class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6" onclick="window.open().location.href='<%= project.pdf.url %>'">帰国報告</button>
                     <% else %>

@@ -1290,7 +1290,7 @@ function createClientTag(index) {
 
   labelNode = document.createElement("label");
   labelNode.setAttribute("for", "project_clients_attributes_" + index + "_job");
-  labelNode.appendChild(document.createTextNode("备考"))
+  labelNode.appendChild(document.createTextNode("职业"))
   containerNode.appendChild(labelNode);
 
   containerNode.appendChild(document.createTextNode(" "));

@@ -66,7 +66,7 @@ class Trader < ActiveRecord::Base
   end
 
   def search_by_code(ticket_no)
-    self.projects.where("ticket_no like '%" + ticket_no + "%'")    
+    self.projects.where("system_code like '%" + ticket_no + "%'")    
   end
 
   def search_projects(projects, from, to, payment, confirmation, status, delete_request, ticket_no)
@@ -97,7 +97,7 @@ class Trader < ActiveRecord::Base
     end
 
     if(!!ticket_no)
-      projects = projects.where("ticket_no like '%" + ticket_no + "%'")
+      projects = projects.where("system_code like '%" + ticket_no + "%'")
     end
 
     return projects;

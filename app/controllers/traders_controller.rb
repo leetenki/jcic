@@ -47,10 +47,11 @@ class TradersController < ApplicationController
   def update
     @trader = Trader.find_by(:id => params[:id])
 
+    if(@trader.master_relationship)
+      @trader.master_relationship.destroy
+    end
+
     if(params[:trader][:master_id] == "*")
-      if(@trader.master_relationship)
-        @trader.master_relationship.destroy
-      end
     else
       @trader.create_master_relationship(:master_id => params[:trader][:master_id])
     end

@@ -203,8 +203,8 @@
         <th class="gender">性別</th>
         <th class="birthday">生年月日</th>
         <th class="hometown">発行地</th>
-        <th class="visa-type">種類</th>
         <th class="passport-no">PAPT番号</th>
+        <th class="visa-type">职业</th>
       </tr>
     </thead>
     <tbody>
@@ -216,8 +216,8 @@
           <td class="gender"><%= gender_str(client.gender) %></td>
           <td class="birthday"><%= client.birthday.strftime("%Y-%m-%d") %></td>
           <td class="hometown"><%= client.hometown %></t>
-          <td class="visa-type">普通</td>
           <td class="passport-no"><%= client.passport_no %></td>
+          <td class="visa-type"><%= client.job %></td>
         </tr>
       <% end %>
     </tbody>
