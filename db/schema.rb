@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151012050145) do
+ActiveRecord::Schema.define(version: 20151015040906) do
 
   create_table "clients", force: :cascade do |t|
     t.integer  "project_id"
@@ -72,7 +72,6 @@ ActiveRecord::Schema.define(version: 20151012050145) do
     t.string   "japan_company",               default: "jcic"
   end
 
-  add_index "projects", ["trader_id", "china_company_code", "visa_type", "total_people", "representative_name_english", "date_arrival", "date_leaving"], name: "unique_project_condition", unique: true
   add_index "projects", ["trader_id", "created_at"], name: "index_projects_on_trader_id_and_created_at"
   add_index "projects", ["trader_id"], name: "index_projects_on_trader_id"
 
