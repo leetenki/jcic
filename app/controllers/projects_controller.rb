@@ -46,7 +46,7 @@ class ProjectsController < ApplicationController
 
     if(!@project.errors.any?)
       @project.save
-      flash[:success] = "签证单提交完毕，请仔细查看身元保证書. 若有错误，请立即修改. 30分钟后您将无权修改."
+      flash[:success] = "签证单提交完毕，请仔细查看身元保证書. 若有错误，请立即修改. 5分钟后您将无权修改."
       #message = "您的订单：#{@project.china_company_name}, #{@project.representative_name_chinese}(他" + (@project.clients.length-1).to_s + "人)\r\n价格：" + get_project_price(@project).to_s
       #if(@project.trader.email && @project.trader.email.match(/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/))
         #system("echo '#{message}' | mutt -n -F ~/.mutt/muttrc -s '提交完毕' #{@project.trader.email}");
@@ -205,7 +205,7 @@ class ProjectsController < ApplicationController
         pdf = PDFKit.new(html, :encoding => "UTF-8");
         pdf.stylesheets << "#{Rails.root}/app/assets/stylesheets/pdf.css"
 
-        send_data pdf.to_pdf, :filename => "#{@project.id}.pdf", :type => "application/pdf", :disposition => "inline"
+        send_data pdf.to_pdf, :filename => "#{@project.id}.pdf", :type => "application/pdf", :disposition => "attachment"
       end
     end
   end
