@@ -9,9 +9,14 @@ module Constants
     :jki => {
       :company_name => "株式会社ジェイ・ケイ・アイ",
       :code => "0712-001",
-      :phone => "03-3835-1195",
       #:phone => "090-9845-1588",
+      :phone => "03-3835-1195",
       :chief => "申宏伟",
+      :gender => "男",
+      :job => "社長",
+      :country => "中国",
+      :stay => "日本永住",
+      :birthday => "1965年12月1日",
       :signature_1 => "jki_signature1.png",
       :signature_2 => "jki_signature2.png",
       :address_1 => "〒110-0015東京都台東区東上野2-20-9",
@@ -22,6 +27,11 @@ module Constants
       :code => "0509-003",
       :phone => "03-3470-6851",
       :chief => "東木慶新",
+      :gender => "男",
+      :job => "社長",
+      :country => "中国",
+      :stay => "日本永住",
+      :birthday => "1952年5月18日",
       :signature_1 => "jcic_signature1.png",
       :signature_2 => "jcic_signature2.png",
       :address_1 => "〒106-0032東京都港区六本⽊7-18-5",
@@ -53,5 +63,5 @@ module Constants
 
   LOGIN_TIMEOUT_HOUR = 24
   EDITABLE_MIN = 5
-  PAGENATION_COUNT = 20
+  PAGENATION_COUNT = 10
 end
