@@ -178,7 +178,7 @@ table.clients .chinese-name {
   width: 14%;
 }
 table.clients .english-name {
-  width: 19%;
+  width: 20%;
 }
 table.clients .gender {
   width: 8%;
@@ -187,10 +187,10 @@ table.clients .birthday {
   width: 13%;
 }
 table.clients .hometown {
-  width: 11%;
+  width: 12%;
 }
 table.clients .visa-type {
-  width: 15%;
+  width: 13%;
 }
 
 

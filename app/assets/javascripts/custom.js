@@ -725,6 +725,10 @@ function validateChineseNameById(id) {
 }
 function validateAndReplaceChineseNameById(id) {
   var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, "").replace(/[　 ]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+  if(inputText.length > 5) {
+    inputText = inputText.match(/.{1,5}/)[0]
+  }
+
   $("#" + id + " input")[0].value = inputText;
 
   return validateChineseNameById(id);
@@ -741,6 +745,10 @@ function validateEnglishNameById(id) {
 }
 function validateAndReplaceEnglishNameById(id) {
   var inputText = $("#" + id + " input")[0].value.toUpperCase().replace(/[^ -~]{1,}/g, " ").replace(/[^A-Za-z]{1,}/g, " ").replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+  if(inputText.length > 15) {
+    inputText = inputText.match(/.{1,15}/)[0]
+  }
+
   $("#" + id + " input")[0].value = inputText;
 
   return validateEnglishNameById(id);
@@ -765,6 +773,9 @@ function validatePassportNo(id) {
 }
 function validateAndReplacePassportNo(id) {
   var inputText = $("#" + id + " input")[0].value.toUpperCase().replace(/[^0-9A-Z]{1,}/g, "");
+  if(inputText.length > 11) {
+    inputText = inputText.match(/.{1,11}/)[0]
+  }
   $("#" + id + " input")[0].value = inputText;
 
   return validatePassportNo(id);
@@ -781,7 +792,11 @@ function validateHometown(id) {
 }
 function validateAndReplaceHometown(id) {
   var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, "").replace(/[　 ]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");;
+  if(inputText.length > 5) {
+    inputText = inputText.match(/.{1,11}/)[5]
+  }
   $("#" + id + " input")[0].value = inputText;
+
   return validateHometown(id);
 }
 
@@ -809,6 +824,9 @@ function validateJob(id) {
 }
 function validateAndReplaceJob(id) {
   var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, "").replace(/[　 ]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+  if(inputText.length > 5) {
+    inputText = inputText.match(/.{1,5}/)[0]
+  }
   $("#" + id + " input")[0].value = inputText;
 
   return validateJob(id);
@@ -1710,6 +1728,7 @@ $(function() {
     if(!updateIcon('visa_type_check', validateVisaType)) {
       failedMessage += "<li>签证种类未选.</li>";
     }
+
     /*
     if(!updateIcon('chinese_name_check', validateChineseName, 'chinese_name_container')) {
       failedMessage += "<li>代表人姓名(简体字)不正确.</li>";          
@@ -1864,7 +1883,7 @@ $(function() {
       }
     })
     if(!jobValid) {
-      failedMessage += "<li>职业不正确.</li>";          
+      failedMessage += "<li>职业不正确，必须汉字5字以内.</li>";          
     }
 
     var passportNoValid = true;
@@ -1937,7 +1956,9 @@ $(function() {
         $(".passport_no_container").each(function() {
           validateAndUpdateField(this.attributes.id.value, 'passport_no_container', validateAndReplacePassportNo);
         });
-
+        $(".job_container").each(function() {
+          validateAndUpdateField(this.attributes.id.value, 'job_container', validateAndReplaceJob);
+        });
         $('#modal-panel').modal('hide');
         alert("成功读取" + rowItems.length + "份个人资料,请确认.");
       } else {
@@ -1959,7 +1980,7 @@ debug = null;
 function fillRow(id, rowItem) {
   $("#"+id+" .chinese_name_container input")[0].value = rowItem.chineseName;
   $("#"+id+" .english_name_container input")[0].value = rowItem.englishName;
-  if(rowItem.gender.match(/[女2fF]|female|woman|women|girl/i)) {
+  if(rowItem.gender.match(/[女⼥2fF]|female|woman|women|girl/i)) {
     $("#"+id+" .gender_container .gender_type label")[1].className += " active";
     $("#"+id+" .gender_container .gender_type input")[1].checked = true;
   } else if(rowItem.gender.match(/[男1mM]|male|man|men|boy/i)) {
@@ -1993,7 +2014,7 @@ function parseExcelText(excelText) {
         passportIndices[j]++;
       } else if(cols[j].match(/[0-9]{3,}/)) {
         birthdayIndices[j]++;          
-      } else if((cols[j].match(/[男女12]|male|man|men|boy|female|woman|women|girl/) || cols[j].match(/^[FfMm]{1}$/)) && j != 0) {
+      } else if((cols[j].match(/[男女⼥12]|male|man|men|boy|female|woman|women|girl/) || cols[j].match(/^[FfMm]{1}$/)) && j != 0) {
         genderIndices[j]++;
       } else if(cols[j].match(/[A-Za-z]{2,}/)) {
         englishNameIndices[j]++;
@@ -2071,6 +2092,14 @@ function isEmptyRow(id) {
   } else {
     return false;
   }
+}
+
+function initClientsTable() {
+  $($("#clients_container table tr").get().reverse()).each(function() {
+    if($("#clients_container table tr").length > 1) {
+      removeClientRow(this.id);
+    }
+  });  
 }
 
 // auto remove unused rowItems
