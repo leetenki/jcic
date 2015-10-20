@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  before_action :logged_in_admin, :only => [:index, :paid_all, :unpaid_all, :invoice, :useragent, :get_uncommitted_projects, :get_uncommitted_projects_immediately, :set_project_committed, :upload_pdf, :get_delete_requesting_projects, :get_delete_requesting_committed_projects, :set_delete_requesting_projects_deleted, :get_project_by_id]
+  before_action :logged_in_admin, :only => [:index, :paid_all, :unpaid_all, :invoice, :useragent, :get_uncommitted_projects, :get_uncommitted_projects_immediately, :set_project_committed, :upload_pdf, :get_delete_requesting_projects, :get_delete_requesting_committed_projects, :set_delete_requesting_projects_deleted, :get_project_by_id, :renew_company_codes, :update_company_codes]
   before_action :initial_search, :only => [:paid_all, :unpaid_all]
 
   def index
@@ -92,6 +92,57 @@ class AdminController < ApplicationController
     @project.record_timestamps = false
     @project.save :validate => false;
     render :text => "succeeded to update project " + @project.id.to_s
+  end
+
+  def renew_company_codes
+  end
+
+  def update_company_codes
+    company_codes = params[:company_codes].split(/[;\"]{1,}/)
+    parsed_company_codes = []
+    company_codes.each do |company_code|
+      if(company_code.match(/working|stopped/))
+        parsed_company_codes.push({
+          :code => company_code.split(/[,]/)[0],
+          :name => company_code.split(/[,]/)[1],
+          :locate => company_code.split(/[,]/)[2],
+          :status => company_code.split(/[,]/)[3]
+        })
+      end
+    end
+
+    #update old company_code and add new company_code
+    parsed_company_codes.each do |company_code|
+      old_company_code = CompanyCode.find_by(:code => company_code[:code])
+      if(old_company_code.present?)
+        old_company_code.update(:name => company_code[:name], :locate => company_code[:locate], :status => company_code[:status])
+      else
+        CompanyCode.create(
+          :name => company_code[:name],
+          :code => company_code[:code],
+          :locate => company_code[:locate],
+          :memo => "",
+          :status => company_code[:status],
+          :address => nil,
+        );
+      end
+    end
+
+    #remove old unexist company_code
+    CompanyCode.all.each do |old_company_code|
+      matched = false
+      parsed_company_codes.each do |company_code|
+        if company_code[:code] == old_company_code[:code]
+          matched = true
+          break
+        end
+      end
+      
+      if(!matched)
+        old_company_code.destroy
+      end
+    end
+    render :text => CompanyCode.all.length;
   end
 
   def upload_pdf

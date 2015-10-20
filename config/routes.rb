@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   get 'admin/get_delete_requesting_committed_projects', :to => "admin#get_delete_requesting_committed_projects"
   get 'admin/set_delete_requesting_projects_deleted', :to => "admin#set_delete_requesting_projects_deleted"
   get 'admin/get_project_by_id/(:id)', :to => "admin#get_project_by_id"
+  get 'admin/renew_company_codes', :to => "admin#renew_company_codes"
+  post 'admin/update_company_codes', :to => "admin#update_company_codes"
 
   get 'admin', :to => "admin#index", :as => "admin"
   get 'admin/paid_all', :to => "admin#paid_all"
