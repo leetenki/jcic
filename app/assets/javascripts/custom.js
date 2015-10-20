@@ -146,6 +146,20 @@ $(document).ready(function(){
   });  
 
   $("#now_loading")[0].style.display = "none";
+
+  var newProjectNode = $("#new-project")[0];
+  if(newProjectNode) {
+    newProjectNode.addEventListener("click", function() {
+      newProjectNode.className += " disabled"
+    })
+  }
+
+  $(".modify").each(function() { 
+    var scope = this;
+    this.addEventListener("click", function() {
+      scope.disabled = true
+    })
+  })
 });
 
 

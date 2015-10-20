@@ -54,7 +54,7 @@
                 <div class="btn-group col-md-12 col-sm-12 col-xs-12"  data-toggle="buttons">
                     <!-- modify -->
                     <% if is_admin? || is_project_editable(project) %>
-                        <button class="btn btn-primary btn-xs col-md-6 col-sm-6 col-xs-6" onclick="location.href='<%= edit_project_path(project) %>'">修改</button>
+                        <button class="btn btn-primary btn-xs col-md-6 col-sm-6 col-xs-6 modify" onclick="location.href='<%= edit_project_path(project) %>'">修改</button>
                     <% else %>
                         <div class="btn btn-primary btn-xs col-md-6 col-sm-6 col-xs-6 disabled-modify" disabled="disabled">
                             修改<p class="arrow_box">对不起，此签证已发送完毕，您已无法修改。<br/>请申请删除后，重新申请。我们会尽快帮您解决。</p>
