@@ -1816,7 +1816,7 @@ $(function() {
       }
     });
     if(!planValid) {
-      failedMessage += "<li>行动计划不可空虚，必须填写1〜200字.</li>";          
+      failedMessage += "<li>行动计划不可空白，必须填写1〜200字.</li>";          
     }
 
 
@@ -1877,7 +1877,7 @@ $(function() {
       }
     })
     if(!hometownValid) {
-      failedMessage += "<li>居住区域不可空虚，必须5字以内.</li>";          
+      failedMessage += "<li>居住区域不可空白，必须5字以内.</li>";          
     }
 
     var birthdayValid = true;

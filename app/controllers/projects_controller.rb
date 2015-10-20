@@ -34,6 +34,12 @@ class ProjectsController < ApplicationController
           @term += 1;
         end
       end
+
+      #custom check doubled visa
+      matched_projects = Project.where("trader_id = ? and china_company_name = ? and representative_name_chinese = ? and total_people = ? and visa_type = ? and date_arrival = ? and date_leaving = ?", @project.trader_id, @project.china_company_name, @project.representative_name_chinese, @project.total_people, @project.visa_type, Date.parse(@project.date_arrival.to_s), Date.parse(@project.date_leaving.to_s))
+      if(matched_projects.length > 0)
+        @project.errors.add(:trader_id, "此签证已有登录，不可重复登录。")
+      end
     end
 
     #custom check clients
@@ -46,7 +52,7 @@ class ProjectsController < ApplicationController
 
     if(!@project.errors.any?)
       @project.save
-      flash[:success] = "签证单提交完毕，请仔细查看身元保证書. 若有错误，请立即修改. 5分钟后您将无权修改."
+      flash[:success] = "签证单提交完毕，请仔细查看身元保证書. 若有错误，请立即修改. #{Constants::EDITABLE_MIN.to_s}分钟后您将无权修改."
       #message = "您的订单：#{@project.china_company_name}, #{@project.representative_name_chinese}(他" + (@project.clients.length-1).to_s + "人)\r\n价格：" + get_project_price(@project).to_s
       #if(@project.trader.email && @project.trader.email.match(/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/))
         #system("echo '#{message}' | mutt -n -F ~/.mutt/muttrc -s '提交完毕' #{@project.trader.email}");
@@ -152,7 +158,7 @@ class ProjectsController < ApplicationController
         @project.save
       end
 
-      flash[:success] = "签证修改完毕,您还有30分钟时间可以检查.若有错误,请立即修改."
+      flash[:success] = "签证修改完毕,您还有#{Constants::EDITABLE_MIN.to_s}分钟时间可以检查.若有错误,请立即修改."
       redirect_to projects_path
     else
       render 'new'
