@@ -804,7 +804,7 @@ function validateBirthday(id) {
   var inputText = replaceDateStr($("#" + id + " input")[0].value);
   $("#" + id + " input")[0].value = inputText;
 
-  if(ckDate(inputText) && (new Date(inputText).getTime()) < getAbsoluteToday().getTime()) {
+  if(ckDate(inputText) && (new Date(inputText).getTime()) < getAbsoluteToday().getTime() && (new Date(inputText).getTime()) >= (new Date("1915/01/01").getTime())) {
     return true;
   } else {
     return false;
@@ -1901,6 +1901,7 @@ $(function() {
       openAlert(true);
       return false;
     } else {
+      $("#send_button")[0].disabled = true
       $("#now_loading")[0].style.display = "block";
       return true;
     }

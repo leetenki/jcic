@@ -64,7 +64,7 @@ class Client < ActiveRecord::Base
   end  
 
   def validate_birthday
-    if(!birthday.present?)
+    if(!birthday.present? || birthday > Date.today+1 || birthday < Date.new(1915, 1, 1))
       errors.add(:birthday, "出身日期不正确.");
     end
   end
