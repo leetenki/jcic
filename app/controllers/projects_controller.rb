@@ -38,7 +38,17 @@ class ProjectsController < ApplicationController
       #custom check doubled visa
       matched_projects = Project.where("trader_id = ? and china_company_name = ? and representative_name_chinese = ? and total_people = ? and visa_type = ? and date_arrival = ? and date_leaving = ?", @project.trader_id, @project.china_company_name, @project.representative_name_chinese, @project.total_people, @project.visa_type, Date.parse(@project.date_arrival.to_s), Date.parse(@project.date_leaving.to_s))
       if(matched_projects.length > 0)
-        @project.errors.add(:trader_id, "此签证已有登录，不可重复登录。")
+        mached = false
+        matched_projects.each do |mached_project|
+          if(!mached_project.delete_request && mached_project.status != "deleted")
+            mached = true
+            break;
+          end
+        end
+
+        if(mached)
+          @project.errors.add(:trader_id, "此签证已有登录，不可重复登录。")
+        end
       end
     end
 
@@ -190,7 +200,7 @@ class ProjectsController < ApplicationController
       if(is_admin?)
         @projects = current_trader.search_projects(Project.all, params[:from], params[:to], params[:payment], params[:confirmation], params[:status], params[:delete_request], params[:ticket_no]).order("id desc").includes(:clients, :schedules)
       else
-        @projects = current_trader.projects.order("id desc").includes(:clients, :schedules)
+        @projects = current_trader.search_projects_by_keyword(current_trader.projects, params[:keyword]).order("id desc").includes(:clients, :schedules)
       end
     end
   end

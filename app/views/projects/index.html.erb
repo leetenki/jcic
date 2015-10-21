@@ -33,6 +33,12 @@
                 <%= render "/shared/search_form" %>
               </form>
             </div>
+          <% else %>
+            <div class="row" style="text-align:center">
+              <form action="/projects/index" accept-charset="UTF-8" method="get">
+                <%= render "/shared/client_search_form" %>
+              </form>
+            </div>          
           <% end %>
 
           <div style="text-align:center; height:60px;">

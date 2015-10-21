@@ -103,6 +103,14 @@ class Trader < ActiveRecord::Base
     return projects;
   end
 
+  def search_projects_by_keyword(projects, keyword)
+    if keyword.present?
+      projects = projects.where("representative_name_chinese like '%" + keyword + "%' or china_company_name like '%" + ChineseConverter::simplized(keyword) + "%' or representative_name_english like '%" + keyword + "%'")
+    end
+
+    return projects;
+  end
+
   #before_save
   before_save { self.email = email.downcase if email.present? }
 
