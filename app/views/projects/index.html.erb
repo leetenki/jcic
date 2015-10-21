@@ -39,7 +39,7 @@
             <a href="/projects/new" style="position:absolute; left:20px; margin-top:20px;" class="btn btn-success btn-large require-loading" id="new-project">
               <i class="fa fa-user-plus"></i> 申请
             </a>
-            <%= paginate @projects, :window => 5 %>
+            <%= paginate @projects.page(params[:page]), :window => 5 %>
           </div>
         </caption>
         <thead>
@@ -53,7 +53,7 @@
           </tr>
         </thead>
         <tbody>
-          <%= render @projects %>
+          <%= render @projects.page(params[:page]) %>
         </tbody>
       </table>
     <% else %>
@@ -61,6 +61,6 @@
           <i class="fa fa-user-plus"></i> 申请
         </a>    
     <% end %>
-    <div style="text-align:center;"><%= paginate @projects, :window => 5 %></div>
+    <div style="text-align:center;"><%= paginate @projects.page(params[:page]), :window => 5 %></div>
   </div>
 </div>

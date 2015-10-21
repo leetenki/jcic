@@ -96,7 +96,7 @@ class Trader < ActiveRecord::Base
       projects = projects.where('delete_request = ?', delete_request == "true")
     end
 
-    if(!!ticket_no)
+    if(!!ticket_no && ticket_no.length > 0)
       projects = projects.where("system_code like '%" + ticket_no + "%'")
     end
 

@@ -116,7 +116,7 @@
           </div>
 
           <div style="text-align:center; height:70px;">
-            <%= paginate @projects, :window => 5 %>
+            <%= paginate @projects.page(params[:page]), :window => 5 %>
           </div>          
         </caption>
 
@@ -133,7 +133,7 @@
           </thead>
 
           <tbody>
-            <%= render @projects %>
+            <%= render @projects.page(params[:page]) %>
           </tbody>
         <% end %>
       </table>
