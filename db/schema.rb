@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151015040906) do
+ActiveRecord::Schema.define(version: 20151022125343) do
 
   create_table "clients", force: :cascade do |t|
     t.integer  "project_id"
@@ -95,7 +95,6 @@ ActiveRecord::Schema.define(version: 20151015040906) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "schedules", ["project_id", "date"], name: "unique_schedule", unique: true
   add_index "schedules", ["project_id"], name: "index_schedules_on_project_id"
 
   create_table "sessions", force: :cascade do |t|

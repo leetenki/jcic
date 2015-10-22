@@ -83,6 +83,10 @@
   <table class="schedules" style="page-break-before:always; margin-top: 170px;">
     <caption>
       <div class="title">滞在予定表</div>
+      <div class="representative" style="text-align:right; font-size:0.9em;">
+        <span class="text"><%= @project.representative_name_chinese %>他<%= @project.clients.length - 1 %>名 (男<%= @project.total_man %> / 女<%= @project.total_woman %>)</span>
+      </div>
+
       <div class="title-date">(<span class="text"><%= @project.date_arrival.to_era("%O%E年%m月%d日") %>〜<%= @project.date_leaving.to_era("%O%E年%m月%d日") %></span>)</div>
     </caption>
 
@@ -108,6 +112,9 @@
   <table class="schedules" style="page-break-before:always; page-break-after:always; margin-top: 170px;">
     <caption>
       <div class="title">滞在予定表</div>
+      <div class="representative" style="text-align:right; font-size:0.9em;">
+        <span class="text"><%= @project.representative_name_chinese %>他<%= @project.clients.length - 1 %>名 (男<%= @project.total_man %> / 女<%= @project.total_woman %>)</span>
+      </div>
       <div class="title-date">(<span class="text"><%= @project.date_arrival.to_era("%O%E年%m月%d日") %>〜<%= @project.date_leaving.to_era("%O%E年%m月%d日") %></span>)</div>
     </caption>
     <thead>
@@ -166,9 +173,9 @@
 
 <!--*********************** 送签社 ************************-->
 <% if 15-((schedules_length-13)%15) >= 2 %>
-  <div class="visa-company" style="margin-top: 40px;">
+  <div class="visa-company" style="margin-top: 20px;">
 <% else %>
-  <div class="visa-company" style="margin-top: 30px; page-break-before:always;">
+  <div class="visa-company" style="margin-top: 10px; page-break-before:always;">
 <% end %>
 </div>
 
