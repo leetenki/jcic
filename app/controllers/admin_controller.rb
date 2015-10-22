@@ -5,8 +5,10 @@ class AdminController < ApplicationController
   def index
     if !params[:trader_id].present? && !params[:from].present? && !params[:to].present?
       last_month = Date.today.last_month
-      params[:from] = Date.new(last_month.year, last_month.month, 1).strftime("%Y/%m/%d");
-      params[:to] = Date.new(last_month.year, last_month.month, -1).strftime("%Y/%m/%d");
+      #params[:from] = Date.new(last_month.year, last_month.month, 1).strftime("%Y/%m/%d");
+      #params[:to] = Date.new(last_month.year, last_month.month, -1).strftime("%Y/%m/%d");
+      params[:from] = Date.today.strftime("%Y/%m/%d");
+      params[:to] = (Date.today+1).strftime("%Y/%m/%d");
       @waiting = true
     else
       @projects = search_projects(params[:trader_id], params[:from], params[:to]).order("id desc").includes(:clients, :schedules)
@@ -137,9 +139,10 @@ class AdminController < ApplicationController
           break
         end
       end
-      
+
       if(!matched)
-        old_company_code.destroy
+        old_company_code.update(:status => "stopped")
+        #old_company_code.destroy
       end
     end
     render :text => CompanyCode.all.length;
@@ -149,19 +152,19 @@ class AdminController < ApplicationController
   end
 
   def get_delete_requesting_projects
-    @projects = Project.where("delete_request = ?", true).order("id asc").includes(:clients, :schedules)    
+    @projects = Project.where("delete_request = ? and japan_company = ?", true, params[:japan_company]).order("id asc").includes(:clients, :schedules)    
     text = @projects.to_json({:include => [:schedules, :clients]})
     render :text => text;
   end
 
   def get_delete_requesting_committed_projects
-    @projects = Project.where("delete_request = ? and system_code IS NOT NULL and status = 'committed'", true).order("id asc").includes(:clients, :schedules)    
+    @projects = Project.where("delete_request = ? and system_code IS NOT NULL and status = 'committed' and japan_company = ?", true, params[:japan_company]).order("id asc").includes(:clients, :schedules)    
     text = @projects.to_json({:include => [:schedules, :clients]})
     render :text => text;
   end
 
   def set_delete_requesting_projects_deleted
-    @projects = Project.where("delete_request = ?", true).order("id asc")
+    @projects = Project.where("delete_request = ? and japan_company = ?", true, params[:japan_company]).order("id asc")
     @projects.each do |project|
       project.assign_attributes({:status => "deleted", :delete_request => false})
       project.record_timestamps = false
