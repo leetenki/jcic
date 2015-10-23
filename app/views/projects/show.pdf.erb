@@ -62,8 +62,6 @@
 <div class="visa-company" style="margin-top: 30px;">
 </div>
 
-<div class="visa-company" style="margin-top: 30px;">
-</div>
 
 <!--*********************** サイン ************************-->
 <div class="signature">
@@ -171,16 +169,12 @@
   </table>
 <% end %>
 
-<!--*********************** 送签社 ************************-->
-<% if 15-((schedules_length-13)%15) >= 2 %>
-  <div class="visa-company" style="margin-top: 20px;">
-<% else %>
-  <div class="visa-company" style="margin-top: 10px; page-break-before:always;">
-<% end %>
-</div>
-
 <!--*********************** サイン ************************-->
-<div class="signature">
+<% if 15-((schedules_length-13)%15) >= 2 %>
+  <div class="signature" style="padding-top:20px;">
+<% else %>
+  <div class="signature" style="page-break-before:always; padding-top:20px;">
+<% end %>
   <div class="text">
     <div class="phone">日　付 : <%= @project.updated_at.strftime("%Y年%m月%d日") %></div>
     <div class="company-name">会社名 : <%= company_info[:company_name] %></div>
@@ -247,8 +241,8 @@
         <th class="gender">性別</th>
         <th class="birthday">生年月日</th>
         <th class="hometown">発行地</th>
-        <th class="visa-type">種類</th>
         <th class="passport-no">PAPT番号</th>
+        <th class="visa-type">职业</th>
       </tr>
     </thead>
     <tbody>
@@ -261,8 +255,8 @@
           <td class="gender"><%= gender_str(client.gender) %></td>
           <td class="birthday"><%= client.birthday.strftime("%Y-%m-%d") %></td>
           <td class="hometown"><%= client.hometown %></t>
-          <td class="visa-type">普通</td>
           <td class="passport-no"><%= client.passport_no %></td>
+          <td class="visa-type"><%= client.job %></td>
         </tr>
       <% end %>
     </tbody>
@@ -284,8 +278,8 @@
             <td class="gender"><%= gender_str(client.gender) %></td>
             <td class="birthday"><%= client.birthday.strftime("%Y-%m-%d") %></td>
             <td class="hometown"><%= client.hometown %></t>
-            <td class="visa-type">普通</td>
             <td class="passport-no"><%= client.passport_no %></td>
+            <td class="visa-type"><%= client.job %></td>
           </tr>
         <% end %>
       </tbody>
@@ -305,24 +299,21 @@
           <td class="gender"><%= gender_str(client.gender) %></td>
           <td class="birthday"><%= client.birthday.strftime("%Y-%m-%d") %></td>
           <td class="hometown"><%= client.hometown %></t>
-          <td class="visa-type">普通</td>
           <td class="passport-no"><%= client.passport_no %></td>
+          <td class="visa-type"><%= client.job %></td>
         </tr>
       <% end %>
     </tbody>
   </table>
 <% end %>
 
-<!--*********************** 送签社 ************************-->
-<% if 28-((clients_length-24)%28) >= 6 %>
-  <div class="visa-company" style="margin-top: 30px;">
-<% else %>
-  <div class="visa-company" style="margin-top: 30px; page-break-before:always;">
-<% end %>
-</div>
 
 <!--*********************** サイン ************************-->
-<div class="signature">
+<% if 28-((clients_length-24)%28) >= 6 %>
+  <div class="signature" style="padding-top:20px;">
+<% else %>
+  <div class="signature" style="page-break-before:always; padding-top:20px;">
+<% end %>
   <div class="text">
     <div class="phone">日　付 : <%= @project.updated_at.strftime("%Y年%m月%d日") %></div>
     <div class="company-name">会社名 : <%= company_info[:company_name] %></div>

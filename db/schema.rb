@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151022125343) do
+ActiveRecord::Schema.define(version: 20151022183731) do
 
   create_table "clients", force: :cascade do |t|
     t.integer  "project_id"
@@ -119,19 +119,21 @@ ActiveRecord::Schema.define(version: 20151022125343) do
     t.string   "bank"
     t.string   "address"
     t.string   "email"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
-    t.integer  "indivisual_price",       default: 500
-    t.integer  "group_price_indivisual", default: 0
-    t.integer  "group_price_1_10",       default: 0
-    t.integer  "group_price_11_20",      default: 3000
-    t.integer  "group_price_21_30",      default: 6000
-    t.integer  "group_price_31_40",      default: 9000
-    t.integer  "year_3_price",           default: 1000
-    t.integer  "year_5_price",           default: 1000
-    t.integer  "other_price",            default: 5000
-    t.boolean  "activation",             default: true
-    t.string   "validation_mode",        default: "easy"
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+    t.integer  "indivisual_price",         default: 500
+    t.integer  "group_price_indivisual",   default: 0
+    t.integer  "group_price_1_10",         default: 0
+    t.integer  "group_price_11_20",        default: 3000
+    t.integer  "group_price_21_30",        default: 6000
+    t.integer  "group_price_31_40",        default: 9000
+    t.integer  "year_3_price",             default: 1000
+    t.integer  "year_5_price",             default: 1000
+    t.integer  "other_price",              default: 5000
+    t.boolean  "activation",               default: true
+    t.string   "validation_mode",          default: "easy"
+    t.string   "group_japan_company",      default: "random"
+    t.string   "individual_japan_company", default: "random"
   end
 
   add_index "traders", ["account"], name: "index_traders_on_account", unique: true

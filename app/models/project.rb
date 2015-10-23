@@ -183,9 +183,17 @@ class Project < ActiveRecord::Base
 
   def validate_japan_company
     if(visa_type == "group")
-      self.japan_company = Constants::GROUP_VISA[Random.rand(Constants::GROUP_VISA.length)]
+      if(self.trader.group_japan_company == "random")
+        self.japan_company = Constants::GROUP_VISA[Random.rand(Constants::GROUP_VISA.length)]
+      else
+        self.japan_company = self.trader.group_japan_company.intern
+      end
     else
-      self.japan_company = Constants::INDIVIDUAL_VISA[Random.rand(Constants::INDIVIDUAL_VISA.length)]
+      if(self.trader.individual_japan_company == "random")
+        self.japan_company = Constants::INDIVIDUAL_VISA[Random.rand(Constants::INDIVIDUAL_VISA.length)]
+      else
+        self.japan_company = self.trader.individual_japan_company.intern
+      end
     end
   end
 

@@ -64,6 +64,7 @@
         <% end %>
       </select>
 
+
       <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
         <label class="btn btn-default col-md-4 col-sm-4 <%= 'active' if trader.validation_mode == "simplest" %>">
           <input type="radio" value="simplest" name="trader[validation_mode]" <%= 'selected=selected' if trader.validation_mode == "simplest" %> />超级简化
@@ -76,8 +77,6 @@
         </label>
       </div>
 
-
-
       <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
         <label class="btn btn-default col-md-4 col-sm-4 <%= 'active' if trader.activation %>">
           <input type="radio" value="true" name="trader[activation]" <%= 'selected=selected' if trader.activation %> />有效
@@ -86,6 +85,39 @@
           <input type="radio" value="false" name="trader[activation]" <%= 'selected=selected' if !trader.activation %> />停止
         </label>
       </div>
+
+
+
+      <div style="font-weight: bold">
+        日本印章（团签）
+      </div>
+      <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
+        <label class="btn btn-default <%= 'active' if trader.group_japan_company == 'random' %>">
+          <input type="radio" value="random" name="trader[group_japan_company]" <%= 'selected=selected' if trader.group_japan_company == 'random' %> />乱数
+        </label>
+        <% Constants::JAPAN_SIDE_COMPANY.each do |key, value| %>
+          <% key = key.to_s %>
+          <label class="btn btn-default <%= 'active' if trader.group_japan_company == key %>">
+            <input type="radio" value="<%= key %>" name="trader[group_japan_company]" <%= 'selected=selected' if trader.group_japan_company == key %> /><%= key.upcase %>
+          </label>
+        <% end %>
+      </div>
+
+      <div style="font-weight: bold">
+        日本印章（个签）
+      </div>
+      <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
+        <label class="btn btn-default <%= 'active' if trader.individual_japan_company == 'random' %>">
+          <input type="radio" value="random" name="trader[individual_japan_company]" <%= 'selected=selected' if trader.individual_japan_company == 'random' %> />乱数
+        </label>
+        <% Constants::JAPAN_SIDE_COMPANY.each do |key, value| %>
+          <% key = key.to_s %>
+          <label class="btn btn-default <%= 'active' if trader.individual_japan_company == key %>">
+            <input type="radio" value="<%= key %>" name="trader[individual_japan_company]" <%= 'selected=selected' if trader.individual_japan_company == key %> /><%= key.upcase %>
+          </label>
+        <% end %>
+      </div>
+
 
 
       <%= f.submit button_text, :class => "btn btn-large btn-primary" %>

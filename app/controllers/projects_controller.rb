@@ -338,9 +338,17 @@ class ProjectsController < ApplicationController
     end
     
     if(@project.visa_type == "group")
-      @project.japan_company = Constants::GROUP_VISA[Random.rand(Constants::GROUP_VISA.length)]
+      if(current_trader.group_japan_company == "random")
+        @project.japan_company = Constants::GROUP_VISA[Random.rand(Constants::GROUP_VISA.length)]
+      else
+        @project.japan_company = current_trader.group_japan_company.intern
+      end
     else
-      @project.japan_company = Constants::INDIVIDUAL_VISA[Random.rand(Constants::INDIVIDUAL_VISA.length)]
+      if(current_trader.individual_japan_company == "random")
+        @project.japan_company = Constants::INDIVIDUAL_VISA[Random.rand(Constants::INDIVIDUAL_VISA.length)]
+      else
+        @project.japan_company = current_trader.individual_japan_company.intern
+      end
     end
   end
 

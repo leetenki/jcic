@@ -97,7 +97,7 @@ class Trader < ActiveRecord::Base
     end
 
     if(!!ticket_no && ticket_no.length > 0)
-      projects = projects.where("system_code like '%" + ticket_no + "%'")
+      projects = projects.where("representative_name_chinese like '%" + ticket_no + "%' or china_company_name like '%" + ticket_no + "%' or representative_name_english like '%" + ticket_no.upcase + "%' or system_code like '%" + ticket_no.upcase + "%'")
     end
 
     return projects;
@@ -105,7 +105,7 @@ class Trader < ActiveRecord::Base
 
   def search_projects_by_keyword(projects, keyword)
     if keyword.present?
-      projects = projects.where("representative_name_chinese like '%" + keyword + "%' or china_company_name like '%" + ChineseConverter::simplized(keyword) + "%' or representative_name_english like '%" + keyword + "%'")
+      projects = projects.where("representative_name_chinese like '%" + keyword + "%' or china_company_name like '%" + keyword + "%' or representative_name_english like '%" + keyword.upcase + "%' or system_code like '%" + keyword.upcase + "%'")
     end
 
     return projects;

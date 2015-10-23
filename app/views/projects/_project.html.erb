@@ -44,7 +44,7 @@
                         <button class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6" onclick="window.open().location.href='<%= project.pdf.url %>'">帰国報告</button>
                     <% else %>
                         <div class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6 disabled-modify" disabled="disabled">
-                            帰国報告<p class="arrow_box">正在制作，我们需要10〜30分钟时间向中联协申请，请稍后再次查看。</p>
+                            帰国報告<p class="arrow_box">正在制作，我们需要10〜30分钟工作时间向中联协申请，请稍后再次查看。</p>
                         </div>
                     <% end %>
                 </div>
@@ -57,7 +57,7 @@
                         <button class="btn btn-primary btn-xs col-md-6 col-sm-6 col-xs-6 modify" onclick="location.href='<%= edit_project_path(project) %>'">修改</button>
                     <% else %>
                         <div class="btn btn-primary btn-xs col-md-6 col-sm-6 col-xs-6 disabled-modify" disabled="disabled">
-                            修改<p class="arrow_box">对不起，此签证已发送完毕，您已无法修改。<br/>请申请删除后，重新申请。我们会尽快帮您解决。</p>
+                            修改<p class="arrow_box">对不起，此签证已发送完毕，您已无法修改。<br/>请选择『申请删除』后，重新申请。</p>
                         </div>
                     <% end %>
 
