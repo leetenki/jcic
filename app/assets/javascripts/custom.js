@@ -1568,8 +1568,6 @@ function replaceDateStr(originalDateStr) {
       return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
     });
 
-    console.log(newDateStr)
-
     // replace japanese year to global year
     if(newDateStr.match(/平成[0-9]{1,}/)) {
       var year = parseInt(newDateStr.match(/平成[0-9]{1,}/)[0].match(/[0-9]{1,}/)[0])

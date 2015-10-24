@@ -249,12 +249,6 @@
                   }
 
                   // date arrival and leaving
-                  if(dateArrival.match(/^[0-9]{1,2}[\/][0-9]{1,2}[\/]{1}[0-9]{1,2}$/)) {
-                        dateArrival = dateArrival.replace(/[\/]{1}[0-9]{2}$/, "/20" + dateArrival.match(/[0-9]{2}$/)[0])
-                  }
-                  if(dateLeaving.match(/^[0-9]{1,2}[\/][0-9]{1,2}[\/]{1}[0-9]{2}$/)) {
-                        dateLeaving = dateLeaving.replace(/[\/]{1}[0-9]{2}$/, "/20" + dateLeaving.match(/[0-9]{2}$/)[0])
-                  }
                   $("#date_arrival_container input")[0].value = dateArrival;
                   $("#date_leaving_container input")[0].value = dateLeaving;
 
@@ -270,6 +264,10 @@
                   }
 
                   // schedules
+                  console.log(dateArrival)
+                  console.log(validateDateArrival())
+                  console.log(dateLeaving)
+                  console.log(validateDateLeaving())
                   if(validateDateArrival() && validateDateLeaving()) {
                       $("#schedules_container table textarea").removeAttr("disabled");
                       regenerateScheduleTable();   
