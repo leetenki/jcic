@@ -249,8 +249,8 @@
                   }
 
                   // date arrival and leaving
-                  $("#date_arrival_container input")[0].value = dateArrival;
-                  $("#date_leaving_container input")[0].value = dateLeaving;
+                  $("#date_arrival_container input")[0].value = replaceDateStr(dateArrival);
+                  $("#date_leaving_container input")[0].value = replaceDateStr(dateLeaving);
 
                   // clients
                   if(clients.length >= 1) {
@@ -264,10 +264,6 @@
                   }
 
                   // schedules
-                  console.log(dateArrival)
-                  console.log(validateDateArrival())
-                  console.log(dateLeaving)
-                  console.log(validateDateLeaving())
                   if(validateDateArrival() && validateDateLeaving()) {
                       $("#schedules_container table textarea").removeAttr("disabled");
                       regenerateScheduleTable();   

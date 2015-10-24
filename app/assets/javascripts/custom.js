@@ -464,8 +464,6 @@ function validateDateArrival() {
   var valid = false;
   var dateArrival = replaceDateStr(document.getElementById("dateArrival").value);
   $("#dateArrival")[0].value = dateArrival;
-  console.log("arrival")
-  console.log(dateArrival)
 
   var today = getAbsoluteToday();
 
@@ -496,9 +494,6 @@ function validateDateLeaving() {
   var valid = false;
   var dateLeaving = replaceDateStr(document.getElementById("dateLeaving").value);
   $("#dateLeaving")[0].value = dateLeaving;
-  console.log("leaving")
-  console.log(dateLeaving)
-
 
   var today = getAbsoluteToday()
 
