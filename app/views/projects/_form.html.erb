@@ -249,7 +249,7 @@
                   }
 
                   // date arrival and leaving
-                  if(dateArrival.match(/^[0-9]{1,2}[\/][0-9]{1,2}[\/]{1}[0-9]{2}$/)) {
+                  if(dateArrival.match(/^[0-9]{1,2}[\/][0-9]{1,2}[\/]{1}[0-9]{1,2}$/)) {
                         dateArrival = dateArrival.replace(/[\/]{1}[0-9]{2}$/, "/20" + dateArrival.match(/[0-9]{2}$/)[0])
                   }
                   if(dateLeaving.match(/^[0-9]{1,2}[\/][0-9]{1,2}[\/]{1}[0-9]{2}$/)) {

@@ -1563,14 +1563,56 @@ function CheckLength(str,flg) {
 
 function replaceDateStr(originalDateStr) {
   if(originalDateStr) {
-    var newDateStr = originalDateStr.replace(/[^ -~]{1,}/g, "/").replace(/[^0-9]{1,}/g, "/").replace(/^[^0-9]{1,}/, "");
+    // full to half
+    var newDateStr = originalDateStr.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
+      return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+    });
+
+    console.log(newDateStr)
+
+    // replace japanese year to global year
+    if(newDateStr.match(/平成[0-9]{1,}/)) {
+      var year = parseInt(newDateStr.match(/平成[0-9]{1,}/)[0].match(/[0-9]{1,}/)[0])
+      newDateStr = newDateStr.replace(/平成[0-9]{1,}/, year+1988)
+    } else if (newDateStr.match(/h[0-9]{1,}/)) {
+      var year = parseInt(newDateStr.match(/h[0-9]{1,}/)[0].match(/[0-9]{1,}/)[0])
+      newDateStr = newDateStr.replace(/h[0-9]{1,}/, year+1988)
+    }
+    newDateStr = newDateStr.replace(/[年月日年月日]/g, "\/")
+
+
+    // replace all charactors to slash except number
+    newDateStr = newDateStr.replace(/[^ -~]{1,}/g, "/").replace(/[^0-9]{1,}/g, "/").replace(/^[^0-9]{1,}/, "");
     if(newDateStr.match(/[\/]/g) && newDateStr.match(/[\/]/g).length > 2) {
       newDateStr = newDateStr.replace(/[^0-9]{1,}$/, "");
     }
-    else if(newDateStr.match(/^\d{1,2}\/\d{1,2}\/\d{4}$/)) {
+
+    // change 00/00/00 format to 0000/00/00 or 00/00/0000
+    if(newDateStr.match(/^[0-9]{1,2}[\/][0-9]{1,2}[\/][0-9]{1,2}$/)) {
+      var firstNumber = parseInt(newDateStr.split("/")[0])
+      var secondNumber = parseInt(newDateStr.split("/")[1])
+      var lastNumber = parseInt(newDateStr.split("/")[2])
+      if(firstNumber >= 1 && firstNumber <= 12 && lastNumber > 12) {
+        if(lastNumber < 30) {
+          newDateStr = newDateStr.replace(/[\/]{1}[0-9]{2}$/, "/20" + newDateStr.match(/[0-9]{2}$/)[0])
+        } else {
+          newDateStr = newDateStr.replace(/[\/]{1}[0-9]{2}$/, "/19" + newDateStr.match(/[0-9]{2}$/)[0])          
+        }
+      } else if(secondNumber >= 1 && secondNumber <= 12 && firstNumber > 12) {
+        if(firstNumber < 30) {
+          newDateStr = newDateStr.replace(/^[0-9]{1,2}/, "20" + newDateStr.match(/^[0-9]{1,2}/)[0])
+        } else {
+          newDateStr = newDateStr.replace(/^[0-9]{1,2}/, "19" + newDateStr.match(/^[0-9]{1,2}/)[0])          
+        }
+      }
+    }
+
+    // change MM/DD/YYYY format to YYYY/MM/DD
+    if(newDateStr.match(/^\d{1,2}\/\d{1,2}\/\d{4}$/)) {
       var items = newDateStr.split("/");
       newDateStr = items[2] + "/" + items[0] + "/" + items[1];
-    }
+    } 
+
     return newDateStr;
   } else {
     return originalDateStr;
