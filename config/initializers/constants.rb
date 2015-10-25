@@ -3,7 +3,7 @@
 module Constants
 
   #身元保証書用 & 自動入力用
-  GROUP_VISA = [:jki]
+  GROUP_VISA = [:jki, :jcic]
   INDIVIDUAL_VISA = [:jki] #:jki
   JAPAN_SIDE_COMPANY = {
     :jki => {

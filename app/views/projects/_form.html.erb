@@ -1,6 +1,15 @@
 <% if project.trader.validation_mode == "simplest" %>
       <div style="text-align:center; padding: 10px; width: 400px; margin:40px auto 10px auto; border:dashed 2px black; border-radius: 30px;" id="file-reader">
-            <p>读取<a href="/visa.xlsx" download="visa.xlsx">Excel专用文件</a></p>
+            <p>
+              读取Excel专用文件 (
+                <% if project.trader.individual_japan_company != "random" %>
+                  <a href="/individual_<%= project.trader.individual_japan_company %>.xlsx" download="个签模版_<%= Constants::JAPAN_SIDE_COMPANY[project.trader.individual_japan_company.intern][:company_name] %>.xlsx">个人</a>, 
+                <% end %>
+                <% if project.trader.group_japan_company != "random" %>
+                  <a href="/group_<%= project.trader.group_japan_company %>.xlsx" download="团签模版_<%= Constants::JAPAN_SIDE_COMPANY[project.trader.group_japan_company.intern][:company_name] %>.xlsx">团体</a>
+                <% end %>
+              )
+            </p>
             <input type="file" name="xlfile" id="xlf" class="form-control" style="width:350px; margin:auto; padding:10px 10px;"/>
       </div>
       <script type="text/javascript" src="/xlsx.core.min.js "></script>

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   get 'browser', :to => 'static_pages#browser', :as => "browser"
+  get 'description', :to => 'static_pages#description', :as => "description"
   get 'login' => 'sessions#new'
   post 'login' => 'sessions#create'
   delete 'logout' => 'sessions#destroy'

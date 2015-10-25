@@ -95,8 +95,9 @@
         <label class="btn btn-default <%= 'active' if trader.group_japan_company == 'random' %>">
           <input type="radio" value="random" name="trader[group_japan_company]" <%= 'selected=selected' if trader.group_japan_company == 'random' %> />乱数
         </label>
-        <% Constants::JAPAN_SIDE_COMPANY.each do |key, value| %>
-          <% key = key.to_s %>
+        <% Constants::GROUP_VISA.each do |group_visa| %>
+          <% value = Constants::JAPAN_SIDE_COMPANY[group_visa] %>
+          <% key = group_visa.to_s %>
           <label class="btn btn-default <%= 'active' if trader.group_japan_company == key %>">
             <input type="radio" value="<%= key %>" name="trader[group_japan_company]" <%= 'selected=selected' if trader.group_japan_company == key %> /><%= key.upcase %>
           </label>
@@ -110,15 +111,14 @@
         <label class="btn btn-default <%= 'active' if trader.individual_japan_company == 'random' %>">
           <input type="radio" value="random" name="trader[individual_japan_company]" <%= 'selected=selected' if trader.individual_japan_company == 'random' %> />乱数
         </label>
-        <% Constants::JAPAN_SIDE_COMPANY.each do |key, value| %>
-          <% key = key.to_s %>
+        <% Constants::INDIVIDUAL_VISA.each do |individual_visa| %>
+          <% value = Constants::JAPAN_SIDE_COMPANY[individual_visa] %>
+          <% key = individual_visa.to_s %>
           <label class="btn btn-default <%= 'active' if trader.individual_japan_company == key %>">
             <input type="radio" value="<%= key %>" name="trader[individual_japan_company]" <%= 'selected=selected' if trader.individual_japan_company == key %> /><%= key.upcase %>
           </label>
         <% end %>
       </div>
-
-
 
       <%= f.submit button_text, :class => "btn btn-large btn-primary" %>
 <% end %>
