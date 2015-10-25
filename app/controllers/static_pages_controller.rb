@@ -13,4 +13,10 @@ class StaticPagesController < ApplicationController
     @password = params[:password]
     @name = params[:name]
   end
+
+  def description_excel
+    @account = params[:account]
+    @password = params[:password]
+    @name = params[:name]
+  end
 end
