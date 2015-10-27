@@ -69,7 +69,7 @@ class Trader < ActiveRecord::Base
     self.projects.where("system_code like '%" + ticket_no + "%'")    
   end
 
-  def search_projects(projects, from, to, payment, confirmation, status, delete_request, ticket_no)
+  def search_projects(projects, from, to, payment, confirmation, status, delete_request, ticket_no, japan_company, visa_type)
     if from.present? && to.present?
       projects = projects.where(created_at: Time.parse(from)..Time.parse(to))
     elsif from.present?
@@ -96,8 +96,20 @@ class Trader < ActiveRecord::Base
       projects = projects.where('delete_request = ?', delete_request == "true")
     end
 
+    if(!!japan_company && japan_company.length > 0)
+      projects = projects.where('japan_company = ?', japan_company)
+    end
+
+    if(!!visa_type && visa_type.length > 0)
+      projects = projects.where('visa_type = ?', visa_type)
+    end
+
     if(!!ticket_no && ticket_no.length > 0)
-      projects = projects.where("representative_name_chinese like '%" + ticket_no + "%' or china_company_name like '%" + ticket_no + "%' or representative_name_english like '%" + ticket_no.upcase + "%' or system_code like '%" + ticket_no.upcase + "%'")
+      if(ticket_no.to_i > 0)
+        projects = projects.where("id = " + ticket_no.to_i.to_s)
+      else
+        projects = projects.where("representative_name_chinese like '%" + ticket_no + "%' or china_company_name like '%" + ticket_no + "%' or representative_name_english like '%" + ticket_no.upcase + "%' or system_code like '%" + ticket_no.upcase + "%'")
+      end
     end
 
     return projects;
@@ -105,7 +117,11 @@ class Trader < ActiveRecord::Base
 
   def search_projects_by_keyword(projects, keyword)
     if keyword.present?
-      projects = projects.where("representative_name_chinese like '%" + keyword + "%' or china_company_name like '%" + keyword + "%' or representative_name_english like '%" + keyword.upcase + "%' or system_code like '%" + keyword.upcase + "%'")
+      if(keyword.to_i > 0)
+        projects = projects.where("id = " + keyword.to_i.to_s)
+      else
+        projects = projects.where("representative_name_chinese like '%" + keyword + "%' or china_company_name like '%" + keyword + "%' or representative_name_english like '%" + keyword.upcase + "%' or system_code like '%" + keyword.upcase + "%'")
+      end
     end
 
     return projects;

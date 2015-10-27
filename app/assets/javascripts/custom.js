@@ -37,7 +37,7 @@ function startSuggest() {
 
 // called when confirm button pushed
 function confirmDelete(path) {
-  if(window.confirm('※申请删除后将无法撤回！在您申请后1工作日之内，我们会确认并取消此签证。')) {
+  if(window.confirm('※请注意！确定删除后将无法撤回。在您申请后1工作日之内，我们会确认并完全取消此签证。')) {
     location.href = path;
   }  
 }

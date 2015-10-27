@@ -19,6 +19,12 @@
       <input type="radio" value="unconfirmed" name="confirmation"/>未确认
     </label>
   </div>
+  <select name="visa_type" class="form-control" id="visa_type">
+    <option value="" selected="selected">全種</option>
+    <% Constants::VISA_TYPE_TABLE.each do |key, value| %>
+      <option value="<%= key %>"><%= value %></option>
+    <% end %>
+  </select>  
 </div>
 <div class="col-md-4 col-sm-4 col-xs-4">
   <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
@@ -33,6 +39,12 @@
     </label>
   </div>
   <input type="text" class="form-control" placeholder="任何单词" name="ticket_no"/>
+  <select name="japan_company" class="form-control" id="japan_company">
+    <option value="" selected="selected">全公司</option>
+    <% Constants::JAPAN_SIDE_COMPANY.each do |key, value| %>
+      <option value="<%= key.to_s %>"><%= value[:company_name] %></option>
+    <% end %>
+  </select>  
 </div>
 
 <div class="col-md-2 col-sm-2 col-xs-2">

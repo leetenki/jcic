@@ -1,6 +1,6 @@
 module ApplicationHelper
   def visa_type_str(visa_type)
-    visa_type_table = {"individual" => "个人查证", "group" => "团体查证", "3years" => "三年多次", "5years" => "五年多次"}
+    visa_type_table = Constants::VISA_TYPE_TABLE
     return visa_type_table[visa_type] 
   end
 
