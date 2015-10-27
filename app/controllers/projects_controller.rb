@@ -79,9 +79,9 @@ class ProjectsController < ApplicationController
   #edit
   def edit
     if(is_admin?)
-      @project = Project.includes(:clients, :schedules).find(params[:id])
+      @project = Project.find(params[:id])
     else
-      @project = current_trader.projects.includes(:clients, :schedules).find(params[:id])
+      @project = current_trader.projects.find(params[:id])
       if(!is_project_editable(@project))
         flash[:danger] = "对不起，此签证已无法修改."
         redirect_to projects_path
@@ -198,9 +198,9 @@ class ProjectsController < ApplicationController
   def index
     if logged_in?
       if(is_admin?)
-        @projects = current_trader.search_projects(Project.all, params[:from], params[:to], params[:payment], params[:confirmation], params[:status], params[:delete_request], params[:ticket_no], params[:japan_company], params[:visa_type]).order("id desc").includes(:clients, :schedules)
+        @projects = current_trader.search_projects(Project.all, params[:from], params[:to], params[:payment], params[:confirmation], params[:status], params[:delete_request], params[:ticket_no], params[:japan_company], params[:visa_type]).order("id desc")
       else
-        @projects = current_trader.search_projects_by_keyword(current_trader.projects, params[:keyword]).order("id desc").includes(:clients, :schedules)
+        @projects = current_trader.search_projects_by_keyword(current_trader.projects, params[:keyword]).order("id desc")
       end
     end
   end
@@ -208,9 +208,9 @@ class ProjectsController < ApplicationController
   #create pdf
   def show
     if(is_admin?)
-      @project = Project.includes(:clients, :schedules).find_by(:id => params[:id])
+      @project = Project.find_by(:id => params[:id])
     else
-      @project = current_trader.projects.includes(:clients, :schedules).find_by(:id => params[:id])
+      @project = current_trader.projects.find_by(:id => params[:id])
     end
     @visa_company = CompanyCode.where("code = ?", @project.china_company_code)
 

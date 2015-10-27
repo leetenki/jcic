@@ -11,7 +11,7 @@ class AdminController < ApplicationController
       params[:to] = (Date.today+1).strftime("%Y/%m/%d");
       @waiting = true
     else
-      @projects = search_projects(params[:trader_id], params[:from], params[:to]).order("id desc").includes(:clients, :schedules)
+      @projects = search_projects(params[:trader_id], params[:from], params[:to]).order("id desc")
     end
 
     @traders = Trader.where("id <> 1")
