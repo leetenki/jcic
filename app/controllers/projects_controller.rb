@@ -267,7 +267,7 @@ class ProjectsController < ApplicationController
       @project.assign_attributes :payment => params[:payment]
       @project.record_timestamps = false
       @project.save :validate => false;
-      flash[:success] = "payment 修改未 " + params[:payment] + " 状態."
+      flash[:success] = "payment 修改为 " + params[:payment] + " 状態."
     end
 
     redirect_to request.referrer || projects_path
@@ -276,7 +276,7 @@ class ProjectsController < ApplicationController
   def delete_request
     if(is_admin?)
       @project = Project.find_by(:id => params[:id])
-      flash[:success] = "delete_request 修改未 " + "true" + " 状態."
+      flash[:success] = "delete_request 修改为 " + "true" + " 状態."
     else
       @project = current_trader.projects.find_by(:id => params[:id])
       if(!is_project_deletable(@project))
