@@ -121,8 +121,8 @@ class Project < ActiveRecord::Base
   def validate_representative_name_chinese
     if(!representative_name_chinese.present?)
       errors.add(:representative_name_chinese, "您未输入代表人名（简体字）.")
-    elsif(representative_name_chinese.length > 5)
-      errors.add(:representative_name_chinese, "代表人名（简体字）不可超过5字.")   
+    elsif(representative_name_chinese.length > 8)
+      errors.add(:representative_name_chinese, "代表人名（简体字）不可超过8字.")   
     elsif(hankaku?(representative_name_chinese))
       errors.add(:representative_name_chinese, "中文名只可输入简体字.")      
     end

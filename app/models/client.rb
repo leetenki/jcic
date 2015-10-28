@@ -15,8 +15,8 @@ class Client < ActiveRecord::Base
   def validate_name_chinese
     if(!name_chinese.present?)
       errors.add(:name_chinese, "您未输入中文姓名.")
-    elsif(name_chinese.length > 5)
-      errors.add(:name_chinese, "中文姓名不可超过5字.")
+    elsif(name_chinese.length > 8)
+      errors.add(:name_chinese, "中文姓名不可超过8字.")
     elsif(!zenkaku?(name_chinese))
       errors.add(:name_chinese, "中文名只可输入简体汉字.")      
     end

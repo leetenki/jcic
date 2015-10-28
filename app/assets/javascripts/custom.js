@@ -37,7 +37,7 @@ function startSuggest() {
 
 // called when confirm button pushed
 function confirmDelete(path) {
-  if(window.confirm('※请注意！确定删除后将无法撤回。在您申请后1工作日之内，我们会确认并完全取消此签证。')) {
+  if(window.confirm('※请注意！确定删除后将无法复原。1工作日之内，我们会确认并完全取消此签证。')) {
     location.href = path;
   }  
 }
@@ -299,7 +299,7 @@ function validateChineseName() {
   var valid = true;
   chineseName = document.getElementById("chineseName").value.replace(/[!-~]{1,}/g, "").replace(/[　 ]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
 
-  if(chineseName.length <= 1 || chineseName.length > 5) {
+  if(chineseName.length <= 1 || chineseName.length > 8) {
     valid = false;
   } else if(/*CheckLength(chineseName, 0)*/ !CheckLength(chineseName, 1)) {
     valid = false;
@@ -731,7 +731,7 @@ function validateGender(id) {
 function validateChineseNameById(id) {
   var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, "").replace(/[　 ]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
 
-  if(inputText.length > 1 && inputText.length <= 5 /*&& !CheckLength(inputText, 0)*/ && CheckLength(inputText, 1)) {
+  if(inputText.length > 1 && inputText.length <= 8 /*&& !CheckLength(inputText, 0)*/ && CheckLength(inputText, 1)) {
     return true
   } else {
     return false;
@@ -739,8 +739,8 @@ function validateChineseNameById(id) {
 }
 function validateAndReplaceChineseNameById(id) {
   var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, "").replace(/[　 ]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
-  if(inputText.length > 5) {
-    inputText = inputText.match(/.{1,5}/)[0]
+  if(inputText.length > 8) {
+    inputText = inputText.match(/.{1,8}/)[0]
   }
 
   $("#" + id + " input")[0].value = inputText;
@@ -1099,7 +1099,7 @@ function createClientTag(index) {
   inputTag.setAttribute("onchange", "validateAndUpdateField('clients_chinese_name_container_" + index + "', 'chinese_name_container', validateAndReplaceChineseNameById)");
   inputTag.setAttribute("onblur", "validateAndUpdateField('clients_chinese_name_container_" + index + "', 'chinese_name_container', validateAndReplaceChineseNameById)");
   inputTag.setAttribute("type", "text");
-  inputTag.setAttribute("maxlength", "5");
+  inputTag.setAttribute("maxlength", "8");
   inputTag.setAttribute("name", "project[clients_attributes][" + index + "][name_chinese]");
   inputTag.setAttribute("id", "project_clients_attributes_" + index + "_name_chinese")
   containerNode.appendChild(inputTag);
