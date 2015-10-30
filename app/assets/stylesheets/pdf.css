@@ -33,7 +33,7 @@ table#project caption .title-date {
   padding: 5px;
 }
 table#project caption .title-date .text {
-  color: #ff0000;
+  color: #000000;
 }
 table#project caption .representative {
   padding: 2px;
@@ -72,7 +72,7 @@ table.schedules caption .title-date {
   padding: 5px;
 }
 table.schedules caption .title-date .text {
-  color: #ff0000;
+  color: #000000;
 }
 table.schedules th {
   font-weight: normal;
@@ -157,7 +157,7 @@ table.clients caption .representative {
   padding: 2px;  
 }
 table.clients caption .title-date .text {
-  color: #ff0000;
+  color: #000000;
 }
 table.clients th {
   font-weight: normal;
