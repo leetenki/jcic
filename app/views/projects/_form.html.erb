@@ -73,11 +73,17 @@
                 var valid = false;
                 var simpleChinaCompanyCode = simplized(chinaCompanyCode.replace(/(^\s+)|(\s+$)|[-]/g, "").toLowerCase());
                 var simpleChinaCompanyName = simplized(chinaCompanyName.replace(/(^\s+)|(\s+$)|[-]/g, "").toLowerCase());
+                var matched = false;
                 for(var i = 0; i < companyNames.length; i++) {
                       if((simpleChinaCompanyName.length > 0 && companyNames[i].search_text.match(simpleChinaCompanyName)) || 
                         (simpleChinaCompanyCode.length > 0 && companyNames[i].search_text.match(simpleChinaCompanyCode))) {
                             $("#china_company_container input")[0].value = companyNames[i].name;
+                            matched = true;
+                            break;
                       }
+                }
+                if(!matched && chinaCompanyName.length > 0) {
+                  $("#china_company_container input")[0].value = chinaCompanyName;
                 }
 
                 // visa type
@@ -128,6 +134,28 @@
                 } 
             }
  
+            function isSeperateWorkBook(workbook) {
+              if(workbook.SheetNames.length >= 3) {
+                return true;
+              } else {
+                var schedulesFlag = false;
+                var clientsFlag = false;
+                for(var i = 0; i < workbook.SheetNames.length; i++) {
+                  var sheetName = workbook.SheetNames[i];
+                  if(sheetName.match(/予定|滞在|行程/)) {
+                    schedulesFlag = true;
+                  } else if(sheetName.match(/名簿|名单|人|人/)) {
+                    clientsFlag = true;
+                  }
+                }
+              }
+              if(clientsFlag && schedulesFlag) {
+                return true;
+              } else {
+                return false;
+              }
+            }
+
             // excel parser
             function parseWorkBook(workbook) {
                 var worksheet = null;  // use for single sheet
@@ -141,7 +169,7 @@
                 var clients = [];
                 var schedules = [];
 
-                if(workbook.SheetNames.length >= 3) {
+                if(isSeperateWorkBook(workbook)) {
                   var sheets = null;
                   var basicSheet = null;
                   var clientsSheet = null;
@@ -150,17 +178,23 @@
                     var sheetName = workbook.SheetNames[i];
                     if(sheetName.match(/[基本]/)) {
                       basicSheet = workbook.Sheets[sheetName]
-                    } else if(sheetName.match(/名簿|人/)) {
-                      clientsSheet = workbook.Sheets[sheetName]
-                    } else if(sheetName.match(/予定|滞在/)) {
+                    } else if(sheetName.match(/予定|滞在|行程/)) {
                       schedulesSheet = workbook.Sheets[sheetName]
+                    } else if(sheetName.match(/名簿|名单|人|人/)) {
+                      clientsSheet = workbook.Sheets[sheetName]
                     }
                   }
-                  if(!basicSheet || !clientsSheet || !schedulesSheet) {
+                  if(!clientsSheet || !schedulesSheet) {
                     worksheets = {
                       basicSheet: workbook.Sheets[workbook.SheetNames[0]],
                       clientsSheet: workbook.Sheets[workbook.SheetNames[1]],
                       schedulesSheet: workbook.Sheets[workbook.SheetNames[2]]
+                    }
+                  } else if(!basicSheet) {
+                    worksheets = {
+                      basicSheet: clientsSheet,
+                      clientsSheet: clientsSheet,
+                      schedulesSheet: schedulesSheet
                     }
                   } else {
                     worksheets = {
@@ -281,13 +315,13 @@
                         }
 
                         clients.push({
-                              chineseName: getCellValue(worksheet, clientsRowIndex, clientsColIndex),
-                              englishName: getCellValue(worksheet, clientsRowIndex, clientsColIndex+1),
+                              chineseName: getCellValue(worksheet, clientsRowIndex, clientsColIndex).match(/.{0,8}/)[0],
+                              englishName: getCellValue(worksheet, clientsRowIndex, clientsColIndex+1).match(/.{0,15}/)[0],
                               birthday: getCellValue(worksheet, clientsRowIndex, clientsColIndex+2),
                               gender: getCellValue(worksheet, clientsRowIndex, clientsColIndex+3),
                               hometown: getCellValue(worksheet, clientsRowIndex, clientsColIndex+4),
                               passportNo: getCellValue(worksheet, clientsRowIndex, clientsColIndex+5),
-                              job: getCellValue(worksheet, clientsRowIndex, clientsColIndex+6),
+                              job: getCellValue(worksheet, clientsRowIndex, clientsColIndex+6).match(/.{0,5}/)[0],
                         });
                         clientsRowIndex++;
                   } while(true);
@@ -334,6 +368,15 @@
                               if((cellValue && cellValue == "中国旅行社名")) {
                                     chinaCompanyName = getCellValue(worksheet, rowIndex, colIndex+1)
                                     break;
+                              } else if(cellValue.match(/公司名称/)) {
+                                var companyNameRow = cellValue.split(/[\n\r]{1,}/)[0]
+                                if(companyNameRow) {
+                                  chinaCompanyName = companyNameRow.split(/[:：]{1,}/)[1]
+                                  if(chinaCompanyName) {
+                                    chinaCompanyName = chinaCompanyName.replace(/[" 　"]{1,}/g, "");
+                                  }
+                                  break;
+                                }
                               }
                         }
                   }
@@ -376,6 +419,19 @@
                               if((cellValue && cellValue == "日本入境日期")) {
                                     dateArrival = getCellValue(worksheet, rowIndex, colIndex+1)
                                     break;
+                              } else {
+                                cellValue = cellValue.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
+                                  return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+                                }).replace(/[ 　()（）（）]{1,}/g, "")
+
+                                // 年月日
+                                if(cellValue.match(/[0-9]{1,}年[0-9]{1,}月[0-9]{1,}日/)) {
+                                  dateArrival = cellValue.split(/[^平成昭和年月日0-9]{1,}/)[0];
+                                  break;
+                                } else if(cellValue.match(/[0-9]{1,}[^0-9]{1,}[0-9]{1,}[^0-9]{1,}[0-9]{1,}[^0-9]{1,}[0-9]{1,}[^0-9]{1,}[0-9]{1,}[^0-9]{1,}[0-9]{1,}/)) {
+                                  dateArrival = cellValue.split(/[~〜～]{1,}/)[0]
+                                  break;
+                                }
                               }
                         }
                   }
@@ -390,6 +446,19 @@
                               if((cellValue && cellValue == "日本出境日期")) {
                                     dateLeaving = getCellValue(worksheet, rowIndex, colIndex+1)
                                     break;
+                              } else {
+                                cellValue = cellValue.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
+                                  return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+                                }).replace(/[ 　()（）（）]{1,}/g, "")
+
+                                // 年月日
+                                if(cellValue.match(/[0-9]{1,}年[0-9]{1,}月[0-9]{1,}日/)) {
+                                  dateLeaving = cellValue.split(/[^平成昭和年月日0-9]{1,}/)[1];
+                                  break;
+                                } else if(cellValue.match(/[0-9]{1,}[^0-9]{1,}[0-9]{1,}[^0-9]{1,}[0-9]{1,}[^0-9]{1,}[0-9]{1,}[^0-9]{1,}[0-9]{1,}[^0-9]{1,}[0-9]{1,}/)) {
+                                  dateLeaving = cellValue.split(/[~〜～]{1,}/)[1]
+                                  break;
+                                }
                               }
                         }
                   }
@@ -424,13 +493,13 @@
                         }
 
                         clients.push({
-                              chineseName: getCellValue(worksheet, clientsRowIndex, clientsColIndex),
-                              englishName: getCellValue(worksheet, clientsRowIndex, clientsColIndex+1),
+                              chineseName: getCellValue(worksheet, clientsRowIndex, clientsColIndex).match(/.{0,8}/)[0],
+                              englishName: getCellValue(worksheet, clientsRowIndex, clientsColIndex+1).match(/.{0,15}/)[0],
                               gender: getCellValue(worksheet, clientsRowIndex, clientsColIndex+2),
                               hometown: getCellValue(worksheet, clientsRowIndex, clientsColIndex+3),
                               birthday: getCellValue(worksheet, clientsRowIndex, clientsColIndex+4),
                               passportNo: getCellValue(worksheet, clientsRowIndex, clientsColIndex+5),
-                              job: getCellValue(worksheet, clientsRowIndex, clientsColIndex+6),
+                              job: getCellValue(worksheet, clientsRowIndex, clientsColIndex+6).match(/.{0,5}/)[0],
                         });
                         clientsRowIndex++;
                   } while(true);

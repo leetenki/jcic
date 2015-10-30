@@ -1590,17 +1590,25 @@ function replaceDateStr(originalDateStr) {
       var firstNumber = parseInt(newDateStr.split("/")[0])
       var secondNumber = parseInt(newDateStr.split("/")[1])
       var lastNumber = parseInt(newDateStr.split("/")[2])
-      if(firstNumber >= 1 && firstNumber <= 12 && lastNumber > 12) {
+      if(firstNumber >= 1 && firstNumber <= 12 && (lastNumber >= 10 || newDateStr.split("/")[2].match(/0[0-9]/))) {
         if(lastNumber < 30) {
           newDateStr = newDateStr.replace(/[\/]{1}[0-9]{2}$/, "/20" + newDateStr.match(/[0-9]{2}$/)[0])
         } else {
           newDateStr = newDateStr.replace(/[\/]{1}[0-9]{2}$/, "/19" + newDateStr.match(/[0-9]{2}$/)[0])          
         }
-      } else if(secondNumber >= 1 && secondNumber <= 12 && firstNumber > 12) {
+      } else if(secondNumber >= 1 && secondNumber <= 12 && (firstNumber >= 10 || newDateStr.split("/")[0].match(/0[0-9]/))) {
         if(firstNumber < 30) {
-          newDateStr = newDateStr.replace(/^[0-9]{1,2}/, "20" + newDateStr.match(/^[0-9]{1,2}/)[0])
+          if(newDateStr.match(/^[0-9]{1,2}/)[0].length == 2) {
+            newDateStr = newDateStr.replace(/^[0-9]{1,2}/, "20" + newDateStr.match(/^[0-9]{1,2}/)[0])
+          } else {
+            newDateStr = newDateStr.replace(/^[0-9]{1,2}/, "200" + newDateStr.match(/^[0-9]{1,2}/)[0])            
+          }
         } else {
-          newDateStr = newDateStr.replace(/^[0-9]{1,2}/, "19" + newDateStr.match(/^[0-9]{1,2}/)[0])          
+          if(newDateStr.match(/^[0-9]{1,2}/)[0].length == 2) {
+            newDateStr = newDateStr.replace(/^[0-9]{1,2}/, "19" + newDateStr.match(/^[0-9]{1,2}/)[0])
+          } else {
+            newDateStr = newDateStr.replace(/^[0-9]{1,2}/, "190" + newDateStr.match(/^[0-9]{1,2}/)[0])            
+          }
         }
       }
     }
