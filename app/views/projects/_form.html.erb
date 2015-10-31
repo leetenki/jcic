@@ -478,7 +478,7 @@
                               englishName: getCellValue(worksheet, clientsRowIndex, clientsColIndex+1).match(/.{0,15}/)[0],
                               birthday: getCellValue(worksheet, clientsRowIndex, clientsColIndex+2),
                               gender: getCellValue(worksheet, clientsRowIndex, clientsColIndex+3),
-                              hometown: getCellValue(worksheet, clientsRowIndex, clientsColIndex+4),
+                              hometown: getCellValue(worksheet, clientsRowIndex, clientsColIndex+4).replace(/\(.{0,}\)/g, "").replace(/（.{0,}）/g, "").replace(/[ 　]{1,}/, "").match(/.{0,5}/)[0],
                               passportNo: getCellValue(worksheet, clientsRowIndex, clientsColIndex+5),
                               job: getCellValue(worksheet, clientsRowIndex, clientsColIndex+6).match(/.{0,5}/)[0],
                         });
@@ -542,7 +542,7 @@
                               chineseName: getCellValue(worksheet, clientsRowIndex, clientsColIndex).replace(/[ 　]{1,}/, "").match(/.{0,8}/)[0],
                               englishName: getCellValue(worksheet, clientsRowIndex, clientsColIndex+1).match(/.{0,15}/)[0],
                               gender: getCellValue(worksheet, clientsRowIndex, clientsColIndex+2),
-                              hometown: getCellValue(worksheet, clientsRowIndex, clientsColIndex+3),
+                              hometown: getCellValue(worksheet, clientsRowIndex, clientsColIndex+3).replace(/\(.{0,}\)/g, "").replace(/（.{0,}）/g, "").replace(/[ 　]{1,}/, "").match(/.{0,5}/)[0],
                               birthday: getCellValue(worksheet, clientsRowIndex, clientsColIndex+4),
                               passportNo: getCellValue(worksheet, clientsRowIndex, clientsColIndex+5),
                               job: getCellValue(worksheet, clientsRowIndex, clientsColIndex+6).match(/.{0,5}/)[0],
