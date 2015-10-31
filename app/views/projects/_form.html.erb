@@ -239,7 +239,7 @@
                 basicRate = clientsRate = schedulesRate = 0;
                 for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
                   for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
-                    var cellValue = getCellValue(worksheet, rowIndex, colIndex);
+                    var cellValue = getCellValue(worksheet, rowIndex, colIndex).toString();
                     if(cellValue.match(/中文名|英文名|氏名|^番号$|性別|地域|区域|生年月日|職業|护照号|旅劵|旅券|职业|名单|名簿|種類/)) {
                       clientsRate++;
                     } else if(cellValue.match(/年[ 　]{0,}月[ 　]{0,}日|行[ 　]{0,}動[ 　]{0,}予[ 　]{0,}定|滞在|行.{0,}動|⾏.{0,}動|宿.{0,}泊.{0,}先|帰国|ホテル|空港|机场|空港|出発|酒店|住所|成田|便|国际线|国際線|行程/)) {
@@ -320,7 +320,7 @@
               excelBottom = parseInt(worksheet["!ref"].split(":")[1].match(/[0-9]{1,}/)[0])
               for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
                 for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
-                  var cellValue = getCellValue(worksheet, rowIndex, colIndex);
+                  var cellValue = getCellValue(worksheet, rowIndex, colIndex).toString();
                   if(cellValue && cellValue.match(/上色和打勾|希望的査証種別/)) {
                     var offset = 0;
                     var group = getCellValue(worksheet, rowIndex, colIndex + offset + 1);
@@ -386,7 +386,7 @@
                   // china company name
                   for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
                         for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
-                              var cellValue = getCellValue(worksheet, rowIndex, colIndex);
+                              var cellValue = getCellValue(worksheet, rowIndex, colIndex).toString();
                               if((cellValue && cellValue == "中国旅行社名")) {
                                     chinaCompanyName = getCellValue(worksheet, rowIndex, colIndex+1)
                                     break;
@@ -400,7 +400,7 @@
                   // china company code
                   for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
                         for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
-                              var cellValue = getCellValue(worksheet, rowIndex, colIndex);
+                              var cellValue = getCellValue(worksheet, rowIndex, colIndex).toString();
                               if((cellValue && cellValue == "中国旅行社编号")) {
                                     chinaCompanyCode = getCellValue(worksheet, rowIndex, colIndex+1)
                                     break;
@@ -414,7 +414,7 @@
                   // visa type
                   for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
                         for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
-                              var cellValue = getCellValue(worksheet, rowIndex, colIndex);
+                              var cellValue = getCellValue(worksheet, rowIndex, colIndex).toString();
                               if((cellValue && cellValue == "签证种类")) {
                                     visaType = getCellValue(worksheet, rowIndex, colIndex+1)
                                     break;
@@ -428,7 +428,7 @@
                   // date arrival
                   for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
                         for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
-                              var cellValue = getCellValue(worksheet, rowIndex, colIndex);
+                              var cellValue = getCellValue(worksheet, rowIndex, colIndex).toString();
                               if((cellValue && cellValue == "日本入境日期")) {
                                     dateArrival = getCellValue(worksheet, rowIndex, colIndex+1)
                                     break;
@@ -442,7 +442,7 @@
                   // date leaving
                   for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
                         for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
-                              var cellValue = getCellValue(worksheet, rowIndex, colIndex);
+                              var cellValue = getCellValue(worksheet, rowIndex, colIndex).toString();
                               if((cellValue && cellValue == "日本出境日期")) {
                                     dateLeaving = getCellValue(worksheet, rowIndex, colIndex+1)
                                     break;
@@ -459,7 +459,7 @@
                   var clientsColIndex = "A".charCodeAt();
                   for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
                         for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
-                              var cellValue = getCellValue(worksheet, rowIndex, colIndex);
+                              var cellValue = getCellValue(worksheet, rowIndex, colIndex).toString();
                               if((cellValue && cellValue == "中文名")) {
                                     clientsColIndex = colIndex;
                                     clientsRowIndex = rowIndex + 1;
@@ -491,7 +491,7 @@
                   var schedulesColIndex = "A".charCodeAt();
                   for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
                         for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
-                              var cellValue = getCellValue(worksheet, rowIndex, colIndex);
+                              var cellValue = getCellValue(worksheet, rowIndex, colIndex).toString();
                               if((cellValue && cellValue.match(/⾏.{0,}動.{0,}计.{0,}划/))) {
                                     schedulesColIndex = colIndex;
                                     schedulesRowIndex = rowIndex + 1;
@@ -524,7 +524,7 @@
                   var clientsColIndex = "A".charCodeAt();
                   for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
                         for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
-                              var cellValue = getCellValue(worksheet, rowIndex, colIndex);
+                              var cellValue = getCellValue(worksheet, rowIndex, colIndex).toString();
                               if((cellValue && cellValue.match(/氏名/))) {
                                     clientsColIndex = colIndex;
                                     clientsRowIndex = rowIndex + 1;
@@ -560,7 +560,7 @@
                   // china company name
                   for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
                     for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
-                      var cellValue = getCellValue(worksheet, rowIndex, colIndex);
+                      var cellValue = getCellValue(worksheet, rowIndex, colIndex).toString();
                       if(cellValue && (cellValue == "中国旅行社名" || cellValue.match(/^会社名$/))) {
                         chinaCompanyName = getCellValue(worksheet, rowIndex, colIndex+1)
                         break;
@@ -580,7 +580,7 @@
                         if(cellValue.match(/[-0-9a-zA-Z]{9,11}/)) {
                           chinaCompanyCode = cellValue.match(/[-0-9a-zA-Z]{9,11}/)[0]
                         } else {
-                          cellValue = getCellValue(worksheet, rowIndex, colIndex+1);
+                          cellValue = getCellValue(worksheet, rowIndex, colIndex+1).toString();
                           if(cellValue.match(/[-0-9a-zA-Z]{9,11}/)) {
                             chinaCompanyCode = cellValue.match(/[-0-9a-zA-Z]{9,11}/)[0]
                           }
@@ -597,7 +597,7 @@
                   // china company code
                   for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
                         for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
-                              var cellValue = getCellValue(worksheet, rowIndex, colIndex);
+                              var cellValue = getCellValue(worksheet, rowIndex, colIndex).toString();
                               if(cellValue && cellValue.match(/中国旅行社编号/)) {
                                     chinaCompanyCode = getCellValue(worksheet, rowIndex, colIndex+1)
                                     break;
@@ -613,7 +613,7 @@
                   // visa type
                   for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
                         for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
-                              var cellValue = getCellValue(worksheet, rowIndex, colIndex);
+                              var cellValue = getCellValue(worksheet, rowIndex, colIndex).toString();
                               if((cellValue && cellValue == "签证种类")) {
                                     visaType = getCellValue(worksheet, rowIndex, colIndex+1)
                                     break;
@@ -627,7 +627,7 @@
                   // date arrival
                   for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
                         for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
-                              var cellValue = getCellValue(worksheet, rowIndex, colIndex);
+                              var cellValue = getCellValue(worksheet, rowIndex, colIndex).toString();
                               if(cellValue && (cellValue == "日本入境日期" || cellValue.match(/入国予定日/))) {
                                 dateArrival = getCellValue(worksheet, rowIndex, colIndex+1)
                                 if(!dateArrival) {
@@ -661,7 +661,7 @@
                   // date leaving
                   for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
                         for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
-                              var cellValue = getCellValue(worksheet, rowIndex, colIndex);
+                              var cellValue = getCellValue(worksheet, rowIndex, colIndex).toString();
                               if(cellValue && (cellValue == "日本出境日期" || cellValue.match(/出国予定日/))) {
                                     dateLeaving = getCellValue(worksheet, rowIndex, colIndex+1)
                                     if(!dateLeaving) {
@@ -706,7 +706,7 @@
                     var schedulesColIndex = "A".charCodeAt();
                     for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
                           for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
-                                var cellValue = getCellValue(worksheet, rowIndex, colIndex);
+                                var cellValue = getCellValue(worksheet, rowIndex, colIndex).toString();
                                 if(cellValue && (cellValue.match(/⾏.{0,}動.{0,}予.{0,}定/) || cellValue.match(/行.{0,}動.{0,}予.{0,}定/))) {
                                       schedulesColIndex = colIndex;
                                       schedulesRowIndex = rowIndex + 1;
