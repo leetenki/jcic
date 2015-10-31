@@ -174,6 +174,21 @@ function isMobile() {
 }
 
 
+// function to start download PDF
+function downloadPDF(fileName, container) {
+
+  location.href = fileName;
+  container.disabled = "disabled";
+  $(".alert-panel").fadeIn(1200, function(){
+    $(".alert-panel").fadeOut(4000, function(){});
+  });
+
+  setTimeout(function(container) {
+    container.removeAttribute("disabled")
+  }, 30 * 1000, container);
+}
+
+
 // function to open panel
 function openAlert(error) {
   $(".alert-panel").fadeIn(300, function(){
