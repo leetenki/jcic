@@ -80,6 +80,7 @@
                   var simplizedSearchName = simplized(companyNames[i].name)
                   var distances = [
                     getEditDistance(simplizedSearchName, simpleChinaCompanyName), 
+                    getEditDistance(simplizedSearchName, simpleChinaCompanyName.replace(/集团/g, "")),
                     getEditDistance(simplizedSearchName, simpleChinaCompanyName.replace(/有限公司/g, "")),
                     getEditDistance(simplizedSearchName, simpleChinaCompanyName.replace(/旅行社/g, "")),
                     getEditDistance(simplizedSearchName, simpleChinaCompanyName.replace(/旅行社/g, "有限公司")),
@@ -111,12 +112,14 @@
                     }
 
                     distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName));
+                    distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName.replace(/集团/g, "")));
                     distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName.replace(/有限公司/g, "")));
                     distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName.replace(/旅行社/g, "")));
                     distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName.replace(/旅行社/g, "有限公司")));
                     distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName.replace(/有限公司/g, "旅行社")));
                     distances.push(getEditDistance(simplizedSearchName.replace(/\(.{0,}\)/g, "").replace(/（.{0,}）/g, ""), tmpChinaCompanyName));
                     distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName2));
+                    distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName2.replace(/集团/g, "")));
                     distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName2.replace(/有限公司/g, "")));
                     distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName2.replace(/旅行社/g, "")));
                     distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName2.replace(/旅行社/g, "有限公司")));
