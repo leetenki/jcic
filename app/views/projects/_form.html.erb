@@ -474,7 +474,7 @@
                         }
 
                         clients.push({
-                              chineseName: getCellValue(worksheet, clientsRowIndex, clientsColIndex).match(/.{0,8}/)[0],
+                              chineseName: getCellValue(worksheet, clientsRowIndex, clientsColIndex).replace(/[ 　]{1,}/, "").match(/.{0,8}/)[0],
                               englishName: getCellValue(worksheet, clientsRowIndex, clientsColIndex+1).match(/.{0,15}/)[0],
                               birthday: getCellValue(worksheet, clientsRowIndex, clientsColIndex+2),
                               gender: getCellValue(worksheet, clientsRowIndex, clientsColIndex+3),
@@ -539,7 +539,7 @@
                         }
 
                         clients.push({
-                              chineseName: getCellValue(worksheet, clientsRowIndex, clientsColIndex).match(/.{0,8}/)[0],
+                              chineseName: getCellValue(worksheet, clientsRowIndex, clientsColIndex).replace(/[ 　]{1,}/, "").match(/.{0,8}/)[0],
                               englishName: getCellValue(worksheet, clientsRowIndex, clientsColIndex+1).match(/.{0,15}/)[0],
                               gender: getCellValue(worksheet, clientsRowIndex, clientsColIndex+2),
                               hometown: getCellValue(worksheet, clientsRowIndex, clientsColIndex+3),
