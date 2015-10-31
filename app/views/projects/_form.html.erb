@@ -77,14 +77,42 @@
 
                 var editDistances = []
                 for(var i = 0; i < companyNames.length; i++) {
+                  var simplizedSearchName = simplized(companyNames[i].name)
                   var distances = [
-                    getEditDistance(companyNames[i].name, simpleChinaCompanyName), 
-                    getEditDistance(companyNames[i].name, simpleChinaCompanyName.replace(/有限公司/g, "")),
-                    getEditDistance(companyNames[i].name, simpleChinaCompanyName.replace(/旅行社/g, "")),
-                    getEditDistance(companyNames[i].name, simpleChinaCompanyName.replace(/旅行社/g, "有限公司")),
-                    getEditDistance(companyNames[i].name, simpleChinaCompanyName.replace(/有限公司/g, "旅行社")),
-                    getEditDistance(companyNames[i].name.replace(/\(.{0,}\)/g, "").replace(/（.{0,}）/g, ""), simpleChinaCompanyName),
+                    getEditDistance(simplizedSearchName, simpleChinaCompanyName), 
+                    getEditDistance(simplizedSearchName, simpleChinaCompanyName.replace(/有限公司/g, "")),
+                    getEditDistance(simplizedSearchName, simpleChinaCompanyName.replace(/旅行社/g, "")),
+                    getEditDistance(simplizedSearchName, simpleChinaCompanyName.replace(/旅行社/g, "有限公司")),
+                    getEditDistance(simplizedSearchName, simpleChinaCompanyName.replace(/有限公司/g, "旅行社")),
+                    getEditDistance(simplizedSearchName.replace(/\(.{0,}\)/g, "").replace(/（.{0,}）/g, ""), simpleChinaCompanyName),
                   ];
+                  if(simpleChinaCompanyName.match(/贵州|四川|广东|湖北|湖南|山东|黑龙江|吉林|辽宁|江苏|浙江/) || 
+                      simpleChinaCompanyName.match(/广州|深圳|北京|天津|武汉|沈阳|锦州|无锡|苏州|南京|扬州|成都|杭州/)
+                    ) {
+
+                    var tmpChinaCompanyName = "";
+                    if(simpleChinaCompanyName.match(/贵州|四川|广东|湖北|湖南|山东|黑龙江|吉林|辽宁|江苏|浙江/)) {
+                      if(simpleChinaCompanyName.match(/省/)) {
+                        tmpChinaCompanyName = simpleChinaCompanyName.replace("省", "");
+                      } else {
+                        tmpChinaCompanyName = simpleChinaCompanyName.replace(/贵州|四川|广东|湖北|湖南|山东|黑龙江|吉林|辽宁|江苏|浙江/, simpleChinaCompanyName.match(/贵州|四川|广东|湖北|湖南|山东|黑龙江|吉林|辽宁|江苏|浙江/)[0] + "省")
+                      }
+                    } else {
+                      if(simpleChinaCompanyName.match(/市/)) {
+                        tmpChinaCompanyName = simpleChinaCompanyName.replace("市", "");
+                      } else {
+                        tmpChinaCompanyName = simpleChinaCompanyName.replace(/广州|深圳|北京|天津|武汉|沈阳|锦州|无锡|苏州|南京|扬州|成都|杭州/, simpleChinaCompanyName.match(/广州|深圳|北京|天津|武汉|沈阳|锦州|无锡|苏州|南京|扬州|成都|杭州/)[0] + "市")
+                      }
+                    }
+
+                    distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName));
+                    distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName.replace(/有限公司/g, "")));
+                    distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName.replace(/旅行社/g, "")));
+                    distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName.replace(/旅行社/g, "有限公司")));
+                    distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName.replace(/有限公司/g, "旅行社")));
+                    distances.push(getEditDistance(simplizedSearchName.replace(/\(.{0,}\)/g, "").replace(/（.{0,}）/g, ""), tmpChinaCompanyName));
+                  }
+
                   editDistances.push(Math.min.apply(null, distances));
 
                   if((simpleChinaCompanyName.length > 0 && companyNames[i].search_text.match(simpleChinaCompanyName)) || 
@@ -96,7 +124,7 @@
                 }
                 if(!matched && chinaCompanyName.length > 0) {
                   var minIndex = Math.min.apply(null, editDistances)
-                  if(editDistances.indexOf(minIndex) == editDistances.lastIndexOf(minIndex) && minIndex <= 4) {
+                  if(editDistances.indexOf(minIndex) == editDistances.lastIndexOf(minIndex) && minIndex <= 1) {
                     $("#china_company_container input")[0].value = companyNames[editDistances.indexOf(minIndex)].name;
                   } else {
                     $("#china_company_container input")[0].value = chinaCompanyName;
@@ -545,9 +573,11 @@
                       }
                     }
                   }
+                  /*
                   if(chinaCompanyName.length <= 0 && getCellValue(worksheet, 4, "C".charCodeAt())) {
                         chinaCompanyName = getCellValue(worksheet, 4, "C".charCodeAt());                        
                   }
+                  */
 
                   // china company code
                   for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
