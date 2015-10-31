@@ -594,7 +594,7 @@
                                   return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
                                 }).replace(/[ 　()（）（）]{1,}/g, "")
 
-                                if(cellValue.match(/[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}/)) {
+                                if(cellValue.match(/[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}/) && cellValue.match(/平成|昭和|年|月|日/)) {
                                   if(cellValue.match(/[0-9]{1,}年[0-9]{1,}月[0-9]{1,}日/)) {
                                     dateArrival = cellValue.split(/[^平成昭和年月日0-9]{1,}/)[0]; // 年月日
                                   } else {
@@ -605,6 +605,9 @@
                                 }
                               }
                         }
+                        if(dateArrival) {
+                          break;
+                        }                                                
                   }
                   if(dateArrival.length <= 0 && getCellValue(worksheet, 9, "C".charCodeAt())) {
                         dateArrival = getCellValue(worksheet, 9, "C".charCodeAt());                        
@@ -625,7 +628,7 @@
                                   return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
                                 }).replace(/[ 　()（）（）]{1,}/g, "")                                
 
-                                if(cellValue.match(/[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}/)) {
+                                if(cellValue.match(/[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}/) && cellValue.match(/平成|昭和|年|月|日/)) {
                                   if(cellValue.match(/[0-9]{1,}年[0-9]{1,}月[0-9]{1,}日/)) {                                  
                                     dateLeaving = cellValue.split(/[^平成昭和年月日0-9 ]{1,}/)[1]; // 年月日
                                   } else {
@@ -636,6 +639,9 @@
                                 }
                               }
                         }
+                        if(dateLeaving) {
+                          break;
+                        }                        
                   }
                   if(dateLeaving.length <= 0 && getCellValue(worksheet, 10, "C".charCodeAt())) {
                         dateLeaving = getCellValue(worksheet, 10, "C".charCodeAt());                        

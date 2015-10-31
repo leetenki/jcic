@@ -26,6 +26,14 @@ class CompanyCodesController < ApplicationController
     end
   end
 
+  # code searcher for public
+  def code
+    @company_codes = CompanyCode.all
+    @company_codes.each do |c|
+      c.search_text = c.code.gsub(/[-]/, "").downcase + ChineseConverter.simplized(c.locate+c.name+c.memo.to_s)
+    end
+  end
+
   private
   def company_code_params
     params.require(:company_code).permit(:name, :code, :memo, :status, :locate, :address)

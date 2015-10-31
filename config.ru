@@ -10,4 +10,4 @@ require 'unicorn/worker_killer'
 use Unicorn::WorkerKiller::MaxRequests, 1000, 1200
 
 # Max memory size (RSS) per worker
-use Unicorn::WorkerKiller::Oom, (196*(1024**2)), (230*(1024**2))
+use Unicorn::WorkerKiller::Oom, (156*(1024**2)), (200*(1024**2))

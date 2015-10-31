@@ -1,0 +1,10 @@
+<% unless company_code.id.nil? %>
+  <tr id="<%= company_code.id %>" class="<%= company_code.status %>" style="display:none;">
+    <td class='d_clip_button col-md-3' data-clipboard-text='<%= company_code.code %>' onclick="openAlert()" style="cursor:pointer;">
+      <%= company_code.code %>
+    </td>
+    <td class="col-md-7"><%= company_code.name %></td>
+    <td class="col-md-2"><%= company_code.locate %></td>
+    <input type="hidden" value="<%= company_code.search_text %>" />
+  </tr>
+<% end %>

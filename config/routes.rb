@@ -35,6 +35,8 @@ Rails.application.routes.draw do
   get 'admin/useragent', :to => "admin#useragent"
   get 'projects/signature/(:id)', :to => "projects#signature"
 
+  get 'code', :to => "company_codes#code"
+
   resources :traders
   resources :projects
   resources :company_codes, :only => [:index, :edit, :update]

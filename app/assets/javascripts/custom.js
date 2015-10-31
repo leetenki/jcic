@@ -179,8 +179,8 @@ function downloadPDF(fileName, container) {
 
   location.href = fileName;
   container.disabled = "disabled";
-  $(".alert-panel").fadeIn(1200, function(){
-    $(".alert-panel").fadeOut(4000, function(){});
+  $(".alert-panel").fadeIn(1900, function(){
+    $(".alert-panel").fadeOut(4100, function(){});
   });
 
   setTimeout(function(container) {
@@ -277,6 +277,33 @@ function updateCompanyTable() {
     } else {
       tr.style.display = "table-row"
     }
+  }
+}
+
+// only for public company table
+function updatePublicCompanyTable() {
+  var keyword = simplized(document.getElementById("company_keyword").value.replace(/(^\s+)|(\s+$)|[-]/g, "").toLowerCase());
+  var tbody = document.getElementById("company_tbody_dynamic");
+
+  for(var i = 0; i < tbody.children.length; i++) {
+    var tr = tbody.children[i];
+    tr.style.display = "none"
+  }
+
+  if(keyword.length > 0) {
+    var viewCount = 0;
+
+    for(var i = 0; i < tbody.children.length && viewCount < 5; i++) {
+      var tr = tbody.children[i];
+      var searchText = tr.children[3].value;
+
+      if(searchText.indexOf(keyword) == -1 || tr.className == "stopped") {
+        tr.style.display = "none"
+      } else {
+        tr.style.display = "table-row"
+        viewCount++;
+      }
+    }    
   }
 }
 
