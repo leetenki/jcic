@@ -207,7 +207,7 @@ class ProjectsController < ApplicationController
 
   #create pdf
   def show
-    visa_type_table = {"individual" => "个人", "group" => "团体", "3years" => "三年", "5years" => "五年"}
+    visa_type_table = {"individual" => "个签", "group" => "团签", "3years" => "三年多次", "5years" => "五年多次"}
 
     if(is_admin?)
       @project = Project.find_by(:id => params[:id])
@@ -222,7 +222,7 @@ class ProjectsController < ApplicationController
         html = render_to_string :template => "/projects/show"
         pdf = PDFKit.new(html, :encoding => "UTF-8");
         pdf.stylesheets << "#{Rails.root}/app/assets/stylesheets/pdf.css"
-        send_data pdf.to_pdf, :filename => "#{@project.representative_name_chinese}_" + visa_type_table[@project.visa_type] + "_共#{@project.clients.length}名.pdf", :type => "application/pdf", :disposition => "attachment"
+        send_data pdf.to_pdf, :filename => "#{@project.representative_name_chinese}（#{@project.clients.length}人）" + visa_type_table[@project.visa_type] + ".pdf", :type => "application/pdf", :disposition => "attachment"
       end
     end
   end

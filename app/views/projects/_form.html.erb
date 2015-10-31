@@ -74,16 +74,33 @@
                 var simpleChinaCompanyCode = simplized(chinaCompanyCode.replace(/(^\s+)|(\s+$)|[-]/g, "").toLowerCase());
                 var simpleChinaCompanyName = simplized(chinaCompanyName.replace(/(^\s+)|(\s+$)|[-]/g, "").toLowerCase());
                 var matched = false;
+
+                var editDistances = []
                 for(var i = 0; i < companyNames.length; i++) {
-                      if((simpleChinaCompanyName.length > 0 && companyNames[i].search_text.match(simpleChinaCompanyName)) || 
-                        (simpleChinaCompanyCode.length > 0 && companyNames[i].search_text.match(simpleChinaCompanyCode))) {
-                            $("#china_company_container input")[0].value = companyNames[i].name;
-                            matched = true;
-                            break;
-                      }
+                  var distances = [
+                    getEditDistance(companyNames[i].name, simpleChinaCompanyName), 
+                    getEditDistance(companyNames[i].name, simpleChinaCompanyName.replace(/有限公司/g, "")),
+                    getEditDistance(companyNames[i].name, simpleChinaCompanyName.replace(/旅行社/g, "")),
+                    getEditDistance(companyNames[i].name, simpleChinaCompanyName.replace(/旅行社/g, "有限公司")),
+                    getEditDistance(companyNames[i].name, simpleChinaCompanyName.replace(/有限公司/g, "旅行社")),
+                    getEditDistance(companyNames[i].name.replace(/\(.{0,}\)/g, "").replace(/（.{0,}）/g, ""), simpleChinaCompanyName),
+                  ];
+                  editDistances.push(Math.min.apply(null, distances));
+
+                  if((simpleChinaCompanyName.length > 0 && companyNames[i].search_text.match(simpleChinaCompanyName)) || 
+                    (simpleChinaCompanyCode.length > 0 && companyNames[i].search_text.match(simpleChinaCompanyCode))) {
+                      $("#china_company_container input")[0].value = companyNames[i].name;
+                      matched = true;
+                      break;
+                  }
                 }
                 if(!matched && chinaCompanyName.length > 0) {
-                  $("#china_company_container input")[0].value = chinaCompanyName;
+                  var minIndex = Math.min.apply(null, editDistances)
+                  if(editDistances.indexOf(minIndex) == editDistances.lastIndexOf(minIndex) && minIndex <= 4) {
+                    $("#china_company_container input")[0].value = companyNames[editDistances.indexOf(minIndex)].name;
+                  } else {
+                    $("#china_company_container input")[0].value = chinaCompanyName;
+                  }
                 }
 
                 // visa type
@@ -164,10 +181,17 @@
 
               for(var i = 0; i < workbook.SheetNames.length; i++) {
                 var worksheet = workbook.Sheets[workbook.SheetNames[i]];
-                excelLeft = worksheet["!ref"].split(":")[0].match(/[A-Za-z]{1,}/)[0].charCodeAt()
-                excelTop = parseInt(worksheet["!ref"].split(":")[0].match(/[0-9]{1,}/)[0])
-                excelRight = worksheet["!ref"].split(":")[1].match(/[A-Za-z]{1,}/)[0].charCodeAt()
-                excelBottom = parseInt(worksheet["!ref"].split(":")[1].match(/[0-9]{1,}/)[0])
+                if(worksheet["!ref"].split(":").length == 1) {
+                  excelLeft = worksheet["!ref"].match(/[A-Za-z]{1,}/)[0].charCodeAt()
+                  excelTop = parseInt(worksheet["!ref"].match(/[0-9]{1,}/)[0])
+                  excelRight = worksheet["!ref"].match(/[A-Za-z]{1,}/)[0].charCodeAt()
+                  excelBottom = parseInt(worksheet["!ref"].match(/[0-9]{1,}/)[0])
+                } else {
+                  excelLeft = worksheet["!ref"].split(":")[0].match(/[A-Za-z]{1,}/)[0].charCodeAt()
+                  excelTop = parseInt(worksheet["!ref"].split(":")[0].match(/[0-9]{1,}/)[0])
+                  excelRight = worksheet["!ref"].split(":")[1].match(/[A-Za-z]{1,}/)[0].charCodeAt()
+                  excelBottom = parseInt(worksheet["!ref"].split(":")[1].match(/[0-9]{1,}/)[0])
+                }
 
                 basicRate = clientsRate = schedulesRate = 0;
                 for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
@@ -198,7 +222,8 @@
               }
 
               if(!clientsSheet) {
-                return workbook.Sheets[workbook.SheetNames[0]]
+                //return workbook.Sheets[workbook.SheetNames[0]]
+                return null;
               } else if(!basicSheet) {
                 basicSheet = clientsSheet;
               }
@@ -301,7 +326,10 @@
                 var schedules = [];
 
                 worksheets = getSeperateWorkBook(workbook);
-                if(!worksheets.clientsSheet) {
+                if(!worksheets) {
+                  alert("Excel文件格式不正确!请仔细确认。")
+                  return;
+                } else if(!worksheets.clientsSheet) {
                   worksheet = worksheets;
                 }
 
@@ -490,7 +518,7 @@
                   for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
                     for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
                       var cellValue = getCellValue(worksheet, rowIndex, colIndex);
-                      if((cellValue && cellValue == "中国旅行社名")) {
+                      if(cellValue && (cellValue == "中国旅行社名" || cellValue.match(/^会社名$/))) {
                         chinaCompanyName = getCellValue(worksheet, rowIndex, colIndex+1)
                         break;
                       } else if(cellValue.match(/公司名称/)) {
@@ -525,7 +553,7 @@
                   for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
                         for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
                               var cellValue = getCellValue(worksheet, rowIndex, colIndex);
-                              if((cellValue && cellValue == "中国旅行社编号")) {
+                              if(cellValue && cellValue.match(/中国旅行社编号/)) {
                                     chinaCompanyCode = getCellValue(worksheet, rowIndex, colIndex+1)
                                     break;
                               }
@@ -847,7 +875,7 @@
                   <tbody>
                         <%= f.fields_for :clients do |clients_field| %>
                         <tr id="client_<%= clients_field.index %>">
-                              <td>
+                              <td class="">
                                     <span class="index"><%= clients_field.index+1 %></span>
                                     <div id="clients_chinese_name_container_<%= clients_field.index %>" class="chinese_name_container">
                                           <%= clients_field.label :name_chinese, "中文名" %> <i id="clients_chinese_name_<%= clients_field.index %>"></i>

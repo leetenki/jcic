@@ -200,7 +200,7 @@ function openAlert(error) {
 
 function showSchedulesContainer() {
   $("#schedules_container")[0].style.display = "block";
-  $("#go_back_container")[0].style.display = "block";
+  //$("#go_back_container")[0].style.display = "block";
   $("#show_schedules").text("－ 详细日程表")
   $("#show_schedules")[0].onclick = hideSchedulesContainer
 }
@@ -1547,6 +1547,41 @@ function updateIconOnlyCheck(id, callbackValidation, containerID) {
 }
 
 /* utility */
+function getEditDistance(a, b){
+  if(a.length == 0) return b.length; 
+  if(b.length == 0) return a.length; 
+
+  var matrix = [];
+
+  // increment along the first column of each row
+  var i;
+  for(i = 0; i <= b.length; i++){
+    matrix[i] = [i];
+  }
+
+  // increment each column in the first row
+  var j;
+  for(j = 0; j <= a.length; j++){
+    matrix[0][j] = j;
+  }
+
+  // Fill in the rest of the matrix
+  for(i = 1; i <= b.length; i++){
+    for(j = 1; j <= a.length; j++){
+      if(b.charAt(i-1) == a.charAt(j-1)){
+        matrix[i][j] = matrix[i-1][j-1];
+      } else {
+        matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, // substitution
+                                Math.min(matrix[i][j-1] + 1, // insertion
+                                         matrix[i-1][j] + 1)); // deletion
+      }
+    }
+  }
+
+  return matrix[b.length][a.length];
+}
+
+
 function CheckLength(str,flg) {
   for (var i = 0; i < str.length; i++) {
     var c = str.charCodeAt(i);
@@ -2043,10 +2078,10 @@ debug = null;
 function fillRow(id, rowItem) {
   $("#"+id+" .chinese_name_container input")[0].value = rowItem.chineseName;
   $("#"+id+" .english_name_container input")[0].value = rowItem.englishName;
-  if(rowItem.gender.match(/[女⼥2fF]|female|woman|women|girl/i)) {
+  if(rowItem.gender.toLocaleLowerCase().match(/[女⼥2fF]|female|woman|women|girl/i)) {
     $("#"+id+" .gender_container .gender_type label")[1].className += " active";
     $("#"+id+" .gender_container .gender_type input")[1].checked = true;
-  } else if(rowItem.gender.match(/[男1mM]|male|man|men|boy/i)) {
+  } else if(rowItem.gender.toLocaleLowerCase().match(/[男1mM]|male|man|men|boy/i)) {
     $("#"+id+" .gender_container .gender_type label")[0].className += " active";
     $("#"+id+" .gender_container .gender_type input")[0].checked = true;
   }
