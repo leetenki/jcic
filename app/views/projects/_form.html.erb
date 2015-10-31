@@ -3,10 +3,10 @@
             <p>
               读取Excel专用文件 (
                 <% if project.trader.individual_japan_company != "random" %>
-                  <a href="/individual_<%= project.trader.individual_japan_company %>.xlsx" download="个签模版_<%= Constants::JAPAN_SIDE_COMPANY[project.trader.individual_japan_company.intern][:company_name] %>.xlsx">个人</a>, 
+                  <a class="btn btn-success" href="/individual_<%= project.trader.individual_japan_company %>.xlsx" download="个签模版_<%= Constants::JAPAN_SIDE_COMPANY[project.trader.individual_japan_company.intern][:company_name] %>.xlsx">个签模版</a>, 
                 <% end %>
                 <% if project.trader.group_japan_company != "random" %>
-                  <a href="/group_<%= project.trader.group_japan_company %>.xlsx" download="团签模版_<%= Constants::JAPAN_SIDE_COMPANY[project.trader.group_japan_company.intern][:company_name] %>.xlsx">团体</a>
+                  <a class="btn btn-success" href="/group_<%= project.trader.group_japan_company %>.xlsx" download="团签模版_<%= Constants::JAPAN_SIDE_COMPANY[project.trader.group_japan_company.intern][:company_name] %>.xlsx">团签模版</a>
                 <% end %>
               )
             </p>
