@@ -91,17 +91,22 @@
                     ) {
 
                     var tmpChinaCompanyName = "";
+                    var tmpChinaCompanyName2 = "";
                     if(simpleChinaCompanyName.match(/贵州|四川|广东|湖北|湖南|山东|黑龙江|吉林|辽宁|江苏|浙江/)) {
                       if(simpleChinaCompanyName.match(/省/)) {
                         tmpChinaCompanyName = simpleChinaCompanyName.replace("省", "");
+                        tmpChinaCompanyName2 = simpleChinaCompanyName.replace(/贵州省|四川省|广东省|湖北省|湖南省|山东省|黑龙江省|吉林省|辽宁省|江苏省|浙江省/, "");
                       } else {
                         tmpChinaCompanyName = simpleChinaCompanyName.replace(/贵州|四川|广东|湖北|湖南|山东|黑龙江|吉林|辽宁|江苏|浙江/, simpleChinaCompanyName.match(/贵州|四川|广东|湖北|湖南|山东|黑龙江|吉林|辽宁|江苏|浙江/)[0] + "省")
+                        tmpChinaCompanyName2 = simpleChinaCompanyName.replace(/贵州|四川|广东|湖北|湖南|山东|黑龙江|吉林|辽宁|江苏|浙江/, "");
                       }
                     } else {
                       if(simpleChinaCompanyName.match(/市/)) {
                         tmpChinaCompanyName = simpleChinaCompanyName.replace("市", "");
+                        tmpChinaCompanyName2 = simpleChinaCompanyName.replace(/广州市|深圳市|北京市|天津市|武汉市|沈阳市|锦州市|无锡市|苏州市|南京市|扬州市|成都市|杭州市/, "");
                       } else {
                         tmpChinaCompanyName = simpleChinaCompanyName.replace(/广州|深圳|北京|天津|武汉|沈阳|锦州|无锡|苏州|南京|扬州|成都|杭州/, simpleChinaCompanyName.match(/广州|深圳|北京|天津|武汉|沈阳|锦州|无锡|苏州|南京|扬州|成都|杭州/)[0] + "市")
+                        tmpChinaCompanyName2 = simpleChinaCompanyName.replace(/广州|深圳|北京|天津|武汉|沈阳|锦州|无锡|苏州|南京|扬州|成都|杭州/, "")
                       }
                     }
 
@@ -111,6 +116,12 @@
                     distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName.replace(/旅行社/g, "有限公司")));
                     distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName.replace(/有限公司/g, "旅行社")));
                     distances.push(getEditDistance(simplizedSearchName.replace(/\(.{0,}\)/g, "").replace(/（.{0,}）/g, ""), tmpChinaCompanyName));
+                    distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName2));
+                    distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName2.replace(/有限公司/g, "")));
+                    distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName2.replace(/旅行社/g, "")));
+                    distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName2.replace(/旅行社/g, "有限公司")));
+                    distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName2.replace(/有限公司/g, "旅行社")));
+                    distances.push(getEditDistance(simplizedSearchName.replace(/\(.{0,}\)/g, "").replace(/（.{0,}）/g, ""), tmpChinaCompanyName2));
                   }
 
                   editDistances.push(Math.min.apply(null, distances));
