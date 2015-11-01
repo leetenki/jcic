@@ -85,6 +85,7 @@
                     getEditDistance(simplizedSearchName, simpleChinaCompanyName.replace(/旅行社/g, "")),
                     getEditDistance(simplizedSearchName, simpleChinaCompanyName.replace(/旅行社/g, "有限公司")),
                     getEditDistance(simplizedSearchName, simpleChinaCompanyName.replace(/有限公司/g, "旅行社")),
+                    getEditDistance(simplizedSearchName, simpleChinaCompanyName.replace(/有限会社/g, "有限公司")),
                     getEditDistance(simplizedSearchName.replace(/\(.{0,}\)/g, "").replace(/（.{0,}）/g, ""), simpleChinaCompanyName),
                   ];
                   if(simpleChinaCompanyName.match(/贵州|四川|广东|湖北|湖南|山东|黑龙江|吉林|辽宁|江苏|浙江/) || 
@@ -117,6 +118,8 @@
                     distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName.replace(/旅行社/g, "")));
                     distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName.replace(/旅行社/g, "有限公司")));
                     distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName.replace(/有限公司/g, "旅行社")));
+                    distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName.replace(/有限会社/g, "有限公司")));
+
                     distances.push(getEditDistance(simplizedSearchName.replace(/\(.{0,}\)/g, "").replace(/（.{0,}）/g, ""), tmpChinaCompanyName));
                     distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName2));
                     distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName2.replace(/集团/g, "")));
@@ -124,6 +127,7 @@
                     distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName2.replace(/旅行社/g, "")));
                     distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName2.replace(/旅行社/g, "有限公司")));
                     distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName2.replace(/有限公司/g, "旅行社")));
+                    distances.push(getEditDistance(simplizedSearchName, tmpChinaCompanyName2.replace(/有限会社/g, "有限公司")));
                     distances.push(getEditDistance(simplizedSearchName.replace(/\(.{0,}\)/g, "").replace(/（.{0,}）/g, ""), tmpChinaCompanyName2));
                   }
 
