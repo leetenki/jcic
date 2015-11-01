@@ -9,6 +9,11 @@ module ApplicationHelper
     return visa_type_table[visa_type] 
   end
 
+  def validation_mode_str(validation_mode)
+    validation_mode_table = {"easy" => "简化", "simplest" => "超级简化", "strict" => "复杂"}
+    return validation_mode_table[validation_mode] 
+  end
+
   def status_type_str(status)
     status_str = {"uncommitted" => "正在申请...", "waiting" => "正在等待", "committed" => "已发送完毕", "deleted" => "已删除"};
     return status_str[status]

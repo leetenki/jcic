@@ -6,6 +6,11 @@
     <td><%= trader.qq %></td>
     <td><%= trader.projects.count %></td>
     <td>
+        模式 <%= validation_mode_str(trader.validation_mode) %><br/>
+        个签 <%= trader.individual_japan_company.upcase %><br/>
+        团签 <%= trader.group_japan_company.upcase %>
+    </td>
+    <td>
         <% if trader.projects.any? %>
             <%= trader.projects.last.created_at.strftime("%Y/%m/%d %H:%M") %>
         <% end %>
