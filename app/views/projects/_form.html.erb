@@ -609,7 +609,12 @@
                               if(cellValue && cellValue.match(/中国旅行社编号/)) {
                                     chinaCompanyCode = getCellValue(worksheet, rowIndex, colIndex+1)
                                     break;
+                              } else if(cellValue && cellValue.match(/[gG]{1}[-a-zA-Z]{4,6}[-0-9]{1,5}/)) {
+                                chinaCompanyCode = cellValue.match(/[gG]{1}[-a-zA-Z]{4,6}[-0-9]{1,5}/)[0]
                               }
+                        }
+                        if(chinaCompanyCode) {
+                          break;
                         }
                   }
                   /*
@@ -647,11 +652,11 @@
                                   return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
                                 }).replace(/[ 　()（）（）]{1,}/g, "")
 
-                                if(cellValue.match(/[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}/) && cellValue.match(/平成|昭和|年|月|日/)) {
+                                if(cellValue.match(/[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}/) && cellValue.match(/平成|昭和|年|月|日|\//)) {
                                   if(cellValue.match(/[0-9]{1,}年[0-9]{1,}月[0-9]{1,}日/)) {
                                     dateArrival = cellValue.split(/[^平成昭和年月日0-9]{1,}/)[0]; // 年月日
                                   } else {
-                                    dateArrival = cellValue.split(/[~〜～-ー]{1,}/)[0]                                    
+                                    dateArrival = cellValue.split(/[-~〜～ー]{1,}/)[0]                                    
                                   }
                                   dateArrival = inteliConvertDate(dateArrival);
                                   break;
@@ -679,13 +684,12 @@
                               } else {
                                 cellValue = cellValue.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
                                   return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
-                                }).replace(/[ 　()（）（）]{1,}/g, "")                                
-
-                                if(cellValue.match(/[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}/) && cellValue.match(/平成|昭和|年|月|日/)) {
+                                }).replace(/[ 　()（）（）]{1,}/g, "") 
+                                if(cellValue.match(/[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}[^0-9\n\r]{1,}[0-9]{1,}/) && cellValue.match(/平成|昭和|年|月|日|\//)) {
                                   if(cellValue.match(/[0-9]{1,}年[0-9]{1,}月[0-9]{1,}日/)) {                                  
                                     dateLeaving = cellValue.split(/[^平成昭和年月日0-9 ]{1,}/)[1]; // 年月日
                                   } else {
-                                    dateLeaving = cellValue.split(/[~〜～-ー]{1,}/)[1]
+                                    dateLeaving = cellValue.split(/[-~〜～ー]{1,}/)[1]
                                   }
                                   dateLeaving = inteliConvertDate(dateLeaving);
                                   break;
