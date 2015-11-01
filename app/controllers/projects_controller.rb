@@ -210,9 +210,10 @@ class ProjectsController < ApplicationController
     visa_type_table = {"individual" => "个签", "group" => "团签", "3years" => "三年多次", "5years" => "五年多次"}
 
     if(is_admin?)
-      @project = Project.find_by(:id => params[:id])
+      @project = Project.where("id = ?", params[:id]).includes(:clients, :schedules)[0]
     else
-      @project = current_trader.projects.find_by(:id => params[:id])
+      #@project = current_trader.projects.find_by(:id => params[:id])
+      @project = current_trader.projects.where("id = ?", params[:id]).includes(:clients, :schedules)[0]
     end
     @visa_company = CompanyCode.where("code = ?", @project.china_company_code)
 
