@@ -708,13 +708,22 @@
                     var schedulesRowIndex = 2;
                     var schedulesColIndex = "A".charCodeAt();
                     for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
+                          var found = false;
                           for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
                                 var cellValue = getCellValue(worksheet, rowIndex, colIndex).toString();
-                                if(cellValue && (cellValue.match(/⾏.{0,}動.{0,}予.{0,}定/) || cellValue.match(/行.{0,}動.{0,}予.{0,}定/))) {
+                                if(cellValue && (cellValue.match(/⾏.{0,}動.{0,}予.{0,}定/) || cellValue.match(/行.{0,}動.{0,}予.{0,}定/) || cellValue.match(/行.{0,}动.{0,}予.{0,}定/))) {
                                       schedulesColIndex = colIndex;
                                       schedulesRowIndex = rowIndex + 1;
+                                      found = true;
                                       break;
+                                } else if(cellValue && (cellValue.match(/宿.{0,}泊.{0,}先/) || cellValue.match(/宿.{0,}泊.{0,}先/) || cellValue.match(/住.{0,}宿/))) {
+                                      schedulesColIndex = colIndex - 1;
+                                      schedulesRowIndex = rowIndex + 1;
+                                      found = true;                                  
                                 }
+                          }
+                          if(found) {
+                            break;
                           }
                     }
                     do {

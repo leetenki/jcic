@@ -7,9 +7,9 @@
         <caption>
           <!-- search box -->
           <div class="input-group col-md-8 col-md-offset-2">
-            <input type="text" class="form-control" placeholder="请输入旅行社情报.." id="company_keyword" oninput="updatePublicCompanyTable()" onchange="updatePublicCompanyTable()">
+            <input type="text" class="form-control" placeholder="请输入旅行名或指定番号..." id="company_keyword" oninput="updatePublicCompanyTable()" onchange="updatePublicCompanyTable()">
             <span class="input-group-btn">
-              <button class="btn btn-default" type="button" onclick="updatePublicCompanyTable()"><i class="fa fa-search"></i> 搜索</button>
+              <button class="btn btn-default" type="button" onclick="updatePublicCompanyTable(); alert('搜索完毕');"><i class="fa fa-search"></i> 搜索</button>
             </span>
           </div>          
         </caption>

@@ -179,8 +179,8 @@ function downloadPDF(fileName, container) {
 
   location.href = fileName;
   container.disabled = "disabled";
-  $(".alert-panel").fadeIn(1900, function(){
-    $(".alert-panel").fadeOut(4100, function(){});
+  $(".alert-panel").fadeIn(600, function(){
+    $(".alert-panel").fadeOut(6900, function(){});
   });
 
   setTimeout(function(container) {
