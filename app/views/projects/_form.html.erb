@@ -574,7 +574,7 @@
                       } else if(cellValue.match(/公司名称/)) {
                         var companyNameRow = cellValue.split(/[\n\r]{1,}/)[0]
                         if(companyNameRow) {
-                          chinaCompanyName = companyNameRow.split(/[:：]{1,}/)[1].match(/.{1,}司|.{1,}社|.{1,})|.{1,}）/)[0]
+                          chinaCompanyName = companyNameRow.split(/[:：]{1,}/)[1].match(/.{1,}司|.{1,}社|.{1,}\)|.{1,}）/)[0]
                           if(chinaCompanyName) {
                             chinaCompanyName = chinaCompanyName.replace(/[" 　"]{1,}/g, "");
                             if(chinaCompanyName.match(/[-0-9a-zA-Z]{9,11}/)) {
