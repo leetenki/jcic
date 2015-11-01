@@ -651,7 +651,7 @@
                                   if(cellValue.match(/[0-9]{1,}年[0-9]{1,}月[0-9]{1,}日/)) {
                                     dateArrival = cellValue.split(/[^平成昭和年月日0-9]{1,}/)[0]; // 年月日
                                   } else {
-                                    dateArrival = cellValue.split(/[~〜～]{1,}/)[0]                                    
+                                    dateArrival = cellValue.split(/[~〜～-ー]{1,}/)[0]                                    
                                   }
                                   dateArrival = inteliConvertDate(dateArrival);
                                   break;
@@ -685,7 +685,7 @@
                                   if(cellValue.match(/[0-9]{1,}年[0-9]{1,}月[0-9]{1,}日/)) {                                  
                                     dateLeaving = cellValue.split(/[^平成昭和年月日0-9 ]{1,}/)[1]; // 年月日
                                   } else {
-                                    dateLeaving = cellValue.split(/[~〜～]{1,}/)[1]
+                                    dateLeaving = cellValue.split(/[~〜～-ー]{1,}/)[1]
                                   }
                                   dateLeaving = inteliConvertDate(dateLeaving);
                                   break;
