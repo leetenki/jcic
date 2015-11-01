@@ -1,7 +1,7 @@
 <% if project.trader.validation_mode == "simplest" %>
       <div style="text-align:center; padding: 10px; width: 400px; margin:40px auto 10px auto; border:dashed 2px black; border-radius: 30px;" id="file-reader">
             <p>
-              读取Excel专用文件 (
+              Excel全自动上传功能 (
                 <% if project.trader.individual_japan_company != "random" %>
                   <a class="btn btn-success" href="/individual_<%= project.trader.individual_japan_company %>.xlsx" download="个签模版_<%= Constants::JAPAN_SIDE_COMPANY[project.trader.individual_japan_company.intern][:company_name] %>.xlsx">个签模版</a>, 
                 <% end %>
@@ -11,7 +11,7 @@
               )
             </p>
             <input type="file" name="xlfile" id="xlf" class="form-control" style="width:350px; margin:auto; padding:10px 10px; margin-bottom:5px;"/>
-            <a href="/description_excel">Excel使用方法</a>
+            <a href="/description_excel">Excel使用说明</a>
       </div>
       <script type="text/javascript" src="/xlsx.core.min.js "></script>
       <script type="text/javascript">
