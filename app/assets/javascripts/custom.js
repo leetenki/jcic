@@ -180,12 +180,12 @@ function downloadPDF(fileName, container) {
   location.href = fileName;
   container.disabled = "disabled";
   $(".alert-panel").fadeIn(600, function(){
-    $(".alert-panel").fadeOut(6900, function(){});
+    $(".alert-panel").fadeOut(5400, function(){});
   });
 
   setTimeout(function(container) {
     container.removeAttribute("disabled")
-  }, 30 * 1000, container);
+  }, 6 * 1000, container);
 }
 
 
