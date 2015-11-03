@@ -120,5 +120,17 @@
         <% end %>
       </div>
 
+      <div style="font-weight: bold">
+        身元保証書
+      </div>
+      <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
+        <label class="btn btn-default <%= 'active' if trader.guarantee_mode == 'normal' %>">
+          <input type="radio" value="normal" name="trader[guarantee_mode]" <%= 'selected=selected' if trader.guarantee_mode == 'normal' %> />NORMAL
+        </label>
+        <label class="btn btn-default <%= 'active' if trader.guarantee_mode == 'full' %>">
+          <input type="radio" value="full" name="trader[guarantee_mode]" <%= 'selected=selected' if trader.guarantee_mode == 'full' %> />FULL
+        </label>
+      </div>
+
       <%= f.submit button_text, :class => "btn btn-large btn-primary" %>
 <% end %>

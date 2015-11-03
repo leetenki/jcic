@@ -1,6 +1,119 @@
 <%= favicon_link_tag '/ico.png' %>
 <% company_info = Constants::JAPAN_SIDE_COMPANY[@project.japan_company.intern] %>
 
+
+<%= favicon_link_tag '/ico.png' %>
+
+<% if @guarantee_mode == "full" %>
+<!-- ********************* 招聘保証 ********************** -->
+<div style="text-align:right;">
+  登録番号 <%= company_info[:code] %><br/>
+  <span style="border-bottom: 1px solid black; display:inline-block; padding-top:5px;"><%= Date.today.to_era(" %O %E 年 %m 月 %d 日 ") %></span>
+</div>
+<div style="font-weight: bold; font-size: 20px;">外務大臣殿</div>
+<div style="font-weight: bold; font-size: 27px; text-align:center; padding: 20px;">招聘保証書</div>
+<table style="border: none; width: 40%">
+  <caption style="text-align:left;"><b>査証申請人 : </b></caption>
+  <tr>
+    <td style="padding:0">氏名</td>
+    <td style="padding:0"><span style="border-bottom: 1px solid black"><%= @project.representative_name_chinese %></span> 他 <span style="border-bottom: 1px solid black"><%= @project.clients.length - 1 %></span> 名 </td>
+  </tr>
+  <tr>
+    <td style="padding:0">国籍</td>
+    <td style="padding:0">中華人民共和国</td>
+  </tr>
+</table>
+
+<table style="border: none; width: 100%">
+  <tr>
+    <td style="width:40%"></td>
+    <td style="padding:0; font-size:17px;" colspan="2"><b>保 証 会 社 :</b></td>
+  </tr>
+  <tr>
+    <td style="width:40%"></td>
+    <td style="padding:0; width:15%">会 社</td>
+    <td style="padding:0;"><%= company_info[:company_name] %></td>
+  </tr>
+  <tr>
+    <td style="width:40%"></td>
+    <td style="padding:0; width:15%"></td>
+    <td style="padding:0;">代表取締役社長 <%= company_info[:chief] %></td>
+  </tr>
+  <tr>
+    <td style="width:40%"></td>
+    <td style="padding:0; width:15%">住 所</td>
+    <td style="padding:0;"><%= company_info[:address_1] %></td>
+  </tr>
+  <tr>
+    <td style="width:40%"></td>
+    <td style="padding:0; width:15%"></td>
+    <td style="padding:0;"><%= company_info[:address_2] %></td>
+  </tr>
+  <tr>
+    <td style="width:40%"></td>
+    <td style="padding:0; width:15%">担当者</td>
+    <td style="padding:0;"><%= company_info[:chief] %></td>
+  </tr>
+  <tr>
+    <td style="width:40%"></td>
+    <td style="padding:0; width:15%"></td>
+    <td style="padding:0;">TEL  <%= company_info[:phone] %></td>
+  </tr>
+</table>
+<br/>
+
+<table style="border: none; width: 100%; font-size:14px;">
+  <tr>
+    <td rowspan="1" style="width:6%">1. </td>
+    <td colspan="2">当社は, <span style="border-bottom: 1px solid black"><%= @visa_company[0].name %></span>との契約に基づき, 別紙査証申請人名簿に記載した中華人民共和国国民による訪日団体観光旅行を行うに当たり, 次のとおりその身元を引き受けます.</td>
+  </tr>
+  <tr>
+    <td rowspan="6"></td>
+    <td style="padding:0; width:10%">（１）</td>
+    <td style="padding:5px;">本邦滞在中, 日本国法令を遵守させること.</td>
+  </tr>
+  <tr>
+    <td style="padding:0; width:10%">（２）</td>
+    <td style="padding:5px;">事前に提出した滞在予定を厳守し, やむを得ず予定を変更する場合, 遅滞なくその旨を関係機関に報告すること.</td>
+  </tr>
+  <tr>
+    <td style="padding:0; width:10%">（３）</td>
+    <td style="padding:5px;">本邦滞在中の全行程に日本側添乗員を同行させ, 適宜点呼を取るなどして問題発生の防止に努めること.</td>
+  </tr>
+  <tr>
+    <td style="padding:0; width:10%">（４）</td>
+    <td style="padding:5px;">要請のあった場合又は問題が発生した場合は, 本邦における在留状況その他の事項を関係省庁に遅滞なく報告すること.</td>
+  </tr>
+  <tr>
+    <td style="padding:0; width:10%">（５）</td>
+    <td style="padding:5px;">不法滞在その他の問題が発生した場合において, 旅行参加者が帰国のための旅費を支払わない又は直ちに支払えない時は, 当該旅費を一時的に立て整えること. </td>
+  </tr>
+  <tr>
+    <td style="padding:0; width:10%">（６）</td>
+    <td style="padding:5px;">参加者全員の帰国後, 速やかにその旨を報告すること.</td>
+  </tr>  
+  <tr>
+    <td rowspan="1" style="width:6%">2. </td>
+    <td colspan="2">申請人の入国理由</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td style="padding:5px;" colspan="2">観光旅行 ( <span style="border-bottom: 1px solid black"><%= visa_type_str(@project.visa_type) %></span> ) </td>
+  </tr>  
+  <tr>
+    <td></td>
+    <td style="padding:5px;" colspan="2">日　程 ( <span style="border-bottom: 1px solid black"><%= @project.date_arrival.to_era("%O%E年%m月%d日") %>から<%= @project.date_leaving.to_era("%O%E年%m月%d日") %></span> ) </td>
+  </tr>  
+  <tr>
+    <td rowspan="1" style="width:6%">3. </td>
+    <td colspan="2">滞在日程は別紙記載のとおり.</td>
+  </tr>
+</table>
+<% end %>
+
+
+
+
 <!--*********************** 身元保証 ************************-->
 <div class="head" style="page-break-before: always">招聘保証書</div>
 <table id="project">

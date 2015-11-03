@@ -216,6 +216,7 @@ class ProjectsController < ApplicationController
       @project = current_trader.projects.where("id = ?", params[:id]).includes(:clients, :schedules)[0]
     end
     @visa_company = CompanyCode.where("code = ?", @project.china_company_code)
+    @guarantee_mode = @project.trader.guarantee_mode
 
     respond_to do |format|
       format.html
