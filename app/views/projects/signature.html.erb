@@ -36,7 +36,7 @@ window.onload = function() {
   ctx.fillText("電　話 : <%= @japan_company[:phone] %>", 50, 130)
 
   ctx.save();
-  ctx.globalAlpha = 0.8;
+  ctx.globalAlpha = 1;
   ctx.drawImage(img1, 100, 50, 95, 95);
   ctx.drawImage(img2, 280, 20, 125, 125);
   ctx.restore()
