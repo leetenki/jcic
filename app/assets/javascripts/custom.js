@@ -176,7 +176,7 @@ function isMobile() {
 
 // function to start download PDF
 function downloadPDF(fileName, container) {
-
+/*
   location.href = fileName;
   container.disabled = "disabled";
   $(".alert-panel").fadeIn(600, function(){
@@ -186,6 +186,8 @@ function downloadPDF(fileName, container) {
   setTimeout(function(container) {
     container.removeAttribute("disabled")
   }, 6 * 1000, container);
+*/
+  window.open(fileName);
 }
 
 
