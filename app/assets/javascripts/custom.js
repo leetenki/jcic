@@ -195,8 +195,6 @@ function commitProject(id) {
   var systemCode = window.prompt("中連協受付番号を入力", "");
   if(systemCode) {
     location.href = "/update_status?id=" + id + "&amp;status=committed&system_code=" + systemCode;
-  } else {
-    location.href = "/update_status?id=" + id + "&amp;status=committed";
   }
 }
 
