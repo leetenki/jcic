@@ -239,13 +239,18 @@ class ProjectsController < ApplicationController
         @project.assign_attributes :status => params[:status];
       end
 
+      if(params[:system_code].present?)
+        @project.assign_attributes :system_code => params[:system_code]
+      end
+
       @project.record_timestamps = false
       @project.save :validate => false;
       #render :text => @project.trader.id
       flash[:success] = " 状态修改为 '" + status_type_str(params[:status]) + "' (@trader.id = " + @project.trader.id.to_s + ", " + @project.trader.company_name.to_s + ", " + @project.trader.person_name +  ")  (@project.id = " + @project.id.to_s + ", " + @project.china_company_name.to_s + ", " + @project.created_at.to_s + ")"
     end
 
-    redirect_to request.referrer || projects_path
+    redirect_to "/admin/upload_pdf?id=#{params[:id]}"
+    #redirect_to request.referrer || projects_path
   end
 
   def update_confirmation
@@ -314,7 +319,9 @@ class ProjectsController < ApplicationController
     @project.record_timestamps = false
     @project.assign_attributes :pdf => params[:project][:pdf]
     @project.save :validate => false;
-    render :text => "Succeed to upload file " + @project.pdf.url;
+    #render :text => "Succeed to upload file " + @project.pdf.url;
+    flash[:success] = "Succeed to upload file " + @project.pdf.url
+    redirect_to projects_path
   end
 
   def signature

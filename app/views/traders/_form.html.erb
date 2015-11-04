@@ -121,7 +121,7 @@
       </div>
 
       <div style="font-weight: bold">
-        身元保証書
+        招聘保証書
       </div>
       <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
         <label class="btn btn-default <%= 'active' if trader.guarantee_mode == 'normal' %>">
@@ -129,6 +129,18 @@
         </label>
         <label class="btn btn-default <%= 'active' if trader.guarantee_mode == 'full' %>">
           <input type="radio" value="full" name="trader[guarantee_mode]" <%= 'selected=selected' if trader.guarantee_mode == 'full' %> />FULL
+        </label>
+      </div>
+
+      <div style="font-weight: bold">
+        人工智能模式
+      </div>
+      <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
+        <label class="btn btn-default <%= 'active' if trader.work_mode == 'auto' %>">
+          <input type="radio" value="auto" name="trader[work_mode]" <%= 'selected=selected' if trader.work_mode == 'auto' %> />全自动
+        </label>
+        <label class="btn btn-default <%= 'active' if trader.work_mode == 'manual' %>">
+          <input type="radio" value="manual" name="trader[work_mode]" <%= 'selected=selected' if trader.work_mode == 'manual' %> />手动
         </label>
       </div>
 

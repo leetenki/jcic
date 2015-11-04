@@ -84,7 +84,7 @@
                 <div class="btn-group col-md-12 col-sm-12 col-xs-12"  data-toggle="buttons">
                     <button class="btn btn-default btn-xs col-md-4 col-sm-4 col-xs-4" onclick="location.href='/update_status?id=<%= project.id %>&amp;status=uncommitted'">申请</button>
                     <!--<button class="btn btn-default btn-xs col-md-4 col-sm-4 col-xs-4" onclick="location.href='/update_status?id=<%= project.id %>&amp;status=waiting'">等待</button>-->                    
-                    <button class="btn btn-default btn-xs col-md-4 col-sm-4 col-xs-4" onclick="location.href='/update_status?id=<%= project.id %>&amp;status=committed'">完了</button>
+                    <button class="btn btn-default btn-xs col-md-4 col-sm-4 col-xs-4" onclick="commitProject(<%= project.id %>)">完了</button>
                     <button class="btn btn-default btn-xs col-md-4 col-sm-4 col-xs-4" onclick="location.href='/update_status?id=<%= project.id %>&amp;status=deleted'">无效</button>
                 </div>
             </div>

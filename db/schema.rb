@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151103200828) do
+ActiveRecord::Schema.define(version: 20151104212639) do
 
   create_table "clients", force: :cascade do |t|
     t.integer  "project_id"
@@ -135,6 +135,7 @@ ActiveRecord::Schema.define(version: 20151103200828) do
     t.string   "group_japan_company",      default: "random"
     t.string   "individual_japan_company", default: "random"
     t.string   "guarantee_mode",           default: "normal"
+    t.string   "work_mode",                default: "auto"
   end
 
   add_index "traders", ["account"], name: "index_traders_on_account", unique: true

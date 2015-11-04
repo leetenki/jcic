@@ -110,6 +110,10 @@
           <td><%= @trader.guarantee_mode.upcase %></td>
         </tr>        
         <tr>
+          <td>人工智能模式</td>
+          <td><%= @trader.work_mode.upcase %></td>
+        </tr>        
+        <tr>
           <td>最终更新</td>
           <td><%= @trader.updated_at.strftime("%Y/%m/%d %H:%M") %></td>
         </tr>

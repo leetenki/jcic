@@ -190,6 +190,16 @@ function downloadPDF(fileName, container) {
   window.open(fileName);
 }
 
+// function to set project committed and append system_code.
+function commitProject(id) {
+  var systemCode = window.prompt("中連協受付番号を入力", "");
+  if(systemCode) {
+    location.href = "/update_status?id=" + id + "&amp;status=committed&system_code=" + systemCode;
+  } else {
+    location.href = "/update_status?id=" + id + "&amp;status=committed";
+  }
+}
+
 
 // function to open panel
 function openAlert(error) {
