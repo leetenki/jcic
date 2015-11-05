@@ -49,7 +49,7 @@
       <%= Constants::INVOICE_COMPANY_ADDRESS_2 %><br/>      
       電話 : <%= Constants::INVOICE_COMPANY_PHONE %><br/>     
       FAX : <%= Constants::INVOICE_COMPANY_FAX %><br/>
-      <div style="position:absolute; margin-top: -80px; margin-left: 130px;"><%= image_tag(::Rails.root.join('public','jcic_signature2.png'), :style => "width:  80px; opacity:0.8") %></div>
+      <div style="position:absolute; margin-top: -80px; margin-left: 130px;"><%= image_tag(::Rails.root.join('public','jcic_signature2.png'), :style => "width:  80px; opacity:1") %></div>
     </td>
   </tr>
 
@@ -116,7 +116,7 @@
 
 <!-- ************************** details *************************** -->
 <% all_people = 0 %>
-<% if(@projects.length <= 12) %>
+<% if(@projects.length <= 10) %>
   <table class="details">
     <thead>
       <tr>
@@ -166,7 +166,7 @@
       </tr>
     </thead>
     <tbody>
-     <% for index in 0..11 do %>
+     <% for index in 0..9 do %>
       <% project = @projects[index] %>
         <% if project[:delete_request] || project[:status] == "deleted" %>
           <tr style="text-decoration:line-through">
@@ -188,8 +188,8 @@
   </table>
 
   <!-- body table --> 
-  <% body_cnt = ((@projects.length-12) / 40).to_i %>
-  <% index = 11 %>
+  <% body_cnt = ((@projects.length-10) / 40).to_i %>
+  <% index = 9 %>
   <% body_cnt.times do %>
     <table class="details" style="page-break-after:always">
       <tbody>
@@ -244,7 +244,7 @@
 
 
 <!-- ************************** conclude *************************** -->
-<% if 40-((@projects.length-12)%40) > 7 %>
+<% if 40-((@projects.length-10)%40) > 7 %>
   <table class="conclusion">
 <% else %>
   <table class="conclusion" style="page-break-before:always">
