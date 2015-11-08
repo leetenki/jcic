@@ -19,9 +19,10 @@
 
 # Learn more: http://github.com/javan/whenever
 set :output, '/home/leetenki/jcic/log/crontab.log'
-set :environment, :production
 
-every 1.day, :at => '6:09 am' do
-  command "echo 'hello'"
+#crontab for production
+set :environment, :production
+every 1.day, :at => '4:30 am' do
+  command "echo 'Start to clean session table.'"
   runner "Session.sweep"
 end
