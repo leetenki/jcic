@@ -1,5 +1,5 @@
 class Session < ActiveRecord::Base
-  def self.sweep(time = 1.hour, old = 2.days)
+  def self.sweep(time = 7.days, old = 30.days)
     if time.is_a?(String)
       time = time.split.inject { |count, unit| count.to_i.send(unit) }
     end
