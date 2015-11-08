@@ -73,7 +73,7 @@
           <i class="fa fa-user-plus"></i> 申请
         </a>    
     <% end %>
-    <div style="text-align:center;"><%= paginate @projects.page(params[:page]).per(100), :window => 5 %></div>
+    <div style="text-align:center;"><%= paginate @projects.page(params[:page]), :window => 5 %></div>
   </div>
 </div>
 
