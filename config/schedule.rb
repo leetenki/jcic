@@ -21,6 +21,7 @@
 
 require File.expand_path(File.dirname(__FILE__) + "/environment")
 set :output, '/home/leetenki/jcic/log/crontab.log'
+set :environment, :production
 
 every 1.day, :at => '7:00 am' do
   command "echo 'hello'"
