@@ -18,8 +18,6 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
-
-require File.expand_path(File.dirname(__FILE__) + "/environment")
 set :output, '/home/leetenki/jcic/log/crontab.log'
 set :environment, :production
 
