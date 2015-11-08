@@ -21,7 +21,7 @@
 set :output, '/home/leetenki/jcic/log/crontab.log'
 set :environment, :production
 
-every 1.day, :at => '5:56 am' do
+every 1.day, :at => '5:57 am' do
   command "echo 'hello'"
   runner "Session.sweep(7.days, 30.days)"
 end
