@@ -203,8 +203,10 @@ class Project < ActiveRecord::Base
       time = time.split.inject { |count, unit| count.to_i.send(unit) }
     end
 
-    p "delete projects created before " + time.ago.to_s(:db)    
-    delete_all "created_at < '#{time.ago.to_s(:db)}' AND (payment = 'paid' OR status = 'deleted')"
+    p "delete projects created before " + time.ago.to_s(:db)
+    self.where("created_at < '#{time.ago.to_s(:db)}' AND (payment = 'paid' OR status = 'deleted')").each do |project|
+      project.destroy
+    end
   end
 
   ############ utility ############

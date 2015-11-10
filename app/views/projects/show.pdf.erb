@@ -192,7 +192,7 @@
 
 <!--*********************** スケジュール ************************-->
 <% schedules_length = @project.schedules.length %>
-<% if schedules_length <= 13 %>
+<% if schedules_length <= 12 %>
   <table class="schedules" style="page-break-before:always; margin-top: 170px;">
     <caption>
       <div class="title">滞在予定表</div>
@@ -238,7 +238,7 @@
       </tr>
     </thead>
     <tbody>
-      <% for index in 0..12 do %>
+      <% for index in 0..11 do %>
         <% schedule = @project.schedules[index] %>
         <tr>
           <td class="date"><%= schedule.date.strftime("%Y-%m-%d") %></td>
@@ -250,8 +250,8 @@
   </table>
 
   <!-- body table -->
-  <% body_cnt = ((schedules_length-13) / 15).to_i %>
-  <% index = 12 %>
+  <% body_cnt = ((schedules_length-12) / 15).to_i %>
+  <% index = 11 %>
   <% body_cnt.times do %>
     <table class="schedules" style="page-break-after:always">
       <tbody>
@@ -285,7 +285,7 @@
 <% end %>
 
 <!--*********************** サイン ************************-->
-<% if 15-((schedules_length-13)%15) >= 2 %>
+<% if 15-((schedules_length-12)%15) >= 2 %>
   <div class="signature" style="padding-top:20px;">
 <% else %>
   <div class="signature" style="page-break-before:always; padding-top:20px;">
@@ -304,7 +304,7 @@
 
 <!--*********************** 顧客リスト ************************-->
 <% clients_length = @project.clients.length %>
-<% if clients_length <= 24 %>
+<% if clients_length <= 23 %>
   <table class="clients"  style="page-break-before: always; margin-top: 170px;">
     <caption>
       <div class="title">査証申請人名簿</div>
@@ -363,7 +363,7 @@
       </tr>
     </thead>
     <tbody>
-      <% for index in 0..23 do %>
+      <% for index in 0..22 do %>
       <% client = @project.clients[index] %>
         <tr>
           <td class="no"><%= index + 1 %></td>
@@ -380,8 +380,8 @@
   </table>
 
   <!-- body table -->
-  <% body_cnt = ((clients_length-24) / 28).to_i %>
-  <% index = 23 %>
+  <% body_cnt = ((clients_length-23) / 28).to_i %>
+  <% index = 22 %>
   <% body_cnt.times do %>
     <table class="clients" style="page-break-after: always;">
       <tbody>
@@ -426,7 +426,7 @@
 
 
 <!--*********************** サイン ************************-->
-<% if 28-((clients_length-24)%28) >= 6 %>
+<% if 28-((clients_length-23)%28) >= 6 %>
   <div class="signature" style="padding-top:20px;">
 <% else %>
   <div class="signature" style="page-break-before:always; padding-top:20px;">
