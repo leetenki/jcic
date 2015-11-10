@@ -1938,8 +1938,8 @@ $(function() {
     var planValid = true;
     $("#schedules_container table .plan_container").each(function() {
       var inputText = $("#" + this.attributes.id.value + " textarea")[0].value;
-      if(inputText.match(/[\s]{1,}/g)) {
-        inputText = inputText.replace(/[\s]{1,}/g, " ");
+      if(inputText.match(/[\s\n\r]{1,}/g)) {
+        inputText = inputText.replace(/[\s\n\r]{1,}/g, " ");
         if(inputText.match(/^[\s　]{1,}/)) {
           inputText = inputText.replace(/^[\s　]{1,}/, "");
         }
@@ -1958,8 +1958,8 @@ $(function() {
     var hotelValid = true;
     $("#schedules_container table .hotel_container").each(function() {
       var inputText = $("#" + this.attributes.id.value + " textarea")[0].value;
-      if(inputText.match(/[\s]{1,}/g)) {
-        inputText = inputText.replace(/[\s]{1,}/g, " ");
+      if(inputText.match(/[\s\n\r]{1,}/g)) {
+        inputText = inputText.replace(/[\s\n\r]{1,}/g, " ");
         if(inputText.match(/^[\s　]{1,}/)) {
           inputText = inputText.replace(/^[\s　]{1,}/, "");
         }
