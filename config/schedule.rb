@@ -26,3 +26,7 @@ every 1.day, :at => '4:30 am' do
   command "echo 'Start to clean session table.'"
   runner "Session.sweep"
 end
+
+every 1.day, :at => '2:18 am' do
+  runner "Project.sweep"
+end
