@@ -249,7 +249,11 @@ class ProjectsController < ApplicationController
       flash[:success] = " 状态修改为 '" + status_type_str(params[:status]) + "' (@trader.id = " + @project.trader.id.to_s + ", " + @project.trader.company_name.to_s + ", " + @project.trader.person_name +  ")  (@project.id = " + @project.id.to_s + ", " + @project.china_company_name.to_s + ", " + @project.created_at.to_s + ")"
     end
 
-    redirect_to "/admin/upload_pdf?id=#{params[:id]}"
+    if(params[:status] == "committed")
+      redirect_to "/admin/upload_pdf?id=#{params[:id]}"
+    else
+      redirect_to projects_path
+    end
     #redirect_to request.referrer || projects_path
   end
 

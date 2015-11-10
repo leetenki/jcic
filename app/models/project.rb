@@ -197,6 +197,16 @@ class Project < ActiveRecord::Base
     end
   end
 
+  ############ Sweep ##############
+  def self.sweep(time = 185.days)
+    if time.is_a?(String)
+      time = time.split.inject { |count, unit| count.to_i.send(unit) }
+    end
+
+    p "delete projects created before " + time.ago.to_s(:db)    
+    delete_all "created_at < '#{time.ago.to_s(:db)}' AND (payment = 'paid' OR status = 'deleted')"
+  end
+
   ############ utility ############
   def hankaku?(str)
     return nil if str.nil?
