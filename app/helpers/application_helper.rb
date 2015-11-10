@@ -1,4 +1,12 @@
 module ApplicationHelper
+  def last_day(origin_date)
+    return Date.civil(origin_date.year, origin_date.month, -1)
+  end
+
+  def first_day(origin_date)
+    return Date.civil(origin_date.year, origin_date.month, 1)
+  end
+
   def visa_type_str(visa_type)
     visa_type_table = Constants::VISA_TYPE_TABLE
     return visa_type_table[visa_type] 

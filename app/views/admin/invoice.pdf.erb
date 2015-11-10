@@ -24,7 +24,7 @@
     </tr>
     <tr>
       <td>伝票番号:</td>
-      <td style=""><%= Time.now.strftime("%Y%m%d%H%M%S") %></td>
+      <td style=""><%= @trader.id.to_s + Time.now.strftime("%Y%m%d%H%M%S") %></td>
     </tr>
     <tr>
       <td>担当:</td>

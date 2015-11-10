@@ -1,6 +1,6 @@
 class TradersController < ApplicationController
   before_action :logged_in_admin, :only => [:index, :show, :new, :create, :edit, :update, :destroy, :add_slave, :remove_slave]
-  #before_action :logged_in_trader , :only => [:show]
+  before_action :logged_in , :only => [:my_invoice]
 
   def index
     @traders = Trader.all.order("id desc")
@@ -93,6 +93,15 @@ class TradersController < ApplicationController
     @master.remove_slave(@slave)
     flash[:success] = "删除完毕！"
     redirect_to request.referrer || traders_path
+  end
+
+  #invoice list page
+  def my_invoice
+    if(is_admin?)
+      @trader = Trader.find_by(:id => params[:id])
+    else
+      @trader = current_trader
+    end
   end
 
   #common function

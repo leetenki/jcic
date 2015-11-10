@@ -12,7 +12,7 @@
     </td>
     <td>
         <% if trader.projects.any? %>
-            <%= trader.projects.last.created_at.strftime("%Y/%m/%d %H:%M") %>
+            <%= trader.projects.order("id asc").last.created_at.strftime("%Y/%m/%d %H:%M") %>
         <% end %>
     </td>
   </tr>

@@ -1,0 +1,31 @@
+<h1><i class="fa fa-dollar"></i> 我的账单</h1>
+<div class="row">
+
+  <div class="container col-md-6 col-sm-6 col-xs-6 col-md-offset-3 col-sm-offset-3 col-xs-offset-3">
+    <% if @trader && @trader.projects.any? %>
+      <table class="col col-md-12 col-sm-12 col-xs-12" style="margin: 30px 0;">
+        <% invoice_date = first_day(Date.parse(@trader.projects.order("id asc").first.created_at.strftime("%Y-%m-%d"))) %>
+        <% begin %>
+          <tr>
+            <td class="col col-md-6 col-sm-6 col-xs-6" style="text-align: center; padding: 10px 0;"><a target="_blank" href="/admin/invoice?trader_id=<%= @trader.id %>&from=<%= first_day(invoice_date).strftime("%Y-%m-%d") %>&to=<%= last_day(invoice_date).strftime("%Y-%m-%d") %>" class="btn btn-success"><%= invoice_date.year %>年<%= invoice_date.month %>月份账单</div></td>
+
+            <% projects = Project.where(:created_at => Time.parse(first_day(invoice_date).strftime("%Y-%m-%d"))..Time.parse(last_day(invoice_date).strftime("%Y-%m-%d"))+60*60*24-1, :trader_id => @trader.id) %>
+            <% total_price = 0 %>
+            <% total_count = 0 %>
+            <% projects.each do |project| %>
+              <% if project.payment == "unpaid" && project.status != "deleted" && !project.delete_request %>
+                <% total_price += get_project_price(project) %>
+                <% total_count += 1 %>
+              <% end %>
+            <% end %>
+
+            <td class="col col-md-3 col-sm-3 col-xs-3" style="padding: 10px 0;">共 <span style="font-weight: bolder; color: orange;"><%= total_count %></span> 件</td>
+            <td class="col col-md-3 col-sm-3 col-xs-3" style="padding: 10px 0;">总额 <span style="font-weight: bolder; color: orange;"><%= total_price %></span> 円</td>
+          </tr>
+
+          <% invoice_date = invoice_date >> 1 %>
+        <% end while(invoice_date <= Date.today) %>
+      </table>
+    <% end %>
+  </div>
+</div>

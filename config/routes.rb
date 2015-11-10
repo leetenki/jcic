@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get 'delete_request(/:id)', :to => "projects#delete_request", :as => "delete_request"
   get 'cancel_delete_request(/:id)', :to => "projects#cancel_delete_request", :as => "cancel_delete_request"
   get 'projects/index', :to => "projects#index"
+  get 'my_invoice(/:id)', :to => "traders#my_invoice", :as => "my_invoice"
   post 'projects/store_pdf', :to => "projects#store_pdf"
 
   get 'admin/get_uncommitted_projects', :to => "admin#get_uncommitted_projects"
