@@ -22,11 +22,10 @@ set :output, '/home/leetenki/jcic/log/crontab.log'
 
 #crontab for production
 set :environment, :production
-every 1.day, :at => '4:30 am' do
-  command "echo 'Start to clean session table.'"
+every 1.day, :at => '3:20 am' do
   runner "Session.sweep"
 end
 
-every 1.day, :at => '2:18 am' do
+every 1.day, :at => '3:30 am' do
   runner "Project.sweep"
 end

@@ -8,6 +8,7 @@ class Session < ActiveRecord::Base
       old = old.split.inject { |count, unit| count.to_i.send(unit) }
     end
 
+    p "delete sessions updated before #{time.ago.to_s(:db)} OR created before #{old.ago.to_s(:db)}"
     delete_all "updated_at < '#{time.ago.to_s(:db)}' OR created_at < '#{old.ago.to_s(:db)}'"
   end
 end
