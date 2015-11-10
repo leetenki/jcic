@@ -731,7 +731,7 @@ function validateDatesAndUpdateIcon() {
 }
 
 function validatePlan(id) {
-  var inputText = $("#" + id + " textarea")[0].value.replace(/[\s　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "");
+  var inputText = $("#" + id + " textarea")[0].value.replace(/[\s\r\n　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "");
 
   if((isSimplestValidation() || isEasyValidation()) && inputText.length == 0) {
     return true
@@ -742,14 +742,14 @@ function validatePlan(id) {
   }
 }
 function validateAndReplacePlan(id) {
-  var inputText = $("#" + id + " textarea")[0].value.replace(/[\s　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "");
+  var inputText = $("#" + id + " textarea")[0].value.replace(/[\s\r\n　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "");
   $("#" + id + " textarea")[0].value = inputText;
 
   return validatePlan(id);
 }
 
 function validateHotel(id) {
-  var inputText = $("#" + id + " textarea")[0].value.replace(/[\s　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "");
+  var inputText = $("#" + id + " textarea")[0].value.replace(/[\s\r\n　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "");
   if((isSimplestValidation() || isEasyValidation()) && inputText.length == 0) {
     return true
   } else if(inputText.length > 0 && inputText.length <= 100) {
@@ -759,7 +759,7 @@ function validateHotel(id) {
   }
 }
 function validateAndReplaceHotel(id) {
-  var inputText = $("#" + id + " textarea")[0].value.replace(/[\s　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "");
+  var inputText = $("#" + id + " textarea")[0].value.replace(/[\s\r\n　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "");
   $("#" + id + " textarea")[0].value = inputText;
 
   return validateHotel(id);

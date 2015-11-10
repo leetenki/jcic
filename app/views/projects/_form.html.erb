@@ -200,8 +200,8 @@
                     regenerateScheduleTable();   
 
                     for(var i = 0; i < schedules.length && i < $("#schedules_container tr").length; i++) {
-                          $(".plan_container textarea")[i].value = schedules[i].plan.replace(/[\s　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "")
-                          $(".hotel_container textarea")[i].value = schedules[i].hotel.replace(/[\s　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "")
+                          $(".plan_container textarea")[i].value = schedules[i].plan.replace(/[\s\r\n　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "")
+                          $(".hotel_container textarea")[i].value = schedules[i].hotel.replace(/[\s\r\n　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "")
                     }
                 } 
             }
