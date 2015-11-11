@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  before_action :logged_in_admin, :only => [:index, :paid_all, :unpaid_all, :useragent, :get_uncommitted_projects, :get_uncommitted_projects_immediately, :set_project_committed, :upload_pdf, :get_delete_requesting_projects, :get_delete_requesting_committed_projects, :set_delete_requesting_projects_deleted, :get_project_by_id, :renew_company_codes, :update_company_codes]
+  before_action :logged_in_admin, :only => [:index, :paid_all, :unpaid_all, :useragent, :get_uncommitted_projects, :get_uncommitted_projects_immediately, :set_project_committed, :upload_pdf, :get_delete_requesting_projects, :get_delete_requesting_committed_projects, :set_delete_requesting_projects_deleted, :get_project_by_id, :renew_company_codes, :update_company_codes, :analysis]
   before_action :initial_search, :only => [:paid_all, :unpaid_all]
   before_action :logged_in, :only => [:invoice]
 
@@ -185,6 +185,10 @@ class AdminController < ApplicationController
       project.save :validate => false;
     end
     render :text => "succeeded to delete " + @projects.length.to_s + " projects."
+  end
+
+  def analysis
+    @traders = Trader.all
   end
 
   #action to testing and detect user agent

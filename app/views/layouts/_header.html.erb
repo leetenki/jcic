@@ -18,6 +18,7 @@
         <% if logged_in? %> 
           <% if is_admin? %>
             <!-- admin menu -->
+            <li><%= link_to " 分析", analysis_path, :class => "fa fa-signal require-loading" %></li>
             <li><%= link_to " 請求書", admin_path, :class => "fa fa-dollar require-loading" %></li>
             <li><%= link_to " 签证", projects_path, :class => 'fa fa-users require-loading' %></li>
             <li><%= link_to " 中連社", company_codes_path, :class => 'fa fa-book require-loading' %></li>
