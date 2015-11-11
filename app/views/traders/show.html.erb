@@ -79,8 +79,15 @@
         </tr>
         <tr>
           <td>申请总数</td>
-          <td><div style="font-weight:bold; color:orange;"><%= @trader.projects.length %> 件</div></td>
+          <td>
+            合計 <span style="font-weight:bold; color:orange;"><%= Project.where(:trader_id => @trader.slave_trader_ids + [@trader.id]).length %></span> 件
+            ( 内単独 <span style="font-weight:bold; color:orange;"><%= @trader.projects.length %></span> 件, 取消 
+            <span style="font-weight:bold; color:red;"><%= Project.where(:trader_id => @trader.slave_trader_ids + [@trader.id]).where("status = ? OR delete_request = ?", "deleted", true).length %></span> 件 )</td>
         </tr>
+        <tr>
+          <td>月別請求書</td>
+          <td><a class="btn btn-primary" href="/my_invoice/<%= @trader.id %>">請求書一覧</a></td>
+        </tr>        
         <tr>
           <td>属于(上家)</td>
           <td>
