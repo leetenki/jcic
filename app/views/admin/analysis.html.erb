@@ -17,8 +17,8 @@
     <table class="col-md-12">
       <% @traders.reverse.each do |trader| %>
         <tr>
-          <td class="col-md-4" style="text-align: left;">
-            <%= trader.company_name %>
+          <td class="col-md-4">
+            <div style="background-color:#55aa55; padding:5px 10px; color:white; border-radius: 30px;"><%= trader.company_name %></div>
           </td>
           <td class="graph-cell col-md-8">
             <% labels = "[" %>
@@ -69,40 +69,14 @@
           ]
       };
 
+      var options = {
+        scaleLabel : "\<\%=value\%\>件",
+        animationSteps : 20,
+        tooltipFillColor: "rgba(0,0,0,0.8)",                
+        tooltipTemplate: "\<\%if (label){\%\>\<\%=label\%\>: \<\%}\%\>\<\%= value \%\>件",
+      };
       var ctx = $(this).find("canvas.chart")[0].getContext("2d")
-      var options = { };
       var lineChart = new Chart(ctx).Line(data, options);
   })
 
-
-function displayLineChart() {
-  var data = {
-      labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      datasets: [
-          {
-              label: "Prime and Fibonacci",
-              fillColor: "rgba(220,220,220,0.2)",
-              strokeColor: "rgba(220,220,220,1)",
-              pointColor: "rgba(220,220,220,1)",
-              pointStrokeColor: "#fff",
-              pointHighlightFill: "#fff",
-              pointHighlightStroke: "rgba(220,220,220,1)",
-              data: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
-          },
-          {
-              label: "My Second dataset",
-              fillColor: "rgba(151,187,205,0.2)",
-              strokeColor: "rgba(151,187,205,1)",
-              pointColor: "rgba(151,187,205,1)",
-              pointStrokeColor: "#fff",
-              pointHighlightFill: "#fff",
-              pointHighlightStroke: "rgba(151,187,205,1)",
-              data: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
-          }
-      ]
-  };
-  var ctx = document.getElementById("lineChart").getContext("2d");
-  var options = { };
-  var lineChart = new Chart(ctx).Line(data, options);
-}
 </script>
