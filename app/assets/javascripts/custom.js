@@ -154,6 +154,10 @@ $(document).ready(function(){
     })
   }
 
+  $(".embadded-invoice-button").click(null, function(e) {
+    e.stopPropagation();
+  });
+
   $(".modify").each(function() { 
     var scope = this;
     this.addEventListener("click", function() {

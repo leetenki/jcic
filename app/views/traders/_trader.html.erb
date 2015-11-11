@@ -10,6 +10,11 @@
         删<span style="font-weight:bold; color:red;"><%= Project.where(:trader_id => trader.slave_trader_ids + [trader.id]).where("status = ? OR delete_request = ?", "deleted", true).length %></span>
     </td>
     <td>
+        <a style="margin-bottom: 5px;" target="_blank" href="/admin/invoice?trader_id=<%= trader.id %>&from=<%= first_day(Date.today << 1).strftime("%Y-%m-%d") %>&to=<%= last_day(Date.today << 1).strftime("%Y-%m-%d") %>" class="btn btn-success embadded-invoice-button"><%= (Date.today << 1).year %>年<%= (Date.today << 1).month %>月</a>
+        <a style="margin-bottom: 5px;" target="_blank" href="/admin/invoice?trader_id=<%= trader.id %>&from=<%= first_day(Date.today).strftime("%Y-%m-%d") %>&to=<%= last_day(Date.today).strftime("%Y-%m-%d") %>" class="btn btn-success embadded-invoice-button"><%= Date.today.year %>年<%= Date.today.month %>月</a>
+        <a href="/my_invoice/<%= trader.id %>" class="btn btn-primary embadded-invoice-button">我的账单</a>
+    </td>
+    <td>
         模式 <%= validation_mode_str(trader.validation_mode) %><br/>
         个签 <%= trader.individual_japan_company.upcase %><br/>
         团签 <%= trader.group_japan_company.upcase %>
