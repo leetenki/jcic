@@ -17,15 +17,19 @@
     <table class="col-md-12">
       <% @traders.reverse.each do |trader| %>
         <tr>
-          <td class="col-md-4">
-            <div style="background-color:#55aa55; padding:5px 10px; color:white; border-radius: 30px;"><%= trader.company_name %></div>
+          <td style="width: 23%">
+            <div style="font-weight: bolder; color: #888888; text-align: left;"><%= trader.company_name %></div>
           </td>
-          <td class="graph-cell col-md-8">
+          <td class="graph-cell" style="width: 77%">
             <% labels = "[" %>
             <% data = "[" %>
             <% (analysis_period).downto(0).each do |num| %>
               <% target_date = Date.today - num %>
-              <% data += Project.where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1, :trader_id => trader.slave_trader_ids + [trader.id]).length.to_s %>
+              <% projects = Project.where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1, :trader_id => trader.slave_trader_ids + [trader.id]) %>
+              <% if params[:mode] = "group" %>
+                <% projects = projects.where(:visa_type => "group") %>
+              <% end %>
+              <% data += projects.length.to_s %>
               <% labels += '"' + target_date.strftime("%m月%d日") + '"' %>
 
               <% if num > 0 %>
