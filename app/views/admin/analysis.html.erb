@@ -23,24 +23,33 @@
           <td class="graph-cell" style="width: 77%">
             <% labels = "[" %>
             <% data = "[" %>
+            <% group = "[" %>
+            <% individual = "[" %>
             <% (analysis_period).downto(0).each do |num| %>
               <% target_date = Date.today - num %>
               <% projects = Project.where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1, :trader_id => trader.slave_trader_ids + [trader.id]) %>
-              <% if params[:mode] == "group" %>
-                <% projects = projects.where(:visa_type => "group") %>
-              <% end %>
+              <% group_projects = projects.where(:visa_type => "group") %>
+
               <% data += projects.length.to_s %>
+              <% group += group_projects.length.to_s %>
+              <% individual += (projects.length-group_projects.length).to_s %>
               <% labels += '"' + target_date.strftime("%m月%d日") + '"' %>
 
               <% if num > 0 %>
                 <% data += "," %>
+                <% group += "," %>
+                <% individual += "," %>
                 <% labels += "," %>
               <% end %>
             <% end %>
             <% data += "]" %>
+            <% group += "]" %>
+            <% individual += "]" %>
             <% labels += "]" %>
 
             <input type="hidden" class="data" value="<%= data %>">
+            <input type="hidden" class="group" value="<%= group %>">
+            <input type="hidden" class="individual" value="<%= individual %>">
             <input type="hidden" class="labels" value="<%= labels %>">
             <div class="box">
               <canvas class="chart" height="100" width="600"></canvas>
@@ -56,18 +65,40 @@
   $("td.graph-cell").each(function() {
       var labels = JSON.parse($(this).find("input.labels")[0].value);
       var data = JSON.parse($(this).find("input.data")[0].value);
+      var group = JSON.parse($(this).find("input.group")[0].value);
+      var individual = JSON.parse($(this).find("input.individual")[0].value);
 
       var data = {
           labels: labels,
           datasets: [
               {
-                  label: "Chart",
-                  fillColor: "rgba(151,187,205,0.2)",
-                  strokeColor: "rgba(151,187,205,1)",
-                  pointColor: "rgba(151,187,205,1)",
+                  label: "个签",
+                  fillColor: "rgba(80,200,180,0.2)",
+                  strokeColor: "rgba(80,200,180,1)",
+                  pointColor: "rgba(80,200,180,1)",
                   pointStrokeColor: "#fff",
                   pointHighlightFill: "#fff",
-                  pointHighlightStroke: "rgba(151,187,205,1)",
+                  pointHighlightStroke: "rgba(80,200,180,1)",
+                  data: individual
+              },
+              {
+                  label: "团签",
+                  fillColor: "rgba(255,200,100,0.2)",
+                  strokeColor: "rgba(255,200,100,1)",
+                  pointColor: "rgba(255,200,100,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(255,200,100,1)",
+                  data: group
+              },
+              {
+                  label: "总数",
+                  fillColor : "rgba(220,220,220,0.1)",//面の色・透明度
+                  strokeColor : "rgba(220,220,220,1)",//線の色・透明度
+                  pointColor : "rgba(220,220,220,1)", //点の色・透明度
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(220,220,220,1)",
                   data: data
               }
           ]
@@ -75,9 +106,10 @@
 
       var options = {
         scaleLabel : "\<\%=value\%\>件",
-        animationSteps : 20,
+        animationSteps : 10,
         tooltipFillColor: "rgba(0,0,0,0.8)",                
         tooltipTemplate: "\<\%if (label){\%\>\<\%=label\%\>: \<\%}\%\>\<\%= value \%\>件",
+        multiTooltipTemplate: "\<\%=datasetLabel\%\>: \<\%= value \%\>件",
       };
       var ctx = $(this).find("canvas.chart")[0].getContext("2d")
       var lineChart = new Chart(ctx).Line(data, options);
