@@ -26,7 +26,7 @@
             <% (analysis_period).downto(0).each do |num| %>
               <% target_date = Date.today - num %>
               <% projects = Project.where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1, :trader_id => trader.slave_trader_ids + [trader.id]) %>
-              <% if params[:mode] = "group" %>
+              <% if params[:mode] == "group" %>
                 <% projects = projects.where(:visa_type => "group") %>
               <% end %>
               <% data += projects.length.to_s %>
