@@ -10,7 +10,8 @@ class AdminController < ApplicationController
       #params[:to] = Date.new(last_month.year, last_month.month, -1).strftime("%Y/%m/%d");
       params[:from] = Date.today.strftime("%Y/%m/%d");
       params[:to] = (Date.today).strftime("%Y/%m/%d");
-      @waiting = true
+      #@waiting = true
+      @projects = search_projects(params[:trader_id], params[:from], params[:to]).order("id desc")
     else
       @projects = search_projects(params[:trader_id], params[:from], params[:to]).order("id desc")
     end
