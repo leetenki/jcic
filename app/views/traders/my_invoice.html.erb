@@ -9,8 +9,7 @@
           <tr>
             <td class="col col-md-6 col-sm-6 col-xs-6" style="text-align: center; padding: 10px 0;"><a target="_blank" href="/admin/invoice?trader_id=<%= @trader.id %>&from=<%= first_day(invoice_date).strftime("%Y-%m-%d") %>&to=<%= last_day(invoice_date).strftime("%Y-%m-%d") %>" class="btn btn-success"><%= invoice_date.year %>年<%= invoice_date.month %>月份账单</div></td>
 
-            <% projects = Project.where(:created_at => Time.parse(first_day(invoice_date).strftime("%Y-%m-%d"))..Time.parse(last_day(invoice_date).strftime("%Y-%m-%d"))+60*60*24-1, :trader_id => @trader.id) %>
-            <%= Time.parse(last_day(invoice_date).strftime("%Y-%m-%d"))+60*60*24-1 %>
+            <% projects = Project.where(:created_at => Time.parse(first_day(invoice_date).strftime("%Y-%m-%d"))..Time.parse(last_day(invoice_date).strftime("%Y-%m-%d"))+60*60*24-1, :trader_id => @trader.slave_trader_ids + [@trader.id]) %>
             <% total_price = 0 %>
             <% total_count = 0 %>
             <% projects.each do |project| %>

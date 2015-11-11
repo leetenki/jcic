@@ -209,7 +209,7 @@ private
     end
 
     if(id.present? && id != "*")
-      trader = Trader.find(id);
+      trader = Trader.find_by(:id => id);
       projects = projects.where(:trader_id => trader.slave_trader_ids + [trader.id])
     end
 
