@@ -76,6 +76,15 @@ module ApplicationHelper
     end
   end
 
+  def get_projects_price(projects)
+    total_price = 0
+    projects.each do |project|
+      total_price += get_project_price(project)
+    end
+
+    return total_price
+  end
+
   def get_project_price(project)
     total_price = 0
     people = project.clients.length

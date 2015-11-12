@@ -21,6 +21,10 @@
 <% if !params[:mode] %>
   <% params[:mode] = "total" %>
 <% end %>
+
+<% if !params[:unit] %>
+  <% params[:unit] = "number" %>
+<% end %>
 <h1><i class="fa fa-signal"></i> 数据分析</h1>
 <div class="row">
   <div class="container col-md-12">
@@ -58,10 +62,24 @@
                   <label class="btn btn-default <%= 'active' if params[:mode] == 'seperate' %>">
                     <input type="radio" value="seperate" name="mode" <%= 'checked' if params[:mode] == 'seperate' %> />分別
                   </label>
+                  <label class="btn btn-default <%= 'active' if (params[:mode] == 'deleted') %>">
+                    <input type="radio" value="deleted" name="mode" <%= 'checked' if params[:mode] == 'deleted' %> />取消
+                  </label>                  
                 </div>
               </div>
 
-              <div class="col-md-3" style="padding-top:5px;">
+              <div class="col col-md-2">
+                <div data-toggle="buttons" style="margin-top:0; margin:5px;" class="btn-group toggle">
+                  <label class="btn btn-default <%= 'active' if (params[:unit] == 'number') %>">
+                    <input type="radio" value="number" name="unit" <%= 'checked' if params[:unit] == 'number' %> />件数
+                  </label>                  
+                  <label class="btn btn-default <%= 'active' if (params[:unit] == 'money') %>">
+                    <input type="radio" value="money" name="unit" <%= 'checked' if params[:unit] == 'money' %> />金額
+                  </label>                  
+                </div>
+              </div>
+
+              <div class="col-md-2" style="padding-top:5px;">
                 <input type="submit" value="分析" class="btn btn-primary require-loading">
               </div>
             </form>
@@ -92,8 +110,11 @@
             <% if params[:mode] == "seperate" %>
               <% group = "[" %>
               <% individual = "[" %>
-            <% else %>
+            <% elsif params[:mode] == "total" %>
               <% data = "[" %>
+            <% elsif params[:mode] == "deleted" %>
+              <% data = "[" %>
+              <% deleted = "[" %>
             <% end %>
 
             <% (analysis_period).downto(0).each do |num| %>
@@ -101,15 +122,40 @@
               <% labels += '"' + target_date.strftime("%m月%d日") + '"' %>
               <% if trader.id == 1 %>
                 <% projects = Project.where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1, :status => "committed", :delete_request => false) %>
+                <% if params[:mode] == "deleted" %>
+                  <% deleted_projects = Project.where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1).where("status = ? OR delete_request = ?", "deleted", true) %>
+                <% end %>
               <% else %>
                 <% projects = Project.where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1, :trader_id => trader.slave_trader_ids + [trader.id], :status => "committed", :delete_request => false) %>
+                <% if params[:mode] == "deleted" %>
+                  <% deleted_projects = Project.where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1, :trader_id => trader.slave_trader_ids + [trader.id]).where("status = ? OR delete_request = ?", "deleted", true) %>
+                <% end %>
               <% end %>
+
               <% if params[:mode] == "seperate" %>
                 <% group_projects = projects.where(:visa_type => "group") %>
-                <% group += group_projects.length.to_s %>
-                <% individual += (projects.length-group_projects.length).to_s %>
-              <% else %>
-                <% data += projects.length.to_s %>
+                <% if params[:unit] == "number" %>
+                  <% group += group_projects.length.to_s %>
+                  <% individual += (projects.length-group_projects.length).to_s %>
+                <% elsif params[:unit] == "money" %>
+                  <% group_price = get_projects_price(group_projects) %>
+                  <% group += group_price.to_s %>
+                  <% individual += (get_projects_price(projects)-group_price).to_s %>
+                <% end %>
+              <% elsif params[:mode] == "total" %>
+                <% if params[:unit] == "number" %>
+                  <% data += projects.length.to_s %>
+                <% elsif params[:unit] == "money" %>
+                  <% data += get_projects_price(projects).to_s %>                  
+                <% end %>
+              <% elsif params[:mode] == "deleted" %>
+                <% if params[:unit] == "number" %>
+                  <% data += projects.length.to_s %>
+                  <% deleted += deleted_projects.length.to_s %>
+                <% elsif params[:unit] == "money" %>
+                  <% data += get_projects_price(projects).to_s %>
+                  <% deleted += get_projects_price(deleted_projects).to_s %>                
+                <% end %>
               <% end %>
 
               <% if num > 0 %>
@@ -118,8 +164,11 @@
                 <% if params[:mode] == "seperate" %>                
                   <% group += "," %>
                   <% individual += "," %>
-                <% else %>
+                <% elsif params[:mode] == "total" %>
                   <% data += "," %>
+                <% elsif params[:mode] == "deleted" %>
+                  <% data += "," %>
+                  <% deleted += "," %>
                 <% end %>
               <% end %>
             <% end %>
@@ -128,14 +177,18 @@
             <% if params[:mode] == "seperate" %>
               <% group += "]" %>
               <% individual += "]" %>
-            <% else %>
+            <% elsif params[:mode] == "total" %>
               <% data += "]" %>
+            <% elsif params[:mode] == "deleted" %>
+              <% data += "]" %>
+              <% deleted += "]" %>
             <% end %>
 
             <input type="hidden" class="data" value="<%= data %>">
             <input type="hidden" class="group" value="<%= group %>">
             <input type="hidden" class="individual" value="<%= individual %>">
             <input type="hidden" class="labels" value="<%= labels %>">
+            <input type="hidden" class="deleted" value="<%= deleted %>">
             <div class="box">
               <canvas class="chart" height="<%= (120 + 80 * (analysis_period - 7) / 21).to_i %>" width="600"></canvas>
             </div>
@@ -152,8 +205,11 @@
       <% if params[:mode] == "seperate" %>
         var group = JSON.parse($(this).find("input.group")[0].value);
         var individual = JSON.parse($(this).find("input.individual")[0].value);
-      <% else %>
+      <% elsif params[:mode] == "total" %>
         var data = JSON.parse($(this).find("input.data")[0].value);
+      <% elsif params[:mode] == "deleted" %>
+        var data = JSON.parse($(this).find("input.data")[0].value);
+        var deleted = JSON.parse($(this).find("input.deleted")[0].value);
       <% end %>
 
       // orange 255,200,100,
@@ -184,7 +240,7 @@
                   pointHighlightStroke: "rgba(80,200,180,1)",
                   data: group
               }
-          <% else %>
+          <% elsif params[:mode] == "total" %>
               {
                   label: "总数",
                   fillColor: "rgba(151,187,205,0.2)",
@@ -195,16 +251,43 @@
                   pointHighlightStroke: "rgba(151,187,205,1)",
                   data: data
               }
+          <% elsif params[:mode] == "deleted" %>
+              {
+                  label: "总数",
+                  fillColor: "rgba(151,187,205,0.2)",
+                  strokeColor: "rgba(151,187,205,1)",
+                  pointColor: "rgba(151,187,205,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(151,187,205,1)",
+                  data: data
+              },
+              {
+                  label: "取消",
+                  fillColor : "rgba(255,200,100,0.1)",//面の色・透明度
+                  strokeColor : "rgba(255,200,100,1)",//線の色・透明度
+                  pointColor : "rgba(255,200,100,1)", //点の色・透明度
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(255,200,100,1)",
+                  data: deleted
+              }
           <% end %>
           ]
       };
 
       var options = {
-        scaleLabel : "\<\%=value\%\>件",
         animationSteps : 10,
         tooltipFillColor: "rgba(0,0,0,0.8)",                
-        tooltipTemplate: "\<\%if (label){\%\>\<\%=label\%\>: \<\%}\%\>\<\%= value \%\>件",
-        multiTooltipTemplate: "\<\%=datasetLabel\%\>: \<\%= value \%\>件",
+        <% if params[:unit] == "number" %>
+          scaleLabel : "\<\%=value\%\>件",
+          tooltipTemplate: "\<\%if (label){\%\>\<\%=label\%\>: \<\%}\%\>\<\%= value \%\>件",
+          multiTooltipTemplate: "\<\%=datasetLabel\%\>: \<\%= value \%\>件",
+        <% elsif params[:unit] == "money" %>
+          scaleLabel : "\<\%=value\%\>円",
+          tooltipTemplate: "\<\%if (label){\%\>\<\%=label\%\>: \<\%}\%\>\<\%= value \%\>円",
+          multiTooltipTemplate: "\<\%=datasetLabel\%\>: \<\%= value \%\>円",
+        <% end %>
       };
       var ctx = $(this).find("canvas.chart")[0].getContext("2d")
       var lineChart = new Chart(ctx).Line(data, options);
