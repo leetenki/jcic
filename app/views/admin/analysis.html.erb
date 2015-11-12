@@ -34,10 +34,16 @@
           </td>
         </tr>
       </thead>
-      <% @traders.reverse.each do |trader| %>
+      <% @traders.order("id desc").reverse.each do |trader| %>
         <tr>
           <td style="width: 25%">
-            <div style="font-weight: bolder; color: #888888; text-align: left;"><%= trader.company_name %></div>
+            <div style="font-weight: bolder; color: #888888; text-align: left;">
+              <% if trader.id == 1 %>
+                合計
+              <% else %>
+                <%= trader.company_name %>
+              <% end %>
+            </div>
           </td>
           <td class="graph-cell" style="width: 75%">
             <% labels = "[" %>
@@ -51,8 +57,11 @@
             <% (analysis_period).downto(0).each do |num| %>
               <% target_date = Date.today - num %>
               <% labels += '"' + target_date.strftime("%m月%d日") + '"' %>
-
-              <% projects = Project.where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1, :trader_id => trader.slave_trader_ids + [trader.id]) %>
+              <% if trader.id == 1 %>
+                <% projects = Project.where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1) %>
+              <% else %>
+                <% projects = Project.where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1, :trader_id => trader.slave_trader_ids + [trader.id]) %>
+              <% end %>
               <% if params[:mode] == "seperate" %>
                 <% group_projects = projects.where(:visa_type => "group") %>
                 <% group += group_projects.length.to_s %>
