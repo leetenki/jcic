@@ -12,7 +12,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
 
 
-<% analysis_period = 30 #days %>
+<% if params[:analysis_period] %>
+  <% analysis_period = params[:analysis_period].to_i #days %>
+<% else %>
+  <% analysis_period = 7 %>
+<% end %>
+
 <% if !params[:mode] %>
   <% params[:mode] = "total" %>
 <% end %>
@@ -22,26 +27,61 @@
     <table class="col-md-12">
       <thead>
         <tr>
-          <td colspan="2" style="text-align:right;">
-            <div data-toggle="buttons" style="margin-top:0; margin:5px;" class="btn-group toggle">
-              <label class="btn btn-default <%= 'active' if (params[:mode] == 'total') %>" onclick="location.href='/admin/anylisis?mode=total'">
-                全種
-              </label>
-              <label class="btn btn-default <%= 'active' if params[:mode] == 'seperate' %>" onclick="location.href='/admin/anylisis?mode=seperate'">
-                分別
-              </label>
-            </div>            
+          <td colspan="2" style="text-align:center;">
+
+            <form action="/admin/analysis" method="get" accept-charset="UTF-8">
+              <div class="col col-md-3">
+                <div data-toggle="buttons" style="margin-top:0; margin:5px;" class="btn-group toggle">
+                  <label class="btn btn-default <%= 'active' if (analysis_period == 7) %>">
+                    <input type="radio" value="7" name="analysis_period" <%= 'checked' if analysis_period == 7 %> />1週
+                  </label>
+                  <label class="btn btn-default <%= 'active' if (analysis_period == 14) %>">
+                    <input type="radio" value="14" name="analysis_period" <%= 'checked' if analysis_period == 14 %> />2週
+                  </label>
+                  <label class="btn btn-default <%= 'active' if (analysis_period == 21) %>">
+                    <input type="radio" value="21" name="analysis_period" <%= 'checked' if analysis_period == 21 %> />3週
+                  </label>
+                  <label class="btn btn-default <%= 'active' if (analysis_period == 28) %>">
+                    <input type="radio" value="28" name="analysis_period" <%= 'checked' if analysis_period == 28 %> />4週
+                  </label>
+                </div>
+              </div>
+
+
+              <div class="col col-md-3">
+                <div data-toggle="buttons" style="margin-top:0; margin:5px;" class="btn-group toggle">
+                  <label class="btn btn-default <%= 'active' if (params[:mode] == 'total') %>">
+                    <input type="radio" value="total" name="mode" <%= 'checked' if params[:mode] == 'total' %> />全種 
+                  </label>
+                  <label class="btn btn-default <%= 'active' if params[:mode] == 'seperate' %>">
+                    <input type="radio" value="seperate" name="mode" <%= 'checked' if params[:mode] == 'seperate' %> />分別
+                  </label>
+                </div>
+              </div>
+
+              <div class="col-md-2" style="padding-top:5px;">
+                <input type="submit" value="分析" class="btn btn-primary">
+              </div>
+            </form>
+
+
           </td>
         </tr>
       </thead>
       <% @traders.order("id desc").reverse.each do |trader| %>
-        <tr>
+        <tr id="<%= trader.id %>">
           <td style="width: 25%">
             <div style="font-weight: bolder; color: #888888; text-align: left;">
               <% if trader.id == 1 %>
                 合計
               <% else %>
-                <%= trader.company_name %>
+                <div style="cursor:pointer;" onclick="location.href='/traders/<%= trader.id %>'">
+                  <% if trader.id == params[:id].to_i %>
+                    <span style="color:orange;"><%= trader.company_name %></span>
+                  <% else %>
+                    <%= trader.company_name %>
+                  <% end %>
+                </div>
               <% end %>
             </div>
           </td>
@@ -95,7 +135,7 @@
             <input type="hidden" class="individual" value="<%= individual %>">
             <input type="hidden" class="labels" value="<%= labels %>">
             <div class="box">
-              <canvas class="chart" height="100" width="600"></canvas>
+              <canvas class="chart" height="<%= (120 + 80 * (analysis_period - 7) / 21).to_i %>" width="600"></canvas>
             </div>
           </td>
         </tr>

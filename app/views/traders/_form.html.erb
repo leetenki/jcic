@@ -67,22 +67,22 @@
 
       <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
         <label class="btn btn-default col-md-4 col-sm-4 <%= 'active' if trader.validation_mode == "simplest" %>">
-          <input type="radio" value="simplest" name="trader[validation_mode]" <%= 'selected=selected' if trader.validation_mode == "simplest" %> />超级简化
+          <input type="radio" value="simplest" name="trader[validation_mode]" <%= 'checked' if trader.validation_mode == "simplest" %> />超级简化
         </label>
         <label class="btn btn-default col-md-4 col-sm-4 <%= 'active' if trader.validation_mode == "easy" %>">
-          <input type="radio" value="easy" name="trader[validation_mode]" <%= 'selected=selected' if trader.validation_mode == "easy" %> />简化填表
+          <input type="radio" value="easy" name="trader[validation_mode]" <%= 'checked' if trader.validation_mode == "easy" %> />简化填表
         </label>
         <label class="btn btn-default col-md-4 col-sm-4 <%= 'active' if trader.validation_mode == "strict" %>">
-          <input type="radio" value="strict" name="trader[validation_mode]" <%= 'selected=selected' if trader.validation_mode == "strict" %> />复杂填表
+          <input type="radio" value="strict" name="trader[validation_mode]" <%= 'checked' if trader.validation_mode == "strict" %> />复杂填表
         </label>
       </div>
 
       <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
         <label class="btn btn-default col-md-4 col-sm-4 <%= 'active' if trader.activation %>">
-          <input type="radio" value="true" name="trader[activation]" <%= 'selected=selected' if trader.activation %> />有效
+          <input type="radio" value="true" name="trader[activation]" <%= 'checked' if trader.activation %> />有效
         </label>
         <label class="btn btn-default col-md-4 col-sm-4 <%= 'active' if !trader.activation %>">
-          <input type="radio" value="false" name="trader[activation]" <%= 'selected=selected' if !trader.activation %> />停止
+          <input type="radio" value="false" name="trader[activation]" <%= 'checked' if !trader.activation %> />停止
         </label>
       </div>
 
@@ -93,13 +93,13 @@
       </div>
       <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
         <label class="btn btn-default <%= 'active' if trader.group_japan_company == 'random' %>">
-          <input type="radio" value="random" name="trader[group_japan_company]" <%= 'selected=selected' if trader.group_japan_company == 'random' %> />乱数
+          <input type="radio" value="random" name="trader[group_japan_company]" <%= 'checked' if trader.group_japan_company == 'random' %> />乱数
         </label>
         <% Constants::GROUP_VISA.each do |group_visa| %>
           <% value = Constants::JAPAN_SIDE_COMPANY[group_visa] %>
           <% key = group_visa.to_s %>
           <label class="btn btn-default <%= 'active' if trader.group_japan_company == key %>">
-            <input type="radio" value="<%= key %>" name="trader[group_japan_company]" <%= 'selected=selected' if trader.group_japan_company == key %> /><%= key.upcase %>
+            <input type="radio" value="<%= key %>" name="trader[group_japan_company]" <%= 'checked' if trader.group_japan_company == key %> /><%= key.upcase %>
           </label>
         <% end %>
       </div>
@@ -109,13 +109,13 @@
       </div>
       <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
         <label class="btn btn-default <%= 'active' if trader.individual_japan_company == 'random' %>">
-          <input type="radio" value="random" name="trader[individual_japan_company]" <%= 'selected=selected' if trader.individual_japan_company == 'random' %> />乱数
+          <input type="radio" value="random" name="trader[individual_japan_company]" <%= 'checked' if trader.individual_japan_company == 'random' %> />乱数
         </label>
         <% Constants::INDIVIDUAL_VISA.each do |individual_visa| %>
           <% value = Constants::JAPAN_SIDE_COMPANY[individual_visa] %>
           <% key = individual_visa.to_s %>
           <label class="btn btn-default <%= 'active' if trader.individual_japan_company == key %>">
-            <input type="radio" value="<%= key %>" name="trader[individual_japan_company]" <%= 'selected=selected' if trader.individual_japan_company == key %> /><%= key.upcase %>
+            <input type="radio" value="<%= key %>" name="trader[individual_japan_company]" <%= 'checked' if trader.individual_japan_company == key %> /><%= key.upcase %>
           </label>
         <% end %>
       </div>
@@ -125,10 +125,10 @@
       </div>
       <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
         <label class="btn btn-default <%= 'active' if trader.guarantee_mode == 'normal' %>">
-          <input type="radio" value="normal" name="trader[guarantee_mode]" <%= 'selected=selected' if trader.guarantee_mode == 'normal' %> />NORMAL
+          <input type="radio" value="normal" name="trader[guarantee_mode]" <%= 'checked' if trader.guarantee_mode == 'normal' %> />NORMAL
         </label>
         <label class="btn btn-default <%= 'active' if trader.guarantee_mode == 'full' %>">
-          <input type="radio" value="full" name="trader[guarantee_mode]" <%= 'selected=selected' if trader.guarantee_mode == 'full' %> />FULL
+          <input type="radio" value="full" name="trader[guarantee_mode]" <%= 'checked' if trader.guarantee_mode == 'full' %> />FULL
         </label>
       </div>
 
@@ -137,10 +137,10 @@
       </div>
       <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
         <label class="btn btn-default <%= 'active' if trader.work_mode == 'auto' %>">
-          <input type="radio" value="auto" name="trader[work_mode]" <%= 'selected=selected' if trader.work_mode == 'auto' %> />全自动
+          <input type="radio" value="auto" name="trader[work_mode]" <%= 'checked' if trader.work_mode == 'auto' %> />全自动
         </label>
         <label class="btn btn-default <%= 'active' if trader.work_mode == 'manual' %>">
-          <input type="radio" value="manual" name="trader[work_mode]" <%= 'selected=selected' if trader.work_mode == 'manual' %> />手动
+          <input type="radio" value="manual" name="trader[work_mode]" <%= 'checked' if trader.work_mode == 'manual' %> />手动
         </label>
       </div>
 

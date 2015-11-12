@@ -85,6 +85,10 @@
             <span style="font-weight:bold; color:red;"><%= Project.where(:trader_id => @trader.slave_trader_ids + [@trader.id]).where("status = ? OR delete_request = ?", "deleted", true).length %></span> 件 )</td>
         </tr>
         <tr>
+          <td>分析</td>
+          <td><a class="btn btn-success" href="/admin/analysis?id=<%= @trader.id %>#<%= @trader.id - 1 %>">DATA</a></td>
+        </tr>
+        <tr>
           <td>月別請求書</td>
           <td><a class="btn btn-primary" href="/my_invoice/<%= @trader.id %>">請求書一覧</a></td>
         </tr>        
