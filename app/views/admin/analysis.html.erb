@@ -68,13 +68,16 @@
                 </div>
               </div>
 
-              <div class="col col-md-2">
+              <div class="col col-md-3">
                 <div data-toggle="buttons" style="margin-top:0; margin:5px;" class="btn-group toggle">
                   <label class="btn btn-default <%= 'active' if (params[:unit] == 'number') %>">
                     <input type="radio" value="number" name="unit" <%= 'checked' if params[:unit] == 'number' %> />件数
-                  </label>                  
+                  </label>
                   <label class="btn btn-default <%= 'active' if (params[:unit] == 'money') %>">
                     <input type="radio" value="money" name="unit" <%= 'checked' if params[:unit] == 'money' %> />金額
+                  </label>                  
+                  <label class="btn btn-default <%= 'active' if (params[:unit] == 'people') %>">
+                    <input type="radio" value="people" name="unit" <%= 'checked' if params[:unit] == 'people' %> />人数
                   </label>                  
                 </div>
               </div>
@@ -141,12 +144,18 @@
                   <% group_price = get_projects_price(group_projects) %>
                   <% group += group_price.to_s %>
                   <% individual += (get_projects_price(projects)-group_price).to_s %>
+                <% elsif params[:unit] == "people" %>
+                  <% group_clients = get_clients_length(group_projects) %>
+                  <% group += group_clients.to_s %>
+                  <% individual += (get_clients_length(projects)-group_clients).to_s %>
                 <% end %>
               <% elsif params[:mode] == "total" %>
                 <% if params[:unit] == "number" %>
                   <% data += projects.length.to_s %>
                 <% elsif params[:unit] == "money" %>
                   <% data += get_projects_price(projects).to_s %>                  
+                <% elsif params[:unit] == "people" %>
+                  <% data += get_clients_length(projects).to_s %>                  
                 <% end %>
               <% elsif params[:mode] == "deleted" %>
                 <% if params[:unit] == "number" %>
@@ -155,6 +164,9 @@
                 <% elsif params[:unit] == "money" %>
                   <% data += get_projects_price(projects).to_s %>
                   <% deleted += get_projects_price(deleted_projects).to_s %>                
+                <% elsif params[:unit] == "people" %>
+                  <% data += get_clients_length(projects).to_s %>
+                  <% deleted += get_clients_length(deleted_projects).to_s %>                
                 <% end %>
               <% end %>
 
@@ -287,6 +299,10 @@
           scaleLabel : "\<\%=value\%\>円",
           tooltipTemplate: "\<\%if (label){\%\>\<\%=label\%\>: \<\%}\%\>\<\%= value \%\>円",
           multiTooltipTemplate: "\<\%=datasetLabel\%\>: \<\%= value \%\>円",
+        <% elsif params[:unit] == "people" %>
+          scaleLabel : "\<\%=value\%\>人",
+          tooltipTemplate: "\<\%if (label){\%\>\<\%=label\%\>: \<\%}\%\>\<\%= value \%\>人",
+          multiTooltipTemplate: "\<\%=datasetLabel\%\>: \<\%= value \%\>人",
         <% end %>
       };
       var ctx = $(this).find("canvas.chart")[0].getContext("2d")
