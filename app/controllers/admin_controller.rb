@@ -59,7 +59,6 @@ class AdminController < ApplicationController
       else
         @trader = Trader.find_by(:id => params[:trader_id])
       end
-      @projects = search_projects(@trader.id, params[:from], params[:to]).where("payment = ?", 'unpaid').order("id asc")   
     else
       #admin以外はparams[:trader_id]を使わない。current_traderを使う
       if !params[:from].present? || !params[:to].present?
@@ -69,8 +68,13 @@ class AdminController < ApplicationController
       else
         @trader = current_trader
       end
+    end
+
+    if params[:include_paid]
       @projects = search_projects(@trader.id, params[:from], params[:to]).order("id asc")   
-   end
+    else
+      @projects = search_projects(@trader.id, params[:from], params[:to]).where("payment = ?", 'unpaid').order("id asc")   
+    end
 
     html = render_to_string(:template => "/admin/invoice.pdf.erb")
     pdf = PDFKit.new(html, :encoding => "UTF-8"); 
