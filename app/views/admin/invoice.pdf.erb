@@ -2,9 +2,11 @@
 <% total_price = 0 %>
 <% total_count = 0 %>
 <% @projects.each do |project| %>
-  <% if project.payment == "unpaid" && project.status != "deleted" && !project.delete_request %>
-    <% total_price += get_project_price(project) %>
-    <% total_count += 1 %>
+  <% if project.status != "deleted" && !project.delete_request %>
+    <% if !is_admin? || project.payment == "unpaid" %>
+      <% total_price += get_project_price(project) %>
+      <% total_count += 1 %>
+    <% end %>
   <% end %>
 <% end %>
 
