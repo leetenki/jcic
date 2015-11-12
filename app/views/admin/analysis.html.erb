@@ -58,9 +58,9 @@
               <% target_date = Date.today - num %>
               <% labels += '"' + target_date.strftime("%m月%d日") + '"' %>
               <% if trader.id == 1 %>
-                <% projects = Project.where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1, :status => "committed") %>
+                <% projects = Project.where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1, :status => "committed", :delete_request => false) %>
               <% else %>
-                <% projects = Project.where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1, :trader_id => trader.slave_trader_ids + [trader.id], :status => "committed") %>
+                <% projects = Project.where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1, :trader_id => trader.slave_trader_ids + [trader.id], :status => "committed", :delete_request => false) %>
               <% end %>
               <% if params[:mode] == "seperate" %>
                 <% group_projects = projects.where(:visa_type => "group") %>
