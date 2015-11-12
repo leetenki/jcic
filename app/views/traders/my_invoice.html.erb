@@ -33,7 +33,7 @@
             <% end %>
 
             <td class="col col-md-5 col-sm-5 col-xs-5" style="padding: 10px 0;">
-              共 <span style="font-weight: bolder; color: orange;"><%= total_count %></span> 件 ( 单独 <span style="font-weight: bolder; color: orange;"><%= Project.where(:created_at => Time.parse(first_day(invoice_date).strftime("%Y-%m-%d"))..Time.parse(last_day(invoice_date).strftime("%Y-%m-%d"))+60*60*24-1, :trader_id => [@trader.id], :payment => "unpaid").length %></span> 件, 取消 <span style="font-weight: bolder; color: red;"><%= deleted_count %></span> 件 )
+              共 <span style="font-weight: bolder; color: orange;"><%= total_count %></span> 件 ( 单独 <span style="font-weight: bolder; color: orange;"><%= Project.where(:created_at => Time.parse(first_day(invoice_date).strftime("%Y-%m-%d"))..Time.parse(last_day(invoice_date).strftime("%Y-%m-%d"))+60*60*24-1, :trader_id => [@trader.id]).length %></span> 件, 取消 <span style="font-weight: bolder; color: red;"><%= deleted_count %></span> 件 )
             </td>
 
             <td class="col col-md-3 col-sm-3 col-xs-3" style="padding: 10px 0;">
