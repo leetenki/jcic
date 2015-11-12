@@ -131,7 +131,18 @@
               <% target_date = Date.today - num %>
               <% labels += '"' + target_date.strftime("%m月%d日") + '"' %>
               <% if trader.id == current_trader.id %>
-                <% projects = Project.where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1, :status => "committed", :delete_request => false) %>
+                <% if current_trader.authority == "all" %>
+                  <% projects = Project.where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1, :status => "committed", :delete_request => false) %>
+                <% elsif current_trader.authority == "self" %>
+                  <% projects = Project.where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1, :trader_id => trader.slave_trader_ids + [trader.id], :status => "committed", :delete_request => false) %>
+                <% else %>
+                  <% @traders = Trader.where(:invoice_company => current_trader.authority) %>
+                  <% @ids = Array.new(0, nil) %>
+                  <% @traders.each do |trader| %>
+                    <% @ids.push(trader.id) %>
+                  <% end %>
+                  <% projects = Project.where("trader_id in (?)", @ids).where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1, :status => "committed", :delete_request => false) %>
+                <% end %>
                 <% if params[:mode] == "deleted" %>
                   <% deleted_projects = Project.where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1).where("status = ? OR delete_request = ?", "deleted", true) %>
                 <% end %>
