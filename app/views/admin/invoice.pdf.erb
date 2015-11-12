@@ -8,10 +8,16 @@
   <% end %>
 <% end %>
 
-
+<% company_info = Constants::JAPAN_SIDE_COMPANY[@trader.invoice_company.intern] %>
 
 <!-- ************************** header *************************** -->
-<div style="padding-left: 10px;"><%= image_tag(::Rails.root.join('public','small_jcic_logo.jpg'), :style => "width:  180px") %></div>
+<div style="padding-left: 10px;">
+  <% if company_info[:logo].present? && company_info[:logo].length > 0 %>
+    <%= image_tag(::Rails.root.join('public', company_info[:logo]), :style => "width: 180px; height: 62px;") %>
+  <% else %>
+    <div style="width: 180px; height: 62px;"></div>  
+  <% end %>
+</div>
 <div style="position:absolute; top: 0px; right: 0px;">
   <table style="font-size:12px;">
     <tr>
@@ -24,11 +30,11 @@
     </tr>
     <tr>
       <td>伝票番号:</td>
-      <td style=""><%= @trader.id.to_s + Time.now.strftime("%Y%m%d%H%M%S") %></td>
+      <td style=""><%= @trader.id.to_s + Date.parse(params[:from]).strftime("%Y%m%d") + Date.parse(params[:to]).strftime("%Y%m%d") %></td>
     </tr>
     <tr>
       <td>担当:</td>
-      <td style=""><%= Constants::INVOICE_CHIEF_NAME %></td>
+      <td style=""><%= company_info[:chief] %></td>
     </tr>
   </table>
 </div>
@@ -44,12 +50,12 @@
   <tr>
     <td style="border: 1px solid black; width: 50%; padding: 10px; font-size:20px; text-align:center"><%= @trader.company_name %> 様</td>
     <td style="width: 50%; padding-left:50px; font-size:14px;" rowspan="3">
-      <%= Constants::INVOICE_COMPANY_NAME%><br/>
-      <%= Constants::INVOICE_COMPANY_ADDRESS_1 %><br/>
-      <%= Constants::INVOICE_COMPANY_ADDRESS_2 %><br/>      
-      電話 : <%= Constants::INVOICE_COMPANY_PHONE %><br/>     
-      FAX : <%= Constants::INVOICE_COMPANY_FAX %><br/>
-      <div style="position:absolute; margin-top: -80px; margin-left: 130px;"><%= image_tag(::Rails.root.join('public','jcic_signature2.png'), :style => "width:  80px; opacity:1") %></div>
+      <%= company_info[:company_name] %><br/>
+      <%= company_info[:address_1] %><br/>
+      <%= company_info[:address_2] %><br/>      
+      電話 : <%= company_info[:phone] %><br/>     
+      FAX : <%= company_info[:fax] %><br/>
+      <div style="position:absolute; margin-top: -80px; margin-left: 130px;"><%= image_tag(::Rails.root.join('public',"0_" + company_info[:signature_2]), :style => "width:  80px; opacity:1") %></div>
     </td>
   </tr>
 
@@ -70,9 +76,9 @@
     <td style="height:20px;"></td>
     <td style="width: 50%; padding-left:50px; font-size:14px;" rowspan="2">
       <span style="font-weight:bold">振込先:</span><br/>
-      <%= Constants::INVOICE_COMPANY_BANK_1 %><br/>
-      <%= Constants::INVOICE_COMPANY_BANK_2 %><br/>
-      <span style="font-size:12px"><%= Constants::INVOICE_COMPANY_BANK_3 %></span>
+      <%= company_info[:bank_1] %><br/>
+      <%= company_info[:bank_2] %><br/>
+      <span style="font-size:12px"><%= company_info[:bank_3] %></span>
     </td>
   </tr>
 
@@ -96,12 +102,12 @@
     <td></td>
     <td style="width: 50%; padding-left:50px; font-size:13px; line-height:18px;">
       <span style="font-weight:bold;">ENGLISH (英文) : </span><br/>
-      Bank Account :<%= Constants::INVOICE_COMPANY_BANK_ENGLISH_1 %><br/>
-      <%= Constants::INVOICE_COMPANY_BANK_ENGLISH_2 %><br/>
-      Branch Code: <%= Constants::INVOICE_COMPANY_BANK_ENGLISH_3 %><br/>
-      Account No. : <%= Constants::INVOICE_COMPANY_BANK_ENGLISH_4 %><br/>
-      Account Name: <span style="font-size:9px;"><%= Constants::INVOICE_COMPANY_BANK_ENGLISH_5 %></span><br/>
-      Bank Swift Code: <%= Constants::INVOICE_COMPANY_BANK_ENGLISH_6 %>
+      Bank Account :<%= company_info[:bank_english_1] %><br/>
+      <%= company_info[:bank_english_2] %><br/>
+      Branch Code: <%= company_info[:bank_english_3] %><br/>
+      Account No. : <%= company_info[:bank_english_4] %><br/>
+      Account Name: <span style="font-size:9px;"><%= company_info[:bank_english_5] %></span><br/>
+      Bank Swift Code: <%= company_info[:bank_english_6] %>
     </td>
   </tr>
 

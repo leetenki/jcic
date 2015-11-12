@@ -3,8 +3,6 @@
   請求書
 </h1>
 
-
-
 <div class="row">
   <div class="container col-md-10 col-md-offset-1">
       <table class="project-info table">
@@ -19,7 +17,10 @@
             <form action="/admin" accept-charset="UTF-8" method="get">
               <div class="col-md-4 col-sm-4 col-xs-4">
                 <select name="trader_id" class="form-control" id="trader_selector">
-                  <option value="*" <%= "selected=selected" if params[:trader_id] == "*" %>>全部</option>
+                  <option value="*" <%= "selected=selected" if params[:trader_id] == "*" %>>[全]</option>
+                  <% Constants::JAPAN_SIDE_COMPANY.each do |key, value| %>
+                    <option value="<%= key %>" <%= "selected=selected" if params[:trader_id] == key.to_s %>>[全]<%= value[:company_name] %></option>
+                  <% end %>
                   <% @traders.each do |trader| %>
                     <option value="<%= trader.id %>" <%= "selected=selected" if params[:trader_id] == trader.id.to_s %>><%= trader.company_name %></option>
                   <% end %>

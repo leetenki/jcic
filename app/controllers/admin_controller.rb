@@ -1,7 +1,7 @@
 class AdminController < ApplicationController
-  before_action :logged_in_admin, :only => [:index, :paid_all, :unpaid_all, :useragent, :get_uncommitted_projects, :get_uncommitted_projects_immediately, :set_project_committed, :upload_pdf, :get_delete_requesting_projects, :get_delete_requesting_committed_projects, :set_delete_requesting_projects_deleted, :get_project_by_id, :renew_company_codes, :update_company_codes, :analysis]
+  before_action :logged_in_admin, :only => [:index, :paid_all, :unpaid_all, :useragent, :get_uncommitted_projects, :get_uncommitted_projects_immediately, :set_project_committed, :upload_pdf, :get_delete_requesting_projects, :get_delete_requesting_committed_projects, :set_delete_requesting_projects_deleted, :get_project_by_id, :renew_company_codes, :update_company_codes]
   before_action :initial_search, :only => [:paid_all, :unpaid_all]
-  before_action :logged_in, :only => [:invoice]
+  before_action :logged_in, :only => [:invoice, :analysis]
 
   def index
     if !params[:trader_id].present? && !params[:from].present? && !params[:to].present?
@@ -10,6 +10,13 @@ class AdminController < ApplicationController
       #params[:to] = Date.new(last_month.year, last_month.month, -1).strftime("%Y/%m/%d");
       params[:from] = Date.today.strftime("%Y/%m/%d");
       params[:to] = (Date.today).strftime("%Y/%m/%d");
+      if(current_trader.authority == "all")
+        params[:trader_id] = "*"
+      elsif(current_trader.authority == "self")
+        params[:trader_id] = current_trader.id
+      else
+        params[:trader_id] = current_trader.authority
+      end
       #@waiting = true
       @projects = search_projects(params[:trader_id], params[:from], params[:to]).order("id desc")
     else
@@ -45,7 +52,7 @@ class AdminController < ApplicationController
 
   def invoice
     if(is_admin?)
-      if !params[:trader_id].present? || params[:trader_id] == "*" || !params[:from].present? || !params[:to].present?
+      if !params[:trader_id].present? || !(is_number? params[:trader_id]) || !params[:from].present? || !params[:to].present?
         flash[:danger] = "请正确选择旅行社，开始日期，结束日期。"
         redirect_to "/admin?" + URI.encode_www_form([["trader_id", params[:trader_id]], ["from", params[:from]], ["to", params[:to]]])
         return
@@ -213,11 +220,25 @@ private
       projects = Project.all
     end
 
-    if(id.present? && id != "*")
-      trader = Trader.find_by(:id => id);
-      projects = projects.where(:trader_id => trader.slave_trader_ids + [trader.id])
+    if(id.present?)
+      if(id == "*")
+      elsif(!(is_number? id))
+        @traders = Trader.where(:invoice_company => params[:trader_id]);
+        @ids = Array.new(0, nil)
+        @traders.each do |trader|
+          @ids.push(trader.id)
+        end
+        projects = projects.where("trader_id in (?)", @ids)
+      else
+        trader = Trader.find_by(:id => id);
+        projects = projects.where(:trader_id => trader.slave_trader_ids + [trader.id])
+      end
     end
 
     return projects;
   end
+
+  def is_number? str
+    true if Float(str) rescue false
+  end  
 end

@@ -16,9 +16,11 @@
     <div id="nav-content" class="collapse navbar-collapse">
       <ul class="nav navbar-nav navbar-right">
         <% if logged_in? %> 
+          <% if current_trader.authority != "self" %>
+            <li><%= link_to " 分析", analysis_path, :class => "fa fa-signal require-loading" %></li>
+          <% end %>
           <% if is_admin? %>
             <!-- admin menu -->
-            <li><%= link_to " 分析", analysis_path, :class => "fa fa-signal require-loading" %></li>
             <li><%= link_to " 請求書", admin_path, :class => "fa fa-dollar require-loading" %></li>
             <li><%= link_to " 签证", projects_path, :class => 'fa fa-users require-loading' %></li>
             <li><%= link_to " 中連社", company_codes_path, :class => 'fa fa-book require-loading' %></li>
@@ -27,7 +29,9 @@
             <li><%= link_to " 操作步骤", description_path, :class => 'fa fa-flag' %></li>
           <% else %>
             <li><%= link_to " 电子签证", projects_path, :class => 'fa fa-users' %></li>
-            <li><%= link_to " 我的账单", my_invoice_path, :class => 'fa fa-dollar' %></li>
+            <% if current_trader.authority == "self" %>
+              <li><%= link_to " 我的账单", my_invoice_path, :class => 'fa fa-dollar' %></li>
+            <% end %>
             <li><%= link_to " 操作步骤", description_path, :class => 'fa fa-flag' %></li>
             <!-- trader menu -->
           <% end %>

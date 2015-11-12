@@ -9,9 +9,12 @@ module Constants
   JAPAN_SIDE_COMPANY = {
     :jki => {
       :company_name => "株式会社ジェイ・ケイ・アイ",
+      :site_top_name => "JKI",
+      :logo => "",
       :code => "0712-001",
       #:phone => "090-9845-1588",
       :phone => "03-3835-1195",
+      :fax => "",
       :chief => "申宏伟",
       :gender => "男",
       :job => "社長",
@@ -22,11 +25,23 @@ module Constants
       :signature_2 => "jki_signature2.png",
       :address_1 => "〒110-0015東京都台東区東上野2-20-9",
       :address_2 => "オルガンビル 3F",
+      :bank_1 => "",
+      :bank_2 => "",
+      :bank_3 => "",
+      :bank_english_1 => "",
+      :bank_english_2 => "",
+      :bank_english_3 => "",
+      :bank_english_4 => "",
+      :bank_english_5 => "",
+      :bank_english_6 => ""
     },
     :jcic => {
       :company_name => "クレーンインターナショナル株式会社",
+      :site_top_name => "飞鹤",
+      :logo => "small_jcic_logo.jpg",
       :code => "0509-003",
       :phone => "03-3470-6851",
+      :fax => "03-3470-8615",
       :chief => "東木慶新",
       :gender => "男",
       :job => "社長",
@@ -37,6 +52,15 @@ module Constants
       :signature_2 => "jcic_signature2.png",
       :address_1 => "〒106-0032東京都港区六本⽊7-18-5",
       :address_2 => "ソフイアビル 212号室",
+      :bank_1 => "三菱東京UFJ銀行　六本木支店",
+      :bank_2 => "普通口座　0685088",
+      :bank_3 => "クレーンインターナショナルカブシキガイシャ",
+      :bank_english_1 => "BANK OF TOKYO MITSUBISHI UFJ, LTD.",
+      :bank_english_2 => "Roppongi Branch Office, Tokyo Japan",
+      :bank_english_3 => "045",
+      :bank_english_4 => "0685088",
+      :bank_english_5 => "CRANE　INTERNATIONAL CO., LTD",
+      :bank_english_6 => "BOTKJPJT"
     }
   }
 
@@ -52,6 +76,7 @@ module Constants
   INVOICE_COMPANY_ADDRESS_2 = "ソフイアビル 212号室"
   INVOICE_COMPANY_PHONE = "03-3470-6851"
   INVOICE_COMPANY_FAX = "03-3470-8615"
+
   INVOICE_COMPANY_BANK_1 = "三菱東京UFJ銀行　六本木支店"
   INVOICE_COMPANY_BANK_2 = "普通口座　0685088"
   INVOICE_COMPANY_BANK_3 = "クレーンインターナショナルカブシキガイシャ"

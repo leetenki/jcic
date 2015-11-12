@@ -4,7 +4,7 @@
 
     <!-- ****************** visa info container ******************* -->
     <td class="col-md-5 col-sm-5 col-xs-5">
-        <% if is_admin? %>
+        <% if is_admin? || has_authority? %>
             <div class="origin-company-name-cell" style="cursor:pointer;" onclick="location.href='/traders/<%= project.trader.id %>'"><%= project.trader.company_name %>(<%= project.trader.person_name %>)</div>        
         <% end %>
 
@@ -44,7 +44,7 @@
                         <button class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6" onclick="window.open().location.href='<%= project.pdf.url %>'">帰国報告</button>
                     <% else %>
                         <div class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6 disabled-modify" disabled="disabled">
-                            帰国報告<p class="arrow_box">正在制作，我们需要10〜30分钟工作时间向中联协申请，请稍后再次查看。</p>
+                            帰国報告<p class="arrow_box">正在制作，我们需要10〜30分钟工作时间<br/>向中联协申请，请稍后再次查看。</p>
                         </div>
                     <% end %>
                 </div>
@@ -53,7 +53,7 @@
             <div class="row">
                 <div class="btn-group col-md-12 col-sm-12 col-xs-12"  data-toggle="buttons">
                     <!-- modify -->
-                    <% if is_admin? || is_project_editable(project) %>
+                    <% if is_admin? || has_authority? || is_project_editable(project) %>
                         <button class="btn btn-primary btn-xs col-md-6 col-sm-6 col-xs-6 modify" onclick="location.href='<%= edit_project_path(project) %>'">修改</button>
                     <% else %>
                         <div class="btn btn-primary btn-xs col-md-6 col-sm-6 col-xs-6 disabled-modify" disabled="disabled">
@@ -62,7 +62,7 @@
                     <% end %>
 
                     <!-- delete -->
-                    <% if is_admin? || is_project_deletable(project) %>
+                    <% if is_admin? || has_authority? || is_project_deletable(project) %>
                         <button class="btn btn-danger btn-xs col-md-6 col-sm-6 col-xs-6" onclick="confirmDelete('<%= delete_request_path(project) %>')">申请删除</button>
                     <% else %>
                         <div class="btn btn-danger btn-xs col-md-6 col-sm-6 col-xs-6 disabled-modify" disabled="disabled">

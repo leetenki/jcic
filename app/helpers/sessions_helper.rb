@@ -28,6 +28,10 @@ module SessionsHelper
     return (logged_in? && current_trader.id != 1)
   end
 
+  def has_authority?
+    return current_trader.authority != "self"
+  end
+
   def store_location
     if request.get?
       session[:forwarding_url] = request.url

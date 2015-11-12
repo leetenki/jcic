@@ -78,11 +78,21 @@ class ProjectsController < ApplicationController
 
   #edit
   def edit
-    if(is_admin?)
+    if(is_admin? || current_trader.authority == "all")
       @project = Project.find(params[:id])
     else
-      @project = current_trader.projects.find(params[:id])
-      if(!is_project_editable(@project))
+      if(current_trader.authority == "self")
+        @project = current_trader.projects.find(params[:id])
+      else
+        @traders = Trader.where(:invoice_company => current_trader.authority);
+        @ids = Array.new(0, nil)
+        @traders.each do |trader|
+          @ids.push(trader.id)
+        end
+        @project = Project.where("trader_id in (?)", @ids).find(params[:id])
+      end
+
+      if(!has_authority? && !is_project_editable(@project))
         flash[:danger] = "对不起，此签证已无法修改."
         redirect_to projects_path
       end
@@ -96,12 +106,22 @@ class ProjectsController < ApplicationController
 
     #render :text => project_params
 #=begin
-    if(is_admin?)
+    if(is_admin? || current_trader.authority == "all")
       @project = Project.find_by(:id => params[:id])
       @project.record_timestamps = false
     else
-      @project = current_trader.projects.find_by(:id => params[:id])
-      if(!is_project_editable(@project))
+      if(current_trader.authority == "self")
+        @project = current_trader.projects.find_by(:id => params[:id])
+      else
+        @traders = Trader.where(:invoice_company => current_trader.authority);
+        @ids = Array.new(0, nil)
+        @traders.each do |trader|
+          @ids.push(trader.id)
+        end
+        @project = Project.where("trader_id in (?)", @ids).find_by(:id => params[:id])       
+      end
+
+      if(!has_authority? && !is_project_editable(@project))
         flash[:danger] = "对不起，此签证已无法修改."
         redirect_to projects_path
         return
@@ -199,8 +219,33 @@ class ProjectsController < ApplicationController
     if logged_in?
       if(is_admin?)
         @projects = current_trader.search_projects(Project.all, params[:from], params[:to], params[:payment], params[:confirmation], params[:status], params[:delete_request], params[:ticket_no], params[:japan_company], params[:visa_type]).order("id desc")
+=begin
+        if(current_trader.authority == "all")
+          @projects = current_trader.search_projects(Project.all, params[:from], params[:to], params[:payment], params[:confirmation], params[:status], params[:delete_request], params[:ticket_no], params[:japan_company], params[:visa_type]).order("id desc")
+        elsif(current_trader.authority == "self")
+          @projects = current_trader.search_projects(current_trader.projects, params[:from], params[:to], params[:payment], params[:confirmation], params[:status], params[:delete_request], params[:ticket_no], params[:japan_company], params[:visa_type]).order("id desc")
+        else
+          @traders = Trader.where(:invoice_company => current_trader.authority);
+          @ids = Array.new(0, nil)
+          @traders.each do |trader|
+            @ids.push(trader.id)
+          end
+          @projects = current_trader.search_projects(Project.where("trader_id in (?)", @ids), params[:from], params[:to], params[:payment], params[:confirmation], params[:status], params[:delete_request], params[:ticket_no], params[:japan_company], params[:visa_type]).order("id desc")
+        end
+=end
       else
-        @projects = current_trader.search_projects_by_keyword(current_trader.projects, params[:keyword]).order("id desc")
+        if(current_trader.authority == "self")
+          @projects = current_trader.search_projects_by_keyword(current_trader.projects, params[:keyword]).order("id desc")
+        elsif(current_trader.authority == "all")
+          @projects = current_trader.search_projects_by_keyword(Project.all, params[:keyword]).order("id desc")
+        else
+          @traders = Trader.where(:invoice_company => current_trader.authority);
+          @ids = Array.new(0, nil)
+          @traders.each do |trader|
+            @ids.push(trader.id)
+          end
+          @projects = current_trader.search_projects_by_keyword(Project.where("trader_id in (?)", @ids), params[:keyword]).order("id desc")
+        end
       end
     end
   end
@@ -209,12 +254,19 @@ class ProjectsController < ApplicationController
   def show
     visa_type_table = {"individual" => "个签", "group" => "团签", "3years" => "三年多次", "5years" => "五年多次"}
 
-    if(is_admin?)
+    if(is_admin? || current_trader.authority == "all")
       @project = Project.where("id = ?", params[:id]).includes(:clients, :schedules)[0]
-    else
-      #@project = current_trader.projects.find_by(:id => params[:id])
+    elsif(current_trader.authority == "self")
       @project = current_trader.projects.where("id = ?", params[:id]).includes(:clients, :schedules)[0]
+    else
+      @traders = Trader.where(:invoice_company => current_trader.authority);
+      @ids = Array.new(0, nil)
+      @traders.each do |trader|
+        @ids.push(trader.id)
+      end
+      @project = Project.where("trader_id in (?)", @ids).where("id = ?", params[:id]).includes(:clients, :schedules)[0]
     end
+
     @visa_company = CompanyCode.where("code = ?", @project.china_company_code)
     @guarantee_mode = current_trader.guarantee_mode
 
@@ -290,8 +342,19 @@ class ProjectsController < ApplicationController
       @project = Project.find_by(:id => params[:id])
       flash[:success] = "delete_request 修改为 " + "true" + " 状態."
     else
-      @project = current_trader.projects.find_by(:id => params[:id])
-      if(!is_project_deletable(@project))
+      if(current_trader.authority == "all")
+        @project = Project.find_by(:id => params[:id])
+      elsif(current_trader.authority == "self")
+        @project = current_trader.projects.find_by(:id => params[:id])
+      else
+        @traders = Trader.where(:invoice_company => current_trader.authority);
+        @ids = Array.new(0, nil)
+        @traders.each do |trader|
+          @ids.push(trader.id)
+        end
+        @project = Project.where("trader_id in (?)", @ids).find_by(:id => params[:id])
+      end
+      if(!has_authority? && !is_project_deletable(@project))
         flash[:danger] = "对不起，此签证已无法删除."
         redirect_to projects_path
         return
@@ -329,10 +392,17 @@ class ProjectsController < ApplicationController
   end
 
   def signature
-    if(is_admin?)
+    if(is_admin? || current_trader.authority == "all")
       @project = Project.find_by(:id => params[:id])
-    else
+    elsif(current_trader.authority == "self")
       @project = current_trader.projects.find_by(:id => params[:id])
+    else
+      @traders = Trader.where(:invoice_company => current_trader.authority);
+      @ids = Array.new(0, nil)
+      @traders.each do |trader|
+        @ids.push(trader.id)
+      end
+      @project = Project.where("trader_id in (?)", @ids).find_by(:id => params[:id])      
     end
     if(!@project)
       redirect_to request.referrer || projects_path

@@ -25,6 +25,7 @@
 <% if !params[:unit] %>
   <% params[:unit] = "number" %>
 <% end %>
+
 <h1><i class="fa fa-signal"></i> 数据分析</h1>
 <div class="row">
   <div class="container col-md-12">
@@ -34,7 +35,6 @@
           <td colspan="2" style="text-align:center;">
 
             <form action="/admin/analysis" method="get" accept-charset="UTF-8">
-
 
               <div class="col col-md-3">
                 <div data-toggle="buttons" style="margin-top:0; margin:5px;" class="btn-group toggle">
@@ -82,20 +82,27 @@
                 </div>
               </div>
 
-              <div class="col-md-2" style="padding-top:5px;">
+              <div class="col-md-3" style="padding-top: 5px">
                 <input type="submit" value="分析" class="btn btn-primary require-loading">
               </div>
             </form>
-
-
           </td>
         </tr>
       </thead>
-      <% @traders.order("id desc").reverse.each do |trader| %>
+
+      <% if current_trader.authority == "all" %>
+        <% traders = @traders %>
+      <% elsif current_trader.authority == "self" %>
+        <% traders = @traders.where(:id => current_trader.id) %>        
+      <% else %>
+        <% traders = @traders.where(:invoice_company => current_trader.authority) %>
+      <% end %>
+
+      <% traders.order("id desc").reverse.each do |trader| %>
         <tr id="<%= trader.id %>">
           <td style="width: 25%">
             <div style="font-weight: bolder; color: #888888; text-align: left;">
-              <% if trader.id == 1 %>
+              <% if trader.id == current_trader.id %>
                 合計
               <% else %>
                 <div style="cursor:pointer;" onclick="location.href='/traders/<%= trader.id %>'">
@@ -123,7 +130,7 @@
             <% (analysis_period).downto(0).each do |num| %>
               <% target_date = Date.today - num %>
               <% labels += '"' + target_date.strftime("%m月%d日") + '"' %>
-              <% if trader.id == 1 %>
+              <% if trader.id == current_trader.id %>
                 <% projects = Project.where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1, :status => "committed", :delete_request => false) %>
                 <% if params[:mode] == "deleted" %>
                   <% deleted_projects = Project.where(:created_at => Time.parse(target_date.strftime("%Y-%m-%d"))..Time.parse(target_date.strftime("%Y-%m-%d"))+60*60*24-1).where("status = ? OR delete_request = ?", "deleted", true) %>
