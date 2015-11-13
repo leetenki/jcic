@@ -50,7 +50,7 @@
 <!-- ************************** info *************************** -->
 <table style="width:100%; margin-top: 30px;">
   <tr>
-    <td style="border: 1px solid black; width: 50%; padding: 10px; font-size:20px; text-align:center"><%= @trader.company_name %> 様</td>
+    <td style="border: 1px solid black; width: 50%; height: 80px; padding: 10px; font-size:20px; text-align:center"><%= @trader.company_name %> 様</td>
     <td style="width: 50%; padding-left:50px; font-size:14px;" rowspan="3">
       <%= company_info[:company_name] %><br/>
       <%= company_info[:address_1] %><br/>
@@ -124,7 +124,7 @@
 
 <!-- ************************** details *************************** -->
 <% all_people = 0 %>
-<% if(@projects.length <= 10) %>
+<% if(@projects.length <= 9) %>
   <table class="details">
     <thead>
       <tr>
@@ -174,7 +174,7 @@
       </tr>
     </thead>
     <tbody>
-     <% for index in 0..9 do %>
+     <% for index in 0..8 do %>
       <% project = @projects[index] %>
         <% if project[:delete_request] || project[:status] == "deleted" %>
           <tr style="text-decoration:line-through">
@@ -196,8 +196,8 @@
   </table>
 
   <!-- body table --> 
-  <% body_cnt = ((@projects.length-10) / 40).to_i %>
-  <% index = 9 %>
+  <% body_cnt = ((@projects.length-9) / 40).to_i %>
+  <% index = 8 %>
   <% body_cnt.times do %>
     <table class="details" style="page-break-after:always">
       <tbody>
