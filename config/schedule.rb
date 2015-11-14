@@ -30,3 +30,7 @@ end
 every 1.day, :at => '3:30 am' do
   runner "Project.sweep"
 end
+
+every 1.day, :at => '2:59 pm' do
+  command "cd /home/leetenki/jcic/log && sh unicorn_log_dumper.sh"
+end
