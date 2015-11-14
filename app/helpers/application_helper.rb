@@ -160,4 +160,12 @@ module ApplicationHelper
   def get_payment_deadline(project)
     return Date.new(project.created_at.year, project.created_at.month+1, 10) 
   end
+
+  def get_site_top_name
+    if(current_trader)
+      return Constants::JAPAN_SIDE_COMPANY[current_trader.invoice_company.to_sym][:site_top_name] + "签证管理中心"
+    else
+      return "来日签证系统"
+    end
+  end
 end
