@@ -487,7 +487,7 @@
                               birthday: getCellValue(worksheet, clientsRowIndex, clientsColIndex+2),
                               gender: getCellValue(worksheet, clientsRowIndex, clientsColIndex+3),
                               hometown: getCellValue(worksheet, clientsRowIndex, clientsColIndex+4).replace(/\(.{0,}\)/g, "").replace(/（.{0,}）/g, "").replace(/[ 　]{1,}/, "").match(/.{0,5}/)[0],
-                              passportNo: getCellValue(worksheet, clientsRowIndex, clientsColIndex+5).match(/.{0,11}/)[0],
+                              passportNo: getCellValue(worksheet, clientsRowIndex, clientsColIndex+5).replace(/[ 　]{1,}/, "").match(/.{0,11}/)[0],
                               job: getCellValue(worksheet, clientsRowIndex, clientsColIndex+6).replace(/\(.{0,}\)/g, "").replace(/（.{0,}）/g, "").replace(/[ 　]{1,}/, "").match(/.{0,5}/)[0],
                         });
                         clientsRowIndex++;
@@ -552,7 +552,7 @@
                               gender: getCellValue(worksheet, clientsRowIndex, clientsColIndex+2),
                               hometown: getCellValue(worksheet, clientsRowIndex, clientsColIndex+3).replace(/\(.{0,}\)/g, "").replace(/（.{0,}）/g, "").replace(/[ 　]{1,}/, "").match(/.{0,5}/)[0],
                               birthday: getCellValue(worksheet, clientsRowIndex, clientsColIndex+4),
-                              passportNo: getCellValue(worksheet, clientsRowIndex, clientsColIndex+5).match(/.{0,11}/)[0],
+                              passportNo: getCellValue(worksheet, clientsRowIndex, clientsColIndex+5).replace(/[ 　]{1,}/, "").match(/.{0,11}/)[0],
                               job: getCellValue(worksheet, clientsRowIndex, clientsColIndex+6).replace(/\(.{0,}\)/g, "").replace(/（.{0,}）/g, "").replace(/[ 　]{1,}/, "").match(/.{0,5}/)[0],
                         });
                         clientsRowIndex++;

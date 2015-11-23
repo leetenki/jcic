@@ -4,9 +4,37 @@ module Constants
   VISA_TYPE_TABLE = {"individual" => "个人查证", "group" => "团体查证", "3years" => "三年多次", "5years" => "五年多次"}
 
   #身元保証書用 & 自動入力用
-  GROUP_VISA = [:jki, :jcic]
-  INDIVIDUAL_VISA = [:jki] #:jki
+  GROUP_VISA = [:jki, :jcic, :jtg]
+  INDIVIDUAL_VISA = [:jki, :jtg] #:jki
   JAPAN_SIDE_COMPANY = {
+    :jtg => {
+      :company_name => "ジェーティージー華信株式会社",
+      :site_top_name => "JTG華信",
+      :logo => "",
+      :code => "1102-004",
+      #:phone => "090-9845-1588",
+      :phone => "03-5325-6288",
+      :fax => "03-5325-6689",
+      :chief => "高　鵬",
+      :gender => "男",
+      :job => "社長",
+      :country => "中国",
+      :stay => "日本永住",
+      :birthday => "1959年9月27日",
+      :signature_1 => "jtg_signature1.png",
+      :signature_2 => "jtg_signature2.png",
+      :address_1 => "〒160-0023東京都新宿区西新宿1-22-2",
+      :address_2 => "新宿サンエ－ビル15階",
+      :bank_1 => "三井住友銀行　新宿西口支店",
+      :bank_2 => "普通口座　3153626",
+      :bank_3 => "ジェーティージーカシン　カブシキガイシャ",
+      :bank_english_1 => "SUMITOMO MITSUI BANKING CORPORATION",
+      :bank_english_2 => "Shinjuku-nishiguchi Branch",
+      :bank_english_3 => "259",
+      :bank_english_4 => "3153626",
+      :bank_english_5 => "JTGKASHIN Co., Ltd",
+      :bank_english_6 => "SMBC JP JT"
+    },
     :jki => {
       :company_name => "株式会社ジェイ・ケイ・アイ",
       :site_top_name => "JKI",
@@ -33,7 +61,7 @@ module Constants
       :bank_english_3 => "",
       :bank_english_4 => "",
       :bank_english_5 => "",
-      :bank_english_6 => ""
+      :bank_english_6 => ""      
     },
     :jcic => {
       :company_name => "クレーンインターナショナル株式会社",
