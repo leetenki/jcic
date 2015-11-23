@@ -4,8 +4,8 @@ module Constants
   VISA_TYPE_TABLE = {"individual" => "个人查证", "group" => "团体查证", "3years" => "三年多次", "5years" => "五年多次"}
 
   #身元保証書用 & 自動入力用
-  GROUP_VISA = [:jki, :jcic, :jtg]
-  INDIVIDUAL_VISA = [:jki, :jtg] #:jki
+  GROUP_VISA = [:jtg, :jki, :jcic]
+  INDIVIDUAL_VISA = [:jtg, :jki] #:jki
   JAPAN_SIDE_COMPANY = {
     :jtg => {
       :company_name => "ジェーティージー華信株式会社",
