@@ -53,7 +53,7 @@ module ApplicationHelper
   end
 
   def is_project_editable(project)
-    if(project.status=="uncommitted" && Time.now < (project.updated_at+60*Constants::EDITABLE_MIN))
+    if(project.status=="uncommitted" && Time.now < (project.updated_at+60*project.trader.editable_min))
       return true
     else
       return false

@@ -56,6 +56,9 @@
       <%= f.label :bank, "银行账户" %>
       <%= f.text_field :bank, :class => 'form-control' %>
 
+      <%= f.label :editable_min, "編集可能時間(分)" %>
+      <%= f.text_field :editable_min, :class => 'form-control' %>
+
       <%= f.label :master_id, "属于(上家)" %>
       <select name="trader[master_id]" class="form-control" id="master_selector">
         <option value="*" <%= "selected=selected" if !trader.master_relationship %>>---</option>
