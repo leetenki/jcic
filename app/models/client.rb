@@ -56,7 +56,7 @@ class Client < ActiveRecord::Base
     if(!passport_no.present?)
       errors.add(:passport_no, "您未输入旅护照号.")    
     elsif(passport_no.match(/[^a-zA-Z0-9]/))
-      errors.add(:passport_no, "护照号止可输入英文字母或数字.")        
+      errors.add(:passport_no, "护照号只可输入英文字母或数字.")        
     elsif(passport_no.length < 8 || passport_no.length > 11)
       #only 8 or 9 or 10 or 11 digits
       errors.add(:passport_no, "护照号位数不正确.")
