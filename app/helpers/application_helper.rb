@@ -158,7 +158,11 @@ module ApplicationHelper
 
 
   def get_payment_deadline(project)
-    return Date.new(project.created_at.year, project.created_at.month, 10) 
+    if(project.created_at.month < 12)
+      return Date.new(project.created_at.year, project.created_at.month + 1, 10) 
+    else
+      return Date.new(project.created_at.year + 1, 1, 10) 
+    end
   end
 
   def get_site_top_name
