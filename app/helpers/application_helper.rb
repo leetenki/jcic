@@ -76,6 +76,10 @@ module ApplicationHelper
     end
   end
 
+  def replace_parenthesis(str)
+    return str.gsub("（", " ( ").gsub("）", " ) ")
+  end
+
   def get_projects_price(projects)
     total_price = 0
     projects.each do |project|
