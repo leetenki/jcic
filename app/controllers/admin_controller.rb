@@ -171,6 +171,10 @@ class AdminController < ApplicationController
         #old_company_code.destroy
       end
     end
+
+    #rename doubled company codes
+    CompanyCode.rename_doubled_company_codes
+
     render :text => CompanyCode.all.length;
   end
 
