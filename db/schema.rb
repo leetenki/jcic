@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151125055736) do
+ActiveRecord::Schema.define(version: 20151218033618) do
 
   create_table "clients", force: :cascade do |t|
     t.integer  "project_id"
@@ -136,9 +136,10 @@ ActiveRecord::Schema.define(version: 20151125055736) do
     t.string   "individual_japan_company", default: "random"
     t.string   "guarantee_mode",           default: "normal"
     t.string   "work_mode",                default: "auto"
-    t.string   "invoice_company",          default: "jcic"
+    t.string   "invoice_company",          default: "jcic" #can be viewed all the data
     t.string   "authority",                default: "self"
     t.integer  "editable_min",             default: 5
+    t.string   "invoice_sign_company",     default: "jcic" #signature of invoice and site_top menu
   end
 
   add_index "traders", ["account"], name: "index_traders_on_account", unique: true

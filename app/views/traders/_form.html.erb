@@ -128,6 +128,17 @@
       </div>
       <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
         <% Constants::JAPAN_SIDE_COMPANY.each do |key, value| %>
+          <label class="btn btn-default <%= 'active' if trader.invoice_sign_company == key.to_s %>">
+            <input type="radio" value="<%= key %>" name="trader[invoice_sign_company]" <%= 'checked' if trader.invoice_sign_company == key.to_s %> /><%= key.upcase %>
+          </label>
+        <% end %>
+      </div>
+
+      <div style="font-weight: bold">
+        被閲覧権限
+      </div>
+      <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
+        <% Constants::JAPAN_SIDE_COMPANY.each do |key, value| %>
           <label class="btn btn-default <%= 'active' if trader.invoice_company == key.to_s %>">
             <input type="radio" value="<%= key %>" name="trader[invoice_company]" <%= 'checked' if trader.invoice_company == key.to_s %> /><%= key.upcase %>
           </label>
