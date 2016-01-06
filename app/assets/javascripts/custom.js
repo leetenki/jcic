@@ -872,9 +872,11 @@ function validateAndReplaceHometown(id) {
 
 function validateBirthday(id) {
   var inputText = replaceDateStr($("#" + id + " input")[0].value);
+  var minYear = ((new Date()).getFullYear() - 100).toString();
+
   $("#" + id + " input")[0].value = inputText;
 
-  if(ckDate(inputText) && (new Date(inputText).getTime()) < getAbsoluteToday().getTime() && (new Date(inputText).getTime()) >= (new Date("1915/01/01").getTime())) {
+  if(ckDate(inputText) && (new Date(inputText).getTime()) < getAbsoluteToday().getTime() && (new Date(inputText).getTime()) >= (new Date(minYear + "/01/01").getTime())) {
     return true;
   } else {
     return false;
