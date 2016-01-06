@@ -105,7 +105,11 @@
               <% if trader.id == current_trader.id %>
                 合計
               <% else %>
-                <div style="cursor:pointer;" onclick="location.href='/traders/<%= trader.id %>'">
+                <% if is_admin? %>
+                  <div style="cursor:pointer;" onclick="location.href='/traders/<%= trader.id %>'">
+                <% else %>
+                  <div>
+                <% end %>
                   <% if trader.id == params[:id].to_i %>
                     <span style="color:orange;"><%= trader.company_name %></span>
                   <% else %>
