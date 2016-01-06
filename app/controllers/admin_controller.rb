@@ -51,7 +51,7 @@ class AdminController < ApplicationController
   end
 
   def invoice
-    if(is_admin?)
+    if(is_admin? || has_authority?)
       if !params[:trader_id].present? || !(is_number? params[:trader_id]) || !params[:from].present? || !params[:to].present?
         flash[:danger] = "请正确选择旅行社，开始日期，结束日期。"
         redirect_to "/admin?" + URI.encode_www_form([["trader_id", params[:trader_id]], ["from", params[:from]], ["to", params[:to]]])

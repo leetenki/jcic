@@ -28,6 +28,7 @@ module SessionsHelper
     return (logged_in? && current_trader.id != 1)
   end
 
+  # has view authority
   def has_authority?
     return current_trader.authority != "self"
   end

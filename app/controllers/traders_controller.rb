@@ -1,6 +1,6 @@
 class TradersController < ApplicationController
   before_action :logged_in_admin, :only => [:index, :show, :new, :create, :edit, :update, :destroy, :add_slave, :remove_slave]
-  before_action :logged_in , :only => [:my_invoice]
+  before_action :logged_in, :only => [:my_invoice]
 
   def index
     @traders = Trader.all.order("id desc")
@@ -97,7 +97,7 @@ class TradersController < ApplicationController
 
   #invoice list page
   def my_invoice
-    if(is_admin?)
+    if(is_admin? || has_authority?)
       @trader = Trader.find_by(:id => params[:id])
     else
       @trader = current_trader
