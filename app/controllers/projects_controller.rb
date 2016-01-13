@@ -24,10 +24,11 @@ class ProjectsController < ApplicationController
     stay_term = params[:stay_term].to_i
 
     if(stay_term < 40 && stay_term > 0 && in_airport.length <= 5 && out_airport.length <= 5)
-      @projects = Project.where("stay_term = ? and has_full_schedule = ?", stay_term, true).includes(:schedules)
-
+      # search by stay_term 
+      @projects = Project.where(:stay_term => stay_term, :has_full_schedule => true).includes(:schedules)
       if(@projects && @projects.length > 0)
 
+        # search by in_airport
         @strict_match_result = []
         @projects.each do |project|
           if(ChineseConverter.japanesed(project.schedules[0].plan).match(in_airport))
@@ -38,6 +39,7 @@ class ProjectsController < ApplicationController
           @projects = @strict_match_result
         end
 
+        # search by out_airport
         @strict_match_result = []
         @projects.each do |project|
           if(ChineseConverter.japanesed(project.schedules[project.schedules.length-1].plan).match(out_airport))
@@ -47,9 +49,9 @@ class ProjectsController < ApplicationController
         if(@strict_match_result && @strict_match_result.length > 0)
           @projects = @strict_match_result
         end
-      end
 
-      @result = @projects[rand(@projects.length)].schedules.to_json({:only => [:plan, :hotel]})
+        @result = @projects[rand(@projects.length)].schedules.to_json({:only => [:plan, :hotel]})
+      end
     end
 
     render :text => @result

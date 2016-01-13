@@ -1180,7 +1180,7 @@
                   <i class="fa fa-bus"></i> 日程表 共 <span class="number" id="schedules-total"><%= f.object.schedules.length %></span> 天
             </div>
             <% if project.trader.auto_schedule == "active" %>
-              <div id="auto_schedule_button" class="btn btn-default" data-toggle="modal" data-target="#modal-panel2">+ 自動生成</div>
+              <div id="auto_schedule_button" class="btn btn-default" data-toggle="modal" data-target="#modal-panel2"><i class="fa fa-joomla"></i> 自動生成</div>
             <% end %>
 
             <% if project.trader.validation_mode == "easy" %>
@@ -1382,12 +1382,12 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
 
-                <h5 class="modal-title" id="modal-label">请输入日本入境地点与出境地点.</h5>
+                <h5 class="modal-title" id="modal-label">　</h5>
             </div>
 
             <div class="modal-body">
-                  日本入境地<input type="text" autocomplete="off" class="form-control" placeholder="成田" id="airport_in" maxlength="5">
-                  日本出境地<input type="text" autocomplete="off" class="form-control" placeholder="成田" id="airport_out" maxlength="5">
+                  日本入境区域<input type="text" autocomplete="off" class="form-control" placeholder="成田" id="airport_in" maxlength="5">
+                  日本出境区域<input type="text" autocomplete="off" class="form-control" placeholder="成田" id="airport_out" maxlength="5">
                   <input type="hidden" autocomplete="off" class="form-control" placeholder="10" id="stay_term" maxlength="2">
             </div>
 
