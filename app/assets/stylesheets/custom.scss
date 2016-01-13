@@ -593,6 +593,17 @@ div#clients_container {
   z-index: 9999;
 }
 
+#now_loading2 {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  left: 50%;
+  top: 50%;
+  margin-left: -150px;
+  margin-top: -150px;
+  z-index: 9999;
+}
+
 .errors-container {
   padding-top: 20px;
 }

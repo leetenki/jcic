@@ -826,7 +826,8 @@
                   },
                   success: function(data) {
                     $('#modal-panel2').modal('hide');
-                    $("#now_loading")[0].style.display = "none"              
+                    $("#now_loading2")[0].style.display = "none"              
+                    $("#parse_schedule_button")[0].disabled = false;
                     if(data.length == 0) {
                       alert("自动生成失败，没有模版。")
                     } else { // assignment
@@ -843,11 +844,13 @@
                   },
                   error: function(data) {
                     $('#modal-panel2').modal('hide');
-                    $("#now_loading")[0].style.display = "none"              
+                    $("#now_loading")[0].style.display = "none";         
+                    $("#parse_schedule_button")[0].disabled = false;
                     alert("自动生成失败，没有模版。")
                   }
               });
-              $("#now_loading")[0].style.display = "block"              
+              $("#parse_schedule_button")[0].disabled = true;
+              $("#now_loading2")[0].style.display = "block"              
             }
 
             window.onload = function() {
@@ -1181,6 +1184,7 @@
             </div>
             <% if project.trader.auto_schedule == "active" %>
               <div id="auto_schedule_button" class="btn btn-default" data-toggle="modal" data-target="#modal-panel2"><i class="fa fa-joomla"></i> 自動生成</div>
+              <img src="/cube.gif" id="now_loading2" style="display:none"/>
             <% end %>
 
             <% if project.trader.validation_mode == "easy" %>
