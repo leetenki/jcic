@@ -49,7 +49,7 @@ class ProjectsController < ApplicationController
         end
       end
 
-      @result = @projects.length
+      @result = @projects[rand(@projects.length)].schedules.to_json({:only => [:plan, :hotel]})
     end
 
     render :text => @result

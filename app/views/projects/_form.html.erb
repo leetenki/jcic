@@ -782,6 +782,11 @@
               }
 
               // extract and parse
+              var lastDay = new Date(document.getElementById("dateLeaving").value);
+              var firstDay = new Date(document.getElementById("dateArrival").value);
+              var stayTerm = subDate(lastDay, firstDay) + 1;
+              $("#stay_term")[0].value = stayTerm;
+
               if(firstTimeToExtract) {
                 var inSchedule = $("#schedules_container tr").first().find("textarea")[1].value
                 var outSchedule = $("#schedules_container tr").last().find("textarea")[1].value
@@ -798,13 +803,8 @@
                 } else {
                   outAirport = outAirport[0]
                 }
-                var lastDay = new Date(document.getElementById("dateLeaving").value);
-                var firstDay = new Date(document.getElementById("dateArrival").value);
-                var stayTerm = subDate(lastDay, firstDay) + 1;
-
                 $("#airport_in")[0].value = inAirport;
                 $("#airport_out")[0].value = outAirport;
-                $("#stay_term")[0].value = stayTerm;
                 firstTimeToExtract = false;
               }
             }
