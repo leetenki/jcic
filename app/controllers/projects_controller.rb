@@ -29,6 +29,7 @@ class ProjectsController < ApplicationController
       if(@projects && @projects.length > 0)
 
         # search by in_airport
+        @projects = @projects.sample(200)
         @strict_match_result = []
         @projects.each do |project|
           if(ChineseConverter.japanesed(project.schedules[0].plan).match(in_airport))
@@ -50,7 +51,7 @@ class ProjectsController < ApplicationController
           @projects = @strict_match_result
         end
 
-        @result = @projects[rand(@projects.length)].schedules.to_json({:only => [:plan, :hotel]})
+        @result = @projects.sample(1).schedules.to_json({:only => [:plan, :hotel]})
       end
     end
 
