@@ -197,6 +197,40 @@ class Project < ActiveRecord::Base
     end
   end
 
+  # used in validation for object to check full schedule
+  def check_full_schedule
+    has_full_schedule = true
+    schedules = self.schedules.all
+    schedules.each_with_index do |schedule, index|
+      if(index != 0 && index != schedules.length-1)
+        #if(schedule[:plan].length == 0 || schedule[:hotel].length == 0)
+        if(schedule[:plan].length == 0)
+          has_full_schedule = false
+          break
+        end
+      end
+    end
+
+    return has_full_schedule
+  end
+
+  ############ used for upgrad system ##########
+  def self.upgrade_full_schedule(stay_term)
+    projects = self.where(:stay_term => stay_term)
+    projects.each do |project|
+      p project.id
+      if(project.check_full_schedule)
+        project.assign_attributes({:has_full_schedule => true})
+        project.record_timestamps = false
+        project.save :validate => false;
+
+        p "has full schedule."
+      end
+    end
+
+    return
+  end
+
   ############ Sweep ##############
   def self.sweep(time = 185.days)
     if time.is_a?(String)

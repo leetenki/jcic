@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151218033618) do
+ActiveRecord::Schema.define(version: 20160113112008) do
 
   create_table "clients", force: :cascade do |t|
     t.integer  "project_id"
@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(version: 20151218033618) do
     t.string   "system_code"
     t.string   "pdf"
     t.string   "japan_company",               default: "jcic"
+    t.boolean  "has_full_schedule",           default: false
   end
 
   add_index "projects", ["trader_id", "created_at"], name: "index_projects_on_trader_id_and_created_at"
@@ -119,8 +120,8 @@ ActiveRecord::Schema.define(version: 20151218033618) do
     t.string   "bank"
     t.string   "address"
     t.string   "email"
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
     t.integer  "indivisual_price",         default: 500
     t.integer  "group_price_indivisual",   default: 0
     t.integer  "group_price_1_10",         default: 0
@@ -136,10 +137,11 @@ ActiveRecord::Schema.define(version: 20151218033618) do
     t.string   "individual_japan_company", default: "random"
     t.string   "guarantee_mode",           default: "normal"
     t.string   "work_mode",                default: "auto"
-    t.string   "invoice_company",          default: "jcic" #can be viewed all the data
+    t.string   "invoice_company",          default: "jcic"
     t.string   "authority",                default: "self"
     t.integer  "editable_min",             default: 5
-    t.string   "invoice_sign_company",     default: "jcic" #signature of invoice and site_top menu
+    t.string   "invoice_sign_company",     default: "jcic"
+    t.string   "auto_schedule",            default: "inactive"
   end
 
   add_index "traders", ["account"], name: "index_traders_on_account", unique: true

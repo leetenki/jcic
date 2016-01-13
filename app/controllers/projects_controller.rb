@@ -4,7 +4,7 @@ require 'era_ja/date'
 include ChineseConverter
 
 class ProjectsController < ApplicationController
-  before_action :logged_in, :only => [:new, :create, :index, :edit, :update, :destroy, :show, :need_delete, :signature]
+  before_action :logged_in, :only => [:new, :create, :index, :edit, :update, :destroy, :show, :need_delete, :signature, :generate_random_schedule]
   before_action :init_company_codes, :only => [:new, :create, :edit, :update]
   before_action :logged_in_admin, :only => [:store_pdf]
 
@@ -13,6 +13,16 @@ class ProjectsController < ApplicationController
     @project = current_trader.projects.build
     @project.schedules.build
     @project.clients.build
+  end
+
+  # function to generate random schedule
+  def generate_random_schedule
+    in_airport = params[:in_airport]
+    out_airport = params[:out_airport]
+    stay_term = params[:stay_term]
+
+    @projects = Project.where(:stay_term => stay_term.to_i).includes(:schedules)
+    render :text => @projects[rand(@projects.length)].schedules.to_json({:only => [:plan, :hotel]})
   end
 
   def create
@@ -433,6 +443,11 @@ class ProjectsController < ApplicationController
       else
         @project.japan_company = current_trader.individual_japan_company.intern
       end
+    end
+
+    # check if has full schedule
+    if(@project.check_full_schedule)
+      @project.has_full_schedule = true
     end
   end
 

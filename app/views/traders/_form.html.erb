@@ -176,6 +176,18 @@
       </div>
 
       <div style="font-weight: bold">
+        日程表自动生成功能
+      </div>
+      <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
+        <label class="btn btn-default <%= 'active' if trader.auto_schedule == 'inactive' %>">
+          <input type="radio" value="inactive" name="trader[auto_schedule]" <%= 'checked' if trader.auto_schedule == 'inactive' %> />無効
+        </label>
+        <label class="btn btn-default <%= 'active' if trader.auto_schedule == 'active' %>">
+          <input type="radio" value="active" name="trader[auto_schedule]" <%= 'checked' if trader.auto_schedule == 'active' %> />有効
+        </label>
+      </div>
+
+      <div style="font-weight: bold">
         人工智能模式
       </div>
       <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">

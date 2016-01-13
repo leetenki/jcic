@@ -1790,7 +1790,7 @@ function initialValidation() {
     regenerateScheduleTable();   
   } else {
     if($("#schedules_container table tr").length == 0) {
-      $("#schedules_container table tbody").append(createScheduleTag(0, formatDate(new Date())));    
+      $("#schedules_container table tbody").append(createScheduleTag(0, formatDate(new Date())));
     }
     $("#schedules_container table textarea").attr("disabled", "disabled");    
   }

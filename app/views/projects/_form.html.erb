@@ -759,6 +759,74 @@
                       $("#show_schedules").click()                      
                 }
             }
+
+            // extract airport information from schedule table
+            var firstTimeToExtract = true;
+            function extractAirport(e) {
+              // check if schedule existed
+              if(!validateDates()) {
+                e.preventDefault();
+                e.stopPropagation();
+                alert("请输入日本入境日期与出境日期");
+                return;
+              }
+
+              // extract and parse
+              if(firstTimeToExtract) {
+                var inSchedule = $("#schedules_container tr").first().find("textarea")[1].value
+                var outSchedule = $("#schedules_container tr").last().find("textarea")[1].value
+
+                var inAirport = "成田";
+                var outAirport = "成田";
+                var lastDay = new Date(document.getElementById("dateLeaving").value);
+                var firstDay = new Date(document.getElementById("dateArrival").value);
+                var stayTerm = subDate(lastDay, firstDay) + 1;
+
+                $("#airport_in")[0].value = inAirport;
+                $("#airport_out")[0].value = outAirport;
+                $("#stay_term")[0].value = stayTerm;
+                firstTimeToExtract = false;
+              }
+            }
+
+            // function to send auto schedule basic information
+            function sendAutoSchedule(e) {
+              var inAirport = $("#airport_in")[0].value
+              var outAirport = $("#airport_out")[0].value
+              var stayTerm = $("#stay_term")[0].value
+
+              // send
+              $.ajax({
+                  url: "/random_schedule",
+                  type: 'GET',
+                  data: {
+                    in_airport: inAirport,
+                    out_airport: outAirport,
+                    stay_term: stayTerm
+                  },
+                  success: function(data) {
+                    $('#modal-panel2').modal('hide');
+                    $("#now_loading")[0].style.display = "none"              
+                    if(data.length == 0) {
+                      alert("自动生成失败，没有模版。")
+                    }
+
+                    // assignment
+                    console.log(data.length)
+                  },
+                  error: function(data) {
+                    $('#modal-panel2').modal('hide');
+                    $("#now_loading")[0].style.display = "none"              
+                    alert("自动生成失败，没有模版。")
+                  }
+              });
+              $("#now_loading")[0].style.display = "block"              
+            }
+
+            window.onload = function() {
+                document.getElementById("auto_schedule_button").addEventListener("click", extractAirport, false)
+                document.getElementById("parse_schedule_button").addEventListener("click", sendAutoSchedule, true)
+            }
       </script>
 <% end %>
 
@@ -1066,14 +1134,14 @@
             <i class="fa fa-plus-square-o fa-4x add_client" onclick="addClientRow()"></i>
       </div>
 
-      <% if project.trader.validation_mode == "simplest" || project.trader.validation_mode == "easy" %>
+      <% if project.trader.auto_schedule == "inactive" && (project.trader.validation_mode == "simplest" || project.trader.validation_mode == "easy") %>
             <div class="row">
                   <div id="show_schedules" class="col col-md-2 col-md-offset-5 btn btn-default" style="border-radius: 30px; margin-bottom: 30px;" onclick="showSchedulesContainer()">+ 详细日程表</div>
             </div>
       <% end %>
 
       <!--************************* schedules ***************************-->
-      <% if project.trader.validation_mode == "strict" %>
+      <% if project.trader.validation_mode == "strict" || project.trader.auto_schedule == "active" %>
             <div id="schedules_container" class="dashed_container col-md-10 col-md-offset-1" style="display:block">
       <% else %>
             <div id="schedules_container" class="dashed_container col-md-10 col-md-offset-1" style="display:none">
@@ -1081,7 +1149,9 @@
             <div class="title">
                   <i class="fa fa-bus"></i> 日程表 共 <span class="number" id="schedules-total"><%= f.object.schedules.length %></span> 天
             </div>
-            <!--<div id="excel_button2" class="btn btn-default" data-toggle="modal" data-target="#modal-panel2">+ Excel</div>-->
+            <% if project.trader.auto_schedule == "active" %>
+              <div id="auto_schedule_button" class="btn btn-default" data-toggle="modal" data-target="#modal-panel2">+ 自動生成</div>
+            <% end %>
 
             <% if project.trader.validation_mode == "easy" %>
                   <!--<div id="undecided_button" class="btn btn-info" onclick="set_all_schedules_undetermined()">未定</div>-->
@@ -1273,7 +1343,6 @@
 </div>
 
 <!-- schedule modal panel -->
-<!--
 <div class="modal fade" id="modal-panel2" tabindex="-1">
     <div class="modal-dialog">
 
@@ -1283,22 +1352,22 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
 
-                <h5 class="modal-title" id="modal-label">您可以从Excel文件读取行程表. 请打开Excel文件，选择全文后，复制与粘贴到此处.</h5>
+                <h5 class="modal-title" id="modal-label">请输入日本入境地点与出境地点.</h5>
             </div>
 
-
             <div class="modal-body">
-                  <textarea id="excel_area2" class="form-control" placeholder="2016/01/01&#009;&#009;上海浦東からNH272便にて、成田へ到着。&#009;&#009;東京都港区品川3-1港ホテル"></textarea>
+                  日本入境地<input type="text" autocomplete="off" class="form-control" placeholder="成田" id="airport_in" maxlength="8">
+                  日本出境地<input type="text" autocomplete="off" class="form-control" placeholder="成田" id="airport_out" maxlength="8">
+                  <input type="hidden" autocomplete="off" class="form-control" placeholder="10" id="stay_term" maxlength="2">
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" id="parse-schedules-button">确定</button>
+                <button type="button" class="btn btn-primary" id="parse_schedule_button">确定</button>
             </div>
         </div>
     </div>
 </div>
--->
 
 
 <% if is_admin? %>
