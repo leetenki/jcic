@@ -51,7 +51,7 @@ class ProjectsController < ApplicationController
           @projects = @strict_match_result
         end
 
-        @result = @projects.sample(1).schedules.to_json({:only => [:plan, :hotel]})
+        @result = @projects.sample(1)[0].schedules.to_json({:only => [:plan, :hotel]})
       end
     end
 
