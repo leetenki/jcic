@@ -42,7 +42,7 @@ function japanesed(cc) {
     if(traditionalStr.indexOf(cc.charAt(i)) != -1) {
       str += japaneseStr.charAt(traditionalStr.indexOf(cc.charAt(i)));
     } else if(simpleStr.indexOf(cc.charAt(i)) != -1) {
-      str += japaneseStr.charAt(simpeStr.indexOf(cc.charAt(i)));
+      str += japaneseStr.charAt(simpleStr.indexOf(cc.charAt(i)));
     }else {
       str += cc.charAt(i);
     }

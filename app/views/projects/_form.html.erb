@@ -762,18 +762,22 @@
 
             // extract airport information from schedule table
             var firstTimeToExtract = true;
-            var airportKeyword = [
+            /*
+            var airportKeywords = [
               "旭川", "成田", "成田", "羽田", "羽田", "那霸", "那霸", "大阪", "大阪", "関西", "關西", "关西", "函館", "函馆", "札幌",
               "千歳", "千岁", "佐賀", "佐贺", "高松", "広島", "广岛", "仙台", "仙台", "名古屋", "名古屋", "静岡", "静冈", "福岡", "福冈",
               "沖縄", "冲绳", "愛知", "爱知", "東京", "东京", "中部", "京都", "京都"
             ];
+            */
+            airportKeywords = new RegExp(/旭川|成田|成田|羽田|羽田|那霸|那霸|大阪|大阪|関西|關西|关西|函館|函馆|札幌|千歳|千岁|佐賀|佐贺|高松|広島|广岛|仙台|仙台|名古屋|名古屋|静岡|静冈|福岡|福冈|沖縄|冲绳|愛知|爱知|東京|东京|中部|京都|京都/)
 
             function extractAirport(e) {
               // check if schedule existed
               if(!validateDates()) {
                 e.preventDefault();
                 e.stopPropagation();
-                alert("请输入日本入境日期与出境日期");
+                alert("您未填写日本入境日期与出境日期");
+
                 return;
               }
 
@@ -782,8 +786,18 @@
                 var inSchedule = $("#schedules_container tr").first().find("textarea")[1].value
                 var outSchedule = $("#schedules_container tr").last().find("textarea")[1].value
 
-                var inAirport = "成田";
-                var outAirport = "成田";
+                var inAirport = japanesed(inSchedule).match(airportKeywords);
+                if(!inAirport || inAirport.length == 0) {
+                  inAirport = ""
+                } else {
+                  inAirport = inAirport[0]
+                }
+                var outAirport = japanesed(outSchedule).match(airportKeywords);
+                if(!outAirport || outAirport.length == 0) {
+                  outAirport = inAirport
+                } else {
+                  outAirport = outAirport[0]
+                }
                 var lastDay = new Date(document.getElementById("dateLeaving").value);
                 var firstDay = new Date(document.getElementById("dateArrival").value);
                 var stayTerm = subDate(lastDay, firstDay) + 1;
@@ -815,10 +829,17 @@
                     $("#now_loading")[0].style.display = "none"              
                     if(data.length == 0) {
                       alert("自动生成失败，没有模版。")
+                    } else { // assignment
+                      schedules = JSON.parse(data);
+                      containers = $("#schedules_container tr");
+                      for(var i = 0; i < schedules.length && i < containers.length; i++) {
+                        if(i != 0 && i != containers.length-1) {
+                          $(containers[i]).find("textarea")[1].value = schedules[i]["plan"]
+                        }
+                        $(containers[i]).find("textarea")[2].value = schedules[i]["hotel"]
+                      }
+                      console.log(schedules)
                     }
-
-                    // assignment
-                    console.log(data.length)
                   },
                   error: function(data) {
                     $('#modal-panel2').modal('hide');
@@ -830,7 +851,10 @@
             }
 
             window.onload = function() {
-                document.getElementById("auto_schedule_button").addEventListener("click", extractAirport, false)
+                autoScheduleButton = document.getElementById("auto_schedule_button")
+                if(autoScheduleButton) {
+                  autoScheduleButton.addEventListener("click", extractAirport, false)
+                }
                 document.getElementById("parse_schedule_button").addEventListener("click", sendAutoSchedule, true)
             }
       </script>
@@ -1362,8 +1386,8 @@
             </div>
 
             <div class="modal-body">
-                  日本入境地<input type="text" autocomplete="off" class="form-control" placeholder="成田" id="airport_in" maxlength="8">
-                  日本出境地<input type="text" autocomplete="off" class="form-control" placeholder="成田" id="airport_out" maxlength="8">
+                  日本入境地<input type="text" autocomplete="off" class="form-control" placeholder="成田" id="airport_in" maxlength="5">
+                  日本出境地<input type="text" autocomplete="off" class="form-control" placeholder="成田" id="airport_out" maxlength="5">
                   <input type="hidden" autocomplete="off" class="form-control" placeholder="10" id="stay_term" maxlength="2">
             </div>
 

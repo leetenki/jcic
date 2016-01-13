@@ -17,12 +17,40 @@ class ProjectsController < ApplicationController
 
   # function to generate random schedule
   def generate_random_schedule
-    in_airport = params[:in_airport]
-    out_airport = params[:out_airport]
-    stay_term = params[:stay_term]
+    @result = ""
 
-    @projects = Project.where(:stay_term => stay_term.to_i).includes(:schedules)
-    render :text => @projects[rand(@projects.length)].schedules.to_json({:only => [:plan, :hotel]})
+    in_airport = ChineseConverter.japanesed(params[:in_airport])
+    out_airport = ChineseConverter.japanesed(params[:out_airport])
+    stay_term = params[:stay_term].to_i
+
+    if(stay_term < 40 && stay_term > 0 && in_airport.length <= 5 && out_airport.length <= 5)
+      @projects = Project.where("stay_term = ? and has_full_schedule = ?", stay_term, true).includes(:schedules)
+
+      if(@projects && @projects.length > 0)
+        @strict_match_result = []
+        @projects.each do |project|
+          if(ChineseConverter.japanesed(project.schedules[0].plan).match(in_airport))
+            @strict_match_result.push(project)
+          end
+        end
+        if(@strict_match_result && @strict_match_result.length > 0)
+          @projects = @strict_match_result
+          @strict_match_result = []
+          @projects.each do |project|
+            if(ChineseConverter.japanesed(project.schedules[project.schedules.length-1].plan).match(out_airport))
+              @strict_match_result.push(project)
+            end
+          end
+          if(@strict_match_result && @strict_match_result.length > 0)
+            @projects = @strict_match_result
+          end
+        end
+      end
+
+      @result = @projects[rand(@projects.length)].schedules.to_json({:only => [:plan, :hotel]})
+    end
+
+    render :text => @result
   end
 
   def create
