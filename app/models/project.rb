@@ -221,11 +221,13 @@ class Project < ActiveRecord::Base
       p project.id
       if(project.check_full_schedule)
         project.assign_attributes({:has_full_schedule => true})
-        project.record_timestamps = false
-        project.save :validate => false;
-
         p "has full schedule."
+      else
+        project.assign_attributes({:has_full_schedule => false})
+        p "not has full schedule."
       end
+      project.record_timestamps = false
+      project.save :validate => false;      
     end
 
     return
