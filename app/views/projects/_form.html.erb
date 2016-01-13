@@ -762,6 +762,12 @@
 
             // extract airport information from schedule table
             var firstTimeToExtract = true;
+            var airportKeyword = [
+              "旭川", "成田", "成田", "羽田", "羽田", "那霸", "那霸", "大阪", "大阪", "関西", "關西", "关西", "函館", "函馆", "札幌",
+              "千歳", "千岁", "佐賀", "佐贺", "高松", "広島", "广岛", "仙台", "仙台", "名古屋", "名古屋", "静岡", "静冈", "福岡", "福冈",
+              "沖縄", "冲绳", "愛知", "爱知", "東京", "东京", "中部", "京都", "京都"
+            ];
+
             function extractAirport(e) {
               // check if schedule existed
               if(!validateDates()) {

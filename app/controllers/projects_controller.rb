@@ -446,7 +446,7 @@ class ProjectsController < ApplicationController
     end
 
     # check if has full schedule
-    if(@project.check_full_schedule)
+    if(@project.check_full_schedule())
       @project.has_full_schedule = true
     end
   end

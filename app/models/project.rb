@@ -200,7 +200,7 @@ class Project < ActiveRecord::Base
   # used in validation for object to check full schedule
   def check_full_schedule
     has_full_schedule = true
-    schedules = self.schedules.all
+    schedules = self.schedules
     schedules.each_with_index do |schedule, index|
       if(index != 0 && index != schedules.length-1)
         #if(schedule[:plan].length == 0 || schedule[:hotel].length == 0)
@@ -214,7 +214,7 @@ class Project < ActiveRecord::Base
     return has_full_schedule
   end
 
-  ############ used for upgrad system ##########
+  ############ used for upgrad system (only used once at 2016/1/13) ##########
   def self.upgrade_full_schedule(stay_term)
     projects = self.where(:stay_term => stay_term)
     projects.each do |project|
