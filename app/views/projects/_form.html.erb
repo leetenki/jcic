@@ -1167,11 +1167,11 @@
             <i class="fa fa-plus-square-o fa-4x add_client" onclick="addClientRow()"></i>
       </div>
 
-      <% if project.trader.auto_schedule == "inactive" && (project.trader.validation_mode == "simplest" || project.trader.validation_mode == "easy") %>
-            <div class="row">
+      <div class="row">
+          <% if project.trader.auto_schedule == "inactive" && (project.trader.validation_mode == "simplest" || project.trader.validation_mode == "easy") %>
                   <div id="show_schedules" class="col col-md-2 col-md-offset-5 btn btn-default" style="border-radius: 30px; margin-bottom: 30px;" onclick="showSchedulesContainer()">+ 详细日程表</div>
-            </div>
-      <% end %>
+          <% end %>
+      </div>
 
       <!--************************* schedules ***************************-->
       <% if project.trader.validation_mode == "strict" || project.trader.auto_schedule == "active" %>
