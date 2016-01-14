@@ -774,11 +774,20 @@
             function extractAirport(e) {
               // check if schedule existed
               if(!validateDates()) {
-                e.preventDefault();
-                e.stopPropagation();
-                alert("您未填写日本入境日期与出境日期");
+                //e.preventDefault();
+                //e.stopPropagation();
+                //alert("您未填写日本入境日期与出境日期");
+                //return;
 
-                return;
+                <% offsetDate = 2 + rand(10) %>
+                $("#dateArrival")[0].value = "<%= (Date.today+offsetDate).strftime('%Y/%m/%d') %>"
+                $("#dateLeaving")[0].value = "<%= (Date.today+offsetDate+4+rand(5)).strftime('%Y/%m/%d') %>"
+                if(!validateDateArrivalAndRegenerateSchedules()) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  alert("您未填写日本入境日期与出境日期");
+                  return;                  
+                }
               }
 
               // extract and parse
