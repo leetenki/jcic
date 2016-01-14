@@ -760,6 +760,12 @@
                 }
             }
 
+
+            // function to replace text
+            function escapeText(text) {
+              return = text.replace(/&#10;/g, " ");
+            }
+
             // extract airport information from schedule table
             var firstTimeToExtract = true;
             /*
@@ -841,6 +847,12 @@
                       alert("自动生成失败，没有模版。")
                     } else { // assignment
                       schedules = JSON.parse(data);
+                      // escape
+                      for(var i = 0; i < schedules.length; i++) {
+                        schedules[i]["plan"] = escapeText(schedules[i]["plan"])
+                        schedules[i]["hotel"] = escapeText(schedules[i]["hotel"])
+                      }
+
                       containers = $("#schedules_container tr");
                       for(var i = 0; i < schedules.length && i < containers.length; i++) {
                         if(i != 0 && i != containers.length-1) {

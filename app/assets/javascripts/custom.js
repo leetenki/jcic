@@ -746,7 +746,7 @@ function validatePlan(id) {
   }
 }
 function validateAndReplacePlan(id) {
-  var inputText = $("#" + id + " textarea")[0].value.replace(/[\s\r\n　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "");
+  var inputText = $("#" + id + " textarea")[0].value.replace(/&#10;/g, " ").replace(/[\s\r\n　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "");
   $("#" + id + " textarea")[0].value = inputText;
 
   return validatePlan(id);
@@ -763,7 +763,7 @@ function validateHotel(id) {
   }
 }
 function validateAndReplaceHotel(id) {
-  var inputText = $("#" + id + " textarea")[0].value.replace(/[\s\r\n　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "");
+  var inputText = $("#" + id + " textarea")[0].value.replace(/&#10;/g, " ").replace(/[\s\r\n　]{1,}/g, " ").replace(/^[\s 　]/, "").replace(/[\s 　]$/, "");
   $("#" + id + " textarea")[0].value = inputText;
 
   return validateHotel(id);
@@ -1812,12 +1812,12 @@ function initialValidation() {
 
   // check plan
   $("#schedules_container table .plan_container").each(function() {
-    validateAndUpdateFieldIgnoreError(this.attributes.id.value, 'plan_container', validatePlan);
+    validateAndUpdateFieldIgnoreError(this.attributes.id.value, 'plan_container', validateAndReplacePlan);
   });
 
   // check hotel
   $("#schedules_container table .hotel_container").each(function() {
-    validateAndUpdateFieldIgnoreError(this.attributes.id.value, 'hotel_container', validateHotel);
+    validateAndUpdateFieldIgnoreError(this.attributes.id.value, 'hotel_container', validateAndReplaceHotel);
   });
 
   // check all chinese name
