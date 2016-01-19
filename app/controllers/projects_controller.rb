@@ -13,6 +13,71 @@ class ProjectsController < ApplicationController
     @project = current_trader.projects.build
     @project.schedules.build
     @project.clients.build
+
+    # new with copy target
+    if(params[:schedule_copy_target] || params[:full_copy_target])
+      if(params[:schedule_copy_target])
+        copy_target_id = params[:schedule_copy_target].to_i
+      elsif(params[:full_copy_target])
+        copy_target_id = params[:full_copy_target].to_i
+      end
+
+      begin
+        # find target
+        if(is_admin?)
+          target_project = Project.find_by(:id => copy_target_id)
+        else
+          target_project = current_trader.projects.find_by(:id => copy_target_id)
+        end
+
+        # copy clients
+        @project.total_people = target_project.total_people
+        @project.representative_name_english = target_project.representative_name_english
+        @project.representative_name_chinese = target_project.representative_name_chinese
+        @project.total_man = target_project.total_man
+        @project.total_woman = target_project.total_woman
+        while(@project.clients.length < target_project.clients.length)
+          @project.clients.push(Client.new)
+        end
+        target_project.clients.each_with_index do |client, index|
+          @project.clients[index].name_chinese = client.name_chinese
+          @project.clients[index].name_english = client.name_english
+          @project.clients[index].gender = client.gender
+          @project.clients[index].hometown = client.hometown
+          @project.clients[index].birthday = client.birthday
+          @project.clients[index].passport_no = client.passport_no
+          @project.clients[index].job = client.job
+        end
+
+        # copy schedules
+        @project.date_leaving = target_project.date_leaving
+        @project.date_arrival = target_project.date_arrival
+        @project.stay_term = target_project.stay_term
+        @project.departure_time = target_project.departure_time
+        @project.arrival_time = target_project.arrival_time
+        while(@project.schedules.length < target_project.schedules.length)
+          @project.schedules.push(Schedule.new)
+        end
+        target_project.schedules.each_with_index do |schedule, index|
+          @project.schedules[index].plan = schedule.plan
+          @project.schedules[index].hotel = schedule.hotel
+          @project.schedules[index].date = schedule.date
+        end
+
+        # copy full
+        @project.china_company_name = target_project.china_company_name
+        @project.china_company_code = target_project.china_company_code
+        @project.visa_type = target_project.visa_type
+        @project.japan_airport = target_project.japan_airport
+        @project.flight_name = target_project.flight_name
+        @project.china_airport = target_project.china_airport
+        @project.in_charge_person = target_project.in_charge_person
+        @project.in_charge_phone = target_project.in_charge_phone
+        @project.ticket_no = target_project.ticket_no
+      rescue
+        flash[:danger] = "拷贝失败．"      
+      end
+    end
   end
 
   # function to generate random schedule
@@ -105,7 +170,7 @@ class ProjectsController < ApplicationController
 
     if(!@project.errors.any?)
       @project.save
-      flash[:success] = "签证单提交完毕，请仔细查看招聘保证書. 若有错误，请立即修改. #{@project.trader.editable_min.to_s}分钟后您将无权修改."
+      flash[:success] = "签证单提交完毕，请仔细查看招聘保证書. 若有错误请立即修改. #{@project.trader.editable_min.to_s}分钟后您将无权修改."
       #message = "您的订单：#{@project.china_company_name}, #{@project.representative_name_chinese}(他" + (@project.clients.length-1).to_s + "人)\r\n价格：" + get_project_price(@project).to_s
       #if(@project.trader.email && @project.trader.email.match(/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/))
         #system("echo '#{message}' | mutt -n -F ~/.mutt/muttrc -s '提交完毕' #{@project.trader.email}");
