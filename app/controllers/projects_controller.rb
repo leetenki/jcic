@@ -10,6 +10,7 @@ class ProjectsController < ApplicationController
 
   #create new project
   def new
+    # default project
     @project = current_trader.projects.build
     @project.schedules.build
     @project.clients.build
@@ -22,58 +23,16 @@ class ProjectsController < ApplicationController
         copy_target_id = params[:full_copy_target].to_i
       end
 
-      begin
-        # find target
-        if(is_admin?)
+      # find target
+      begin      
+        if(is_admin? || has_authority?)
           target_project = Project.find_by(:id => copy_target_id)
         else
           target_project = current_trader.projects.find_by(:id => copy_target_id)
         end
 
-        # copy clients
-        @project.total_people = target_project.total_people
-        @project.representative_name_english = target_project.representative_name_english
-        @project.representative_name_chinese = target_project.representative_name_chinese
-        @project.total_man = target_project.total_man
-        @project.total_woman = target_project.total_woman
-        while(@project.clients.length < target_project.clients.length)
-          @project.clients.push(Client.new)
-        end
-        target_project.clients.each_with_index do |client, index|
-          @project.clients[index].name_chinese = client.name_chinese
-          @project.clients[index].name_english = client.name_english
-          @project.clients[index].gender = client.gender
-          @project.clients[index].hometown = client.hometown
-          @project.clients[index].birthday = client.birthday
-          @project.clients[index].passport_no = client.passport_no
-          @project.clients[index].job = client.job
-        end
-
-        # copy schedules
-        @project.date_leaving = target_project.date_leaving
-        @project.date_arrival = target_project.date_arrival
-        @project.stay_term = target_project.stay_term
-        @project.departure_time = target_project.departure_time
-        @project.arrival_time = target_project.arrival_time
-        while(@project.schedules.length < target_project.schedules.length)
-          @project.schedules.push(Schedule.new)
-        end
-        target_project.schedules.each_with_index do |schedule, index|
-          @project.schedules[index].plan = schedule.plan
-          @project.schedules[index].hotel = schedule.hotel
-          @project.schedules[index].date = schedule.date
-        end
-
-        # copy full
-        @project.china_company_name = target_project.china_company_name
-        @project.china_company_code = target_project.china_company_code
-        @project.visa_type = target_project.visa_type
-        @project.japan_airport = target_project.japan_airport
-        @project.flight_name = target_project.flight_name
-        @project.china_airport = target_project.china_airport
-        @project.in_charge_person = target_project.in_charge_person
-        @project.in_charge_phone = target_project.in_charge_phone
-        @project.ticket_no = target_project.ticket_no
+        @project = create_full_copy(target_project)
+        #@project = create_schedule_copy(target_project)
       rescue
         flash[:danger] = "拷贝失败．"      
       end
@@ -549,8 +508,86 @@ class ProjectsController < ApplicationController
     end
   end
 
-  @company_codes
+  # create full copy project
+  def create_full_copy(target_project)
+    project = current_trader.projects.build
+    project.schedules.build
+    project.clients.build
 
+    # copy clients
+    project.total_people = target_project.total_people
+    project.representative_name_english = target_project.representative_name_english
+    project.representative_name_chinese = target_project.representative_name_chinese
+    project.total_man = target_project.total_man
+    project.total_woman = target_project.total_woman
+    while(project.clients.length < target_project.clients.length)
+      project.clients.push(Client.new)
+    end
+    target_project.clients.each_with_index do |client, index|
+      project.clients[index].name_chinese = client.name_chinese
+      project.clients[index].name_english = client.name_english
+      project.clients[index].gender = client.gender
+      project.clients[index].hometown = client.hometown
+      project.clients[index].birthday = client.birthday
+      project.clients[index].passport_no = client.passport_no
+      project.clients[index].job = client.job
+    end
+
+    # copy schedules
+    project.date_arrival = target_project.date_arrival
+    project.stay_term = target_project.stay_term
+    project.date_leaving = project.date_arrival + project.stay_term - 1
+    project.departure_time = target_project.departure_time
+    project.arrival_time = target_project.arrival_time
+    while(project.schedules.length < target_project.schedules.length)
+      project.schedules.push(Schedule.new)
+    end
+    target_project.schedules.each_with_index do |schedule, index|
+      project.schedules[index].plan = schedule.plan
+      project.schedules[index].hotel = schedule.hotel
+      project.schedules[index].date = schedule.date
+    end
+
+    # copy full
+    project.china_company_name = target_project.china_company_name
+    project.china_company_code = target_project.china_company_code
+    project.visa_type = target_project.visa_type
+    project.japan_airport = target_project.japan_airport
+    project.flight_name = target_project.flight_name
+    project.china_airport = target_project.china_airport
+    project.in_charge_person = target_project.in_charge_person
+    project.in_charge_phone = target_project.in_charge_phone
+    project.ticket_no = target_project.ticket_no
+
+    return project
+  end
+
+  # create copy with only schedule
+  def create_schedule_copy(target_project)
+    project = current_trader.projects.build
+    project.schedules.build
+    project.clients.build
+
+    # copy schedules
+    project.date_arrival = target_project.date_arrival
+    project.stay_term = target_project.stay_term
+    project.date_leaving = project.date_arrival + project.stay_term - 1
+    project.departure_time = target_project.departure_time
+    project.arrival_time = target_project.arrival_time
+    while(project.schedules.length < target_project.schedules.length)
+      project.schedules.push(Schedule.new)
+    end
+    target_project.schedules.each_with_index do |schedule, index|
+      project.schedules[index].plan = schedule.plan
+      project.schedules[index].hotel = schedule.hotel
+      project.schedules[index].date = schedule.date
+    end
+
+    return project
+  end
+
+
+  @company_codes
   def init_company_codes
     @company_codes = CompanyCode.where("status = ?", "working")
     @company_codes.each do |c|

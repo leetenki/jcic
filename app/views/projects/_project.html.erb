@@ -15,15 +15,18 @@
         <div class="date-arrival-cell"><%= project.date_arrival.strftime("%Y/%m/%d") %>〜<%= project.date_leaving.strftime("%Y/%m/%d") %></div>
         <div class="visa-type-cell"><%= visa_type_str(project.visa_type) %></div>
         <div class="presentative-name-cell">代表人：<%= project.representative_name_chinese %> ( <%= project.representative_name_english %> ) 共<%= project.total_people %>名</div>
+
+        <!-- copy -->
+        <button style="margin-top: 5px;" class="btn btn-success btn-xs col-md-4 col-sm-4 col-xs-4 modify" onclick="location.href='/projects/new?full_copy_target=<%= project.id %>'" style=""><i class="fa fa-user-plus"> </i> 复制</button>
+
+
+        <!-- meta info -->
         <% if is_admin? %>
             <div class="created-cell small-gray-cell">（ No. <%= project.id %> ） 更新：<%= project.updated_at.strftime("%Y/%m/%d %H:%M") %></div>
         <% end %>
         <% if project.system_code.present? %>
             <div class="created-cell small-gray-cell">受付编号：<%= project.system_code %></div>        
         <% end %>
-
-        <!-- copy -->
-        <button style="margin-top: 5px;" class="btn btn-success btn-xs col-md-4 col-sm-4 col-xs-4 modify" onclick="location.href='/projects/new?full_copy_target=<%= project.id %>'" style=""><i class="fa fa-user-plus"> </i> 复制</button>
     </td>
 
 
