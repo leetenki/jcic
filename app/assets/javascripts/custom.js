@@ -154,6 +154,31 @@ $(document).ready(function(){
     })
   }
 
+  // click_once
+  var copyProjects = $(".click_once");
+  if(copyProjects) {
+    for(var i = 0; i < copyProjects.length; i++) {
+      copyProjects[i].addEventListener("click", function() {
+        this.className += " disabled"
+      })
+    }
+  }
+
+  // copy balloon
+  var copyNode = $(".copy");
+  for(var i = 0; i < copyNode.length; i++) {
+    var id = copyNode[i].id.split("_")[1];
+    var fullURL = "/projects/new?full_copy_target=" + id;
+    var scheduleURL = "/projects/new?schedule_copy_target=" + id;
+    var clientURL = "/projects/new?client_copy_target=" + id;
+
+    $(copyNode[i]).balloon({
+      contents:'<a href="' + fullURL + '" class="btn btn-xs btn-success require-loading click_once">全部</a>　 <a href="' + scheduleURL + '" class="btn btn-xs btn-success">行程</a>　 <a href="' + clientURL + '" class="btn btn-xs btn-success">名单</a>',  
+      offsetX: 0, offsetY: 0, position: "top", tipSize: null
+    });
+  }
+
+  // invoice button
   $(".embadded-invoice-button").click(null, function(e) {
     e.stopPropagation();
   });

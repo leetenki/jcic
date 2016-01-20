@@ -16,11 +16,13 @@ class ProjectsController < ApplicationController
     @project.clients.build
 
     # new with copy target
-    if(params[:schedule_copy_target] || params[:full_copy_target])
-      if(params[:schedule_copy_target])
-        copy_target_id = params[:schedule_copy_target].to_i
-      elsif(params[:full_copy_target])
+    if(params[:schedule_copy_target] || params[:client_copy_target] || params[:full_copy_target])
+      if(params[:full_copy_target])
         copy_target_id = params[:full_copy_target].to_i
+      elsif(params[:schedule_copy_target])
+        copy_target_id = params[:schedule_copy_target].to_i
+      elsif(params[:client_copy_target])
+        copy_target_id = params[:client_copy_target].to_i
       end
 
       # find target
@@ -31,8 +33,13 @@ class ProjectsController < ApplicationController
           target_project = current_trader.projects.find_by(:id => copy_target_id)
         end
 
-        @project = create_full_copy(target_project)
-        #@project = create_schedule_copy(target_project)
+        if(params[:full_copy_target])
+          @project = create_full_copy(target_project)
+        elsif(params[:schedule_copy_target])
+          @project = create_schedule_copy(target_project)
+        elsif(params[:client_copy_target])
+          @project = create_client_copy(target_project)
+        end
       rescue
         flash[:danger] = "拷贝失败．"      
       end
@@ -562,13 +569,41 @@ class ProjectsController < ApplicationController
     return project
   end
 
-  # create copy with only schedule
-  def create_schedule_copy(target_project)
+  # create copy with only client
+  def create_client_copy(target_project)
     project = current_trader.projects.build
     project.schedules.build
     project.clients.build
 
-    # copy schedules
+    # copy clients
+    project.total_people = target_project.total_people
+    project.representative_name_english = target_project.representative_name_english
+    project.representative_name_chinese = target_project.representative_name_chinese
+    project.total_man = target_project.total_man
+    project.total_woman = target_project.total_woman
+    while(project.clients.length < target_project.clients.length)
+      project.clients.push(Client.new)
+    end
+    target_project.clients.each_with_index do |client, index|
+      project.clients[index].name_chinese = client.name_chinese
+      project.clients[index].name_english = client.name_english
+      project.clients[index].gender = client.gender
+      project.clients[index].hometown = client.hometown
+      project.clients[index].birthday = client.birthday
+      project.clients[index].passport_no = client.passport_no
+      project.clients[index].job = client.job
+    end
+
+    return project
+  end
+
+  # create copy with only schedule
+  def create_client_copy(target_project)
+    project = current_trader.projects.build
+    project.schedules.build
+    project.clients.build
+
+    # copy schedule
     project.date_arrival = target_project.date_arrival
     project.stay_term = target_project.stay_term
     project.date_leaving = project.date_arrival + project.stay_term - 1
