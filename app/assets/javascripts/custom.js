@@ -88,12 +88,12 @@ $(document).ready(function(){
     changeMonth: true,    
     constrainInput: false
   });
-  if(document.getElementById("date_arrival_container") && validateDateArrival()) {
+  if(document.getElementById("date_arrival_container") && validateDateArrival() && $(".stay_term_lock").length == 0) {
     $("#date_leaving_container .datepicker").datepicker("option", {
       minDate: $("#date_arrival_container .datepicker")[0].value,
     });    
   }
-  if(document.getElementById("date_leaving_container") && validateDateLeaving()) {
+  if(document.getElementById("date_leaving_container") && validateDateLeaving() && $(".stay_term_lock").length == 0) {
     $("#date_arrival_container .datepicker").datepicker("option", {
       maxDate: $("#date_leaving_container .datepicker")[0].value,
     });    
@@ -670,6 +670,9 @@ function validateDateLeavingAndRegenerateSchedules() {
 
     // called when copy full project or copy schedule
     if($(".stay_term_lock").length > 0) {
+      var stay_term = parseInt($("#stay_term")[0].value);
+      var dateArrival = subDay(date, stay_term - 1)
+      document.getElementById("dateArrival").value = dateArrival.getFullYear() + "/" + (dateArrival.getMonth()+1) + "/" + dateArrival.getDate();
       $(".stay_term_lock").remove();
     }
 
@@ -1790,6 +1793,15 @@ function addDate(originalDate, addDays) {
     var baseSec = dt.getTime();
     var addSec = addDays * 86400000;//日数 * 1日のミリ秒数
     var targetSec = baseSec + addSec;
+    dt.setTime(targetSec);
+    return dt;
+}
+
+function subDay(originalDate, subDays) {
+    var dt = new Date(originalDate.getFullYear(), originalDate.getMonth(), originalDate.getDate());
+    var baseSec = dt.getTime();
+    var subSec = subDays * 86400000;//日数 * 1日のミリ秒数
+    var targetSec = baseSec - subSec;
     dt.setTime(targetSec);
     return dt;
 }
