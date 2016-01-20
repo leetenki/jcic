@@ -1022,9 +1022,14 @@
                   ) %>
             </div>
 
+
+
             <!-- date arrival -->
             <div id="date_arrival_container">
                   <%= f.label :date_arrival, "日本入境日期" %> <i id="date_arrival_check"></i> <i class="fa fa-chevron-down long"></i>
+                  <% if @stay_term_lock %>
+                      <div class="stay_term_lock"><i class="fa fa-refresh fa-2x switch"></i></div>
+                  <% end %>
                   <% dateArrival = "" %>
                   <% dateArrival = project.date_arrival.strftime("%Y/%m/%d") if(!project.date_arrival.nil?) %>
                   <%= f.text_field(
@@ -1039,9 +1044,13 @@
                   ) %>
             </div>
 
+
             <!-- date leaving -->
             <div id="date_leaving_container">
                   <%= f.label :date_leaving, "日本出境日期" %> <i id="date_leaving_check"></i> <i class="fa fa-chevron-down long"></i>
+                  <% if @stay_term_lock %>
+                      <div class="stay_term_lock"><i class="fa fa-refresh fa-2x switch"></i></div>
+                  <% end %>
                   <% dateLeaving = "" %>
                   <% dateLeaving = project.date_leaving.strftime("%Y/%m/%d") if(!project.date_leaving.nil?) %>
                   <%= f.text_field(
@@ -1189,13 +1198,13 @@
       </div>
 
       <div class="row">
-          <% if project.trader.auto_schedule == "inactive" && (project.trader.validation_mode == "simplest" || project.trader.validation_mode == "easy") %>
+          <% if !@stay_term_lock && project.trader.auto_schedule == "inactive" && (project.trader.validation_mode == "simplest" || project.trader.validation_mode == "easy") %>
                   <div id="show_schedules" class="col col-md-2 col-md-offset-5 btn btn-default" style="border-radius: 30px; margin-bottom: 30px;" onclick="showSchedulesContainer()">+ 详细日程表</div>
           <% end %>
       </div>
 
       <!--************************* schedules ***************************-->
-      <% if project.trader.validation_mode == "strict" || project.trader.auto_schedule == "active" %>
+      <% if project.trader.validation_mode == "strict" || project.trader.auto_schedule == "active" || @stay_term_lock %>
             <div id="schedules_container" class="dashed_container col-md-10 col-md-offset-1" style="display:block">
       <% else %>
             <div id="schedules_container" class="dashed_container col-md-10 col-md-offset-1" style="display:none">
@@ -1413,7 +1422,7 @@
             <div class="modal-body">
                   日本入境区域<input type="text" autocomplete="off" class="form-control" placeholder="成田" id="airport_in" maxlength="5">
                   日本出境区域<input type="text" autocomplete="off" class="form-control" placeholder="成田" id="airport_out" maxlength="5">
-                  <input type="hidden" autocomplete="off" class="form-control" placeholder="10" id="stay_term" maxlength="2">
+                  <input type="hidden" autocomplete="off" class="form-control" placeholder="10" id="stay_term" maxlength="2" value="<%= project.stay_term %>">
             </div>
 
             <div class="modal-footer">

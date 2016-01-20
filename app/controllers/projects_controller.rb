@@ -35,8 +35,10 @@ class ProjectsController < ApplicationController
 
         if(params[:full_copy_target])
           @project = create_full_copy(target_project)
+          @stay_term_lock = true #used for schedule chain
         elsif(params[:schedule_copy_target])
           @project = create_schedule_copy(target_project)
+          @stay_term_lock = true
         elsif(params[:client_copy_target])
           @project = create_client_copy(target_project)
         end

@@ -612,6 +612,15 @@ function validateDateArrivalAndRegenerateSchedules() {
   var today = getAbsoluteToday();
   if(ckDate(dateArrival)) {
     var date = new Date(dateArrival);
+
+    // called when copy full project or copy schedule
+    if($(".stay_term_lock").length > 0 && $("#stay_term")[0].value && parseInt($("#stay_term")[0].value) > 0) {
+      var stay_term = parseInt($("#stay_term")[0].value);
+      var dateLeaving = addDate(date, stay_term - 1)
+      document.getElementById("dateLeaving").value = dateLeaving.getFullYear() + "/" + (dateLeaving.getMonth()+1) + "/" + dateLeaving.getDate();
+      $(".stay_term_lock").remove();
+    }
+
     if(isAdmin() || date.getTime() >= addDate(today,1).getTime()) {
       $("#date_leaving_container .datepicker").datepicker("option", {
         minDate: $("#date_arrival_container .datepicker")[0].value
@@ -658,6 +667,12 @@ function validateDateLeavingAndRegenerateSchedules() {
 
   if(ckDate(dateLeaving)) {
     var date = new Date(dateLeaving);
+
+    // called when copy full project or copy schedule
+    if($(".stay_term_lock").length > 0) {
+      $(".stay_term_lock").remove();
+    }
+
     if(isAdmin() || date.getTime() >= addDate(today,1).getTime()) {
       $("#date_arrival_container .datepicker").datepicker("option", {
         maxDate: $("#date_leaving_container .datepicker")[0].value
