@@ -598,7 +598,7 @@ class ProjectsController < ApplicationController
   end
 
   # create copy with only schedule
-  def create_client_copy(target_project)
+  def create_schedule_copy(target_project)
     project = current_trader.projects.build
     project.schedules.build
     project.clients.build
