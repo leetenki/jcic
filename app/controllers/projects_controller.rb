@@ -54,6 +54,14 @@ class ProjectsController < ApplicationController
 
     in_airport = ChineseConverter.japanesed(params[:in_airport])
     out_airport = ChineseConverter.japanesed(params[:out_airport])
+    tokyo_string = Regexp(/東京|东京|成田|成田|羽田|羽田/)
+    if(in_airport.match(tokyo_string))
+      in_airport = tokyo_string
+    end
+    if(out_airport.match(tokyo_string))
+      out_airport = tokyo_string
+    end
+
     stay_term = params[:stay_term].to_i
 
     if(stay_term < 40 && stay_term > 0 && in_airport.length <= 5 && out_airport.length <= 5)
