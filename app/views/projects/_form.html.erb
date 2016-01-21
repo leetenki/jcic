@@ -1,5 +1,7 @@
 <% if project.trader.validation_mode == "simplest" %>
-      <div style="text-align:center; padding: 10px; width: 400px; margin:40px auto 10px auto; border:dashed 2px black; border-radius: 30px;" id="file-reader">
+      <div id="excel_realder_opener" class="col col-md-2 col-md-offset-5 btn btn-default" style="border-radius: 30px; margin-top:20px; margin-bottom: -20px;" onclick="openExcelReader()">上传Excel</div>
+
+      <div style="text-align:center; padding: 10px; width: 400px; margin:40px auto 10px auto; border:dashed 2px black; border-radius: 30px; display:none;" id="file-reader">
             <p>
               Excel全自动上传功能 (
                 <% if project.trader.individual_japan_company != "random" %>
@@ -15,6 +17,10 @@
       </div>
       <script type="text/javascript" src="/xlsx.core.min.js "></script>
       <script type="text/javascript">
+            function openExcelReader() {
+              $("#file-reader")[0].style.display = "block";
+              $("#excel_realder_opener")[0].style.display = "none";
+            }
             function handleDragover(e) {
                   e.stopPropagation();
                   e.preventDefault();
@@ -1073,6 +1079,7 @@
                   <i class="fa fa-list"></i> 名单 <span class="number" id="clients-total"><%= f.object.clients.length %></span> 人
             </div>
             <div id="excel_button" class="btn btn-default" data-toggle="modal" data-target="#modal-panel">+ Excel</div>
+            <div class="remove_all" onclick="removeAllClientRow()">×</div>
 
             <table class="table">
                   <tbody>
@@ -1194,7 +1201,7 @@
                         <% end %>
                   </tbody>
             </table>
-            <i class="fa fa-plus-square-o fa-4x add_client" onclick="addClientRow()"></i>
+            <i class="fa fa-plus-square fa-4x add_client" onclick="addClientRow()"></i>
       </div>
 
       <div class="row">
@@ -1216,6 +1223,8 @@
               <div id="auto_schedule_button" class="btn btn-default" data-toggle="modal" data-target="#modal-panel2"><i class="fa fa-joomla"></i> 自動生成</div>
               <img src="/cube.gif" id="now_loading2" style="display:none"/>
             <% end %>
+            <div class="remove_all" onclick="clearAllScheduleRow()">×</div>
+
 
             <% if project.trader.validation_mode == "easy" %>
                   <!--<div id="undecided_button" class="btn btn-info" onclick="set_all_schedules_undetermined()">未定</div>-->
@@ -1257,6 +1266,7 @@
                               <td class="col col-md-4 col-sm-4 col-lg-4 col-xs-4">
                                     <div id="schedules_hotel_container_<%= schedules_field.index %>" class="hotel_container">
                                           <%= schedules_field.label :hotel, "住宿" %> <i id="schedules_hotel_<%= schedules_field.index %>"></i>
+                                          <div class="clear_schedule" onclick="clearScheduleRow('<%= schedules_field.index %>')">×</div>
                                           <%= schedules_field.text_area(
                                                 :hotel, :autocomplete => "off",
                                                 :oninput => "validateAndUpdateFieldOnlyCheck('schedules_hotel_container_#{schedules_field.index}', 'hotel_container', validateHotel)",

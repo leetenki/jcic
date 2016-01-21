@@ -178,6 +178,15 @@ $(document).ready(function(){
     });
   }
 
+  // explanation balloon
+  $(".remove_all").balloon({
+    contents: "清空", position: "top", tipSize: null
+  });
+
+  $(".add_client").balloon({
+    contents: "添加", position: "right", tipSize: null
+  });
+
   // invoice button
   $(".embadded-invoice-button").click(null, function(e) {
     e.stopPropagation();
@@ -1139,6 +1148,7 @@ function addClientRow() {
   return "client_" + index;
 }
 
+// function to remove client
 function removeClientRow(id) {
   if($("#clients_container table tr").length >= 1) {
     if($("#clients_container table tr").length == 1) {
@@ -1153,6 +1163,19 @@ function removeClientRow(id) {
 
     // update clients number
     reComputeClientsIndex();
+  }
+}
+
+// function to clear schedule row
+function clearScheduleRow(id) {
+  $($("#schedules_plan_container_" + id)[0]).find("textarea")[0].value = "";
+  $($("#schedules_hotel_container_" + id)[0]).find("textarea")[0].value = "";
+}
+
+// function to remove all schedule
+function clearAllScheduleRow() {
+  for(var i = 0; i < $("#schedules_container table tr").length; i++) {
+    clearScheduleRow(i)
   }
 }
 
@@ -1574,6 +1597,13 @@ function createScheduleTag(index, dateText) {
   var hotelIconNode = document.createElement("i");
   hotelIconNode.setAttribute("id", "schedules_hotel_" + index);
   hotelContainerNode.appendChild(hotelIconNode);
+
+  var closeNode = document.createElement("div");
+  closeNode.setAttribute("class", "clear_schedule");
+  closeNode.setAttribute("onclick", "clearScheduleRow('" + index + "')")
+  closeNode.appendChild(document.createTextNode("×"));
+  hotelContainerNode.appendChild(closeNode);
+
 
   var hotelTextareaNode = document.createElement("textarea");
   hotelTextareaNode.setAttribute("autocomplete", "off");
@@ -2300,6 +2330,12 @@ function isEmptyRow(id) {
   } else {
     return false;
   }
+}
+
+function removeAllClientRow() {
+  $($("#clients_container table tr").get().reverse()).each(function() {
+    removeClientRow(this.id);
+  });
 }
 
 function initClientsTable() {

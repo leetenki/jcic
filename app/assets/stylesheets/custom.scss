@@ -515,6 +515,19 @@ div#schedules_container {
 
   /*background-color: #fffacd; */
   table {
+    .clear_schedule {
+      display: inline-block;
+      position: absolute;
+      float: right;
+      right: 3px;
+      margin-top: 40px;
+      color: #cccccc;
+      font-size: 25px;
+    }
+    .clear_schedule:hover {
+      color: #ffa0a0;
+      cursor: pointer;
+    }
     tr, td {
       color: #888888;
       border: 0;
@@ -547,7 +560,7 @@ div#clients_container {
       float: right;
       right: 3px;
       margin-top: 18px;
-      color: #bcbcbc;
+      color: #cccccc;
       font-size: 25px;
     }
     .remove_client:hover {
@@ -567,11 +580,11 @@ div#clients_container {
     position: absolute;
     bottom: 15px;
     right: 30px;
-    color: #c0c0c0;
+    color: #B0DEFF;
   }
   .add_client:hover {
     cursor: pointer;
-    color: #81BEF7;
+    color: #81BEFF;
   }
   .gender_type {
     width: 100%;
@@ -611,9 +624,23 @@ div#clients_container {
 #excel_button, #excel_button2, #auto_schedule_button, #undecided_button {
   float: right;
   margin-top: -90px;
-  margin-right: 5px;
+  margin-right: 30px;
   border-radius: 30px;
 }
+
+.remove_all {
+  float: right;
+  margin-top: -95px;
+  margin-right: 0px;
+  border-radius: 30px;
+  color: #cccccc;
+  font-size: 25px;
+}
+.remove_all:hover {
+  color: #ffa0a0;
+  cursor: pointer;  
+}
+
 
 #excel_area, #excel_area2 {
   height: 300px;
