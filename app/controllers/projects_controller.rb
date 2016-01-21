@@ -59,7 +59,7 @@ class ProjectsController < ApplicationController
 
     if(stay_term < 40 && stay_term > 0 && in_airport.length <= 5 && out_airport.length <= 5)
       # grouprize tokyo string
-      tokyo_string = Regexp(/東京|东京|成田|成田|羽田|羽田/)
+      tokyo_string = Regexp.new(/東京|东京|成田|成田|羽田|羽田/)
       if(in_airport.match(tokyo_string))
         in_airport = tokyo_string
       end
