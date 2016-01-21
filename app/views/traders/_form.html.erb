@@ -59,6 +59,9 @@
       <%= f.label :editable_min, "編集可能時間(分)" %>
       <%= f.text_field :editable_min, :class => 'form-control' %>
 
+      <%= f.label :china_japan_rate, "汇率（人民币：日币）" %>
+      <%= f.text_field :china_japan_rate, :class => 'form-control' %>
+
       <%= f.label :master_id, "属于(上家)" %>
       <select name="trader[master_id]" class="form-control" id="master_selector">
         <option value="*" <%= "selected=selected" if !trader.master_relationship %>>---</option>
@@ -133,6 +136,19 @@
           </label>
         <% end %>
       </div>
+
+      <div style="font-weight: bold">
+        請求書银行
+      </div>
+      <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
+        <label class="btn btn-default <%= 'active' if trader.bank_type == 'japan' %>">
+          <input type="radio" value="japan" name="trader[bank_type]" <%= 'checked' if trader.bank_type == 'japan' %> />日本
+        </label>
+        <label class="btn btn-default <%= 'active' if trader.bank_type == 'china' %>">
+          <input type="radio" value="china" name="trader[bank_type]" <%= 'checked' if trader.bank_type == 'china' %> />中国
+        </label>
+      </div>
+
 
       <div style="font-weight: bold">
         被閲覧権限

@@ -1,10 +1,12 @@
 <!-- ************************** calculation ********************** -->
+<% total_china_price = 0 %>
 <% total_price = 0 %>
 <% total_count = 0 %>
 <% @projects.each do |project| %>
   <% if project.status != "deleted" && !project.delete_request %>
     <% if params[:include_paid] || project.payment == "unpaid" %>
       <% total_price += get_project_price(project) %>
+      <% total_china_price = total_price / @trader.china_japan_rate %>
       <% total_count += 1 %>
     <% end %>
   <% end %>
@@ -68,6 +70,9 @@
   <tr>
     <td rowspan="2" style="border: 1px solid black; width: 40%; padding: 15px; font-size:23px; text-align:center">
       ¥ <%= total_price.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\1,').reverse %>
+      <% if @trader.bank_type == "china" %> 
+        (<%= total_china_price.to_i.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\1,').reverse %> RMB) 
+      <% end %>
     </td>
   </tr>
   <tr>
@@ -78,9 +83,15 @@
     <td style="height:20px;"></td>
     <td style="width: 50%; padding-left:50px; font-size:14px;" rowspan="2">
       <span style="font-weight:bold">振込先:</span><br/>
-      <%= company_info[:bank_1] %><br/>
-      <%= company_info[:bank_2] %><br/>
-      <span style="font-size:12px"><%= company_info[:bank_3] %></span>
+      <% if @trader.bank_type == "japan" %>
+        <%= company_info[:bank_1] %><br/>
+        <%= company_info[:bank_2] %><br/>
+        <span style="font-size:12px"><%= company_info[:bank_3] %></span>
+      <% else %>
+        <%= company_info[:china_bank_1] %><br/>
+        <%= company_info[:china_bank_2] %><br/>
+        <%= company_info[:china_bank_3] %>
+      <% end %>
     </td>
   </tr>
 
@@ -103,13 +114,17 @@
   <tr>
     <td></td>
     <td style="width: 50%; padding-left:50px; font-size:13px; line-height:18px;">
-      <span style="font-weight:bold;">ENGLISH (英文) : </span><br/>
-      Bank Account :<%= company_info[:bank_english_1] %><br/>
-      <%= company_info[:bank_english_2] %><br/>
-      Branch Code: <%= company_info[:bank_english_3] %><br/>
-      Account No. : <%= company_info[:bank_english_4] %><br/>
-      Account Name: <span style="font-size:9px;"><%= company_info[:bank_english_5] %></span><br/>
-      Bank Swift Code: <%= company_info[:bank_english_6] %>
+      <% if @trader.bank_type == "japan" %>
+        <span style="font-weight:bold;">ENGLISH (英文) : </span><br/>
+        Bank Account :<%= company_info[:bank_english_1] %><br/>
+        <%= company_info[:bank_english_2] %><br/>
+        Branch Code: <%= company_info[:bank_english_3] %><br/>
+        Account No. : <%= company_info[:bank_english_4] %><br/>
+        Account Name: <span style="font-size:9px;"><%= company_info[:bank_english_5] %></span><br/>
+        Bank Swift Code: <%= company_info[:bank_english_6] %>
+      <% else %>
+        <br/><br/><br/><br/><br/><br/><br/>
+      <% end %>
     </td>
   </tr>
 

@@ -33,7 +33,10 @@ module Constants
       :bank_english_3 => "259",
       :bank_english_4 => "3153626",
       :bank_english_5 => "JTGKASHIN Co., Ltd",
-      :bank_english_6 => "SMBC JP JT"
+      :bank_english_6 => "SMBC JP JT",
+      :china_bank_1 => "交通银行 上海市西支行",
+      :china_bank_2 => "6222 6201 1000 9272379",
+      :china_bank_3 => "高 光兴"
     },
     :jki => {
       :company_name => "株式会社ジェイ・ケイ・アイ",
