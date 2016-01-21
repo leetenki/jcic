@@ -37,7 +37,11 @@
             </td>
 
             <td class="col col-md-3 col-sm-3 col-xs-3" style="padding: 10px 0;">
-              总额 <span style="font-weight: bolder; color: orange;"><%= total_price %></span> 円
+              <% if @trader.money_type == "japan" || @trader.money_type == "full" %>
+                总额 <span style="font-weight: bolder; color: orange;"><%= total_price %></span> 円
+              <% elsif @trader.money_type == "china" %>
+                总额 <span style="font-weight: bolder; color: orange;"><%= total_price %></span> 人民币
+              <% end %>
             </td>
           </tr>
 
