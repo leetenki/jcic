@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160121023050) do
+ActiveRecord::Schema.define(version: 20160121045043) do
 
   create_table "clients", force: :cascade do |t|
     t.integer  "project_id"
@@ -144,6 +144,7 @@ ActiveRecord::Schema.define(version: 20160121023050) do
     t.string   "auto_schedule",            default: "inactive"
     t.string   "bank_type",                default: "japan"
     t.float    "china_japan_rate",         default: 20.0
+    t.string   "money_type",               default: "japan"
   end
 
   add_index "traders", ["account"], name: "index_traders_on_account", unique: true

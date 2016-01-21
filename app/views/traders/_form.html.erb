@@ -147,8 +147,25 @@
         <label class="btn btn-default <%= 'active' if trader.bank_type == 'china' %>">
           <input type="radio" value="china" name="trader[bank_type]" <%= 'checked' if trader.bank_type == 'china' %> />中国
         </label>
+        <label class="btn btn-default <%= 'active' if trader.bank_type == 'full' %>">
+          <input type="radio" value="full" name="trader[bank_type]" <%= 'checked' if trader.bank_type == 'full' %> />全部
+        </label>
       </div>
 
+      <div style="font-weight: bold">
+        支付货币
+      </div>
+      <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
+        <label class="btn btn-default <%= 'active' if trader.money_type == 'japan' %>">
+          <input type="radio" value="japan" name="trader[money_type]" <%= 'checked' if trader.money_type == 'japan' %> />日币
+        </label>
+        <label class="btn btn-default <%= 'active' if trader.money_type == 'china' %>">
+          <input type="radio" value="china" name="trader[money_type]" <%= 'checked' if trader.money_type == 'china' %> />人民币
+        </label>
+        <label class="btn btn-default <%= 'active' if trader.money_type == 'full' %>">
+          <input type="radio" value="full" name="trader[money_type]" <%= 'checked' if trader.money_type == 'full' %> />自由
+        </label>
+      </div>
 
       <div style="font-weight: bold">
         被閲覧権限

@@ -107,6 +107,6 @@ class TradersController < ApplicationController
   #common function
   private
   def trader_params
-    params.require(:trader).permit(:company_name, :person_name, :telephone, :fax, :email, :qq, :bank, :address, :bank, :password, :account, :password_confirmation, :indivisual_price, :group_price_indivisual, :group_price_1_10, :group_price_11_20, :group_price_21_30, :group_price_31_40, :year_3_price, :year_5_price, :other_price, :group_japan_company, :individual_japan_company, :invoice_company, :invoice_sign_company, :activation, :validation_mode, :guarantee_mode, :work_mode, :authority, :editable_min, :auto_schedule, :china_japan_rate, :bank_type)
+    params.require(:trader).permit(:company_name, :person_name, :telephone, :fax, :email, :qq, :bank, :address, :bank, :password, :account, :password_confirmation, :indivisual_price, :group_price_indivisual, :group_price_1_10, :group_price_11_20, :group_price_21_30, :group_price_31_40, :year_3_price, :year_5_price, :other_price, :group_japan_company, :individual_japan_company, :invoice_company, :invoice_sign_company, :activation, :validation_mode, :guarantee_mode, :work_mode, :authority, :editable_min, :auto_schedule, :china_japan_rate, :bank_type, :money_type)
   end
 end
