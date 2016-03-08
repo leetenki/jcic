@@ -28,6 +28,15 @@ class SessionsController < ApplicationController
     end
   end
 
+  def switch
+    if(is_admin?)
+      @trader = Trader.find_by(:id => params[:id])
+      session[:trader_id] = @trader.id
+      flash[:info] = "成功登录#{@trader.company_name}."
+      redirect_to projects_path      
+    end
+  end
+
   def destroy
     session[:trader_id] = nil
     session[:updated_at] = nil

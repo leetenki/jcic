@@ -83,7 +83,11 @@ window.onload = function() {
       </tr>
       <tr>
         <td>国籍</td>
-        <td><%= @japan_company[:country] %>(<%= @japan_company[:stay] %>)</td>
+        <td><%= @japan_company[:country] %>
+          <% if !@japan_company[:stay].nil? && @japan_company[:stay].length > 0 %>
+            (<%= @japan_company[:stay] %>)
+          <% end %>
+        </td>
       </tr>
       <tr>
         <td>地址</td>

@@ -11,7 +11,9 @@
       <tbody id="trader_table_body" style="display:table-row-group">
         <tr>
           <td class="col-md-6 col-sm-6">公司名</td>
-          <td class="col-md-6 col-sm-6"><%= @trader.company_name %></td>
+          <td class="col-md-6 col-sm-6">
+            <div class="btn btn-xs btn-primary" onclick="location.href='/switch/<%= @trader.id %>'"><%= @trader.company_name %></div>
+          </td>
         </tr>
         <tr>
           <td>担当者</td>

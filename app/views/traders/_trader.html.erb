@@ -6,7 +6,9 @@
   <% end %>
 
     <td><%= trader.id %></td>
-    <td><%= trader.company_name %></td>
+    <td>
+        <div class="btn btn-xs btn-primary" onclick="location.href='/switch/<%= trader.id %>'"><%= trader.company_name %></div>
+    </td>
     <td><%= trader.person_name %></td>
     <td><%= trader.qq %></td>
     <td>
