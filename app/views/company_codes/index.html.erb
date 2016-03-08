@@ -34,14 +34,17 @@
 
 <table>
   <% @company_codes.each do |company_code| %>
-    <% visa_count = Project.where(:china_company_code => company_code.code).length > 40 %>
-    <% if (visa_count > 0) %>
+    <% visa_count = Project.where(:china_company_code => company_code.code).length %>
+    <% if (visa_count >= 40) %>
       <tr>
         <td>
           <%= company_code.name %>
         </td>
         <td>
           　　<%= company_code.code %>
+        </td>
+        <td>
+          　　　　　　　　　<%= visa_count %>          　　　　　
         </td>
       </tr>
     <% end %>
