@@ -434,8 +434,8 @@
 <% end %>
   <div class="text">
     <% if splitted %>
-      <%= @project.representative_name_chinese %>, 他<%= @project.clients.length - 1 %>名 
-      (<%= @project.date_arrival.to_era("%O%E年%m月%d日") %>〜<%= @project.date_leaving.to_era("%O%E年%m月%d日") %>)
+      内　容 : <%= @project.representative_name_chinese %>, 他<%= @project.clients.length - 1 %>名 
+      (男<%= @project.total_man %> / 女<%= @project.total_woman %>)
     <% end %>
     <div class="phone">日　付 : <%= @project.updated_at.strftime("%Y年%m月%d日") %></div>
     <div class="company-name">会社名 : <%= replace_parenthesis(company_info[:company_name]) %></div>
