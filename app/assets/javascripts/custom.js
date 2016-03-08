@@ -2360,3 +2360,9 @@ function reduceClientsTable() {
     }
   });
 }
+
+function jumpTo(link) {
+  window.event.cancelBubble = true;
+  location.href = link;
+  return false;
+}
