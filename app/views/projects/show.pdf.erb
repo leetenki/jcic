@@ -431,10 +431,9 @@
 <% else %>
   <div class="signature" style="page-break-before:always; padding-top:20px;">
 
-  <div class="representative">
-    <span class="text"><%= @project.representative_name_chinese %>, 他<%= @project.clients.length - 1 %>名 (男<%= @project.total_man %> / 女<%= @project.total_woman %>)</span>
-  </div>
-  <div class="title-date">(<span class="text"><%= @project.date_arrival.to_era("%O%E年%m月%d日") %>〜<%= @project.date_leaving.to_era("%O%E年%m月%d日") %></span>)</div>
+      <span class="text"><%= @project.representative_name_chinese %>, 他<%= @project.clients.length - 1 %>名 (男<%= @project.total_man %> / 女<%= @project.total_woman %>)</span>
+     (<span class="text"><%= @project.date_arrival.to_era("%O%E年%m月%d日") %>〜<%= @project.date_leaving.to_era("%O%E年%m月%d日") %></span>)
+     
 <% end %>
   <div class="text">
     <div class="phone">日　付 : <%= @project.updated_at.strftime("%Y年%m月%d日") %></div>
