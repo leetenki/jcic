@@ -3,9 +3,10 @@
     <td class='d_clip_button col-md-3' data-clipboard-text='<%= company_code.code %>' onclick="openAlert()" style="cursor:pointer;">
       <%= company_code.code %>
     </td>
-    <td class="col-md-5"><%= company_code.name %></td>
+    <td class="col-md-4"><%= company_code.name %></td>
     <td class="col-md-1"><%= company_code.locate %></td>
     <td class="col-md-3"><%= company_code.memo %><i class="fa fa-pencil-square-o" style="float: right; cursor:pointer;" onclick="location.href='/company_codes/<%= company_code.id %>/edit'"></i></td>
     <input type="hidden" value="<%= company_code.search_text %>" />
+    <td class="col-md-1"><%= Project.where(:china_company_code => company_code.code).length %></td>
   </tr>
 <% end %>
