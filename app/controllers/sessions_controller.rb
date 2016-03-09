@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
         session[:updated_at] = Time.now
         flash[:info] = "成功登录#{@trader.company_name}."
         if(is_admin?)
-          redirect_to projects_path
+          redirect_to admin_path
         elsif(is_trader?)
           redirect_to projects_path
         end
