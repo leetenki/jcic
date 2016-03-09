@@ -364,7 +364,7 @@
 
 <!--*********************** 顧客リスト ************************-->
 <% clients_length = @project.clients.length %>
-<% if clients_length <= 17 %>
+<% if clients_length <= 19 %>
   <table class="clients"  style="page-break-before: always; margin-top: 170px;">
     <caption>
       <div class="title">査証申請人名簿</div>
@@ -440,7 +440,7 @@
       </tr>
     </thead>
     <tbody>
-      <% for index in 0..16 do %>
+      <% for index in 0..18 do %>
       <% client = @project.clients[index] %>
         <tr>
           <td class="no"><%= index + 1 %></td>
@@ -474,12 +474,12 @@
 
 
   <!-- body table -->
-  <% body_cnt = ((clients_length-17) / 22).to_i %>
-  <% index = 16 %>
+  <% body_cnt = ((clients_length-19) / 23).to_i %>
+  <% index = 18 %>
   <% body_cnt.times do %>
     <table class="clients" style="page-break-before: always;">
       <tbody>
-        <% 22.times do %>
+        <% 23.times do %>
         <% index += 1 %>
         <% client = @project.clients[index] %>
           <tr>
@@ -514,7 +514,7 @@
   <% end %>
 
   <!-- tail table -->
-  <% if ((clients_length-17) % 22).to_i > 0 %>
+  <% if ((clients_length-19) % 23).to_i > 0 %>
     <table class="clients" style="page-break-before: always;">
       <tbody>
         <% first = index+1 %>
