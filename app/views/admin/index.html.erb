@@ -56,8 +56,8 @@
                 <% end %>
               <% end %>
 
-              <div class="col-md-3 col-sm-3 col-xs-3">未払い：合計<b style="color:orange"> <%= total_count.to_s %> </b>件</div>
-              <div class="col-md-3 col-sm-3 col-xs-3">総額<b style="color:orange;"> <%= total_price_japan.to_s %> </b>日円 + <b style="color:orange;"> <%= total_price_china.to_s %></b> 人民币</div>
+              <div class="col-md-2 col-sm-2 col-xs-2">未払い：<b style="color:orange"> <%= total_count.to_s %> </b>件</div>
+              <div class="col-md-4 col-sm-4 col-xs-4">総額<b style="color:orange;"> <%= total_price_japan.to_s %> </b>日円 + <b style="color:orange;"> <%= total_price_china.to_s %></b> 人民币</div>
               <div class="col-md-2 col-sm-2 col-xs-2"><button onclick="compute_invoice()" class="btn btn-primary">請求書作成</button></div>
               <div class="col-md-2 col-sm-2 col-xs-2"><button onclick="set_all_projects_paid()" class="btn btn-success">全て入金済</button></div>
               <div class="col-md-2 col-sm-2 col-xs-2"><button onclick="set_all_projects_unpaid()" class="btn btn-danger">全て未入金</button></div>
