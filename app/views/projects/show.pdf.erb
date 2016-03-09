@@ -190,9 +190,15 @@
   <% end %>
 </div>
 
+
+
+
+
+  
+
 <!--*********************** スケジュール ************************-->
 <% schedules_length = @project.schedules.length %>
-<% if schedules_length <= 12 %>
+<% if schedules_length <= 10 %>
   <table class="schedules" style="page-break-before:always; margin-top: 170px;">
     <caption>
       <div class="title">滞在予定表</div>
@@ -220,9 +226,26 @@
       <% end %>
     </tbody>
   </table>
+
+  <!--*********************** サイン ************************-->
+  <div class="signature" style="padding-top:20px;">
+    <div class="text">
+      内　容 : <%= @project.date_arrival.to_era("%O%E年%m月%d日") %>〜<%= @project.date_leaving.to_era("%O%E年%m月%d日") %>(計<%= @project.stay_term %>日)
+      <div class="phone">日　付 : <%= @project.updated_at.strftime("%Y年%m月%d日") %></div>
+      <div class="company-name">会社名 : <%= replace_parenthesis(company_info[:company_name]) %></div>
+      <div class="person-name">担当者 : <%= company_info[:chief] %></div>
+      <div class="phone">電　話 : <%= company_info[:phone] %></div>
+    </div>
+    <% if current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed") %>
+      <%= image_tag(::Rails.root.join('public',  Random.rand(3).to_s + "_" + company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..30)-110).to_s + "px;") %>
+      <%= image_tag(::Rails.root.join('public',  Random.rand(3).to_s + "_" + company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..20)-120).to_s + "px;") %>
+    <% end %>
+  </div>
+
+
 <% else %>
   <!-- head table -->
-  <table class="schedules" style="page-break-before:always; page-break-after:always; margin-top: 170px;">
+  <table class="schedules" style="page-break-before:always; margin-top: 170px;">
     <caption>
       <div class="title">滞在予定表</div>
       <div class="representative" style="text-align:right; font-size:0.9em;">
@@ -238,7 +261,7 @@
       </tr>
     </thead>
     <tbody>
-      <% for index in 0..11 do %>
+      <% for index in 0..9 do %>
         <% schedule = @project.schedules[index] %>
         <tr>
           <td class="date"><%= schedule.date.strftime("%Y-%m-%d") %></td>
@@ -249,13 +272,29 @@
     </tbody>
   </table>
 
+  <!--*********************** サイン ************************-->
+  <div class="signature" style="padding-top:20px;">
+    <div class="text">
+      内　容 : <%= @project.date_arrival.to_era("%O%E年%m月%d日") %>〜<%= @project.date_leaving.to_era("%O%E年%m月%d日") %>(計<%= @project.stay_term %>日)
+      <div class="phone">日　付 : <%= @project.updated_at.strftime("%Y年%m月%d日") %></div>
+      <div class="company-name">会社名 : <%= replace_parenthesis(company_info[:company_name]) %></div>
+      <div class="person-name">担当者 : <%= company_info[:chief] %></div>
+      <div class="phone">電　話 : <%= company_info[:phone] %></div>
+    </div>
+    <% if current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed") %>
+      <%= image_tag(::Rails.root.join('public',  Random.rand(3).to_s + "_" + company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..30)-110).to_s + "px;") %>
+      <%= image_tag(::Rails.root.join('public',  Random.rand(3).to_s + "_" + company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..20)-120).to_s + "px;") %>
+    <% end %>
+  </div>
+
+
   <!-- body table -->
-  <% body_cnt = ((schedules_length-12) / 15).to_i %>
-  <% index = 11 %>
+  <% body_cnt = ((schedules_length-10) / 12).to_i %>
+  <% index = 9 %>
   <% body_cnt.times do %>
-    <table class="schedules" style="page-break-after:always">
+    <table class="schedules" style="page-break-before:always;">
       <tbody>
-        <% 15.times do %>
+        <% 12.times do %>
           <% index += 1 %>
           <% schedule = @project.schedules[index] %>
           <tr>
@@ -266,45 +305,66 @@
         <% end %>
       </tbody>
     </table>
+
+    <!--*********************** サイン ************************-->
+    <div class="signature" style="padding-top:20px;">
+      <div class="text">
+        内　容 : <%= @project.date_arrival.to_era("%O%E年%m月%d日") %>〜<%= @project.date_leaving.to_era("%O%E年%m月%d日") %>(計<%= @project.stay_term %>日)
+        <div class="phone">日　付 : <%= @project.updated_at.strftime("%Y年%m月%d日") %></div>
+        <div class="company-name">会社名 : <%= replace_parenthesis(company_info[:company_name]) %></div>
+        <div class="person-name">担当者 : <%= company_info[:chief] %></div>
+        <div class="phone">電　話 : <%= company_info[:phone] %></div>
+      </div>
+      <% if current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed") %>
+        <%= image_tag(::Rails.root.join('public',  Random.rand(3).to_s + "_" + company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..30)-110).to_s + "px;") %>
+        <%= image_tag(::Rails.root.join('public',  Random.rand(3).to_s + "_" + company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..20)-120).to_s + "px;") %>
+      <% end %>
+    </div>
   <% end %>
 
   <!-- tail table -->
-  <table class="schedules">
-    <tbody>
-      <% first = index+1 %>
-      <% for index in first..schedules_length-1 do %>
-        <% schedule = @project.schedules[index] %>
-        <tr>
-          <td class="date"><%= schedule.date.strftime("%Y-%m-%d") %></td>
-          <td class="plan"><%= schedule.plan.gsub("。", ".").gsub(/[、，]/, ",").gsub("（", "(").gsub("）", ")") %></td>
-          <td class="hotel"><%= schedule.hotel.gsub("。", ".").gsub(/[、，]/, ",").gsub("（", "(").gsub("）", ")") %></td>
-        </tr>
+  <% if ((schedules_length-10) % 12).to_i > 0 %>
+    <table class="schedules" style="page-break-before:always;">
+      <tbody>
+        <% first = index+1 %>
+        <% for index in first..schedules_length-1 do %>
+          <% schedule = @project.schedules[index] %>
+          <tr>
+            <td class="date"><%= schedule.date.strftime("%Y-%m-%d") %></td>
+            <td class="plan"><%= schedule.plan.gsub("。", ".").gsub(/[、，]/, ",").gsub("（", "(").gsub("）", ")") %></td>
+            <td class="hotel"><%= schedule.hotel.gsub("。", ".").gsub(/[、，]/, ",").gsub("（", "(").gsub("）", ")") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <!--*********************** サイン ************************-->
+    <div class="signature" style="padding-top:20px;">
+      <div class="text">
+        内　容 : <%= @project.date_arrival.to_era("%O%E年%m月%d日") %>〜<%= @project.date_leaving.to_era("%O%E年%m月%d日") %>(計<%= @project.stay_term %>日)
+        <div class="phone">日　付 : <%= @project.updated_at.strftime("%Y年%m月%d日") %></div>
+        <div class="company-name">会社名 : <%= replace_parenthesis(company_info[:company_name]) %></div>
+        <div class="person-name">担当者 : <%= company_info[:chief] %></div>
+        <div class="phone">電　話 : <%= company_info[:phone] %></div>
+      </div>
+      <% if current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed") %>
+        <%= image_tag(::Rails.root.join('public',  Random.rand(3).to_s + "_" + company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..30)-110).to_s + "px;") %>
+        <%= image_tag(::Rails.root.join('public',  Random.rand(3).to_s + "_" + company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..20)-120).to_s + "px;") %>
       <% end %>
-    </tbody>
-  </table>
+    </div>
+  <% end %>
 <% end %>
 
-<!--*********************** サイン ************************-->
-<% if 15-((schedules_length-12)%15) >= 2 %>
-  <div class="signature" style="padding-top:20px;">
-<% else %>
-  <div class="signature" style="page-break-before:always; padding-top:20px;">
-<% end %>
-  <div class="text">
-    <div class="phone">日　付 : <%= @project.updated_at.strftime("%Y年%m月%d日") %></div>
-    <div class="company-name">会社名 : <%= replace_parenthesis(company_info[:company_name]) %></div>
-    <div class="person-name">担当者 : <%= company_info[:chief] %></div>
-    <div class="phone">電　話 : <%= company_info[:phone] %></div>
-  </div>
-  <% if current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed") %>
-    <%= image_tag(::Rails.root.join('public',  Random.rand(3).to_s + "_" + company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..30)-110).to_s + "px;") %>
-    <%= image_tag(::Rails.root.join('public',  Random.rand(3).to_s + "_" + company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..20)-120).to_s + "px;") %>
-  <% end %>
-</div>
+
+
+
+
+
+
 
 <!--*********************** 顧客リスト ************************-->
 <% clients_length = @project.clients.length %>
-<% if clients_length <= 23 %>
+<% if clients_length <= 17 %>
   <table class="clients"  style="page-break-before: always; margin-top: 170px;">
     <caption>
       <div class="title">査証申請人名簿</div>
@@ -340,9 +400,26 @@
       <% end %>
     </tbody>
   </table>
+
+
+  <!--*********************** サイン ************************-->
+  <div class="signature" style="padding-top:20px;">
+    <div class="text">
+      内　容 : <%= @project.representative_name_chinese %>, 他<%= @project.clients.length - 1 %>名 
+        (男<%= @project.total_man %> / 女<%= @project.total_woman %>)
+      <div class="phone">日　付 : <%= @project.updated_at.strftime("%Y年%m月%d日") %></div>
+      <div class="company-name">会社名 : <%= replace_parenthesis(company_info[:company_name]) %></div>
+      <div class="person-name">担当者 : <%= company_info[:chief] %></div>
+      <div class="phone">電　話 : <%= company_info[:phone] %></div>
+    </div>
+    <% if current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed") %>
+      <%= image_tag(::Rails.root.join('public', Random.rand(3).to_s + "_" + company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..20)-110).to_s + "px;") %>
+      <%= image_tag(::Rails.root.join('public', Random.rand(3).to_s + "_" +  company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..20)-120).to_s + "px;") %>
+    <% end %>
+  </div>  
 <% else %>
   <!-- head table -->
-  <table class="clients"  style="page-break-before: always; margin-top: 170px; page-break-after: always;">
+  <table class="clients"  style="page-break-before: always; margin-top: 170px;">
     <caption>
       <div class="title">査証申請人名簿</div>
       <div class="representative">
@@ -363,7 +440,7 @@
       </tr>
     </thead>
     <tbody>
-      <% for index in 0..22 do %>
+      <% for index in 0..16 do %>
       <% client = @project.clients[index] %>
         <tr>
           <td class="no"><%= index + 1 %></td>
@@ -376,16 +453,33 @@
           <td class="visa-type"><%= client.job %></td>
         </tr>
       <% end %>
-    </tbody>
+    </tbody> 
   </table>
 
+  <!--*********************** サイン ************************-->
+  <div class="signature" style="padding-top:20px;">
+    <div class="text">
+      内　容 : <%= @project.representative_name_chinese %>, 他<%= @project.clients.length - 1 %>名 
+        (男<%= @project.total_man %> / 女<%= @project.total_woman %>)
+      <div class="phone">日　付 : <%= @project.updated_at.strftime("%Y年%m月%d日") %></div>
+      <div class="company-name">会社名 : <%= replace_parenthesis(company_info[:company_name]) %></div>
+      <div class="person-name">担当者 : <%= company_info[:chief] %></div>
+      <div class="phone">電　話 : <%= company_info[:phone] %></div>
+    </div>
+    <% if current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed") %>
+      <%= image_tag(::Rails.root.join('public', Random.rand(3).to_s + "_" + company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..20)-110).to_s + "px;") %>
+      <%= image_tag(::Rails.root.join('public', Random.rand(3).to_s + "_" +  company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..20)-120).to_s + "px;") %>
+    <% end %>
+  </div>
+
+
   <!-- body table -->
-  <% body_cnt = ((clients_length-23) / 28).to_i %>
-  <% index = 22 %>
+  <% body_cnt = ((clients_length-17) / 22).to_i %>
+  <% index = 16 %>
   <% body_cnt.times do %>
-    <table class="clients" style="page-break-after: always;">
+    <table class="clients" style="page-break-before: always;">
       <tbody>
-        <% 28.times do %>
+        <% 22.times do %>
         <% index += 1 %>
         <% client = @project.clients[index] %>
           <tr>
@@ -401,49 +495,60 @@
         <% end %>
       </tbody>
     </table>
+
+    <!--*********************** サイン ************************-->
+    <div class="signature" style="padding-top:20px;">
+      <div class="text">
+        内　容 : <%= @project.representative_name_chinese %>, 他<%= @project.clients.length - 1 %>名 
+          (男<%= @project.total_man %> / 女<%= @project.total_woman %>)
+        <div class="phone">日　付 : <%= @project.updated_at.strftime("%Y年%m月%d日") %></div>
+        <div class="company-name">会社名 : <%= replace_parenthesis(company_info[:company_name]) %></div>
+        <div class="person-name">担当者 : <%= company_info[:chief] %></div>
+        <div class="phone">電　話 : <%= company_info[:phone] %></div>
+      </div>
+      <% if current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed") %>
+        <%= image_tag(::Rails.root.join('public', Random.rand(3).to_s + "_" + company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..20)-110).to_s + "px;") %>
+        <%= image_tag(::Rails.root.join('public', Random.rand(3).to_s + "_" +  company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..20)-120).to_s + "px;") %>
+      <% end %>
+    </div>
   <% end %>
 
   <!-- tail table -->
-  <table class="clients">
-    <tbody>
-      <% first = index+1 %>
-      <% for index in first..clients_length-1 do %>
-        <% client = @project.clients[index] %>
-        <tr>
-          <td class="no"><%= index + 1 %></td>
-          <td class="chinese-name"><%= client.name_chinese %></td>
-          <td class="english-name"><%= client.name_english %></td>
-          <td class="gender"><%= gender_str(client.gender) %></td>
-          <td class="birthday"><%= client.birthday.strftime("%Y-%m-%d") %></td>
-          <td class="hometown"><%= client.hometown %></t>
-          <td class="passport-no"><%= client.passport_no %></td>
-          <td class="visa-type"><%= client.job %></td>
-        </tr>
+  <% if ((clients_length-17) % 22).to_i > 0 %>
+    <table class="clients" style="page-break-before: always;">
+      <tbody>
+        <% first = index+1 %>
+        <% for index in first..clients_length-1 do %>
+          <% client = @project.clients[index] %>
+          <tr>
+            <td class="no"><%= index + 1 %></td>
+            <td class="chinese-name"><%= client.name_chinese %></td>
+            <td class="english-name"><%= client.name_english %></td>
+            <td class="gender"><%= gender_str(client.gender) %></td>
+            <td class="birthday"><%= client.birthday.strftime("%Y-%m-%d") %></td>
+            <td class="hometown"><%= client.hometown %></t>
+            <td class="passport-no"><%= client.passport_no %></td>
+            <td class="visa-type"><%= client.job %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <!--*********************** サイン ************************-->
+    <div class="signature" style="padding-top:20px;">
+      <div class="text">
+        内　容 : <%= @project.representative_name_chinese %>, 他<%= @project.clients.length - 1 %>名 
+          (男<%= @project.total_man %> / 女<%= @project.total_woman %>)
+        <div class="phone">日　付 : <%= @project.updated_at.strftime("%Y年%m月%d日") %></div>
+        <div class="company-name">会社名 : <%= replace_parenthesis(company_info[:company_name]) %></div>
+        <div class="person-name">担当者 : <%= company_info[:chief] %></div>
+        <div class="phone">電　話 : <%= company_info[:phone] %></div>
+      </div>
+      <% if current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed") %>
+        <%= image_tag(::Rails.root.join('public', Random.rand(3).to_s + "_" + company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..20)-110).to_s + "px;") %>
+        <%= image_tag(::Rails.root.join('public', Random.rand(3).to_s + "_" +  company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..20)-120).to_s + "px;") %>
       <% end %>
-    </tbody>
-  </table>
-<% end %>
-
-
-<!--*********************** サイン ************************-->
-<% if 28-((clients_length-23)%28) >= 4 %>
-  <div class="signature" style="padding-top:20px;">
-<% else %>
-  <div class="signature" style="page-break-before:always; padding-top:20px;">
-  <% splitted = true %>
-<% end %>
-  <div class="text">
-    <% if splitted %>
-      内　容 : <%= @project.representative_name_chinese %>, 他<%= @project.clients.length - 1 %>名 
-      (男<%= @project.total_man %> / 女<%= @project.total_woman %>)
-    <% end %>
-    <div class="phone">日　付 : <%= @project.updated_at.strftime("%Y年%m月%d日") %></div>
-    <div class="company-name">会社名 : <%= replace_parenthesis(company_info[:company_name]) %></div>
-    <div class="person-name">担当者 : <%= company_info[:chief] %></div>
-    <div class="phone">電　話 : <%= company_info[:phone] %></div>
-  </div>
-  <% if current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed") %>
-    <%= image_tag(::Rails.root.join('public', Random.rand(3).to_s + "_" + company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..20)-110).to_s + "px;") %>
-    <%= image_tag(::Rails.root.join('public', Random.rand(3).to_s + "_" +  company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..20)-120).to_s + "px;") %>
+    </div>
   <% end %>
-</div>
+<% end %>
+
