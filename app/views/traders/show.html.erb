@@ -80,7 +80,7 @@
           <td><%= @trader.address %></td>
         </tr>
         <tr>
-          <td>申请数量</td>
+          <td>具体申请数量</td>
           <td>
             <% all_projects = Project.where(:trader_id => @trader.slave_trader_ids + [@trader.id]) %>
             合計 <span style="font-weight:bold; color:orange;"><%= all_projects.length %></span> 件
@@ -89,7 +89,7 @@
             <% CompanyCode.all.each do |company_code| %>
               <% single_company_projects = all_projects.where(:china_company_code => company_code.code) %>
               <% if(single_company_projects.length > 0) %>
-                <b><%= company_code.name %></b> ( <span style="font-weight:bold; color:#6672c4;"><%= single_company_projects.length %></span> ) <br/>
+                <b><span style="font-weight:bold; color:#f7f7b2;"><%= company_code.name %> ( <%= single_company_projects.length %> ) </span></b><br/>
               <% end %>
             <% end %>
           </td>
