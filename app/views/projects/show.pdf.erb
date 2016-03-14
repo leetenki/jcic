@@ -65,7 +65,7 @@
 <table style="border: none; width: 100%; font-size:14px;">
   <tr>
     <td rowspan="1" style="width:6%">1. </td>
-    <td colspan="2">当社は, <span style="border-bottom: 1px solid black"><%= replace_parenthesis(@visa_company[0].name) %></span>との契約に基づき, 別紙査証申請人名簿に記載した中華人民共和国国民による訪日団体観光旅行を行うに当たり, 次のとおりその身元を引き受けます.</td>
+    <td colspan="2">当社は, <span style="border-bottom: 1px solid black"><%= replace_parenthesis(@visa_company[0].name) %></span>との契約に基づき, 別紙査証申請人名簿に記載した中華人民共和国国民による訪日<%= visa_type_str_short_2(@project.visa_type) %>観光旅行を行うに当たり, 次のとおりその身元を引き受けます.</td>
   </tr>
   <tr>
     <td rowspan="6"></td>

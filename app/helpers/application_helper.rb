@@ -17,6 +17,11 @@ module ApplicationHelper
     return visa_type_table[visa_type] 
   end
 
+  def visa_type_str_short_2(visa_type)
+    visa_type_table = {"individual" => "个人", "group" => "团体", "3years" => "个人", "5years" => "个人"}
+    return visa_type_table[visa_type] 
+  end
+
   def validation_mode_str(validation_mode)
     validation_mode_table = {"easy" => "简化", "simplest" => "超级简化", "strict" => "复杂"}
     return validation_mode_table[validation_mode] 
