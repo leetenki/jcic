@@ -544,6 +544,8 @@ function validateTotalPeople() {
   });
   if(visaType && visaType != "group" && totalPeople > 10) {
     valid = false;
+  } else if(visaType && visaType == "group" && totalPeople > 40) {
+    valid = false;
   }
 
   return valid;
@@ -1126,6 +1128,32 @@ function reComputeClientsIndex() {
   $("#clients_container table .index").each(function() {
     $(this).text(i++);
   });
+}
+
+function addClientRowWithValidation() {
+ var visaType = null
+  $("#visaType input").each(function() {
+    if(this.checked) {
+      visaType = this.value
+    }
+  });
+
+  var valid = true;
+  if(visaType != null) {
+    if(visaType != "group" && totalPeople >= 10) {
+      alert("个签，3年，5年多次签证人数必须为10人以下。")
+      valid = false;
+    } else if(visaType && visaType == "group" && totalPeople >= 40) {
+      alert("团体签证人数必须为40人以下。")
+      valid = false;
+    }
+  }
+
+  if(valid) { // can add new client row
+    return addClientRow();
+  } else {
+    return false;
+  }
 }
 
 // function to add new client row to table
@@ -1989,7 +2017,7 @@ $(function() {
     } else {
       $("#totalPeople")[0].value = $("#clients_container table tr").length;
       if(!updateIcon('total_people_check', validateTotalPeople, 'total_people_container')) {
-        failedMessage += "<li>总人数不正确.团体签证可40人以下，其他签证必须为10人以下</li>";                              
+        failedMessage += "<li>总人数不正确.团体签证为40人以下。个签，3年，5年多次签证必须为10人以下</li>";                              
       }
     }
     if(!updateIcon('date_arrival_check', validateDateArrival, 'date_arrival_container')) {

@@ -140,8 +140,12 @@ class ProjectsController < ApplicationController
 
     #custom check clients
     if(@project.clients.length == 0)
-      @project.errors.add(:clients, "客户数不可为零.")        
+      @project.errors.add(:clients, "客户数不可为零.")
       @project.clients.build
+    elsif(@project.visa_type == "group" && @project.clients.length > 40)
+      @project.errors.add(:clients, "团签客户数不可超过40人")
+    elsif(@project.visa_type != "group" && @project.clients.length > 10)
+      @project.errors.add(:clients, "个签，3年，5年多次人数不可超过10人")
     else
       @project.total_people = @project.clients.length
     end
