@@ -1937,7 +1937,7 @@ function initialValidation() {
 
   // check all english name
   $(".english_name_container").each(function() {
-    validateAndUpdateFieldIgnoreError(this.attributes.id.value, 'english_name_container', validateEnglishNameById);
+    validateAndUpdateFieldIgnoreError(this.attributes.id.value, 'english_name_container', validateAndReplaceEnglishNameById);
   })
 
   // check all gender
