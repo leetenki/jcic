@@ -387,12 +387,14 @@ function validateVisaType() {
 
 function validateChineseName() {
   var valid = true;
-  chineseName = document.getElementById("chineseName").value.replace(/[!-~]{1,}/g, "").replace(/[　 ]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+  chineseName = document.getElementById("chineseName").value.replace(/[ -~]{1,}/g, "").replace(/[　 \s]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
 
   if(chineseName.length <= 1 || chineseName.length > 8) {
     valid = false;
   } else if(/*CheckLength(chineseName, 0)*/ !CheckLength(chineseName, 1)) {
     valid = false;
+  } else {
+    document.getElementById("chineseName").value = chineseName;
   }
   return valid;
 }
@@ -839,16 +841,17 @@ function validateGender(id) {
 
 
 function validateChineseNameById(id) {
-  var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, "").replace(/[　 ]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+  var inputText = $("#" + id + " input")[0].value.replace(/[ -~]{1,}/g, "").replace(/[　 \s]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
 
   if(inputText.length > 1 && inputText.length <= 8 /*&& !CheckLength(inputText, 0)*/ && CheckLength(inputText, 1)) {
+    $("#" + id + " input")[0].value = inputText;
     return true
   } else {
     return false;
   }
 }
 function validateAndReplaceChineseNameById(id) {
-  var inputText = $("#" + id + " input")[0].value.replace(/[!-~]{1,}/g, "").replace(/[　 ]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
+  var inputText = $("#" + id + " input")[0].value.replace(/[ -~]{1,}/g, "").replace(/[　 \s]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
   if(inputText.length > 8) {
     inputText = inputText.match(/.{1,8}/)[0]
   }
