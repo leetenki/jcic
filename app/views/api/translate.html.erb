@@ -1,0 +1,41 @@
+<h1><i class="fa fa-graduation-cap"></i> 翻译器</h1>
+<div class="row">
+  <div class="container col-md-10 col-md-offset-1" style="margin-top: 80px">
+      <div class="row">
+          <div class="col-md-5 col-lg-5 col-sm-5 col-xs-5">
+              <div class="row" style="text-align: center; font-weight: bold">中文</div>
+              <textarea class="form-control" rows="10" id="input"></textarea>
+          </div>
+
+          <div class="col-md-2 col-lg-2 col-sm-2 col-xs-2" style="text-align: center">
+              <div class="btn btn-success btn-large" style="margin-top: 80px" id="translate">翻译 ⇒ </div>
+          </div>
+
+          <div class="col-md-5 col-lg-5 col-sm-5 col-xs-5">
+              <div class="row" style="text-align: center; font-weight: bold">日文</div>
+              <textarea class="form-control" rows="10" id="output"></textarea>
+          </div>
+      </div>
+  </div>
+</div>
+
+<script>
+  $("#translate").click(function() {
+    $("#now_loading")[0].style.display = "block";
+    var input = $("#input").val();
+    console.log(input)
+    $("#translate").attr("disabled", "disabled")
+
+    $.ajax({
+        url: "/api/translate_result?chinese=" + input,
+        success: function(data) {
+          $("#output").val(data)
+          $("#now_loading")[0].style.display = "none";
+          $("#translate").removeAttr("disabled")
+        },
+        error: function(data) {
+        }
+    });
+
+  })
+</script>

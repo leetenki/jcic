@@ -41,6 +41,9 @@ Rails.application.routes.draw do
 
   get 'code', :to => "company_codes#code"
 
+  get 'api/translate', :to => "api#translate", :as => "translate"
+  get 'api/translate_result', :to => "api#translate_result"
+
   resources :traders
   resources :projects
   resources :company_codes, :only => [:index, :edit, :update]
