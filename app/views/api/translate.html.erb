@@ -22,7 +22,7 @@
 <script>
   $("#translate").click(function() {
     $("#now_loading")[0].style.display = "block";
-    var input = $("#input").val();
+    var input = $("#input").val().replace(/[ \s\t\r\n]+/g, "　");
     console.log(input)
     $("#translate").attr("disabled", "disabled")
 
