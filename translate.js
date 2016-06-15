@@ -16,7 +16,7 @@ page.onLoadFinished = function(){
       phantom.exit();      
     }
     var text_output = page.evaluate(function() {
-      return $(".target-output").text();            
+      return $(".target-output").text().replace(/^ /, "");            
     });
 
     if(text_output.length <= 0) {
