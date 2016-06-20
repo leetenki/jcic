@@ -47,10 +47,10 @@
               <% total_count = 0 %>
               <% @projects.each do |project| %>
                 <% if project.payment == "unpaid" && project.status != "deleted" && !project.delete_request %>
-                  <% if project.trader.money_type == "japan" %>
-                    <% total_price_japan += get_project_price(project) %>
-                  <% elsif project.trader.money_type == "china" %>
+                  <% if project.trader.money_type == "china"%>
                     <% total_price_china += get_project_price(project) %>
+                  <% else %>
+                    <% total_price_japan += get_project_price(project) %>
                   <% end %>
                   <% total_count += 1 %>
                 <% end %>
