@@ -32,25 +32,6 @@
   </div>
 </div>
 
-<table>
-  <% @company_codes.each do |company_code| %>
-    <% visa_count = Project.where(:china_company_code => company_code.code).length %>
-    <% if (visa_count >= 40) %>
-      <tr>
-        <td>
-          <%= company_code.name %>
-        </td>
-        <td>
-          　　<%= company_code.code %>
-        </td>
-        <td>
-          　　　　　　　　　<%= visa_count %>          　　　　　
-        </td>
-      </tr>
-    <% end %>
-  <% end %>
-</table>
-
 <!-- alert form -->
 <div class="alert alert-success alert-panel" id="success-alert">
   <strong>拷贝完毕 </strong><br/><br/>
