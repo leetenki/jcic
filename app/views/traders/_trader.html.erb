@@ -10,6 +10,18 @@
     <td><%= trader.id %></td>
     <td>
         <div class="btn btn-xs btn-primary" onclick="jumpTo('/switch/<%= trader.id %>')"><%= trader.company_name %></div>    
+        <% unless trader.master_trader.nil? %>
+            <div>上家 :</div>
+            <div><%= trader.master_trader.company_name %></div>
+            <br/>
+        <% end %>
+
+        <% if trader.slave_traders.present? %>
+            <div>下家 :</div>
+            <% trader.slave_traders.each_with_index do |slave, index| %>
+                <div><%= index+1 %> <%= slave.company_name %></div>
+            <% end %>
+        <% end %>
     </td>
     <td><%= trader.person_name %></td>
     <td><%= trader.qq %></td>
