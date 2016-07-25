@@ -8,6 +8,9 @@ class StaticPagesController < ApplicationController
     render "browser", :layout => false;
   end
 
+  def price
+  end
+
   def description
     @account = params[:account]
     @password = params[:password]
