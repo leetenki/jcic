@@ -1,0 +1,50 @@
+<h1><i class="fa fa-signal"></i> 特別会計</h1>
+  <style>
+    td, th {
+      padding: 5px;
+      border: 1px gray solid;
+    }
+  </style>
+<div class="row">
+  <div class="container col-md-12">
+  <table style="widh: 100%; text-align:center; margin-top: 30px;" class="col-md-12">
+      <tr>
+        <th class="col-md-4 col-xs-4 col-sm-4 col-lg-4" style="text-align:center">旅行社名</th>
+        <th class="col-md-4 col-xs-4 col-sm-4 col-lg-4" style="text-align:center">标价</th>
+        <th class="col-md-4 col-xs-4 col-sm-4 col-lg-4" style="text-align:center">人数</th>
+      </tr>
+      <% @traders.all.each do |trader| %>
+          <% if trader.projects.size > 0 && ((trader.money_type == "china" && trader.indivisual_price <= 15) || (trader.money_type != "china" && trader.indivisual_price <= 240)) %>
+          <tr>
+            <td><%= trader.company_name %></td>
+            <td>
+              <%= trader.indivisual_price %>
+              <% if trader.money_type == "china" %>
+                人民币
+              <% else %>
+                円
+              <% end %>
+            </td>
+            <td>
+              <% invoice_date = first_day(Date.parse(trader.projects.order("id asc").first.created_at.strftime("%Y-%m-%d"))) %>
+              <% begin %>
+                  <%= first_day(invoice_date) %> 〜 <%= last_day(invoice_date) %> : 
+                  <% projects = Project.where(trader_id: trader.id, created_at: Time.parse(first_day(invoice_date).to_s)..Time.parse(last_day(invoice_date).to_s)+60*60*24-1) %>
+                  <% total_people = 0 %>
+                  <% projects.each do |project| %>
+                    <% if !project[:delete_request] && project[:status] != "deleted" %>
+                      <% total_people += project.clients.length %>
+                    <% end %>
+                  <% end %>
+
+                  <%= total_people %>人
+                  <br/>
+                  <% invoice_date = invoice_date >> 1 %>
+              <% end while(invoice_date <= Date.today) %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+  </div>
+</div>

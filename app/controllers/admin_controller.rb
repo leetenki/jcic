@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  before_action :logged_in_admin, :only => [:index, :paid_all, :unpaid_all, :useragent, :get_uncommitted_projects, :get_uncommitted_projects_immediately, :set_project_committed, :upload_pdf, :get_delete_requesting_projects, :get_delete_requesting_committed_projects, :set_delete_requesting_projects_deleted, :get_project_by_id, :renew_company_codes, :update_company_codes]
+  before_action :logged_in_admin, :only => [:index, :paid_all, :unpaid_all, :useragent, :get_uncommitted_projects, :get_uncommitted_projects_immediately, :set_project_committed, :upload_pdf, :get_delete_requesting_projects, :get_delete_requesting_committed_projects, :set_delete_requesting_projects_deleted, :get_project_by_id, :renew_company_codes, :update_company_codes, :invoice_internal]
   before_action :initial_search, :only => [:paid_all, :unpaid_all]
   before_action :logged_in, :only => [:invoice, :analysis]
 
@@ -48,6 +48,10 @@ class AdminController < ApplicationController
     end
     flash[:success] = "status == deleted, delete_request == true 以外，所有project的payment转换为unpaid"
     redirect_to "/admin?" + URI.encode_www_form([["trader_id", params[:trader_id]], ["from", params[:from]], ["to", params[:to]]])
+  end
+
+  def invoice_internal
+    @traders = Trader.all
   end
 
   def invoice
