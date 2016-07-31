@@ -16,7 +16,9 @@
       <% @traders.all.each do |trader| %>
           <% if trader.projects.size > 0 && ((trader.money_type == "china" && trader.indivisual_price <= 15) || (trader.money_type != "china" && trader.indivisual_price <= 240)) %>
           <tr>
-            <td><%= trader.company_name %></td>
+              <td>
+                  <div class="btn btn-xs btn-primary" onclick="location.href='/traders/<%= trader.id %>'"><%= trader.company_name %></div>
+              </td>
             <td>
               <%= trader.indivisual_price %>
               <% if trader.money_type == "china" %>
