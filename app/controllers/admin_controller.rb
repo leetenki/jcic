@@ -1,7 +1,7 @@
 class AdminController < ApplicationController
   before_action :logged_in_admin, :only => [:index, :paid_all, :unpaid_all, :useragent, :get_uncommitted_projects, :get_uncommitted_projects_immediately, :set_project_committed, :upload_pdf, :get_delete_requesting_projects, :get_delete_requesting_committed_projects, :set_delete_requesting_projects_deleted, :get_project_by_id, :renew_company_codes, :update_company_codes, :invoice_internal]
   before_action :initial_search, :only => [:paid_all, :unpaid_all]
-  before_action :logged_in, :only => [:invoice, :analysis]
+  before_action :logged_in, :only => [:invoice, :analysis, :create_payoff, :delete_payoff]
 
   def index
     if !params[:trader_id].present? && !params[:from].present? && !params[:to].present?
@@ -36,6 +36,18 @@ class AdminController < ApplicationController
     end
     flash[:success] = "status == deleted, delete_request == true 以外，所有project的payment转换为paid"
     redirect_to "/admin?" + URI.encode_www_form([["trader_id", params[:trader_id]], ["from", params[:from]], ["to", params[:to]]])
+  end
+
+  def create_payoff
+    @trader = Trader.find(params[:trader_id])
+    @trader.payoffs.create(status: params[:status])
+    redirect_to "/my_invoice/" + params[:trader_id]
+  end
+
+  def delete_payoff
+    @trader = Trader.find(params[:trader_id])
+    @trader.payoffs.find_by(status: params[:status]).delete
+    redirect_to "/my_invoice/" + params[:trader_id]
   end
 
   def unpaid_all

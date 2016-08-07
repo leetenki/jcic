@@ -42,6 +42,15 @@
               <% elsif @trader.money_type == "china" %>
                 总额 <span style="font-weight: bolder; color: orange;"><%= total_price %></span> 人民币
               <% end %>
+
+              <% if is_admin? || has_authority? %>
+                <br/>
+                <% unless @trader.payoffs.where(status: invoice_date.to_s).empty? %>
+                    <span class="btn btn-xs btn-success require-loading" onclick="location.href='/admin/delete_payoff?trader_id=<%= @trader.id %>&status=<%= invoice_date.to_s %>'">以支付</span>
+                <% else %>
+                    <span class="btn btn-xs btn-danger require-loading" onclick="location.href='/admin/create_payoff?trader_id=<%= @trader.id %>&status=<%= invoice_date.to_s %>'">未支付</span>
+                <% end %>
+              <% end %>
             </td>
           </tr>
 

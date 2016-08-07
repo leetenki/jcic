@@ -32,6 +32,8 @@ Rails.application.routes.draw do
   get 'admin/renew_company_codes', :to => "admin#renew_company_codes"
   get 'admin/analysis', :to => "admin#analysis", :as => "analysis"
   post 'admin/update_company_codes', :to => "admin#update_company_codes"
+  get 'admin/delete_payoff', :to => "admin#delete_payoff"
+  get 'admin/create_payoff', :to => "admin#create_payoff"
 
   get 'admin', :to => "admin#index", :as => "admin"
   get 'admin/paid_all', :to => "admin#paid_all"

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160121045043) do
+ActiveRecord::Schema.define(version: 20160807172952) do
 
   create_table "clients", force: :cascade do |t|
     t.integer  "project_id"
@@ -39,6 +39,15 @@ ActiveRecord::Schema.define(version: 20160121045043) do
     t.datetime "updated_at",  null: false
     t.string   "search_text"
   end
+
+  create_table "payoffs", force: :cascade do |t|
+    t.integer  "trader_id"
+    t.string   "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "payoffs", ["trader_id"], name: "index_payoffs_on_trader_id"
 
   create_table "projects", force: :cascade do |t|
     t.integer  "trader_id"
