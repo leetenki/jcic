@@ -2,6 +2,7 @@ class Trader < ActiveRecord::Base
   #relationship
   has_many :projects
   has_many :payoffs
+  has_many :confirmations
   has_many :slave_relationships, :class_name => "Relationship", :foreign_key => "master_id", :dependent => :destroy
   has_many :slave_traders, :through => :slave_relationships, :source => :slave
 
