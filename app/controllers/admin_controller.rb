@@ -75,7 +75,7 @@ class AdminController < ApplicationController
   end
 
   def invoice_internal
-    @traders = Trader.all
+    @traders = Trader.where(invoice_sign_company: ["jcic", "jki"])
   end
 
   def invoice

@@ -52,7 +52,7 @@
                 <% end %>
               <% end %>
 
-              <% if is_admin? || has_authority? %>
+              <% if is_admin? %>
                 <% unless @trader.confirmations.where(status: invoice_date.to_s).empty? %>
                     <span class="btn btn-xs btn-success require-loading" onclick="location.href='/admin/delete_confirmation?trader_id=<%= @trader.id %>&status=<%= invoice_date.to_s %>'">以结算</span>
                 <% else %>
