@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   get 'admin/create_payoff', :to => "admin#create_payoff"
   get 'admin/delete_confirmation', :to => "admin#delete_confirmation"
   get 'admin/create_confirmation', :to => "admin#create_confirmation"
+  get 'admin/check_invoice', :to => "admin#check_invoice"
 
   get 'admin', :to => "admin#index", :as => "admin"
   get 'admin/paid_all', :to => "admin#paid_all"
