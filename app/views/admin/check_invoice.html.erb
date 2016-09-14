@@ -11,7 +11,9 @@
       <tbody>
         <% @traders.each do |trader| %>
           <tr>
-            <td><%= trader.company_name %></td>
+            <td>
+              <div style="cursor:pointer;" class="btn btn-default" onclick="location.href='/my_invoice/<%= trader.id %>'"><%= trader.company_name %></div>
+            </td>
             <td>
               <% if trader.projects.any? %>
                 <% invoice_date = first_day(Date.parse(trader.projects.order("id asc").first.created_at.strftime("%Y-%m-%d"))) %>
