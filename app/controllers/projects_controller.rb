@@ -478,7 +478,7 @@ class ProjectsController < ApplicationController
     @project.save :validate => false;
     #render :text => "Succeed to upload file " + @project.pdf.url;
     flash[:success] = "Succeed to upload file " + @project.pdf.url
-    redirect_to projects_path
+    redirect_to admin_upload_pdf_path
   end
 
   def signature
