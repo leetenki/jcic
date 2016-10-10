@@ -1,4 +1,4 @@
-require 'JSON'
+require 'json'
 
 class Api::VisaController < ApplicationController
   before_action :logged_in_api, :only => [:new, :delete, :check]
