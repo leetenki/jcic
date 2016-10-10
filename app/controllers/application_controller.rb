@@ -15,6 +15,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def logged_in_api
+    unless logged_in?
+      store_location
+      render json: '{ "message": "wrong session token" }'
+    end
+  end
+
   def logged_in_trader
     unless is_trader?
       store_location

@@ -51,10 +51,23 @@ Rails.application.routes.draw do
   get 'api/translate', :to => "api#translate", :as => "translate"
   get 'api/translate_result', :to => "api#translate_result"
 
+  # api
+  namespace :api, {format: 'json'} do
+    namespace :visa do
+      #get '/', :action => 'index'
+      post '/session', :action => 'login'
+      post '/new', :action => 'new'
+      get '/pdf', :action => 'check'
+      get '/delete', :action => 'delete'
+      get '/codes', :action => 'code'
+    end
+  end
+
   resources :traders
   resources :projects
   resources :company_codes, :only => [:index, :edit, :update]
   resources :sessions, :only => [:new, :create, :destroy]
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -3,6 +3,6 @@ class ApiController < ApplicationController
   end
 
   def translate_result
-  	 render :text => `phantomjs translate.js #{params[:chinese]}`
+    render :text => `phantomjs translate.js #{params[:chinese]}`
   end
 end
