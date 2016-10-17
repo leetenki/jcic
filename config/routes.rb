@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   get 'random_schedule', :to => "projects#generate_random_schedule"
   post 'projects/store_pdf', :to => "projects#store_pdf"
 
+  get 'admin/get_committed_waiting_projects', :to => "admin#get_committed_waiting_projects"
   get 'admin/get_uncommitted_projects', :to => "admin#get_uncommitted_projects"
   get 'admin/get_uncommitted_projects_immediately', :to => "admin#get_uncommitted_projects_immediately"
   get 'admin/set_project_committed/(:id)', :to => "admin#set_project_committed"
