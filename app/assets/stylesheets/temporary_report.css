@@ -9,7 +9,7 @@
 }
 table {
   width: 100%;
-  font-size: 10.5px;
+  font-size: 11px;
   border-collapse: collapse;
 }
 
@@ -19,7 +19,7 @@ table.report-table tr, table.report-table td {
 }
 
 tr, td {
-  padding: 4.5px 2px;
+  padding: 5px 2px;
 }
 
 table.nopadding tr, table.nopadding.td {
