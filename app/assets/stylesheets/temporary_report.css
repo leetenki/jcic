@@ -1,0 +1,27 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.head {
+  font-size: 30px;
+  text-align: center;
+  font-weight: bold;
+}
+table {
+  width: 100%;
+  font-size: 10.5px;
+  border-collapse: collapse;
+}
+
+table.report-table tr, table.report-table td {
+  border: 1px black solid;
+  border-collapse: collapse;
+}
+
+tr, td {
+  padding: 4.5px 2px;
+}
+
+table.nopadding tr, table.nopadding.td {
+  padding: 0;
+}

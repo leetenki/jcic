@@ -46,6 +46,7 @@ Rails.application.routes.draw do
   get 'admin/invoice_internal', :to => "admin#invoice_internal", :as => "invoice_internal"
   get 'admin/useragent', :to => "admin#useragent"
   get 'projects/signature/(:id)', :to => "projects#signature"
+  get 'projects/(:id)/temporary_report', :to => "projects#temporary_report"
 
   get 'code', :to => "company_codes#code"
 

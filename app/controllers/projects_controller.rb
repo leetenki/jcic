@@ -4,7 +4,7 @@ require 'era_ja/date'
 include ChineseConverter
 
 class ProjectsController < ApplicationController
-  before_action :logged_in, :only => [:new, :create, :index, :edit, :update, :destroy, :show, :need_delete, :signature, :generate_random_schedule]
+  before_action :logged_in, :only => [:new, :create, :index, :edit, :update, :destroy, :show, :need_delete, :signature, :generate_random_schedule, :temporary_report]
   before_action :init_company_codes, :only => [:new, :create, :edit, :update]
   before_action :logged_in_admin, :only => [:store_pdf]
 
@@ -367,6 +367,33 @@ class ProjectsController < ApplicationController
         pdf = PDFKit.new(html, :encoding => "UTF-8");
         pdf.stylesheets << "#{Rails.root}/app/assets/stylesheets/pdf.css"
         send_data pdf.to_pdf, :filename => "#{@project.representative_name_chinese}（#{@project.clients.length}人）" + visa_type_table[@project.visa_type] + ".pdf", :type => "application/pdf", :disposition => "inline"
+      end
+    end
+  end
+
+  def temporary_report
+    if(is_admin? || current_trader.authority == "all")
+      @project = Project.where("id = ?", params[:id]).includes(:clients, :schedules)[0]
+    elsif(current_trader.authority == "self")
+      @project = current_trader.projects.where("id = ?", params[:id]).includes(:clients, :schedules)[0]
+    else
+      @traders = Trader.where(:invoice_company => current_trader.authority);
+      @ids = Array.new(0, nil)
+      @traders.each do |trader|
+        @ids.push(trader.id)
+      end
+      @project = Project.where("trader_id in (?)", @ids).where("id = ?", params[:id]).includes(:clients, :schedules)[0]
+    end
+
+    @visa_company = CompanyCode.find_by(code: @project.china_company_code)
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        html = render_to_string :template => "/projects/temporary_report"
+        pdf = PDFKit.new(html, :encoding => "UTF-8");
+        pdf.stylesheets << "#{Rails.root}/app/assets/stylesheets/temporary_report.css"
+        send_data pdf.to_pdf, :filename => "#{@project.system_code}.pdf", :type => "application/pdf", :disposition => "inline"
       end
     end
   end
