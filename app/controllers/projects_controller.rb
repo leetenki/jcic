@@ -396,6 +396,7 @@ class ProjectsController < ApplicationController
         when '3years'
           html = render_to_string :template => "/projects/temporary_report_many_years"
         when '5years'
+          html = render_to_string :template => "/projects/temporary_report_many_years"
         end
         pdf = PDFKit.new(html, :encoding => "UTF-8");
         pdf.stylesheets << "#{Rails.root}/app/assets/stylesheets/temporary_report.css"
