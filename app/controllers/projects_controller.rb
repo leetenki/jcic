@@ -390,7 +390,13 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-        html = render_to_string :template => "/projects/temporary_report"
+        case @project.visa_type
+        when 'individual'
+          html = render_to_string :template => "/projects/temporary_report_individual"
+        when '3years'
+          html = render_to_string :template => "/projects/temporary_report_many_years"
+        when '5years'
+        end
         pdf = PDFKit.new(html, :encoding => "UTF-8");
         pdf.stylesheets << "#{Rails.root}/app/assets/stylesheets/temporary_report.css"
         send_data pdf.to_pdf, :filename => "#{@project.system_code}.pdf", :type => "application/pdf", :disposition => "inline"

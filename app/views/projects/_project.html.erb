@@ -53,7 +53,7 @@
 
                     <% if project.pdf.present? %>
                         <button class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6" onclick="window.open().location.href='<%= project.pdf.url %>'">帰国報告</button>
-                    <% elsif project.status == 'committed' && project.visa_type == 'individual' %>
+                    <% elsif project.status == 'committed' && project.visa_type != 'group' %>
                         <button class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6" onclick="window.open().location.href='/projects/<%= project.id %>/temporary_report.pdf'">帰国報告</button>
                     <% else %>
                         <div class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6 disabled-modify" disabled="disabled">
