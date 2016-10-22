@@ -2,7 +2,8 @@
 <%= favicon_link_tag '/ico.png' %>
 
 <div style="font-size: 12px; text-align: right">様式2</div>
-<div style="font-size: 16px; text-align: center; font-weight: bolder; margin-top: -4px;">中国国民訪日個人観光旅行帰国報告書</div>
+<% title = '中国国民訪日個人観光旅行' %>
+<div style="font-size: 16px; text-align: center; font-weight: bolder; margin-top: -4px;"><%= title %>帰国報告書</div>
 
 <table style="margin-top: -12px">
   <tr>
@@ -192,7 +193,7 @@
     </td>
   </tr>
   <tr style='border-bottom: transparent solid 2px'>
-    <td>上記の通り中国国民訪日個人観光旅行の帰国を報告します。</td>
+    <td>上記の通り<%= title %>の帰国を報告します。</td>
   </tr>
   <tr>
     <td>
