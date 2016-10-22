@@ -1,0 +1,222 @@
+<% company_info = Constants::JAPAN_SIDE_COMPANY[@project.japan_company.intern] %>
+<%= favicon_link_tag '/ico.png' %>
+
+<div style="font-size: 12px; text-align: right">様式2</div>
+<% title = "中国国民訪日個人観光旅行 (相当な高所所得者向け数次査証・1回目) " %>
+<div style="font-size: 16px; text-align: center; font-weight: bolder; margin-top: -4px;"><%= title %>帰国報告書</div>
+
+<table style="margin-top: -12px">
+  <tr>
+    <td>
+      <div style="font-size: 12px; margin-top: 10px;">報告日　　　　年　　月　　日</div>
+    </td>
+    <td>
+      <div style="font-size: 12px; margin-top: 10px; text-align: right;">受付番号 : <%= @project.system_code %></div>
+    </td>
+  </tr>
+</table>
+
+<table class="report-table" style="border: solid 2px black">
+  <tr>
+    <td rowspan='3' style="width: 15%">日本側<br/>旅行会社</td>
+    <td rowspan='2'>会社名</td>
+    <td rowspan='2' colspan='2'><%= replace_parenthesis(company_info[:company_name]) %></td>
+    <td rowspan='2'>電話<br>FAX</td>
+    <td rowspan='1'><%= company_info[:phone] %></td>
+  </tr>
+  <tr>
+    <td rowspan='1'><%= company_info[:fax] %></td>
+  </tr>
+  <tr>
+    <td rowspan='1'>指定番号</td>
+    <td rowspan='1'><%= company_info[:code] %></td>
+    <td rowspan='1' style="width: 15%">連絡担当者</td>
+    <td rowspan='1' colspan='2'><%= company_info[:chief] %></td>
+  </tr>
+
+
+  <tr style='border-top: 1px black solid'>
+    <td rowspan='3'>中国側<br/>旅行会社</td>
+    <td rowspan='2'>会社名</td>
+    <td rowspan='2' colspan='2'><%= replace_parenthesis(@visa_company.name) %></td>
+    <td rowspan='2'>電話<br>FAX</td>
+    <td rowspan='1'>　</td>
+  </tr>
+  <tr>
+    <td rowspan='1'>　</td>
+  </tr>
+  <tr>
+    <td rowspan='1'>指定番号</td>
+    <td rowspan='1'><%= @visa_company.code %></td>
+    <td rowspan='1' style="width: 15%">連絡担当者</td>
+    <td rowspan='1' colspan='2'></td>
+  </tr>
+
+
+  <tr style='border-top: 2px black solid'>
+    <td>旅行期間</td>
+    <td colspan='5'><%= @project.date_arrival.strftime("%m/%d") %> 〜 <%= @project.date_leaving.strftime("%m/%d") %></td>
+  </tr>
+
+  <tr style='border-top: 2px black solid;'>
+    <td style='font-size: 10px'>日程変更があった<br/>場合の変更内容</td>
+    <td colspan='2'></td>
+    <td colspan='1'>変更理由</td>
+    <td colspan='2'></td>
+  </tr>
+</table>
+
+
+<table class="report-table" style="border: solid 2px black; margin-top: -2px;">
+  <tr style='border-top: 2px black solid;'>
+    <td colspan='1' width='15%'>通訳案内士</td>
+    <td colspan='1' width='10%'>氏名</td>
+    <td colspan='1' style='width: 13%'></td>
+    <td colspan='1'>登録<br/>都道府県</td>
+    <td colspan='1' style='width: 10%'></td>
+    <td colspan='1'>登録番号</td>
+    <td colspan='1' style='width: 13%'></td>
+    <td colspan='1'>連絡先<br/>電話番号</td>
+    <td colspan='1' style='width: 13%'></td>
+  </tr>
+</table>
+
+<table class="report-table" style="border: solid 2px black; margin-top: -2px;">
+  <tr style='border-top: 2px black solid;'>
+    <td colspan='1' width='15%'>日本側旅行会社<br/>の添乗員</td>
+    <td colspan='1' width='10%'>氏名</td>
+    <td colspan='1' style='width: 13%'></td>
+    <td colspan='1'>添乗員連絡先<br/> (電話番号) </td>
+    <td colspan='1' style='width: 15%'></td>
+    <td colspan='1'>所属する会社</td>
+    <td colspan='1' style='width: 15%'></td>
+  </tr>
+
+  <tr>
+    <td colspan='1' width='15%'>中国側旅行会社<br/>の添乗員</td>
+    <td colspan='1' width='10%'>氏名</td>
+    <td colspan='1' style='width: 13%'></td>
+    <td colspan='1'>添乗員連絡先<br/> (電話番号) </td>
+    <td colspan='1' style='width: 15%'></td>
+    <td colspan='1'>所属する会社</td>
+    <td colspan='1' style='width: 15%'></td>
+  </tr>
+</table>
+
+<table class="report-table" style="border: solid 2px black; margin-top: -2px;">
+  <tr style='border-top: 2px black solid;'>
+    <td colspan='1' width='15%'>旅客自動車運送<br/>事業者 (バス・<br/>タクシー等)</td>
+    <td colspan='1' width='10%'>名称<br/>所在地<br/>電話番号</td>
+    <td colspan='1' style='width: 25%'></td>
+    <td colspan='1'>事業許可<br/> (又は免許等)<br/>番号</td>
+    <td colspan='1' style='width: 13%'></td>
+    <td colspan='1'>営業区域</td>
+    <td colspan='1' style='width: 13%'></td>
+  </tr>
+</table>
+
+<table class="report-table" style="border: solid 2px black; margin-top: -2px;">
+  <tr style='border-top: 2px black solid;'>
+    <td colspan='1' width='15%'>帰国便</td>
+    <td colspan='1' width='10%'>便名</td>
+    <td colspan='1' width='13%'></td>
+    <td colspan='1'>発地 (発時刻)</td>
+    <td colspan='1' width='18%' style='text-align: right'>(　　:　　)</td>
+    <td colspan='1'>着地 (着時刻)</td>
+    <td colspan='1' width='18%' style='text-align: right'>(　　:　　)</td>
+  </tr>
+</table>
+
+
+<table class="report-table" style="border: solid 2px black; font-size: 11px; margin-top: -2px; text-align: center">
+  <tr style='border-top: 2px black solid;'>
+    <td colspan='8'>帰国便搭乗 / 乗船者</td>
+  </tr>
+  <tr style='border-top: 2px black solid;'>
+    <td width='4%'>NO</td>
+    <td width='30%'>氏  名</td>
+    <td width='7%'>性別</td>
+    <td width='13%'>居住地域</td>
+    <td width='13%'>生年月日</td>
+    <td width='13%'>旅券番号</td>
+    <td width='8%'>座席番号</td>
+    <td width='13%'>備考</td>
+  </tr>
+
+  <% index = 1 %>
+  <% @project.clients.each do |client| %>
+    <tr>
+      <td><%= index %></td>
+      <td style='text-align: left'><%= "#{client.name_chinese} 　 #{client.name_english}" %></td>
+      <td><%= gender_str(client.gender) %>性</td>
+      <td><%= client.hometown %></td>
+      <td><%= client.birthday.strftime("%Y/%m/%d") %></td>
+      <td><%= client.passport_no %></td>
+      <td><%=  %></td>
+      <td><%= client.job %></td>
+    </tr>
+    <% index += 1 %>
+  <% end %>
+
+  <% for i in index..10 do %>
+    <tr>
+      <td><%= i %></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  <% end %>
+</table>
+
+
+
+<table class="report-table" style="border: solid 2px black; margin-top: -1px">
+  <tr style='border-top: 2px black solid; border-bottom: transparent solid 2px'>
+    <td>
+      上記各名が　　　　　　　　　　　便への搭乗または乗船手続きを完了したことを証明する。
+    </td>
+  </tr>
+  <tr style='border-bottom: transparent solid 2px'>
+    <td>
+      <div style='width: 50%; float: left'>帰国便運行会社名</div>
+      <div style='width: 40%; float: right'>証明担当者</div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <div style='width: 40%; float: left'>　取扱支店名</div>
+      <div style='width: 45%; float: right'>印　　所属 ・ 氏名</div>
+    </td>
+  </tr>
+  <tr style='border-bottom: transparent solid 2px'>
+    <td>上記の通り<%= title %>の帰国を報告します。</td>
+  </tr>
+  <tr>
+    <td>
+      <div style='width: 85%; float: left; text-align: center'>日本側旅行会社担当者　所属 ・ 氏名</div>
+      <div style='width: 10%; float: right; text-align: right'>印　 </div>
+    </td>
+  </tr>
+</table>
+
+<table class="report-table" style="border: solid 2px black; margin-top: -2px">
+  <tr style='border-top: 2px black solid;'>
+    <td width='16%' style='text-align: center'>提 　出 　先</td>
+    <td>観光庁国際観光課 (〒100-8918 東京都千代田区霞が関2-1-3 　電話:03-5253-8923)</td>
+  </tr>
+</table>
+
+
+<table style="border: none; font-size: 10px;" class='nopadding'>
+  <tr>
+    <td>[注記]<br/>　<br/>　</td>
+    <td>1. 帰国便搭乗/乗船者欄は必要事項を記入した既存名簿の添付でも差し支えありません。<br/>
+    2. 本件個人観光の旅行日程表を添付してください。<br/>
+    3. 旅行取扱い月 (日本到着日基準) ごとにまとめて、様式3の総括表を添付の上、旅行取扱翌月までに観光庁に郵送してください。
+    </td>
+  </tr>
+</table>
