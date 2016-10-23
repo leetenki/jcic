@@ -9,7 +9,7 @@
 
 <div style="font-size: 12px; text-align: right">様式2　 1/<%= @project.clients.size > 30? 2: 1 %></div>
 <% title = '中国国民訪日団体観光旅行取扱団体' %>
-<div style="font-size: 14px; text-align: center; font-weight: bolder; margin-top: -4px;"><%= title %>帰国報告書</div>
+<div style="font-size: 14px; text-align: center; font-weight: bolder; margin-top: -2px;"><%= title %>帰国報告書</div>
 
 <table style="margin-top: -14px">
   <tr>
@@ -248,7 +248,7 @@
 <% if @project.clients.size > 30 %>
   <div style="font-size: 12px; text-align: right; page-break-before: always;">様式2　 2/2</div>
   <% title = '中国国民訪日団体観光旅行取扱団体' %>
-  <div style="font-size: 14px; text-align: center; font-weight: bolder; margin-top: -4px;"><%= title %>帰国報告書</div> 
+  <div style="font-size: 14px; text-align: center; font-weight: bolder; margin-top: -2px;"><%= title %>帰国報告書</div> 
 
   <table style="margin-top: -14px">
     <tr>
