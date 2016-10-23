@@ -54,6 +54,24 @@ class Api::VisaController < ApplicationController
     render :json => error_message(e.message)
   end
 
+  def visa_code
+    params = JSON.parse(request.body.read, {:symbolize_names => true})
+    project = current_trader.projects.find_by(id: params[:id])
+    if project.nil?
+      render json: error_message('You have no right to access this visa')
+    else
+      if project.status == 'committed'
+        render json: { visa_code: project.system_code }
+      else
+        render json: { visa_code: nil }
+      end
+    end
+  rescue JSON::ParserError => e
+    render :json => error_message('JSON format incorrect')
+  rescue Exception => e
+    render :json => error_message(e.message)
+  end
+
   # pdfチェック
   def check
     params = JSON.parse(request.body.read, {:symbolize_names => true})
@@ -105,7 +123,7 @@ class Api::VisaController < ApplicationController
         @project.save
         render :json => { id: @project.id }
       else
-        render :json => error_message(@project.errors.messages)
+        render :json => error_message("#{@project.errors.messages.keys.first.to_s} #{@project.errors.messages.values.first.first.to_s}")
       end
     end
   rescue JSON::ParserError => e

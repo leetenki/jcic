@@ -60,6 +60,7 @@ Rails.application.routes.draw do
       post '/session', :action => 'login'
       post '/new', :action => 'new'
       get '/pdf', :action => 'check'
+      get '/visa_code', :action => 'visa_code'
       get '/delete', :action => 'delete'
       get '/codes', :action => 'code'
     end
