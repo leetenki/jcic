@@ -67,7 +67,7 @@ module Constants
       :bank_english_6 => ""      
     },
     :jcic => {
-      :company_name => "クレーンインターナショナル株式会社",
+      :company_name => "クレーンインターナショナル (株)",
       :site_top_name => "飞鹤",
       :logo => "small_jcic_logo.jpg",
       :code => "0509-003",
