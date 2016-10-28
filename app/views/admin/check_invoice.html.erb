@@ -10,9 +10,20 @@
     <table class="col col-md-12 col-sm-12 col-xs-12" style="margin: 30px 0;">
       <tbody>
         <% @traders.each do |trader| %>
+          <% if trader.activation %>
           <tr>
+          <% else %>
+          <tr style='background-color: #f99'>
+          <% end %>
             <td>
               <div style="cursor:pointer;" class="btn btn-default" onclick="location.href='/my_invoice/<%= trader.id %>'"><%= trader.company_name %></div>
+              <br>
+              <br>
+              <% if trader.activation %>
+                <div class="btn btn-default require-loading" onclick="location.href='/admin/activate?id=<%= trader.id %>'">停止</div>
+              <% else %>
+                <div class="btn btn-default require-loading" onclick="location.href='/admin/activate?id=<%= trader.id %>'">开放</div>
+              <% end %>
             </td>
             <td>
               <% if trader.projects.any? %>

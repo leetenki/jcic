@@ -1,7 +1,7 @@
 class AdminController < ApplicationController
   before_action :logged_in_admin, :only => [:index, :paid_all, :unpaid_all, :useragent, :get_uncommitted_projects, :get_committed_waiting_projects, :get_uncommitted_projects_immediately, :set_project_committed, :upload_pdf, :get_delete_requesting_projects, :get_delete_requesting_committed_projects, :set_delete_requesting_projects_deleted, :get_project_by_id, :renew_company_codes, :update_company_codes, :invoice_internal]
   before_action :initial_search, :only => [:paid_all, :unpaid_all]
-  before_action :logged_in, :only => [:invoice, :analysis, :create_payoff, :delete_payoff, :create_confirmation, :delete_confirmation, :check_invoice]
+  before_action :logged_in, :only => [:invoice, :analysis, :create_payoff, :delete_payoff, :create_confirmation, :delete_confirmation, :check_invoice, :activate]
 
   def index
     if !params[:trader_id].present? && !params[:from].present? && !params[:to].present?
@@ -79,6 +79,19 @@ class AdminController < ApplicationController
     @traders = @traders.select do |trader|
       trader.projects.size > 0
     end
+  end
+
+  def activate
+    @trader = Trader.find(params[:id])
+    if @trader.activation
+      @trader.update(activation: false)
+      flash[:success] = "已停止此账号"
+    else
+      @trader.update(activation: true)
+      flash[:success] = "已开通此账号"
+    end
+
+    redirect_to "/admin/check_invoice"
   end
 
   def invoice_internal
