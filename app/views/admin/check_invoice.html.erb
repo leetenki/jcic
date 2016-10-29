@@ -22,7 +22,7 @@
               <% if trader.activation %>
                 <div class="btn btn-default btn-xs require-loading" onclick="location.href='/admin/activate?id=<%= trader.id %>'">停止</div>
               <% else %>
-                <div class="btn btn-default require-loading" onclick="location.href='/admin/activate?id=<%= trader.id %>'">开放</div>
+                <div class="btn btn-default btn-xs require-loading" onclick="location.href='/admin/activate?id=<%= trader.id %>'">开放</div>
               <% end %>
             </td>
             <td>
