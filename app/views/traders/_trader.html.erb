@@ -36,7 +36,8 @@
     <td>
         模式 <%= validation_mode_str(trader.validation_mode) %><br/>
         个签 <%= trader.individual_japan_company.upcase %><br/>
-        团签 <%= trader.group_japan_company.upcase %>
+        团签 <%= trader.group_japan_company.upcase %><br/>
+        <%= trader.indivisual_price %> <%= trader.money_type %>
     </td>
     <td>
         <% if trader.projects.any? %>
