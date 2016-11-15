@@ -79,8 +79,8 @@ class Api::VisaController < ApplicationController
     if project.nil?
       render json: error_message('You have no right to access this visa')
     else
-      if project.pdf.present?
-        render json: { pdf: project.pdf.url }
+      if project.status == 'committed'
+        render json: { pdf: "/projects/#{project.id}/temporary_report.pdf" }
       else
         render json: { pdf: nil }
       end
