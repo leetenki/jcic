@@ -325,7 +325,7 @@ class ProjectsController < ApplicationController
 =end
       else
         last_invoice_date = (Date.today-1.month).strftime("%Y-%m-01") 
-        if current_trader.invoice_company == 'jtg' && current_trader.payoffs.where(status: last_invoice_date.to_s).empty?
+        if current_trader.invoice_company == 'jtg' && current_trader.payoffs.where(status: last_invoice_date.to_s).empty? && current_trader.projects.length > 0
           flash[:danger] = "系统提示: #{(Date.today-1.month).month}月份账单未确认支付。请在#{Date.today.month}月10日之前续费并及时联系我们。"
         end
         if(current_trader.authority == "self")
