@@ -178,10 +178,10 @@
         <% end %>
       </div>
 
-      <div style="font-weight: bold">
+      <div style="font-weight: bold; display: none">
         閲覧権限
       </div>
-      <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%;" class="btn-group toggle">
+      <div data-toggle="buttons" style="margin-top:0; margin-bottom:15px; width:100%; display: none" class="btn-group toggle">
         <label class="btn btn-default <%= 'active' if trader.authority == 'self' %>">
           <input type="radio" value="self" name="trader[authority]" <%= 'checked' if trader.authority == 'self' %> />SELF
         </label>
