@@ -129,6 +129,12 @@ class Trader < ActiveRecord::Base
     return projects;
   end
 
+  def validate_price_indivisual
+    if indivisual_price.to_i < 15
+      errors.add(:indivisual_price, "price cant be less than 15")
+    end
+  end
+
   #before_save
   before_save { self.email = email.downcase if email.present? }
 
@@ -145,6 +151,7 @@ class Trader < ActiveRecord::Base
   validates :group_price_31_40, :presence => true
   validates :year_3_price, :presence => true
   validates :year_5_price, :presence => true
+  validate :validate_price_indivisual
   has_secure_password
 
   #validates :telephone, :presence => true
