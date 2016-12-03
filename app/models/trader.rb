@@ -79,7 +79,7 @@ class Trader < ActiveRecord::Base
     elsif to.present?
       projects = projects.where('created_at <= ?', Time.parse(to))
     else
-      projects = projects.all
+      projects = projects
     end
 
     if(!!payment)
