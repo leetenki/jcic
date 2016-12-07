@@ -14,7 +14,7 @@
         <th class="col-md-4 col-xs-4 col-sm-4 col-lg-4" style="text-align:center">人数</th>
       </tr>
       <% @traders.all.each do |trader| %>
-          <% if trader.projects.size > 0 && ((trader.money_type == "china" && trader.indivisual_price <= 15) || (trader.money_type != "china" && trader.indivisual_price <= 240)) %>
+          <% if trader.projects.size > 0 && ((trader.money_type == "china" && trader.indivisual_price <= 15) || (trader.money_type != "china" && trader.indivisual_price <= 250)) %>
           <tr>
               <td>
                   <div class="btn btn-xs btn-primary" onclick="location.href='/traders/<%= trader.id %>'"><%= trader.company_name %></div>
