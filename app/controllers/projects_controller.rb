@@ -326,10 +326,10 @@ class ProjectsController < ApplicationController
       else
         last_invoice_date = (Date.today-1.month).strftime("%Y-%m-01") 
         if current_trader.invoice_company == 'jtg' && current_trader.payoffs.where(status: last_invoice_date.to_s).empty? && current_trader.projects.length > 0
-          #first_project_date = current_trader.projects.first.created_at
-          #if first_project_date.yaer != Time.now.year || first_project_date.month != Time.now.month
-          flash[:danger] = "系统提示: #{(Date.today-1.month).month}月份账单未确认支付。请在#{Date.today.month}月10日之前续费并及时联系我们。"
-          #end
+          first_project_date = current_trader.projects.first.created_at
+          if first_project_date.year != Date.today.year || first_project_date.month != Date.today.month
+            flash[:danger] = "系统提示: #{(Date.today-1.month).month}月份账单未确认支付。请在#{Date.today.month}月10日之前续费并及时联系我们。"
+          end
         end
         if(current_trader.authority == "self")
           @projects = current_trader.search_projects_by_keyword(current_trader.projects, params[:keyword]).order("id desc")
