@@ -130,7 +130,7 @@ class Trader < ActiveRecord::Base
   end
 
   def validate_price_indivisual
-    if indivisual_price.to_i < 15
+    if indivisual_price.to_i < 10 and not person_name.match(/API/)
       errors.add(:indivisual_price, "price cant be less than 15")
     end
   end
