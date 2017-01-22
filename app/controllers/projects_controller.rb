@@ -378,6 +378,30 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def report
+    @project = Project.where("system_code = ?", params[:id]).limit(1).includes(:clients, :schedules)[0]
+    @visa_company = CompanyCode.find_by(code: @project.china_company_code)
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        case @project.visa_type
+        when 'individual'
+          html = render_to_string :template => "/projects/temporary_report_individual"
+        when '3years'
+          html = render_to_string :template => "/projects/temporary_report_3_years"
+        when '5years'
+          html = render_to_string :template => "/projects/temporary_report_5_years"
+        when 'group'
+          html = render_to_string :template => "/projects/temporary_report_group"
+        end
+        pdf = PDFKit.new(html, :encoding => "UTF-8");
+        pdf.stylesheets << "#{Rails.root}/app/assets/stylesheets/temporary_report.css"
+        send_data pdf.to_pdf, :filename => "#{@project.system_code}.pdf", :type => "application/pdf", :disposition => "inline"
+      end
+    end
+  end
+
   def temporary_report
     if(is_admin? || current_trader.authority == "all")
       @project = Project.where("id = ?", params[:id]).includes(:clients, :schedules)[0]
