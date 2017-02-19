@@ -204,7 +204,7 @@ class Project < ActiveRecord::Base
     schedules.each_with_index do |schedule, index|
       if(index != 0 && index != schedules.length-1)
         #if(schedule[:plan].length == 0 || schedule[:hotel].length == 0)
-        if(schedule[:plan].length == 0)
+        if(schedule[:plan].strip.length == 0)
           has_full_schedule = false
           break
         end
