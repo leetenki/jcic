@@ -69,7 +69,7 @@ class ProjectsController < ApplicationController
 
       # search by stay_term 
       #@projects = Project.where(:stay_term => stay_term, :has_full_schedule => true).includes(:schedules)
-      @projects = Project.where("stay_term = ? and has_full_schedule = ?", 5, true).limit(1000).includes(:schedules)
+      @projects = Project.where("stay_term = ? and has_full_schedule = ?", stay_term, true).limit(1000).includes(:schedules)
       if(@projects && @projects.length > 0)
 
         # search by in_airport
