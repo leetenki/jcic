@@ -68,11 +68,12 @@ class ProjectsController < ApplicationController
       end
 
       # search by stay_term 
-      @projects = Project.where(:stay_term => stay_term, :has_full_schedule => true).includes(:schedules)
+      #@projects = Project.where(:stay_term => stay_term, :has_full_schedule => true).includes(:schedules)
+      @projects = Project.where("stay_term = ? and has_full_schedule = ?", 5, true).limit(1000).includes(:schedules)
       if(@projects && @projects.length > 0)
 
         # search by in_airport
-        @projects = @projects.sample(200)
+        #@projects = @projects.sample(200)
         @strict_match_result = []
         @projects.each do |project|
           if(ChineseConverter.japanesed(project.schedules[0].plan).match(in_airport))
