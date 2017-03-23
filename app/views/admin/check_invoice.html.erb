@@ -33,18 +33,7 @@
 
                    <% projects = Project.where(:created_at => Time.parse(first_day(invoice_date).strftime("%Y-%m-%d"))..Time.parse(last_day(invoice_date).strftime("%Y-%m-%d"))+60*60*24-1, :trader_id => trader.slave_trader_ids + [trader.id]) %>
 
-                   <% total_price = 0 %>
-                   <% projects.each do |project| %>
-                     <% if(project.status != "deleted" && !project.delete_request) %>
-                       <% total_price += get_project_price(project) %>
-                     <% end %>
-                   <% end %>
                    <div style="display:inline-block; width: 200px">
-                   <% if trader.money_type == "japan" || trader.money_type == "full" %>
-                     总额 <span style="font-weight: bolder; color: orange;"><%= total_price %></span> 円
-                   <% elsif trader.money_type == "china" %>
-                     总额 <span style="font-weight: bolder; color: orange;"><%= total_price %></span> 人民币
-                   <% end %>
                    </div>
 
 
