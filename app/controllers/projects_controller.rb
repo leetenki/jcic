@@ -334,6 +334,9 @@ class ProjectsController < ApplicationController
         end
         if(current_trader.authority == "self")
           @projects = current_trader.search_projects_by_keyword(current_trader.projects, params[:keyword]).order("id desc")
+          if(current_trader.bank.match(/警告/))
+            flash[:danger] = current_trader.bank
+          end
         elsif(current_trader.authority == "all")
           @projects = current_trader.search_projects_by_keyword(Project.all, params[:keyword]).order("id desc")
         else
