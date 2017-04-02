@@ -920,7 +920,7 @@ accounts.each do |account|
     :account => account[:account],
     :qq => account[:qq],
     :email => account[:email],
-    :bank => account[:bank],
+    :bank => account[:bank].nil? ? "": account[:bank],
     :password => account[:password],
     :password_backup => account[:password_backup],
     :company_name => account[:company_name],
