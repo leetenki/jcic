@@ -920,6 +920,7 @@ accounts.each do |account|
     :account => account[:account],
     :qq => account[:qq],
     :email => account[:email],
+    :bank => account[:bank],
     :password => account[:password],
     :password_backup => account[:password_backup],
     :company_name => account[:company_name],
@@ -934,6 +935,3 @@ accounts.each do |account|
     :year_5_price => account[:year_5_price],
   );
 end
-
-
-
