@@ -45,7 +45,7 @@
     <td rowspan='1'>会社名</td>
     <td rowspan='1' colspan='2'><%= replace_parenthesis(@visa_company.name) %></td>
     <td rowspan='1' style="width: 5%">電話</td>
-    <td rowspan='1' style="width: 13%"></td>
+    <td rowspan='1' style="width: 13%"><%= @project.in_charge_phone %></td>
     <td rowspan='1' style="width: 5%">FAX</td>
     <td rowspan='1' style="width: 13%"></td>
   </tr>
@@ -53,7 +53,7 @@
     <td rowspan='1'>指定番号</td>
     <td rowspan='1'><%= @visa_company.code %></td>
     <td rowspan='1' style="width: 15%">連絡担当者</td>
-    <td rowspan='1' colspan='4'></td>
+    <td rowspan='1' colspan='4'><%= @project.in_charge_person %></td>
   </tr>
 
 
@@ -284,7 +284,7 @@
       <td rowspan='1'>会社名</td>
       <td rowspan='1' colspan='2'><%= replace_parenthesis(@visa_company.name) %></td>
       <td rowspan='1' style="width: 5%">電話</td>
-      <td rowspan='1' style="width: 13%"></td>
+      <td rowspan='1' style="width: 13%"><%= @project.in_charge_phone %></td>
       <td rowspan='1' style="width: 5%">FAX</td>
       <td rowspan='1' style="width: 13%"></td>
     </tr>
@@ -292,7 +292,7 @@
       <td rowspan='1'>指定番号</td>
       <td rowspan='1'><%= @visa_company.code %></td>
       <td rowspan='1' style="width: 15%">連絡担当者</td>
-      <td rowspan='1' colspan='4'></td>
+      <td rowspan='1' colspan='4'><%= @project.in_charge_person %></td>
     </tr>
 
 

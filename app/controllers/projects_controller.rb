@@ -386,6 +386,13 @@ class ProjectsController < ApplicationController
     @project = Project.where("system_code = ?", params[:id]).limit(1).includes(:clients, :schedules)[0]
     @visa_company = CompanyCode.find_by(code: @project.china_company_code)
 
+    request_body = request.body.read
+    if(request_body.size > 0)
+        params = JSON.parse(request_body, {:symbolize_names => true})
+        @project.in_charge_person = params[:person_in_charge_name]
+        @project.in_charge_phone = params[:person_in_charge_phone]
+    end
+
     respond_to do |format|
       format.html
       format.pdf do

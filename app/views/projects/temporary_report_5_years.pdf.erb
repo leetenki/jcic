@@ -40,7 +40,7 @@
     <td rowspan='2'>会社名</td>
     <td rowspan='2' colspan='2'><%= replace_parenthesis(@visa_company.name) %></td>
     <td rowspan='2'>電話<br>FAX</td>
-    <td rowspan='1'>　</td>
+    <td rowspan='1'><%= @project.in_charge_phone %>　</td>
   </tr>
   <tr>
     <td rowspan='1'>　</td>
@@ -49,7 +49,7 @@
     <td rowspan='1'>指定番号</td>
     <td rowspan='1'><%= @visa_company.code %></td>
     <td rowspan='1' style="width: 15%">連絡担当者</td>
-    <td rowspan='1' colspan='2'></td>
+    <td rowspan='1' colspan='2'><%= @project.in_charge_person %></td>
   </tr>
 
 
