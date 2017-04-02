@@ -11,6 +11,7 @@
 Trader.create(
   :account => "admin",
   :email => "toukyouniversityoftechnology@gmail.com",
+  :bank => "",
   :password => "1234567890",
   :password_backup => "1234567890",
   :company_name => "飞鹤国际旅行社",
@@ -21,6 +22,7 @@ Trader.create(
 Trader.create(
   :account => "leetenki",
   :qq => "140713694",
+  :bank => "",
   :email => "connect@qq.com",
   :password => "1234567890",
   :password_backup => "1234567890",
