@@ -389,7 +389,12 @@ class ProjectsController < ApplicationController
     request_body = request.body.read
     if(request_body.size > 0)
         params = JSON.parse(request_body, {:symbolize_names => true})
+    end
+
+    if params[:person_in_charge_name]
         @project.in_charge_person = params[:person_in_charge_name]
+    end
+    if params[:person_in_charge_phone]
         @project.in_charge_phone = params[:person_in_charge_phone]
     end
 
