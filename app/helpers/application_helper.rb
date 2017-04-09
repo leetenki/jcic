@@ -28,7 +28,7 @@ module ApplicationHelper
   end
 
   def status_type_str(status)
-    status_str = {"uncommitted" => "正在申请...", "waiting" => "正在等待", "committed" => "已发送完毕", "deleted" => "已删除"};
+    status_str = {"uncommitted" => "正在更新中...", "waiting" => "正在等待", "committed" => "已发送完毕", "deleted" => "已删除"};
     return status_str[status]
   end
 

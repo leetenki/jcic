@@ -173,7 +173,7 @@ $(document).ready(function(){
     var clientURL = "/projects/new?client_copy_target=" + id;
 
     $(copyNode[i]).balloon({
-      contents:'<a href="' + fullURL + '" class="btn btn-xs btn-success require-loading click_once">全部</a>　 <a href="' + scheduleURL + '" class="btn btn-xs btn-success">行程</a>　 <a href="' + clientURL + '" class="btn btn-xs btn-success">名单</a>',  
+      contents:'<a href="' + fullURL + '" class="btn btn-xs btn-primary require-loading click_once">全部</a>　 <a href="' + scheduleURL + '" class="btn btn-xs btn-primary">行程</a>　 <a href="' + clientURL + '" class="btn btn-xs btn-primary">名单</a>',  
       offsetX: 0, offsetY: 0, position: "top", tipSize: null
     });
   }

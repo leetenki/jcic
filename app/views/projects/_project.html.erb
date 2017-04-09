@@ -17,7 +17,7 @@
         <div class="presentative-name-cell">代表人：<%= project.representative_name_chinese %> ( <%= project.representative_name_english %> ) 共<%= project.total_people %>名</div>
 
         <!-- copy -->
-        <div style="margin-top: 5px;" id="copy_<%= project.id %>" class="btn btn-success btn-xs col-md-4 col-sm-4 col-xs-4 require-loading click_once copy" onclick="location.href='/projects/new?full_copy_target=<%= project.id %>'" style=""><i class="fa fa-user-plus"> </i> 复制</div>
+        <div style="margin-top: 5px;" id="copy_<%= project.id %>" class="btn btn-primary btn-xs col-md-4 col-sm-4 col-xs-4 require-loading click_once copy" onclick="location.href='/projects/new?full_copy_target=<%= project.id %>'" style=""><i class="fa fa-user-plus"> </i> 复制</div>
 
 
         <!-- meta info -->
@@ -70,9 +70,9 @@
                 <div class="btn-group col-md-12 col-sm-12 col-xs-12"  data-toggle="buttons">
                     <!-- modify -->
                     <% if is_admin? || has_authority? || is_project_editable(project) %>
-                        <button class="btn btn-primary btn-xs col-md-6 col-sm-6 col-xs-6 modify" onclick="location.href='<%= edit_project_path(project) %>'">修改</button>
+                        <button class="btn btn-success btn-xs col-md-6 col-sm-6 col-xs-6 modify" onclick="location.href='<%= edit_project_path(project) %>'">修改</button>
                     <% else %>
-                        <div class="btn btn-primary btn-xs col-md-6 col-sm-6 col-xs-6 disabled-modify" disabled="disabled">
+                        <div class="btn btn-success btn-xs col-md-6 col-sm-6 col-xs-6 disabled-modify" disabled="disabled">
                             修改<p class="arrow_box">此签证已无法修改。若有错误，<br/>请选择『申请删除』后，重新申请。</p>
                         </div>
                     <% end %>

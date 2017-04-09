@@ -27,7 +27,7 @@
 <div class="row">
   <div class="container col-md-10 col-md-offset-1">
     <% if !is_admin? && current_trader.projects.length > 0 %>
-      <div class="row" style="text-align:center; margin-top: 40px;">
+      <div class="row" style="margin-top: 20px;">
         <form action="/projects/index" accept-charset="UTF-8" method="get">
           <%= render "/shared/client_search_form" %>
         </form>
@@ -37,7 +37,6 @@
     <% if is_admin? || @projects.any? %>
       <table class="project-info table" style="margin-top:0">
         <caption>
-
           <% if is_admin? %>
             <div class="row" style="text-align:center"><h3>所有的签证 （ 查询结果：<%= @projects.length %>件 ）<h3></div>
             <div class="row" style="text-align:center">
@@ -51,7 +50,7 @@
             <% if current_trader.bank.match(/警告/) %>
             <% else %>
               <a href="/projects/new" style="position:absolute; left:20px; margin-top:25px;" class="btn btn-success btn-large require-loading" id="new-project">
-              <i class="fa fa-user-plus"></i> 申请
+              <i class="fa fa-plus"></i> 申请人
               </a>
             <% end %>
             <%= paginate @projects.page(params[:page]), :window => 5 %>
@@ -72,6 +71,7 @@
         </tbody>
       </table>
     <% else %>
+        <div>
         <a href="/projects/new" class="btn btn-success btn-large" id="new-project">
           <i class="fa fa-user-plus"></i> 申请
         </a>    

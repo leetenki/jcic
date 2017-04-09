@@ -152,6 +152,7 @@ h1 {
   letter-spacing: -2px;
   margin-bottom: 30px;
   text-align: center;
+  display: none;
 }
 
 h2 {
@@ -343,17 +344,20 @@ input {
 
 .project-info {
   margin-top: 30px;
-  border: 3px #cccccc solid;
+  border: 1px #dddddd solid;
 
   th {
-    background-color: #333333;
+    background-color: #d5e5dc;
     text-align: center;
-    color: #CEF6F5;
+    color: #111111;
   }
 
 
   td, th, tr {
-    border: 1px #cccccc solid;
+    border: 2px #dddddd solid;
+  }
+  th {
+    border: 0;
   }
   tr {
     background-color: #fefefe;
@@ -364,7 +368,7 @@ input {
     color: #000000;  
   }
   tr:not(.thead):hover {
-    background-color: #FBF5EF;
+    background-color: #fafafa;
   }
   tr.deleted:hover {
     background-color: #eeeeee;
@@ -650,12 +654,16 @@ div#clients_container {
   text-align: center;
   border-radius: 30px;
   font-size: 12px;
-}
-.japan-sign:hover {
-  background-color: #5555ff;
+  background-color: white;  
+  color: #222222;
+  border: 1px #dddddd solid;
+  padding: 1px;
 }
 .japan-sign {
-  background-color:#8888ff;  
+  background-color: white;  
+  color: #222222;
+  border: 1px #dddddd solid;
+  padding: 1px;
 }
 
 .origin-company-name-cell {
@@ -669,9 +677,6 @@ div#clients_container {
 }
 
 .date-arrival-cell {
-  border: solid 2px #666666;
-  background-color: #dfdfdf;
-
   width: 70%;
   margin-top: 5px;
   text-align: center;
@@ -679,12 +684,13 @@ div#clients_container {
   font-size: 12px;
   padding: 3px;
   display: inline-block;
+
+  border: solid 1px #dddddd;
+  background-color: white;  
+  color: #222222;
 }
 
 .visa-type-cell {
-  border: solid 2px #666666;
-  background-color: #dfdfdf;
-
   width: 26%;
   margin-top: 5px;
   text-align: center;
@@ -693,11 +699,13 @@ div#clients_container {
   font-size: 12px;
   padding: 3px;
   display: inline-block;
+
+  border: solid 1px #dddddd;
+  background-color: white;  
+  color: #222222;
 }
 
 .presentative-name-cell {
-  border: solid 2px #666666;
-  background-color: #dfdfdf;
   position: relative;
   margin-top: 5px;
   width: 100%;
@@ -707,6 +715,10 @@ div#clients_container {
   font-size: 12px;
   padding: 3px;
   display: inline-block;  
+
+  border: solid 1px #dddddd;
+  background-color: white;  
+  color: #222222;
 }
 
 
@@ -719,23 +731,28 @@ div#clients_container {
   font-size: 12px;
   padding: 3px;
   display: inline-block;  
+
+  border: solid 1px #dddddd;
+  background-color: white;  
+  color: #222222;
 }
 
 .status-cell.committed {
-  background-color: gray;
-  color: #ffffff;
+  border: solid 1px #dddddd;
+  background-color: white;  
+  color: #222222;
 }
 .status-cell.requesting_delete {
   color: #ffffff;
   background-color: red;  
 }
 .status-cell.uncommitted {
-  color: #ffffff;
-  background-color: #4ed867;  
+  color: #4499ff;
 }
 .status-cell.deleted {
-  color: #ffffff;
-  background-color: gray;  
+  border: solid 1px #dddddd;
+  background-color: white;  
+  color: #777777;
 }
 
 .small-gray-cell {
@@ -780,14 +797,14 @@ span.paid {
   font-size: 12px;
   padding: 3px;
   display: inline-block;  
+
+  border: solid 1px #dddddd;
+  background-color: white;  
+  color: #222222;
 }
 .confirmation-cell.unconfirmed {
-  background-color: #fc7860;
-  color: #ffffff;
 }
 .confirmation-cell.confirmed {
-  background-color: gray;
-  color: #ffffff;  
 }
 span.unconfirmed {
   color: red;
