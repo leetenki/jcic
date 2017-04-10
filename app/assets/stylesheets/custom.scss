@@ -455,18 +455,15 @@ div.dashed_container {
     font-size: 20px;
     text-align: center;
     background-color: #ffffff;
-    border: #aaaaaa solid 2px;
+    border-bottom: #81beff solid 2px;
     width: 200px;
-    height: 80px;
+    height: 40px;
     margin: auto;
-    padding-top: 25px;
-    border-radius: 30px;
-    margin-bottom: 15px;
+    margin-bottom: 40px;
   }
   margin-top: 40px;
   margin-bottom: 50px;
-  border-radius: 30px;
-  border: 2px dashed;
+  border: 2px solid #cccccc;
   padding: 20px 60px 40px 60px;  
 
   span.number {
@@ -480,7 +477,6 @@ div.dashed_container {
   }
 }
 div#identity_container, div#partner_container {
-  background-color: #e6e6fa;
 }
 
 div#go_back_container {
@@ -515,7 +511,6 @@ div#go_back_container {
 div#schedules_container {
   padding-left: 15px;
   padding-right: 15px;
-  background-color: #e6e6fa;
 
   /*background-color: #fffacd; */
   table {
@@ -555,7 +550,6 @@ div#schedules_container {
 div#clients_container {
   padding-left: 15px;
   padding-right: 15px;
-  background-color: #e6e6fa;
 
   table {
     .remove_client {

@@ -897,24 +897,49 @@
 
 
       <!--************************* identity ***************************-->
-      <div id="identity_container" class="dashed_container col-md-6 col-md-offset-3">
+      <div id="identity_container" class="dashed_container col-md-12">
             <div class="title">
                   <i class="fa fa-user-plus"></i> 签证资料
             </div>
 
             <!-- Company Name -->
-            <div id="china_company_container">
-                  <%= f.label :china_company_name, "中国旅行社名" %> <i id="china_company_check"></i>
-                  <%= f.text_field(
-                              :china_company_name, :class => 'form-control',
-                              :maxlength => "30",
-                              :id => "company_input", :autocomplete => "off", :placeholder => "中国江苏国际旅行社", 
-                              :onfocus=>"updateIconOnlyCheck('china_company_check', validateCompanyName, 'china_company_container')", 
-                              :oninput=>"updateIconOnlyCheck('china_company_check', validateCompanyName, 'china_company_container')", 
-                              :onchange=>"updateIcon('china_company_check', validateCompanyName, 'china_company_container')", 
-                              :onblur => "updateIcon('china_company_check', validateCompanyName, 'china_company_container')" 
-                  ) %>
-                  <div class="container" id="suggest_container"><div id="suggest" style="display:none;"></div></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="china_company_container">
+                          <%= f.label :china_company_name, "中国旅行社名" %> <i id="china_company_check"></i>
+                          <%= f.text_field(
+                                      :china_company_name, :class => 'form-control',
+                                      :maxlength => "30",
+                                      :id => "company_input", :autocomplete => "off", :placeholder => "中国江苏国际旅行社", 
+                                      :onfocus=>"updateIconOnlyCheck('china_company_check', validateCompanyName, 'china_company_container')", 
+                                      :oninput=>"updateIconOnlyCheck('china_company_check', validateCompanyName, 'china_company_container')", 
+                                      :onchange=>"updateIcon('china_company_check', validateCompanyName, 'china_company_container')", 
+                                      :onblur => "updateIcon('china_company_check', validateCompanyName, 'china_company_container')" 
+                          ) %>
+                          <div class="container" id="suggest_container"><div id="suggest" style="display:none;"></div></div>
+                    </div>
+                </div>
+
+                <!-- Visa Type -->
+                <div class="col-md-6">
+                    <%= f.label :visa_type, "签证种类" %> <i id="visa_type_check"></i>
+                    <div class="form-group">
+                          <div id='visaType' class="btn-group" data-toggle="buttons" onchange="updateIcon('visa_type_check', validateVisaType)">
+                              <label class="btn btn-default <%= 'active' if(project.visa_type == 'group') %>">
+                                  <input type="radio" autocomplete="off" value="group" name="project[visa_type]" <%= 'checked' if(project.visa_type == 'group') %>><%= visa_type_str("group") %>
+                              </label>
+                              <label class="btn btn-default <%= 'active' if(project.visa_type == 'individual') %>">
+                                  <input type="radio" autocomplete="off" value="individual" name="project[visa_type]" <%= 'checked' if(project.visa_type=='individual') %>><%= visa_type_str("individual") %>
+                              </label>
+                              <label class="btn btn-default <%= 'active' if(project.visa_type == '3years') %>">
+                                  <input type="radio" autocomplete="off" value="3years" name="project[visa_type]" <%= 'checked' if(project.visa_type == '3years') %>><%= visa_type_str("3years") %>
+                              </label>
+                              <label class="btn btn-default <%= 'active' if(project.visa_type == '5years') %>">
+                                  <input type="radio" autocomplete="off" value="5years" name="project[visa_type]" <%= 'checked' if(project.visa_type == '5years') %>><%= visa_type_str("5years") %>
+                              </label>
+                          </div>
+                    </div>
+                </div>
             </div>
 
             <!-- In charge person name -->
@@ -953,25 +978,6 @@
                   ) %>
             </div>
 
-
-            <!-- Visa Type -->
-            <%= f.label :visa_type, "签证种类" %> <i id="visa_type_check"></i>
-            <div class="form-group">
-                  <div id='visaType' class="btn-group" data-toggle="buttons" onchange="updateIcon('visa_type_check', validateVisaType)">
-                      <label class="btn btn-default <%= 'active' if(project.visa_type == 'group') %>">
-                          <input type="radio" autocomplete="off" value="group" name="project[visa_type]" <%= 'checked' if(project.visa_type == 'group') %>><%= visa_type_str("group") %>
-                      </label>
-                      <label class="btn btn-default <%= 'active' if(project.visa_type == 'individual') %>">
-                          <input type="radio" autocomplete="off" value="individual" name="project[visa_type]" <%= 'checked' if(project.visa_type=='individual') %>><%= visa_type_str("individual") %>
-                      </label>
-                      <label class="btn btn-default <%= 'active' if(project.visa_type == '3years') %>">
-                          <input type="radio" autocomplete="off" value="3years" name="project[visa_type]" <%= 'checked' if(project.visa_type == '3years') %>><%= visa_type_str("3years") %>
-                      </label>
-                      <label class="btn btn-default <%= 'active' if(project.visa_type == '5years') %>">
-                          <input type="radio" autocomplete="off" value="5years" name="project[visa_type]" <%= 'checked' if(project.visa_type == '5years') %>><%= visa_type_str("5years") %>
-                      </label>
-                  </div>
-            </div>
 
             <!-- Representative Name -->
             <% if project.trader.validation_mode == "simplest" || project.trader.validation_mode == "easy" || project.trader.validation_mode == "strict" %>
@@ -1030,45 +1036,51 @@
 
 
 
-            <!-- date arrival -->
-            <div id="date_arrival_container">
-                  <%= f.label :date_arrival, "日本入境日期" %> <i id="date_arrival_check"></i> <i class="fa fa-chevron-down long"></i>
-                  <% if @stay_term_lock %>
-                      <div class="stay_term_lock"><i class="fa fa-refresh fa-2x switch"></i></div>
-                  <% end %>
-                  <% dateArrival = "" %>
-                  <% dateArrival = project.date_arrival.strftime("%Y/%m/%d") if(!project.date_arrival.nil?) %>
-                  <%= f.text_field(
-                        :date_arrival, :placeholder => (Date.today+1).strftime("%Y/%m/%d"), :class => 'form-control datepicker', :autocomplete => "off",
-                        :id => "dateArrival",
-                        :maxlength => "10",
-                        :oninput => "updateIconOnlyCheck('date_arrival_check', validateDateArrival, 'date_arrival_container')",
-                        :onfocus => "updateIconOnlyCheck('date_arrival_check', validateDateArrival, 'date_arrival_container')",
-                        :onchange => "updateIcon('date_arrival_check', validateDateArrivalAndRegenerateSchedules, 'date_arrival_container')",
-                        #:onblur => "updateIcon('date_arrival_check', validateDateArrivalAndRegenerateSchedules, 'date_arrival_container')",
-                        :value => dateArrival,
-                  ) %>
-            </div>
+            <div class="row">
+                <!-- date arrival -->
+                <div class="col-md-6">
+                    <div id="date_arrival_container">
+                          <%= f.label :date_arrival, "日本入境日期" %> <i id="date_arrival_check"></i> <i class="fa fa-chevron-down long"></i>
+                          <% if @stay_term_lock %>
+                              <div class="stay_term_lock"><i class="fa fa-refresh fa-2x switch"></i></div>
+                          <% end %>
+                          <% dateArrival = "" %>
+                          <% dateArrival = project.date_arrival.strftime("%Y/%m/%d") if(!project.date_arrival.nil?) %>
+                          <%= f.text_field(
+                                :date_arrival, :placeholder => (Date.today+1).strftime("%Y/%m/%d"), :class => 'form-control datepicker', :autocomplete => "off",
+                                :id => "dateArrival",
+                                :maxlength => "10",
+                                :oninput => "updateIconOnlyCheck('date_arrival_check', validateDateArrival, 'date_arrival_container')",
+                                :onfocus => "updateIconOnlyCheck('date_arrival_check', validateDateArrival, 'date_arrival_container')",
+                                :onchange => "updateIcon('date_arrival_check', validateDateArrivalAndRegenerateSchedules, 'date_arrival_container')",
+                                #:onblur => "updateIcon('date_arrival_check', validateDateArrivalAndRegenerateSchedules, 'date_arrival_container')",
+                                :value => dateArrival,
+                          ) %>
+                    </div>
+                </div>
 
 
-            <!-- date leaving -->
-            <div id="date_leaving_container">
-                  <%= f.label :date_leaving, "日本出境日期" %> <i id="date_leaving_check"></i> <i class="fa fa-chevron-down long"></i>
-                  <% if @stay_term_lock %>
-                      <div class="stay_term_lock"><i class="fa fa-refresh fa-2x switch"></i></div>
-                  <% end %>
-                  <% dateLeaving = "" %>
-                  <% dateLeaving = project.date_leaving.strftime("%Y/%m/%d") if(!project.date_leaving.nil?) %>
-                  <%= f.text_field(
-                        :date_leaving, :placeholder => (Date.today+1).strftime("%Y/%m/%d"), :class => 'form-control datepicker', :autocomplete => "off",
-                        :id => "dateLeaving",
-                        :maxlength => "10",
-                        :oninput => "updateIconOnlyCheck('date_leaving_check', validateDateLeaving, 'date_leaving_container')",
-                        :onfocus => "updateIconOnlyCheck('date_leaving_check', validateDateLeaving, 'date_leaving_container')",
-                        :onchange => "updateIcon('date_leaving_check', validateDateLeavingAndRegenerateSchedules, 'date_leaving_container')",
-                        #:onblur => "updateIcon('date_leaving_check', validateDateLeavingAndRegenerateSchedules, 'date_leaving_container')",
-                        :value => dateLeaving,
-                  ) %>
+                <!-- date leaving -->
+                <div class="col-md-6">
+                    <div id="date_leaving_container">
+                          <%= f.label :date_leaving, "日本出境日期" %> <i id="date_leaving_check"></i> <i class="fa fa-chevron-down long"></i>
+                          <% if @stay_term_lock %>
+                              <div class="stay_term_lock"><i class="fa fa-refresh fa-2x switch"></i></div>
+                          <% end %>
+                          <% dateLeaving = "" %>
+                          <% dateLeaving = project.date_leaving.strftime("%Y/%m/%d") if(!project.date_leaving.nil?) %>
+                          <%= f.text_field(
+                                :date_leaving, :placeholder => (Date.today+1).strftime("%Y/%m/%d"), :class => 'form-control datepicker', :autocomplete => "off",
+                                :id => "dateLeaving",
+                                :maxlength => "10",
+                                :oninput => "updateIconOnlyCheck('date_leaving_check', validateDateLeaving, 'date_leaving_container')",
+                                :onfocus => "updateIconOnlyCheck('date_leaving_check', validateDateLeaving, 'date_leaving_container')",
+                                :onchange => "updateIcon('date_leaving_check', validateDateLeavingAndRegenerateSchedules, 'date_leaving_container')",
+                                #:onblur => "updateIcon('date_leaving_check', validateDateLeavingAndRegenerateSchedules, 'date_leaving_container')",
+                                :value => dateLeaving,
+                          ) %>
+                    </div>
+                </div>
             </div>
       </div>
 
@@ -1212,9 +1224,9 @@
 
       <!--************************* schedules ***************************-->
       <% if project.trader.validation_mode == "strict" || project.trader.auto_schedule == "active" || @stay_term_lock %>
-            <div id="schedules_container" class="dashed_container col-md-10 col-md-offset-1" style="display:block">
+            <div id="schedules_container" class="dashed_container col-md-12" style="display:block">
       <% else %>
-            <div id="schedules_container" class="dashed_container col-md-10 col-md-offset-1" style="display:none">
+            <div id="schedules_container" class="dashed_container col-md-12" style="display:none">
       <% end %>
             <div class="title">
                   <i class="fa fa-bus"></i> 日程表 共 <span class="number" id="schedules-total"><%= f.object.schedules.length %></span> 天
