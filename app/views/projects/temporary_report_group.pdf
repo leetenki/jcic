@@ -9,7 +9,7 @@
 
 <div style="font-size: 12px; text-align: right">様式2　 1/<%= @project.clients.size > 30? 2: 1 %></div>
 <% title = '中国国民訪日団体観光旅行取扱団体' %>
-<div style="font-size: 14px; text-align: center; font-weight: bolder; margin-top: -2px;"><%= title %>帰国報告書</div>
+<div style="font-size: 14px; text-align: center; font-weight: normal; margin-top: -2px;"><%= title %>帰国報告書</div>
 
 <table style="margin-top: -12px">
   <tr>
@@ -195,7 +195,7 @@
 
 
 
-<table class="report-table" style="border: solid 2px black; margin-top: -1px">
+<table class="report-table" style="border: solid 2px black; margin-top: -1px; font-size: 9px;">
   <tr style='border-top: 2px black solid; border-bottom: transparent solid 2px'>
     <td>
       上記各名が　　　　　　　　　　　便への搭乗または乗船手続きを完了したことを証明する。
