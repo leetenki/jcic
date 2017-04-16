@@ -844,7 +844,7 @@ function validateChineseNameById(id) {
   var inputText = $("#" + id + " input")[0].value.replace(/[ -~]{1,}/g, "").replace(/[　 \s]{1,}/g, "");//.replace(/^[ 　]{1,}/, "").replace(/[ 　]{1,}$/, "");
 
   if(inputText.length > 1 && inputText.length <= 8 /*&& !CheckLength(inputText, 0)*/ && CheckLength(inputText, 1)) {
-    $("#" + id + " input")[0].value = inputText;
+    //$("#" + id + " input")[0].value = inputText;
     return true
   } else {
     return false;

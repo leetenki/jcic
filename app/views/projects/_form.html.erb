@@ -1,7 +1,7 @@
 <% if project.trader.validation_mode == "simplest" %>
-      <div id="excel_realder_opener" class="col col-md-2 col-md-offset-5 btn btn-default" style="border-radius: 30px; margin-top:20px; margin-bottom: -20px;" onclick="openExcelReader()">上传Excel</div>
+      <div id="excel_realder_opener" class="col col-md-2 col-md-offset-10 col-sm-2 col-sm-offset-10 col-xs-2 col-xs-offset-10 btn btn-primary" style="border-radius: 4px; margin-top:20px; margin-bottom: -20px;" onclick="openExcelReader()">上传Excel</div>
 
-      <div style="text-align:center; padding: 10px; width: 400px; margin:40px auto 10px auto; border:dashed 2px black; border-radius: 30px; display:none;" id="file-reader">
+      <div style="text-align:center; padding: 10px; margin:40px auto 10px auto; border:solid 2px #cccccc; display:none;" id="file-reader">
             <p>
               Excel全自动上传功能 (
                 <% if project.trader.individual_japan_company != "random" %>
@@ -893,18 +893,18 @@
 <%= form_for(project) do |f| %>
 <input type="hidden" id="company_data_json" value="<%= @company_codes.to_json({:only => [:name, :search_text]}) %>">
 
-      <div class="col-md-6 col-md-offset-3 errors-container"><%= render :partial => "shared/error_messages", :locals => {:object => f.object} %></div>
+      <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3 errors-container"><%= render :partial => "shared/error_messages", :locals => {:object => f.object} %></div>
 
 
       <!--************************* identity ***************************-->
-      <div id="identity_container" class="dashed_container col-md-12">
+      <div id="identity_container" class="dashed_container col-md-12 col-sm-12 col-xs-12">
             <div class="title">
                   <i class="fa fa-user-plus"></i> 签证资料
             </div>
 
             <!-- Company Name -->
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-6 col-xs-6">
                     <div id="china_company_container">
                           <%= f.label :china_company_name, "中国旅行社名" %> <i id="china_company_check"></i>
                           <%= f.text_field(
@@ -921,7 +921,7 @@
                 </div>
 
                 <!-- Visa Type -->
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-6 col-xs-6">
                     <%= f.label :visa_type, "签证种类" %> <i id="visa_type_check"></i>
                     <div class="form-group">
                           <div id='visaType' class="btn-group" data-toggle="buttons" onchange="updateIcon('visa_type_check', validateVisaType)">
@@ -1038,7 +1038,7 @@
 
             <div class="row">
                 <!-- date arrival -->
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-6 col-xs-6">
                     <div id="date_arrival_container">
                           <%= f.label :date_arrival, "日本入境日期" %> <i id="date_arrival_check"></i> <i class="fa fa-chevron-down long"></i>
                           <% if @stay_term_lock %>
@@ -1061,7 +1061,7 @@
 
 
                 <!-- date leaving -->
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-6 col-xs-6">
                     <div id="date_leaving_container">
                           <%= f.label :date_leaving, "日本出境日期" %> <i id="date_leaving_check"></i> <i class="fa fa-chevron-down long"></i>
                           <% if @stay_term_lock %>
@@ -1090,7 +1090,7 @@
             <div class="title">
                   <i class="fa fa-list"></i> 名单 <span class="number" id="clients-total"><%= f.object.clients.length %></span> 人
             </div>
-            <div id="excel_button" class="btn btn-default" data-toggle="modal" data-target="#modal-panel">+ Excel</div>
+            <!--<div id="excel_button" class="btn btn-default" data-toggle="modal" data-target="#modal-panel">+ Excel</div>-->
             <div class="remove_all" onclick="removeAllClientRow()">×</div>
 
             <table class="table">
@@ -1193,7 +1193,7 @@
                                     </div>
                               </td>
 
-                              <td class="col col-md-1">
+                              <td class="col col-md-1 col-sm-1 col-xs-1">
                                     <div id="clients_job_container_<%= clients_field.index %>" class="job_container">
                                           <%= clients_field.label :job, "职业" %> <i id="clients_job_<%= clients_field.index %>"></i><div class="remove_client" onclick="removeClientRow('client_<%= clients_field.index %>')">×</div>
                                           <%= clients_field.text_field(
@@ -1213,21 +1213,11 @@
                         <% end %>
                   </tbody>
             </table>
-            <i class="fa fa-plus-square fa-4x add_client" onclick="addClientRowWithValidation()"></i>
-      </div>
-
-      <div class="row">
-          <% if !@stay_term_lock && project.trader.auto_schedule == "inactive" && (project.trader.validation_mode == "simplest" || project.trader.validation_mode == "easy") %>
-                  <div id="show_schedules" class="col col-md-2 col-md-offset-5 btn btn-default" style="border-radius: 30px; margin-bottom: 30px;" onclick="showSchedulesContainer()">+ 详细日程表</div>
-          <% end %>
+            <i class="fa fa-user-plus add_client" style="color: #9dd29c; font-size: 19px; font-weight: bolder; padding-bottom: 10px;" onclick="addClientRowWithValidation()"> 继续添加</i>
       </div>
 
       <!--************************* schedules ***************************-->
-      <% if project.trader.validation_mode == "strict" || project.trader.auto_schedule == "active" || @stay_term_lock %>
-            <div id="schedules_container" class="dashed_container col-md-12" style="display:block">
-      <% else %>
-            <div id="schedules_container" class="dashed_container col-md-12" style="display:none">
-      <% end %>
+      <div id="schedules_container" class="dashed_container col-md-12 col-sm-12 col-xs-12" style="display:block">
             <div class="title">
                   <i class="fa fa-bus"></i> 日程表 共 <span class="number" id="schedules-total"><%= f.object.schedules.length %></span> 天
             </div>
@@ -1246,7 +1236,7 @@
                   <tbody>
                         <%= f.fields_for :schedules do |schedules_field| %>
                         <tr>
-                              <td class="col col-md-2 col-sm-2 col-lg-2 col-xs-3 date">
+                              <td class="col col-md-2 col-sm-2 col-lg-2 col-xs-2 date">
                                     <span class="date-index"><%= schedules_field.index+1 %></span>
                                     <div id="schedules_date_container_<%= schedules_field.index %>" class="date_container">
                                           <%= schedules_field.label :date, "日期" %> <i id="schedules_date_<%= schedules_field.index %>"></i>
@@ -1260,7 +1250,7 @@
                                           ) %>
                                     </div>
                               </td>
-                              <td class="col col-md-6 col-sm-6 col-lg-6 col-xs-5">
+                              <td class="col col-md-6 col-sm-6 col-lg-6 col-xs-6">
                                     <div id="schedules_plan_container_<%= schedules_field.index %>" class="plan_container">
                                           <%= schedules_field.label :plan, "行动计划" %> <i id="schedules_plan_<%= schedules_field.index %>"></i>
                                           <%= schedules_field.text_area(
@@ -1384,7 +1374,7 @@
 
 
       <div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4">
-            <%= f.submit button_text, :class => "btn btn-lg btn-primary", :id => "send_button" %>
+            <%= f.submit button_text, :class => "btn btn-lg btn-success", :id => "send_button" %>
       </div>
 <% end %>
       
