@@ -75,7 +75,7 @@ class AdminController < ApplicationController
   end
 
   def check_invoice
-    @traders = Trader.where(invoice_sign_company: params[:company] || 'jtg').order(id: :desc)
+    @traders = Trader.where(invoice_company: params[:company] || 'jtg').order(id: :desc)
     @traders = @traders.select do |trader|
       trader.projects.size > 0
     end
