@@ -355,9 +355,9 @@
                     } else if(year3 != individual && year3 != group && year3 != year5) {
                       return "3";
                     }
-                  } else if(cellValue && cellValue.match(/沖縄及び東北三県数次/)) {
+                  } else if(cellValue && cellValue.match(/沖縄及び東北三県数次|沖縄及び東北六県数次/)) {
                     return "3";
-                  } else if(cellValue && cellValue.match(/相当な高所得者向け数次/)) {
+                  } else if(cellValue && cellValue.match(/相当な高所得者向け数次|十分な経済力保有者向け数次/)) {
                     return "5";
                   } else if(cellValue && cellValue.match(/団体|团体/)) {
                     return "group"
