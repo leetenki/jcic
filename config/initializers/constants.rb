@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 module Constants
-  VISA_TYPE_TABLE = {"individual" => "个人查证", "group" => "团体查证", "3years" => "三年多次", "5years" => "五年多次"}
+  VISA_TYPE_TABLE = {"individual" => "个人查证", "group" => "团体查证", "3years" => "冲绳东北六县多次", "5years" => "一定经济能力多次"}
 
   #身元保証書用 & 自動入力用
   GROUP_VISA = [:jtg, :jki, :jcic]
