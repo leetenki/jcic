@@ -353,7 +353,7 @@ class ProjectsController < ApplicationController
 
   #create pdf
   def show
-    visa_type_table = {"individual" => "个签", "group" => "团签", "3years" => "三年多次", "5years" => "五年多次"}
+    visa_type_table = {"individual" => "个签", "group" => "团签", "3years" => "冲绳东北六县多次", "5years" => "一定经济能力多次"}
 
     if(is_admin? || current_trader.authority == "all")
       @project = Project.where("id = ?", params[:id]).includes(:clients, :schedules)[0]
