@@ -13,7 +13,7 @@ module ApplicationHelper
   end
 
   def visa_type_str_short(visa_type)
-    visa_type_table = {"individual" => "个人", "group" => "团体", "3years" => "三年", "5years" => "五年"}
+    visa_type_table = {"individual" => "个人", "group" => "团体", "3years" => "三年", "5years" => "三年"}
     return visa_type_table[visa_type] 
   end
 
