@@ -4,11 +4,11 @@
 
 <div class="alert alert-success">提示：2017年5月8日起日本观光厅开放新政策
 <br/>①五年多次签证可免签，以后不需身元保证。
-<br/>②三年多次签证分为两种（冲绳及东北六县多次，满足一定经济能力多次）。
+<br/>②三年多次签证分为两种（冲绳及东北六县多次，满足一定经济能力多次）。具体请咨询当地领馆。
 </div>
 
 <h1>
-  <i class="fa fa-users"></i> 
+  <i class="fa fa-users"></i>
   <% if is_admin? %>
     所有电签
   <% else %>
@@ -79,7 +79,7 @@
     <% else %>
         <a href="/projects/new" class="btn btn-success btn-large" id="new-project">
           <i class="fa fa-user-plus"></i> 申请
-        </a>    
+        </a>
     <% end %>
     <div style="text-align:center;"><%= paginate @projects.page(params[:page]), :window => 5 %></div>
   </div>
