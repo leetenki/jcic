@@ -105,7 +105,7 @@ class Api::VisaController < ApplicationController
         if(matched_projects.length > 0)
           mached = false
           matched_projects.each do |mached_project|
-            if(!mached_project.delete_request && mached_project.status != "deleted")
+            if(!mached_project.delete_request && mached_project.status != "deleted" && mached_project.clients[0].passport_no == @project.clients[0].passport_no)
               mached = true
               break
             end
