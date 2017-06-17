@@ -8,8 +8,14 @@
             <div class="origin-company-name-cell" style="cursor:pointer;" onclick="location.href='/traders/<%= project.trader.id %>'"><%= project.trader.company_name %>(<%= project.trader.person_name %>)</div>        
         <% end %>
 
-        <div class="bg-primary company-name-cell japan-sign" style="margin-bottom: 6px; cursor:pointer;" onclick="window.open('/projects/signature/<%= project.id %>')">
+        <% if is_admin? and Constants::FAKE_ACCOUNT.include?(project.trader.id) %>
+            <!-- 偽の会社名表示 -->
+            <div class="bg-primary company-name-cell japan-sign" style="margin-bottom: 6px; cursor:pointer;" onclick="window.open('/projects/signature/281327')">
+                日本 : ジェーティージー華信株式会社
+        <% else %>
+            <div class="bg-primary company-name-cell japan-sign" style="margin-bottom: 6px; cursor:pointer;" onclick="window.open('/projects/signature/<%= project.id %>')">
             日本 : <%= Constants::JAPAN_SIDE_COMPANY[project.japan_company.intern][:company_name] %>
+        <% end %>
         </div>
         <div class="bg-primary company-name-cell">中国 : <%= project.china_company_name %></div>
         <div class="date-arrival-cell"><%= project.date_arrival.strftime("%Y/%m/%d") %>〜<%= project.date_leaving.strftime("%Y/%m/%d") %></div>
@@ -45,13 +51,18 @@
         <% if is_admin? || !is_project_disabled(project) %>
             <div class="row">
                 <div class="btn-group col-md-12 col-sm-12 col-xs-12"  data-toggle="buttons">
-                    <% if is_admin? && project.has_full_schedule %>
+                    <% if is_admin? and Constants::FAKE_ACCOUNT.include?(project.trader.id) %>
+                        <button class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6" onclick="downloadPDF('/projects/281327.pdf', this)">招聘保証</button>
+
+                    <% elsif is_admin? && project.has_full_schedule %>
                         <button class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6" onclick="downloadPDF('/projects/<%= project.id %>.pdf', this)" style="font-weight:bolder">　招聘保証<i class="fa fa-check"></i></button>                        
                     <% else %>
                         <button class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6" onclick="downloadPDF('/projects/<%= project.id %>.pdf', this)">招聘保証</button>
                     <% end %>
 
-                    <% if project.pdf.present? %>
+                    <% if is_admin? and Constants::FAKE_ACCOUNT.include?(project.trader.id) %>
+                        <button class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6" onclick="window.open().location.href='/projects/281327/temporary_report.pdf'">帰国報告</button>
+                    <% elsif project.pdf.present? %>
                         <button class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6" onclick="window.open().location.href='<%= project.pdf.url %>'">帰国報告</button>
                     <% elsif project.status == 'committed' %>
                         <button class="btn btn-default btn-xs col-md-6 col-sm-6 col-xs-6" onclick="window.open().location.href='/projects/<%= project.id %>/temporary_report.pdf'">帰国報告</button>
