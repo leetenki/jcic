@@ -1,4 +1,4 @@
-<% if not trader.id.nil? and not (is_admin? and Constants::FAKE_ACCOUNT.include?(project.trader.id)) %>
+<% if not trader.id.nil? and not (is_admin? and Constants::FAKE_ACCOUNT.include?(trader.id)) %>
   <% if trader.authority != "self" %>
       <tr id="<%= trader.id %>" onclick="location.href='/traders/<%= trader.id %>'" style="cursor:pointer; background-color: red">    
   <% elsif trader.invoice_sign_company == "jcic" %>
