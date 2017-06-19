@@ -296,7 +296,7 @@ private
         @traders = Trader.all
         @ids = Array.new(0, nil)
         @traders.each do |trader|
-          if not Constants::FAKE_ACCOUNT.include?(project.trader.id)
+          if not Constants::FAKE_ACCOUNT.include?(trader.id)
             @ids.push(trader.id)
           end
           projects = projects.where("trader_id in (?)", @ids)
