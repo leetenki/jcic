@@ -293,19 +293,13 @@ private
 
     if(id.present?)
       if(id == "*")
-        @traders = Trader.all
-        @ids = Array.new(0, nil)
-        @traders.each do |trader|
-          if not Constants::FAKE_ACCOUNT.include?(trader.id)
-            @ids.push(trader.id)
-          end
-          projects = projects.where("trader_id in (?)", @ids)
-        end
       elsif(!(is_number? id))
         @traders = Trader.where(:invoice_company => params[:trader_id])
         @ids = Array.new(0, nil)
         @traders.each do |trader|
-          @ids.push(trader.id)
+          if not is_admin? or not Constants::FAKE_ACCOUNT.include?(trader.id)
+            @ids.push(trader.id)
+          end
         end
         projects = projects.where("trader_id in (?)", @ids)
       else
