@@ -104,14 +104,17 @@ class Api::VisaController < ApplicationController
         matched_projects = Project.where("trader_id = ? and china_company_name = ? and representative_name_chinese = ? and total_people = ? and visa_type = ? and date_arrival = ? and date_leaving = ?", @project.trader_id, @project.china_company_name, @project.representative_name_chinese, @project.total_people, @project.visa_type, Date.parse(@project.date_arrival.to_s), Date.parse(@project.date_leaving.to_s))
         if(matched_projects.length > 0)
           mached = false
+          matched_id = -1
           matched_projects.each do |mached_project|
             if(!mached_project.delete_request && mached_project.status != "deleted" && mached_project.clients[0].passport_no == @project.clients[0].passport_no)
+              matched_id = mached_project.id
               mached = true
               break
             end
           end
           if mached
-            render :json => error_message('Same visa already exists')
+            message = 'Same visa already exists'
+            render :json => "{\"message\": \"#{message}\", \"id\": \"#{matched_id}\"}"
             return
           end
         end
