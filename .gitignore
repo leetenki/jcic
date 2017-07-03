@@ -9,6 +9,7 @@
 
 /public/assets/bootstrap/
 /public/assets/jquery/
+/public/assets/jquery-ui/
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
