@@ -8,6 +8,7 @@
 /.bundle
 
 /public/assets/bootstrap/
+/public/assets/jquery/
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
