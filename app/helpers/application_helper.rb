@@ -57,6 +57,14 @@ module ApplicationHelper
     return chinese_week_days[wday]
   end
 
+  def is_project_valid(project)
+    if project.visa_type == "3years" and (project.stay.length <= 0 or project.visit.length <= 0)
+      return false
+    else
+      return true
+    end
+  end
+
   def is_project_editable(project)
     if(project.status=="uncommitted" && Time.now < (project.updated_at+60*project.trader.editable_min))
       return true

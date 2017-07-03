@@ -144,7 +144,7 @@ class AdminController < ApplicationController
     end
     @result = []
     @projects.each do |project| #check if not editable
-      if(!is_project_editable(project))
+      if(!is_project_editable(project) and is_project_valid(project))
         @result.push(project)
       end
     end
@@ -158,7 +158,7 @@ class AdminController < ApplicationController
 
     @result = []
     @projects.each do |project| #check if not editable
-      if(!is_project_editable(project))
+      if(!is_project_editable(project) and is_project_valid(project))
         @result.push(project)
       end
     end
