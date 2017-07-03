@@ -612,6 +612,8 @@ class ProjectsController < ApplicationController
   # create full copy project
   def create_full_copy(target_project)
     project = current_trader.projects.build
+    project.stay = target_project.stay
+    project.visit = target_project.visit
     project.schedules.build
     project.clients.build
 
@@ -726,7 +728,10 @@ class ProjectsController < ApplicationController
 
   def project_params
     params.require(:project).permit(
-      :china_company_name, :china_company_code, :visa_type, :total_people, :representative_name_english, :representative_name_chinese, :in_charge_person, :in_charge_phone, :japan_airport, :china_airport, :flight_name, :departure_time, :arrival_time, :date_arrival, :date_leaving, :from, :to, :payment, :confirmation, :status, :delete_request, :ticket_no, 
+      :china_company_name, :china_company_code, :visa_type, :total_people, :representative_name_english, :representative_name_chinese, :in_charge_person, :in_charge_phone, :japan_airport, :china_airport, :flight_name, :departure_time, :arrival_time, :date_arrival, :date_leaving, :from, :to, :payment, :confirmation, :status, :delete_request, :ticket_no,
+      :extra,
+      :stay => [],
+      :visit => [],
       :schedules_attributes => [:id, :date, :plan, :hotel], 
       :clients_attributes => [:id, :name_chinese, :name_english, :gender, :hometown, :birthday, :passport_no, :job]
     )

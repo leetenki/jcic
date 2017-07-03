@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160827083645) do
+ActiveRecord::Schema.define(version: 20170703033957) do
 
   create_table "clients", force: :cascade do |t|
     t.integer  "project_id"
@@ -87,6 +87,9 @@ ActiveRecord::Schema.define(version: 20160827083645) do
     t.string   "pdf"
     t.string   "japan_company",               default: "jcic"
     t.boolean  "has_full_schedule",           default: false
+    t.string   "stay",                        default: ""
+    t.string   "visit",                       default: ""
+    t.string   "extra",                       default: ""
   end
 
   add_index "projects", ["trader_id", "created_at"], name: "index_projects_on_trader_id_and_created_at"

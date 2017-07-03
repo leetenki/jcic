@@ -30,6 +30,8 @@ class Project < ActiveRecord::Base
   validate :validate_flight_name
   validate :validate_departure_and_arrival_time
   validate :validate_japan_company
+  validate :validate_stay_and_visit
+
 
   def validate_japan_airport
     if(!japan_airport.present?)
@@ -105,6 +107,18 @@ class Project < ActiveRecord::Base
       else
         errors.add(:china_company_name, "您所输入的旅行社不存在.")
       end
+    end
+  end
+
+  def validate_stay_and_visit
+    if visa_type == "3years"
+        if visit.length == 0
+            errors.add(:visit, "您未选择访问城市.")
+        end
+
+        if stay.length == 0
+            errors.add(:stay, "您未选择住宿城市.")
+        end
     end
   end
 

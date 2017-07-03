@@ -35,6 +35,11 @@ function startSuggest() {
   }
 }
 
+function updateStayVisit(display) {
+    document.getElementById("stay_visit").style.display = display
+    document.getElementById("stay_visit").style.display = display
+}
+
 // called when confirm button pushed
 function confirmDelete(path) {
   if(window.confirm('※请注意！确定删除后将无法复原。1工作日之内，我们会确认并完全取消此签证。')) {
