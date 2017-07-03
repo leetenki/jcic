@@ -74,7 +74,7 @@
             document.getElementById("xlf").addEventListener('change', handleFile, false);
 
             /************************************** fill ****************************************/
-            function fillForm(chinaCompanyName, chinaCompanyCode, visaType, dateArrival, dateLeaving, clients, schedules) {
+            function fillForm(chinaCompanyName, chinaCompanyCode, visaType, visitIndex, stayIndex, dateArrival, dateLeaving, clients, schedules) {
                 // china company name
                 companyNames = JSON.parse(document.getElementById("company_data_json").value);
                 var valid = false;
@@ -166,15 +166,27 @@
                 if(visaType.match(/個|个|单|単|独|普通|普通|一般|一般|individual/)) {
                       $("#visaType input")[1].setAttribute("checked", "checked")
                       $("#visaType label")[1].className = "btn btn-default active"
+                      $("#stay_visit")[0].style.display = "none"
                 } else if(visaType.match(/团|団|集|group/)) {
                       $("#visaType input")[0].setAttribute("checked", "checked")
                       $("#visaType label")[0].className = "btn btn-default active"
+                      $("#stay_visit")[0].style.display = "none"
                 } else if(visaType.match(/3|３|三|三|冲绳东北六县多次/)) {
                       $("#visaType input")[2].setAttribute("checked", "checked")
                       $("#visaType label")[2].className = "btn btn-default active"
+                      $("#stay_visit")[0].style.display = "block"
+                      for(placeIndex = 0; placeIndex < stayIndex.length; placeIndex++) {
+                        $("#stay input")[stayIndex[placeIndex]].setAttribute("checked", "checked")
+                        $("#stay label")[stayIndex[placeIndex]].className = "btn btn-default btn-xs active"
+                      }
+                      for(placeIndex = 0; placeIndex < visitIndex.length; placeIndex++) {
+                        $("#visit input")[visitIndex[placeIndex]].setAttribute("checked", "checked")
+                        $("#visit label")[visitIndex[placeIndex]].className = "btn btn-default btn-xs active"
+                      }
                 } else if(visaType.match(/5|５|五|五|一定经济能力多次/)) {
                       $("#visaType input")[3].setAttribute("checked", "checked")
                       $("#visaType label")[3].className = "btn btn-default active"
+                      $("#stay_visit")[0].style.display = "none"
                 }
 
                 // date arrival and leaving
@@ -643,6 +655,45 @@
                     visaType = guessVisaType(name, worksheet, clients);
                   }
 
+                  // 3year
+                  target_places = ['沖縄県', '青森県', '岩手県', '宮城県', '秋田県', '山形県', '福島県']
+                  target_places_short = ['沖縄|冲绳', '青森|青森', '岩手|岩手', '宮城|宫城', '秋田|秋田', '山形|山形', '福島|福岛']
+                  if(visaType == "冲绳东北六县多次") {
+                      // visit
+                      visitIndex = []
+                      for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
+                            for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
+                                  var cellValue = getCellValue(worksheet, rowIndex, colIndex).toString();
+                                  if((cellValue && cellValue == "访问城市")) {
+                                        visitStr = getCellValue(worksheet, rowIndex, colIndex+1)
+                                        for(var placeIndex = 0; placeIndex < target_places_short.length; placeIndex++) {
+                                            if(visitStr.match(new RegExp(target_places_short[placeIndex])) != null) {
+                                              visitIndex.push(placeIndex)
+                                            }
+                                        }
+                                        break;
+                                  }
+                            }
+                      }
+
+                      // stay
+                      stayIndex = []
+                      for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
+                            for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
+                                  var cellValue = getCellValue(worksheet, rowIndex, colIndex).toString();
+                                  if((cellValue && cellValue == "住宿城市")) {
+                                        stayStr = getCellValue(worksheet, rowIndex, colIndex+1)
+                                        for(var placeIndex = 0; placeIndex < target_places_short.length; placeIndex++) {
+                                            if(stayStr.match(new RegExp(target_places_short[placeIndex])) != null) {
+                                              stayIndex.push(placeIndex)
+                                            }
+                                        }
+                                        break;
+                                  }
+                            }
+                      }
+                  }
+
                   // date arrival
                   for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
                         for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
@@ -757,7 +808,7 @@
                 }
 
                 // fill form
-                fillForm(chinaCompanyName, chinaCompanyCode, visaType, dateArrival, dateLeaving, clients, schedules)
+                fillForm(chinaCompanyName, chinaCompanyCode, visaType, visitIndex, stayIndex, dateArrival, dateLeaving, clients, schedules)
 
                 // validation
                 initialValidation();
