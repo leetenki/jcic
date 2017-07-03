@@ -58,7 +58,7 @@ module ApplicationHelper
   end
 
   def is_project_valid(project)
-    if project.visa_type == "3years" and (project.stay.length <= 0 or project.visit.length <= 0)
+    if project.visa_type == "3years" and (project.stay.length <= 0 or project.visit.length <= 0 or JSON.parse(project.stay).length <= 0 or JSON.parse(project.visit).length <= 0)
       return false
     else
       return true
