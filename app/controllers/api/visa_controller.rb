@@ -190,6 +190,30 @@ class Api::VisaController < ApplicationController
       return result
     end
 
+    # stay, visit validation
+    if visa[:visa_type] == "3years"
+      if visa[:stay].nil? or visa[:visit].nil? or visa[:visit].length <= 0 or visa[:stay].length <= 0
+        result[:error_message] = "stay and visit must be more than 1 element"
+        return result
+      else
+        places = ['沖縄県', '青森県', '岩手県', '宮城県', '秋田県', '山形県', '福島県']
+        places_str = "[沖縄県, 青森県, 岩手県, 宮城県, 秋田県, 山形県, 福島県]"
+        visa[:stay].each do |place|
+          if not places.include?(place)
+            result[:error_message] = "stay and visit place must be in #{places_str}"
+            return result
+          end
+        end
+
+        visa[:visit].each do |place|
+          if not places.include?(place)
+            result[:error_message] = "stay and visit place must be in #{places_str}"
+            return result
+          end
+        end
+      end
+    end
+
     result[:valid] = true
     result
   end
