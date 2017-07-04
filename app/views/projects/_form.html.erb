@@ -658,9 +658,10 @@
                   // 3year
                   target_places = ['沖縄県', '青森県', '岩手県', '宮城県', '秋田県', '山形県', '福島県']
                   target_places_short = ['沖縄|冲绳', '青森|青森', '岩手|岩手', '宮城|宫城', '秋田|秋田', '山形|山形', '福島|福岛']
+                  var visitIndex = []
+                  var stayIndex = []
                   if(visaType == "冲绳东北六县多次") {
                       // visit
-                      visitIndex = []
                       for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
                             for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
                                   var cellValue = getCellValue(worksheet, rowIndex, colIndex).toString();
@@ -677,7 +678,6 @@
                       }
 
                       // stay
-                      stayIndex = []
                       for(var rowIndex = excelTop; rowIndex <= excelBottom; rowIndex++) {
                             for(var colIndex = excelLeft; colIndex <= excelRight; colIndex++) {
                                   var cellValue = getCellValue(worksheet, rowIndex, colIndex).toString();
