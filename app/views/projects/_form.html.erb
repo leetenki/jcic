@@ -656,8 +656,8 @@
                   }
 
                   // 3year
-                  target_places = ['沖縄県', '青森県', '岩手県', '宮城県', '秋田県', '山形県', '福島県']
-                  target_places_short = ['沖縄|冲绳', '青森|青森', '岩手|岩手', '宮城|宫城', '秋田|秋田', '山形|山形', '福島|福岛']
+                  var target_places = ['沖縄県', '青森県', '岩手県', '宮城県', '秋田県', '山形県', '福島県']
+                  var target_places_short = ['沖縄|冲绳', '青森|青森', '岩手|岩手', '宮城|宫城', '秋田|秋田', '山形|山形', '福島|福岛']
                   var visitIndex = []
                   var stayIndex = []
                   if(visaType == "冲绳东北六县多次") {
@@ -938,6 +938,14 @@
                 }
                 document.getElementById("parse_schedule_button").addEventListener("click", sendAutoSchedule, true)
             }
+            function chain_click_visa_type(text) {
+                var target_places = ['沖縄県', '青森県', '岩手県', '宮城県', '秋田県', '山形県', '福島県']
+                var placeIndex = target_places.indexOf(text)
+                if($("#stay label")[placeIndex].className.match(/active/) == null) {
+                    $("#visit input")[placeIndex].setAttribute("checked", "checked");
+                    $("#visit label")[placeIndex].className = "btn btn-default btn-xs active";
+                }
+            }
       </script>
 <% end %>
 
@@ -1029,7 +1037,40 @@
             <% else %>
                 <div id="stay_visit" style="display: none">
             <% end %>
-                <%= f.label :visit, "访问城市" %> <i id="visa_type_check"></i>
+                <%
+                    if project.stay.length > 0
+                        stay = JSON.parse(project.stay)
+                    else
+                        stay = []
+                    end
+                %>
+                <%= f.label :stay, "住宿城市" %> <i id="visa_type_check"></i>
+                <div class="form-group">
+                    <div id="stay" class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-default btn-xs <%= "active" if(stay.include?("沖縄県")) %>" onclick="chain_click_visa_type(this.innerText)">
+                            <input type="checkbox" autocomplete="off" value="沖縄県" name="project[stay][]" <%= "checked" if(stay.include?("沖縄県")) %>>沖縄県
+                        </label>
+                        <label class="btn btn-default btn-xs <%= "active" if(stay.include?("青森県")) %>" onclick="chain_click_visa_type(this.innerText)">
+                            <input type="checkbox" autocomplete="off" value="青森県" name="project[stay][]" <%= "checked" if(stay.include?("青森県")) %>>青森県
+                        </label>
+                        <label class="btn btn-default btn-xs <%= "active" if(stay.include?("岩手県")) %>" onclick="chain_click_visa_type(this.innerText)">
+                            <input type="checkbox" autocomplete="off" value="岩手県" name="project[stay][]" <%= "checked" if(stay.include?("岩手県")) %>>岩手県
+                        </label>
+                        <label class="btn btn-default btn-xs <%= "active" if(stay.include?("宮城県")) %>" onclick="chain_click_visa_type(this.innerText)">
+                            <input type="checkbox" autocomplete="off" value="宮城県" name="project[stay][]" <%= "checked" if(stay.include?("宮城県")) %>>宮城県
+                        </label>
+                        <label class="btn btn-default btn-xs <%= "active" if(stay.include?("秋田県")) %>" onclick="chain_click_visa_type(this.innerText)">
+                            <input type="checkbox" autocomplete="off" value="秋田県" name="project[stay][]" <%= "checked" if(stay.include?("秋田県")) %>>秋田県
+                        </label>
+                        <label class="btn btn-default btn-xs <%= "active" if(stay.include?("山形県")) %>" onclick="chain_click_visa_type(this.innerText)">
+                            <input type="checkbox" autocomplete="off" value="山形県" name="project[stay][]" <%= "checked" if(stay.include?("山形県")) %>>山形県
+                        </label>
+                        <label class="btn btn-default btn-xs <%= "active" if(stay.include?("福島県")) %>" onclick="chain_click_visa_type(this.innerText)">
+                            <input type="checkbox" autocomplete="off" value="福島県" name="project[stay][]" <%= "checked" if(stay.include?("福島県")) %>>福島県
+                        </label>
+                    </div>
+                </div>
+
                 <% 
                     if project.visit.length > 0
                         visit = JSON.parse(project.visit)
@@ -1037,7 +1078,7 @@
                         visit = []
                     end
                 %>
-
+                <%= f.label :visit, "访问城市" %> <i id="visa_type_check"></i>
                 <div class="form-group">
                     <div id="visit" class="btn-group" data-toggle="buttons">
                         <label class="btn btn-default btn-xs <%= "active" if(visit.include?("沖縄県")) %>">
@@ -1060,40 +1101,6 @@
                         </label>
                         <label class="btn btn-default btn-xs <%= "active" if(visit.include?("福島県")) %>">
                             <input type="checkbox" autocomplete="off" value="福島県" name="project[visit][]" <%= "checked" if(visit.include?("福島県")) %>>福島県
-                        </label>
-                    </div>
-                </div>
-
-                <%
-                    if project.stay.length > 0
-                        stay = JSON.parse(project.stay)
-                    else
-                        stay = []
-                    end
-                %>
-                <%= f.label :stay, "住宿城市" %> <i id="visa_type_check"></i>
-                <div class="form-group">
-                    <div id="stay" class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-default btn-xs <%= "active" if(stay.include?("沖縄県")) %>">
-                            <input type="checkbox" autocomplete="off" value="沖縄県" name="project[stay][]" <%= "checked" if(stay.include?("沖縄県")) %>>沖縄県
-                        </label>
-                        <label class="btn btn-default btn-xs <%= "active" if(stay.include?("青森県")) %>">
-                            <input type="checkbox" autocomplete="off" value="青森県" name="project[stay][]" <%= "checked" if(stay.include?("青森県")) %>>青森県
-                        </label>
-                        <label class="btn btn-default btn-xs <%= "active" if(stay.include?("岩手県")) %>">
-                            <input type="checkbox" autocomplete="off" value="岩手県" name="project[stay][]" <%= "checked" if(stay.include?("岩手県")) %>>岩手県
-                        </label>
-                        <label class="btn btn-default btn-xs <%= "active" if(stay.include?("宮城県")) %>">
-                            <input type="checkbox" autocomplete="off" value="宮城県" name="project[stay][]" <%= "checked" if(stay.include?("宮城県")) %>>宮城県
-                        </label>
-                        <label class="btn btn-default btn-xs <%= "active" if(stay.include?("秋田県")) %>">
-                            <input type="checkbox" autocomplete="off" value="秋田県" name="project[stay][]" <%= "checked" if(stay.include?("秋田県")) %>>秋田県
-                        </label>
-                        <label class="btn btn-default btn-xs <%= "active" if(stay.include?("山形県")) %>">
-                            <input type="checkbox" autocomplete="off" value="山形県" name="project[stay][]" <%= "checked" if(stay.include?("山形県")) %>>山形県
-                        </label>
-                        <label class="btn btn-default btn-xs <%= "active" if(stay.include?("福島県")) %>">
-                            <input type="checkbox" autocomplete="off" value="福島県" name="project[stay][]" <%= "checked" if(stay.include?("福島県")) %>>福島県
                         </label>
                     </div>
                 </div>
