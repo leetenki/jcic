@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   get 'my_invoice(/:id)', :to => "traders#my_invoice", :as => "my_invoice"
   get 'random_schedule', :to => "projects#generate_random_schedule"
   post 'projects/store_pdf', :to => "projects#store_pdf"
+  post 'projects/store_pdf_direct', :to => "projects#store_pdf_direct"
 
   get 'admin/get_committed_waiting_projects', :to => "admin#get_committed_waiting_projects"
   get 'admin/get_uncommitted_projects', :to => "admin#get_uncommitted_projects"

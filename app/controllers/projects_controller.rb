@@ -549,6 +549,14 @@ class ProjectsController < ApplicationController
     redirect_to request.referrer || projects_path
   end
 
+  def store_pdf_direct
+    @project = Project.find_by(:id => params[:project][:id])
+    @project.record_timestamps = false
+    @project.assign_attributes :pdf => params[:project][:pdf]
+    @project.save :validate => false;
+    render :text => "Succeed to upload file " + @project.pdf.url;
+  end
+
   def store_pdf
     @project = Project.find_by(:id => params[:project][:id])
     @project.record_timestamps = false
