@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  before_action :logged_in_admin, :only => [:index, :paid_all, :unpaid_all, :useragent, :get_uncommitted_projects_immediately, :upload_pdf, :get_project_by_id, :renew_company_codes, :update_company_codes, :invoice_internal]
+  before_action :logged_in_admin, :only => [:index, :paid_all, :unpaid_all, :useragent, :get_uncommitted_projects_immediately, :upload_pdf, :renew_company_codes, :update_company_codes, :invoice_internal]
   before_action :initial_search, :only => [:paid_all, :unpaid_all]
   before_action :logged_in, :only => [:invoice, :analysis, :create_payoff, :delete_payoff, :create_confirmation, :delete_confirmation, :check_invoice, :activate]
 
