@@ -65,7 +65,10 @@ module Constants
       :bank_english_3 => "",
       :bank_english_4 => "",
       :bank_english_5 => "",
-      :bank_english_6 => ""      
+      :bank_english_6 => "",
+      :china_bank_1 => "中国银行 启东支行",
+      :china_bank_2 => "6217 8561 0007 2400291",
+      :china_bank_3 => "施 秀珍"
     },
     :jcic => {
       :company_name => "クレーンインターナショナル (株)",
