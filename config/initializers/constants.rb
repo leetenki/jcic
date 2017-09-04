@@ -96,6 +96,36 @@ module Constants
       :bank_english_4 => "0685088",
       :bank_english_5 => "CRANE　INTERNATIONAL CO., LTD",
       :bank_english_6 => "BOTKJPJT"
+    },
+    :test => {
+      :company_name => "クレーンインターナショナル (株)",
+      :site_top_name => "飞鹤",
+      :logo => "small_jcic_logo.jpg",
+      :code => "0509-003",
+      :phone => "03-3470-6851",
+      :fax => "03-3470-8615",
+      :chief => "東木慶新",
+      :gender => "男",
+      :job => "社長",
+      :country => "日本国籍",
+      :stay => "",
+      :birthday => "1952年5月18日",
+      :signature_1 => "jcic_signature1.png",
+      :signature_2 => "jcic_signature2.png",
+      :address_1 => "〒106-0032東京都港区六本⽊7-18-5",
+      :address_2 => "ソフイアビル 212号室",
+      :bank_1 => "三菱東京UFJ銀行　六本木支店",
+      :bank_2 => "普通口座　0685088",
+      :bank_3 => "クレーンインターナショナルカブシキガイシャ",
+      :bank_english_1 => "BANK OF TOKYO MITSUBISHI UFJ, LTD.",
+      :bank_english_2 => "Roppongi Branch Office, Tokyo Japan",
+      :bank_english_3 => "045",
+      :bank_english_4 => "0685088",
+      :bank_english_5 => "CRANE　INTERNATIONAL CO., LTD",
+      :bank_english_6 => "BOTKJPJT",
+      :china_bank_1 => "中国银行 启东支行",
+      :china_bank_2 => "6217 8561 0007 2400291",
+      :china_bank_3 => "施 秀珍"
     }
   }
 
