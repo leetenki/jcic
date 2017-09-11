@@ -267,6 +267,13 @@ class AdminController < ApplicationController
 
   def analysis
     @traders = Trader.all
+    if not params[:secret]
+      @traders.each_with_index do |trader, index|
+        if Constants::FAKE_ACCOUNT.include?(trader.id)
+          @traders = @traders.where("id <> ?", trader.id)
+        end
+      end
+    end
   end
 
   #action to testing and detect user agent

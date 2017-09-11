@@ -8,7 +8,11 @@ class TradersController < ApplicationController
 
   def show
     @trader = Trader.find(params[:id])
-    @projects = @trader.search_projects(@trader.projects, params[:from], params[:to], params[:payment], params[:confirmation], params[:status], params[:delete_request], params[:ticket_no], params[:japan_company], params[:visa_type]).order("id desc")
+    if Constants::FAKE_ACCOUNT.include?(@trader.id) and not params[:secret]
+        redirect_to traders_path
+    else
+        @projects = @trader.search_projects(@trader.projects, params[:from], params[:to], params[:payment], params[:confirmation], params[:status], params[:delete_request], params[:ticket_no], params[:japan_company], params[:visa_type]).order("id desc")
+    end
   end
 
   #create account
@@ -99,6 +103,9 @@ class TradersController < ApplicationController
   def my_invoice
     if(is_admin? || has_authority?)
       @trader = Trader.find_by(:id => params[:id])
+      if Constants::FAKE_ACCOUNT.include?(@trader.id) and not params[:secret]
+        redirect_to trader_path
+      end
     else
       @trader = current_trader
     end
