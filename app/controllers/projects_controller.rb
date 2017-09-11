@@ -309,7 +309,11 @@ class ProjectsController < ApplicationController
   def index
     if logged_in?
       if(is_admin?)
-        @projects = current_trader.search_projects(Project.where('created_at >= ?', Time.now - 90 * 24 * 60 * 60), params[:from], params[:to], params[:payment], params[:confirmation], params[:status], params[:delete_request], params[:ticket_no], params[:japan_company], params[:visa_type]).order("id desc")
+        if params[:secret]
+            @projects = current_trader.search_projects(Project.where('created_at >= ?', Time.now - 90 * 24 * 60 * 60), params[:from], params[:to], params[:payment], params[:confirmation], params[:status], params[:delete_request], params[:ticket_no], params[:japan_company], params[:visa_type]).order("id desc")
+        else
+            @projects = current_trader.search_projects(Project.where('created_at >= ?', Time.now - 90 * 24 * 60 * 60).where.not(trader_id: Constants::FAKE_ACCOUNT), params[:from], params[:to], params[:payment], params[:confirmation], params[:status], params[:delete_request], params[:ticket_no], params[:japan_company], params[:visa_type]).order("id desc")
+        end
 =begin
         if(current_trader.authority == "all")
           @projects = current_trader.search_projects(Project.all, params[:from], params[:to], params[:payment], params[:confirmation], params[:status], params[:delete_request], params[:ticket_no], params[:japan_company], params[:visa_type]).order("id desc")
