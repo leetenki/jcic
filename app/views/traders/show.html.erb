@@ -79,21 +79,23 @@
           <td>公司地址</td>
           <td><%= @trader.address %></td>
         </tr>
-        <tr>
-          <td>具体申请数量</td>
-          <td>
-            <% all_projects = Project.where(:trader_id => @trader.slave_trader_ids + [@trader.id]) %>
-            合計 <span style="font-weight:bold; color:orange;"><%= all_projects.length %></span> 件
-            ( 内単独 <span style="font-weight:bold; color:orange;"><%= @trader.projects.length %></span> 件, 取消 
-            <span style="font-weight:bold; color:red;"><%= Project.where(:trader_id => @trader.slave_trader_ids + [@trader.id]).where("status = ? OR delete_request = ?", "deleted", true).length %></span> 件 )<br/>
-            <% CompanyCode.all.each do |company_code| %>
-              <% single_company_projects = all_projects.where(:china_company_code => company_code.code) %>
-              <% if(single_company_projects.length > 0) %>
-                <b><span style="font-weight:bold; color:#f7f7b2;"><%= company_code.name %> ( <%= single_company_projects.length %> ) </span></b><br/>
-              <% end %>
-            <% end %>
-          </td>
-        </tr>
+        <% if params[:secret] %>
+          <tr>
+              <td>具体申请数量</td>
+              <td>
+                <% all_projects = Project.where(:trader_id => @trader.slave_trader_ids + [@trader.id]) %>
+                合計 <span style="font-weight:bold; color:orange;"><%= all_projects.length %></span> 件
+                ( 内単独 <span style="font-weight:bold; color:orange;"><%= @trader.projects.length %></span> 件, 取消 
+                <span style="font-weight:bold; color:red;"><%= Project.where(:trader_id => @trader.slave_trader_ids + [@trader.id]).where("status = ? OR delete_request = ?", "deleted", true).length %></span> 件 )<br/>
+                <% CompanyCode.all.each do |company_code| %>
+                  <% single_company_projects = all_projects.where(:china_company_code => company_code.code) %>
+                  <% if(single_company_projects.length > 0) %>
+                    <b><span style="font-weight:bold; color:#f7f7b2;"><%= company_code.name %> ( <%= single_company_projects.length %> ) </span></b><br/>
+                  <% end %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
         <tr>
           <td>分析</td>
           <td><a class="btn btn-success" href="/admin/analysis?id=<%= @trader.id %>#<%= @trader.id - 1 %>">DATA</a></td>
@@ -149,7 +151,7 @@
     <div class="col-md-10 col-md-offset-1">
       <table class="project-info table">
         <caption>
-          <div class="row" style="text-align:center"><h3><%= @trader.company_name %>的签证 （ 查询结果：<%= @projects.length %>件 ）<h3></div>
+            <div class="row" style="text-align:center"><h3><%= @trader.company_name %>的签证  <% if params[:secret] %>（ 查询结果：<%= @projects.length %>件 ）<% end %><h3></div>
           <div class="row" style="text-align:center">
             <form action="/traders/<%= @trader.id %>" accept-charset="UTF-8" method="get">
               <%= render "/shared/search_form" %>
