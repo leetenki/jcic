@@ -5,6 +5,8 @@ module Constants
 
   #身元保証書用 & 自動入力用
   FAKE_ACCOUNT = [107, 116, 126]
+  SPECIAL_ACCOUNT = [236]
+  SPECIAL_WEIGHT = 0.7
   GROUP_VISA = [:jtg, :jki, :jcic]
   INDIVIDUAL_VISA = [:jtg, :jki, :jcic] #:jki
   JAPAN_SIDE_COMPANY = {

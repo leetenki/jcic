@@ -8,8 +8,14 @@
       <table class="project-info table">
         <caption>
 
+          <% special_length = @projects.where(trader_id: Constants::SPECIAL_ACCOUNT).length %>
+          <% no_special_length = @projects.length - special_length %>
           <% if !@waiting %>
-            <div class="row" style="text-align:center"><h3>查询结果：<%= @projects.length %>件<h3></div>
+              <% if params[:secret] %>
+                <div class="row" style="text-align:center"><h3>查询结果：<%= @projects.length %>件<h3></div>
+              <% else %>
+                <div class="row" style="text-align:center"><h3>查询结果：<%= no_special_length + (special_length * Constants::SPECIAL_WEIGHT).to_i %>件<h3></div>
+              <% end %>
           <% end %>
 
 
@@ -56,7 +62,11 @@
                 <% end %>
               <% end %>
 
-              <div class="col-md-2 col-sm-2 col-xs-2">未払い：<b style="color:orange"> <%= total_count.to_s %> </b>件</div>
+              <% if params[:secret] %>
+                <div class="col-md-2 col-sm-2 col-xs-2">未払い：<b style="color:orange"> <%= (total_count).to_i.to_s %> </b>件</div>
+              <% else %>
+                <div class="col-md-2 col-sm-2 col-xs-2">未払い：<b style="color:orange"> <%= (total_count-special_length + special_length*Constants::SPECIAL_WEIGHT).to_i.to_s %> </b>件</div>
+              <% end %>
               <div class="col-md-4 col-sm-4 col-xs-4">総額<b style="color:orange;"> <%= total_price_japan.to_s %> </b>日円 + <b style="color:orange;"> <%= total_price_china.to_s %></b> 人民币</div>
               <div class="col-md-2 col-sm-2 col-xs-2"><button onclick="compute_invoice()" class="btn btn-primary">請求書作成</button></div>
               <div class="col-md-2 col-sm-2 col-xs-2"><button onclick="set_all_projects_paid()" class="btn btn-success">全て入金済</button></div>
