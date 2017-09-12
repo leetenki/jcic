@@ -20,6 +20,7 @@
           <tr class="item" style="display: none;">
             <td class="col col-md-4 col-sm-4 col-xs-4" style="padding: 10px 0;"><a target="_blank" href="/admin/invoice?trader_id=<%= @trader.id %>&from=<%= first_day(invoice_date).strftime("%Y-%m-%d") %>&to=<%= last_day(invoice_date).strftime("%Y-%m-%d") %>&include_paid=1" class="btn btn-success"><%= invoice_date.year %>年<%= invoice_date.month %>月份账单</a></td>
 
+            <% if invoice_date > Date.today - 3.month %>
             <% projects = Project.where(:created_at => Time.parse(first_day(invoice_date).strftime("%Y-%m-%d"))..Time.parse(last_day(invoice_date).strftime("%Y-%m-%d"))+60*60*24-1, :trader_id => @trader.slave_trader_ids + [@trader.id]) %>
             <% total_count = projects.length %>
             <% total_price = 0 %>
@@ -31,16 +32,23 @@
                 <% total_price += get_project_price(project) %>
               <% end %>
             <% end %>
+            <% end %>
 
             <td class="col col-md-5 col-sm-5 col-xs-5" style="padding: 10px 0;">
+              <% if invoice_date > Date.today - 3.month %>
               共 <span style="font-weight: bolder; color: orange;"><%= total_count %></span> 件 ( 单独 <span style="font-weight: bolder; color: orange;"><%= Project.where(:created_at => Time.parse(first_day(invoice_date).strftime("%Y-%m-%d"))..Time.parse(last_day(invoice_date).strftime("%Y-%m-%d"))+60*60*24-1, :trader_id => [@trader.id]).length %></span> 件, 取消 <span style="font-weight: bolder; color: red;"><%= deleted_count %></span> 件 )
+              <% else %>
+                请查看PDF
+              <% end %>
             </td>
 
             <td class="col col-md-3 col-sm-3 col-xs-3" style="padding: 10px 0;">
-              <% if @trader.money_type == "japan" || @trader.money_type == "full" %>
-                总额 <span style="font-weight: bolder; color: orange;"><%= total_price %></span> 円
-              <% elsif @trader.money_type == "china" %>
-                总额 <span style="font-weight: bolder; color: orange;"><%= total_price %></span> 人民币
+              <% if invoice_date > Date.today - 3.month %>
+                  <% if @trader.money_type == "japan" || @trader.money_type == "full" %>
+                    总额 <span style="font-weight: bolder; color: orange;"><%= total_price %></span> 円
+                  <% elsif @trader.money_type == "china" %>
+                    总额 <span style="font-weight: bolder; color: orange;"><%= total_price %></span> 人民币
+                  <% end %>
               <% end %>
 
               <% if is_admin? || has_authority? %>
