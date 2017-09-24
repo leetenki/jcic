@@ -24,13 +24,13 @@
 
 <body>
   <div style="text-align:center; margin: 30px 0;">
-    <div style="border-radius: 20px; border: solid 2px black; padding: 20px; display: inline-block; font-size: 20px; background-color: #00ffcc; color: #552200">
-        未处理签证一览
+    <div style="border-radius: 20px; border: solid 2px black; padding: 20px; display: inline-block; font-size: 20px; background-color: orange; color: #553399">
+        未上传归报一览
     </div>
   </div>
       <table style="color:#999999; margin: 40px;" class="row">
         <% @result.each do |project| %>
-        <tr class="row" onclick="window.open('./detail/<%= project.id %>'); this.style.display = 'none'">
+        <tr class="row" onclick="window.open('/simple_upload_pdf?id=<%= project.id %>'); this.style.display = 'none'">
             <td style="border: 1px solid gray" class="col col-md-3 col-sm-3 col-xs-3"><%= project.created_at.strftime("%H:%M") %></td>
             <td style="border: 1px solid gray" class="col col-md-3 col-sm-3 col-xs-3"><%= project.representative_name_chinese %> (共<%= project.total_people %>人)</td>
             <td style="border: 1px solid gray" class="col col-md-6 col-sm-6 col-xs-6"><%= project.china_company_name %></td>

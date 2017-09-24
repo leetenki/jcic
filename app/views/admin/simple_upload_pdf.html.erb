@@ -21,20 +21,22 @@
 </head>
 
 <body>
-<div style="padding-top:30px;" class="col-md-6 col-md-offset-3">
-  <div style="font-size: 20px; text-align: center; font-weight: bold; color: orange;">上传帰国報告書</div>
-  <%= form_tag('/projects/simple_store_pdf', :multipart => true) do %>
-      <input type="text" value="<%= @project.system_code %>" class="form-control"/>
-      <%= text_field :project, :id, :class => "form-control", :placeholder => "ID", :value => params[:id], :style => "display:none" %>
-    <%= file_field :project, :pdf, :class => "form-control" %>
-    <button type="button" id="dl-xlsx" class="btn btn-lg btn-primary">下载客户名单Excel</button>
-    <%= submit_tag "上传归国报告书", :class => "bnt btn-lg btn-success" %>
-  <% end %>
+<div style="padding-top:30px; padding-bottom: 40px;" class="col-md-6 col-md-offset-3">
+      <input type="text" value="<%= @project.system_code %>" class="form-control" onclick="this.select(0,this.value.length)"/>
+      <button type="button" id="dl-xlsx" class="btn btn-lg btn-primary" style="margin-left: 10px;">下载客户名单Excel</button>
 </div>
 
+<hr style="width: 100%; border: solid 1px; border-color: black;"/>
+
+<div class="col-md-6 col-md-offset-3" style="padding-top: 30px">
+  <%= form_tag('/projects/simple_store_pdf', :multipart => true) do %>
+      <%= text_field :project, :id, :class => "form-control", :placeholder => "ID", :value => params[:id], :style => "display:none" %>
+    <%= file_field :project, :pdf, :class => "form-control" %>
+    <%= submit_tag "上传归国报告书", :class => "bnt btn-lg btn-success" %>
+  <% end %>
 
 
-<hr style="width: 100%">
+
 <table class="table-to-export" data-sheet-name="東京都区一覧" style="display: none">
   <thead>
     <tr><th>氏名</th><th>ピンイン</th><th>性別</th><th>居住地域</th><th>生年月日</th><th>旅券番号</th><th>備考</th></tr>

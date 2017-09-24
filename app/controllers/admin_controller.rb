@@ -209,6 +209,32 @@ class AdminController < ApplicationController
     render :text => text;
   end
 
+  def committed_waiting_workspace
+    @projects = Project.where(status: 'committed', pdf: nil, delete_request: false).where("id > 120000 and japan_company = ?", params[:japan_company]).order(id: :asc).limit(params[:limit]).includes(:clients, :schedules)
+
+    if(params[:mode] == "2")
+      @projects = @projects.where(trader_id: Constants::FAKE_ACCOUNT + Constants::SPECIAL_ACCOUNT)
+    else
+      @projects = @projects.where.not(trader_id: Constants::FAKE_ACCOUNT + Constants::SPECIAL_ACCOUNT)
+    end
+
+    @result = []
+    @projects.each do |project| #check if not editable
+      if(!is_project_editable(project) and is_project_valid(project))
+        if(params[:mode] != "2")
+          if(project.id % 2 != params[:mode].to_i)
+            next
+          end
+        end
+
+        @result.push(project)
+      end
+    end
+
+    text = @result.to_json({:include => [:clients, :trader => {:only => [:company_name, :email, :qq]}]})
+    render "committed_waiting_workspace", :layout => false;
+  end
+
   def get_uncommitted_projects_immediately
     @projects = Project.where("status = 'uncommitted' and delete_request = ?", false).order("id asc").includes(:clients, :schedules)
     if(params[:japan_company].present?)

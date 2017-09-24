@@ -46,6 +46,7 @@ Rails.application.routes.draw do
 
   get 'detail/(:id)', :to => "admin#detail"
   get 'workspace', :to => "admin#workspace"
+  get 'committed_waiting_workspace', :to => "admin#committed_waiting_workspace"
   get 'admin', :to => "admin#index", :as => "admin"
   get 'admin/paid_all', :to => "admin#paid_all"
   get 'admin/unpaid_all', :to => "admin#unpaid_all"
