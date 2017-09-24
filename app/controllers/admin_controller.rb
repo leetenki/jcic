@@ -27,6 +27,11 @@ class AdminController < ApplicationController
   end
 
   def check_all
+    if(not request.remote_ip.in?(Constants::WHITELIST_IP))
+        render text: ""
+        return
+    end
+
     if !params[:trader_id].present? && !params[:from].present? && !params[:to].present?
       last_month = Date.today.last_month
       #params[:from] = Date.new(last_month.year, last_month.month, 1).strftime("%Y/%m/%d");
@@ -171,6 +176,12 @@ class AdminController < ApplicationController
   end
 
   def workspace
+    # ip restriction
+    if(not request.remote_ip.in?(Constants::WHITELIST_IP))
+        render text: ""
+        return
+    end
+
     @projects = Project.where("status = 'uncommitted' and delete_request = ?", false).order("id asc").includes(:clients, :schedules)
     if(params[:japan_company].present?)
       @projects = @projects.where("japan_company = ?", params[:japan_company])
@@ -238,6 +249,11 @@ class AdminController < ApplicationController
   end
 
   def committed_waiting_workspace
+    if(not request.remote_ip.in?(Constants::WHITELIST_IP))
+        render text: ""
+        return
+    end
+
     @projects = Project.where(status: 'committed', pdf: nil, delete_request: false).where("id > 120000 and japan_company = ?", params[:japan_company]).order(id: :asc).limit(params[:limit]).includes(:clients, :schedules)
 
     if(params[:mode] == "2")
