@@ -482,22 +482,20 @@ class ProjectsController < ApplicationController
   end
 
   def simple_update_status
-    if(is_admin?)
-      @project = Project.find_by(:id => params[:id]);
-      if(params[:status] == "deleted")
-        @project.assign_attributes({:status => params[:status], :delete_request => false})
-      else
-        @project.assign_attributes :status => params[:status];
-      end
-
-      if(params[:system_code].present?)
-        @project.assign_attributes :system_code => params[:system_code]
-      end
-
-      @project.record_timestamps = false
-      @project.save :validate => false;
-      flash[:success] = " 状态修改为 '" + status_type_str(params[:status]) + "' (@trader.id = " + @project.trader.id.to_s + ", " + @project.trader.company_name.to_s + ", " + @project.trader.person_name +  ")  (@project.id = " + @project.id.to_s + ", " + @project.china_company_name.to_s + ", " + @project.created_at.to_s + ")"
+    @project = Project.find_by(:id => params[:id]);
+    if(params[:status] == "deleted")
+      @project.assign_attributes({:status => params[:status], :delete_request => false})
+    else
+      @project.assign_attributes :status => params[:status];
     end
+
+    if(params[:system_code].present?)
+      @project.assign_attributes :system_code => params[:system_code]
+    end
+
+    @project.record_timestamps = false
+    @project.save :validate => false;
+    flash[:success] = " 状态修改为 '" + status_type_str(params[:status]) + "' (@trader.id = " + @project.trader.id.to_s + ", " + @project.trader.company_name.to_s + ", " + @project.trader.person_name +  ")  (@project.id = " + @project.id.to_s + ", " + @project.china_company_name.to_s + ", " + @project.created_at.to_s + ")"
 
     if(params[:status] == "committed")
       redirect_to "/simple_upload_pdf?id=#{params[:id]}"
