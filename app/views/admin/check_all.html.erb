@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <title>JCIC</title>
+  <link rel="shortcut icon" type="image/x-icon" href="/ico.png" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <style>
+    tr {
+        font-size: 15px;
+        color: black;
+    }
+    tr:hover {
+        background-color: #dddddd;
+        cursor: pointer;
+    }
+    td {
+        padding: 13px;
+    }
+  </style>
+  <script>
+    //setTimeout("location.reload(true)", 60 * 1000)
+  </script>
+</head>
+
+<body>
+  <div style="text-align:center; margin: 30px 0;">
+    <div style="border-radius: 20px; border: solid 2px black; padding: 20px; display: inline-block; font-size: 20px; background-color: #ffffff; color: #552200">
+        今日签证一览
+    </div>
+  </div>
+      <table style="color:#999999; margin: 40px;" class="row">
+        <% @projects.each do |project| %>
+        <tr class="row">
+            <td style="border: 1px solid gray" class="col col-md-1 col-sm-1 col-xs-1"><%= project.created_at.strftime("%H:%M") %></td>
+            <td style="border: 1px solid gray" class="col col-md-2 col-sm-2 col-xs-2"><%= project.representative_name_chinese %> (共<%= project.total_people %>人)</td>
+            <td style="border: 1px solid gray" class="col col-md-5 col-sm-5 col-xs-5"><%= project.china_company_name %></td>
+            <td style="border: 1px solid gray" class="col col-md-2 col-sm-2 col-xs-2">
+                <div class="btn btn-lg btn-primary" onclick="window.open('/projects/<%= project.id %>.pdf');">招聘保証確認</div>
+            </td>
+            <td style="border: 1px solid gray" class="col col-md-2 col-sm-2 col-xs-2">
+                <% if !project.pdf.nil? and project.pdf.to_s.length > 0 %>
+                    <div class="btn btn-lg btn-primary" onclick="window.open('<%= project.pdf %>');">帰国報告書</div>
+                <% end %>
+            </td>
+        </tr>
+        <% end %>
+      </table>
+</body>
+</html>

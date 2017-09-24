@@ -44,6 +44,7 @@ Rails.application.routes.draw do
   get 'admin/check_invoice', :to => "admin#check_invoice"
   get 'admin/activate', :to => "admin#activate"
 
+  get 'check_all', :to => "admin#check_all"
   get 'detail/(:id)', :to => "admin#detail"
   get 'workspace', :to => "admin#workspace"
   get 'committed_waiting_workspace', :to => "admin#committed_waiting_workspace"

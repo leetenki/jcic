@@ -26,6 +26,30 @@ class AdminController < ApplicationController
     @traders = Trader.where("id <> 1")
   end
 
+  def check_all
+    if !params[:trader_id].present? && !params[:from].present? && !params[:to].present?
+      last_month = Date.today.last_month
+      #params[:from] = Date.new(last_month.year, last_month.month, 1).strftime("%Y/%m/%d");
+      #params[:to] = Date.new(last_month.year, last_month.month, -1).strftime("%Y/%m/%d");
+      params[:from] = Date.today.strftime("%Y/%m/%d");
+      params[:to] = (Date.today).strftime("%Y/%m/%d");
+      if(current_trader.authority == "all")
+        params[:trader_id] = "*"
+      elsif(current_trader.authority == "self")
+        params[:trader_id] = current_trader.id
+      else
+        params[:trader_id] = current_trader.authority
+      end
+      #@waiting = true
+      @projects = search_projects(params[:trader_id], params[:from], params[:to]).order("id desc")
+    else
+      @projects = search_projects(params[:trader_id], params[:from], params[:to]).order("id desc")
+    end
+
+    @traders = Trader.where("id <> 1")
+    render "check_all", layout: false
+  end
+
   def paid_all
     @projects.each do |project|
       if(project.payment == "unpaid" && project.status != "deleted" && !project.delete_request)
