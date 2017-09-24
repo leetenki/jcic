@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <title>JCIC</title>
+  <link rel="shortcut icon" type="image/x-icon" href="/ico.png" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <style>
+    tr {
+        color: black;
+        font-size: 15px;
+    }
+    td {
+        padding: 10px;
+    }
+    input {
+        padding: 10px;
+        color: #ff6600;
+    }
+  </style>
+  <script>
+      function commitProject(id) {
+        var systemCode = window.prompt("中連協受付番号を入力", "");
+          if(systemCode) {
+          location.href = "/simple_update_status?id=" + id + "&amp;status=committed&system_code=" + systemCode;
+        }
+      }
+  </script>
+</head>
+
+<body>
+      <table style="color:#999999; margin: 40px;" class="row">
+        <tr class="row">
+            <td>
+                指定番号
+            </td>
+            <td>
+                <input type="text" value="<%= @project.china_company_code %>" onclick="this.select(0,this.value.length)"></input>
+            </td>
+        </tr>
+        <tr class="row">
+            <td>
+                査証種別
+            </td>
+            <td> 
+                <input type="text" value="<%= Constants::VISA_TYPE_TABLE[@project.visa_type] %>" onclick="this.select(0,this.value.length)"></input>
+            </td>
+        </tr>
+        <tr class="row">
+            <td>
+                簡体字
+            </td>
+            <td>
+                <input type="text" value="<%= @project.representative_name_chinese %>" onclick="this.select(0,this.value.length)"></input>
+            </td>
+        </tr>
+        <tr class="row">
+            <td>
+                拼英
+            </td>
+            <td>
+                <input type="text" value="<%= @project.representative_name_english %>" onclick="this.select(0,this.value.length)"></input>
+            </td>
+        </tr>
+        <tr class="row">
+            <td>
+                代表者以外人数
+            </td>
+            <td>
+                <input type="text" value="<%= @project.total_people - 1 %>" onclick="this.select(0,this.value.length)"></input>
+            </td>
+        </tr>
+        <tr class="row">
+            <td>
+               日本入国予定日
+            </td>
+            <td>
+                <input type="text" value="<%= @project.date_arrival.strftime("%Y/%m/%d") %>" onclick="this.select(0,this.value.length)"></input>
+            </td>
+        </tr>
+        <tr class="row">
+            <td>
+               日本入国予定日
+            </td>
+            <td>
+                <input type="text" value="<%= @project.date_leaving.strftime("%Y/%m/%d") %>" onclick="this.select(0,this.value.length)"></input>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                <div class="btn btn-lg btn-success" onclick="commitProject(<%= @project.id %>)">完了</div>
+            </td>
+        </tr>
+      </table>
+</body>
+</html>

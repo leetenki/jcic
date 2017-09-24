@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   root :to => 'static_pages#home'
 
   get 'update_status', :to => "projects#update_status"
+  get 'simple_update_status', :to => "projects#simple_update_status"
   get 'update_confirmation', :to => "projects#update_confirmation"
   get 'update_payment', :to => "projects#update_payment"
   get 'delete_request(/:id)', :to => "projects#delete_request", :as => "delete_request"
@@ -20,6 +21,7 @@ Rails.application.routes.draw do
   get 'my_invoice(/:id)', :to => "traders#my_invoice", :as => "my_invoice"
   get 'random_schedule', :to => "projects#generate_random_schedule"
   post 'projects/store_pdf', :to => "projects#store_pdf"
+  post 'projects/simple_store_pdf', :to => "projects#simple_store_pdf"
   post 'projects/store_pdf_direct', :to => "projects#store_pdf_direct"
 
   get 'admin/get_committed_waiting_projects', :to => "admin#get_committed_waiting_projects"
@@ -27,6 +29,7 @@ Rails.application.routes.draw do
   get 'admin/get_uncommitted_projects_immediately', :to => "admin#get_uncommitted_projects_immediately"
   get 'admin/set_project_committed/(:id)', :to => "admin#set_project_committed"
   get 'admin/upload_pdf', :to => "admin#upload_pdf"
+  get 'simple_upload_pdf', :to => "admin#simple_upload_pdf"
   get 'admin/get_delete_requesting_projects', :to => "admin#get_delete_requesting_projects"
   get 'admin/get_delete_requesting_committed_projects', :to => "admin#get_delete_requesting_committed_projects"
   get 'admin/set_delete_requesting_projects_deleted', :to => "admin#set_delete_requesting_projects_deleted"
@@ -41,6 +44,8 @@ Rails.application.routes.draw do
   get 'admin/check_invoice', :to => "admin#check_invoice"
   get 'admin/activate', :to => "admin#activate"
 
+  get 'detail/(:id)', :to => "admin#detail"
+  get 'workspace', :to => "admin#workspace"
   get 'admin', :to => "admin#index", :as => "admin"
   get 'admin/paid_all', :to => "admin#paid_all"
   get 'admin/unpaid_all', :to => "admin#unpaid_all"

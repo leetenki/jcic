@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <title>JCIC</title>
+  <link rel="shortcut icon" type="image/x-icon" href="/ico.png" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <style>
+    tr {
+        color: black;
+        font-size: 15px;
+    }
+    td {
+        padding: 10px;
+    }
+    input {
+        padding: 10px;
+        margin: 10px;
+        color: #ff6600;
+    }
+  </style>
+</head>
+
+<body>
+<div style="padding-top:30px;" class="col-md-6 col-md-offset-3">
+  <div style="font-size: 20px; text-align: center; font-weight: bold; color: orange;">上传帰国報告書</div>
+  <%= form_tag('/projects/simple_store_pdf', :multipart => true) do %>
+      <input type="text" value="<%= @project.system_code %>" class="form-control"/>
+      <%= text_field :project, :id, :class => "form-control", :placeholder => "ID", :value => params[:id], :style => "display:none" %>
+    <%= file_field :project, :pdf, :class => "form-control" %>
+    <button type="button" id="dl-xlsx" class="btn btn-lg btn-primary">下载客户名单Excel</button>
+    <%= submit_tag "上传归国报告书", :class => "bnt btn-lg btn-success" %>
+  <% end %>
+</div>
+
+
+
+<hr style="width: 100%">
+<table class="table-to-export" data-sheet-name="東京都区一覧" style="display: none">
+  <thead>
+    <tr><th>氏名</th><th>ピンイン</th><th>性別</th><th>居住地域</th><th>生年月日</th><th>旅券番号</th><th>備考</th></tr>
+  </thead>
+  <tbody>
+    <% @project.clients.each do |client| %>
+      <tr>
+          <td><%= client.name_chinese %></td>
+          <td><%= client.name_english %></td>
+          <td><%= @gender_type[client.gender.to_sym] %></td>
+          <td><%= client.hometown %></td>
+          <td><%= client.birthday.strftime("%Y/%m/%d") %></td>
+          <td><%= client.passport_no %></td>
+          <td><%= client.job %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.9.10/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"></script>
+<script>
+document.getElementById('dl-xlsx').addEventListener('click', function () {
+  var wopts = {
+    bookType: 'xlsx',
+    bookSST: false,
+    type: 'binary'
+  };
+
+  var workbook = {SheetNames: [], Sheets: {}};
+
+  document.querySelectorAll('table.table-to-export').forEach(function (currentValue, index) {
+    // sheet_to_workbook()の実装を参考に記述
+    var n = currentValue.getAttribute('data-sheet-name');
+    if (!n) {
+      n = 'Sheet' + index;
+    }
+    workbook.SheetNames.push(n);
+    workbook.Sheets[n] = XLSX.utils.table_to_sheet(currentValue, wopts);
+  });
+
+  var wbout = XLSX.write(workbook, wopts);
+
+  function s2ab(s) {
+    var buf = new ArrayBuffer(s.length);
+    var view = new Uint8Array(buf);
+    for (var i = 0; i != s.length; ++i) {
+      view[i] = s.charCodeAt(i) & 0xFF;
+    }
+    return buf;
+  }
+
+  saveAs(new Blob([s2ab(wbout)], {type: 'application/octet-stream'}), '<%= @project.system_code %>.xlsx');
+}, false);
+</script>
+</body>

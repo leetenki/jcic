@@ -137,11 +137,53 @@ class AdminController < ApplicationController
     render :text => text;    
   end
 
+  def detail
+    @project = Project.find(params[:id])
+    if(@project.status == "committed" || @project.status == "deleted")
+        render text: "此签证已无需登录，请返回『签证一览』后更新浏览器"
+    else
+        render "detail", :layout => false;
+    end
+  end
+
+  def workspace
+    @projects = Project.where("status = 'uncommitted' and delete_request = ?", false).order("id asc").includes(:clients, :schedules)
+    if(params[:japan_company].present?)
+      @projects = @projects.where("japan_company = ?", params[:japan_company])
+    end
+
+    if(params[:mode] == "2")
+      @projects = @projects.where(trader_id: Constants::FAKE_ACCOUNT + Constants::SPECIAL_ACCOUNT)
+    else
+      @projects = @projects.where.not(trader_id: Constants::FAKE_ACCOUNT + Constants::SPECIAL_ACCOUNT)
+    end
+
+    @result = []
+    @projects.each do |project| #check if not editable
+      if(!is_project_editable(project) and is_project_valid(project))
+        if(params[:mode] != "2")
+          if(project.id % 2 != params[:mode].to_i)
+            next
+          end
+        end
+
+        @result.push(project)
+      end
+    end
+
+    text = @result.to_json({:include => [:clients, :trader => {:only => [:company_name, :email, :qq]}]})
+    render "workspace", :layout => false;
+  end
+
   def get_uncommitted_projects
     @projects = Project.where("status = 'uncommitted' and delete_request = ?", false).order("id asc").includes(:clients, :schedules)
     if(params[:japan_company].present?)
       @projects = @projects.where("japan_company = ?", params[:japan_company])
     end
+    if(params[:mode] == "2")
+      @projects = @projects.where(trader_id: Constants::FAKE_ACCOUNT + Constants::SPECIAL_ACCOUNT)
+    end
+
     @result = []
     @projects.each do |project| #check if not editable
       if(!is_project_editable(project) and is_project_valid(project))
@@ -241,6 +283,12 @@ class AdminController < ApplicationController
   end
 
   def upload_pdf
+  end
+
+  def simple_upload_pdf
+      @project = Project.find(params[:id])
+      @gender_type = {male: 1, female: 2}
+      render "simple_upload_pdf", layout: false
   end
 
   def get_delete_requesting_projects

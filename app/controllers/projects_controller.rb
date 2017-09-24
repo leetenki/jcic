@@ -481,6 +481,31 @@ class ProjectsController < ApplicationController
     #redirect_to request.referrer || projects_path
   end
 
+  def simple_update_status
+    if(is_admin?)
+      @project = Project.find_by(:id => params[:id]);
+      if(params[:status] == "deleted")
+        @project.assign_attributes({:status => params[:status], :delete_request => false})
+      else
+        @project.assign_attributes :status => params[:status];
+      end
+
+      if(params[:system_code].present?)
+        @project.assign_attributes :system_code => params[:system_code]
+      end
+
+      @project.record_timestamps = false
+      @project.save :validate => false;
+      flash[:success] = " 状态修改为 '" + status_type_str(params[:status]) + "' (@trader.id = " + @project.trader.id.to_s + ", " + @project.trader.company_name.to_s + ", " + @project.trader.person_name +  ")  (@project.id = " + @project.id.to_s + ", " + @project.china_company_name.to_s + ", " + @project.created_at.to_s + ")"
+    end
+
+    if(params[:status] == "committed")
+      redirect_to "/simple_upload_pdf?id=#{params[:id]}"
+    else
+      redirect_to projects_path
+    end
+  end
+
   def update_confirmation
     if(is_admin?)
       @project = Project.find_by(:id => params[:id])
@@ -569,6 +594,16 @@ class ProjectsController < ApplicationController
     #render :text => "Succeed to upload file " + @project.pdf.url;
     flash[:success] = "Succeed to upload file " + @project.pdf.url
     redirect_to admin_upload_pdf_path
+  end
+
+  def simple_store_pdf
+    @project = Project.find_by(:id => params[:project][:id])
+    @project.record_timestamps = false
+    @project.assign_attributes :pdf => params[:project][:pdf]
+    @project.save :validate => false;
+    #render :text => "Succeed to upload file " + @project.pdf.url;
+    flash[:success] = "Succeed to upload file " + @project.pdf.url
+    render "static_pages/succeed", layout: false
   end
 
   def signature
