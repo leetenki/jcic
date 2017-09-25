@@ -35,7 +35,7 @@
             <td style="border: 1px solid gray" class="col col-md-2 col-sm-2 col-xs-2"><%= project.representative_name_chinese %> (共<%= project.total_people %>人)</td>
             <td style="border: 1px solid gray" class="col col-md-5 col-sm-5 col-xs-5"><%= project.china_company_name %></td>
             <td style="border: 1px solid gray" class="col col-md-2 col-sm-2 col-xs-2">
-                <div class="btn btn-lg btn-primary" onclick="window.open('/projects/<%= project.id %>.pdf');">招聘保証確認</div>
+                <div class="btn btn-lg btn-primary" onclick="window.open('/projects/<%= project.id %>.pdf?sign=none');">招聘保証確認</div>
             </td>
             <td style="border: 1px solid gray" class="col col-md-2 col-sm-2 col-xs-2">
                 <% if !project.pdf.nil? and project.pdf.to_s.length > 0 %>

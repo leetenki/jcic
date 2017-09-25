@@ -184,7 +184,7 @@
     <div class="person-name">担当者 : <%= company_info[:chief] %></div>
     <div class="phone">電　話 : <%= company_info[:phone] %></div>
   </div>
-  <% if current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed") %>
+  <% if params[:sign] != "none" && (current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed")) %>
     <%= image_tag(::Rails.root.join('public',  Random.rand(3).to_s + "_" + company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..30)-110).to_s + "px;") %>
     <%= image_tag(::Rails.root.join('public',  Random.rand(3).to_s + "_" + company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..20)-120).to_s + "px;") %>
   <% end %>
@@ -236,7 +236,7 @@
       <div class="person-name">担当者 : <%= company_info[:chief] %></div>
       <div class="phone">電　話 : <%= company_info[:phone] %></div>
     </div>
-    <% if current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed") %>
+    <% if params[:sign] != "none" && (current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed")) %>
       <%= image_tag(::Rails.root.join('public',  Random.rand(3).to_s + "_" + company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..30)-110).to_s + "px;") %>
       <%= image_tag(::Rails.root.join('public',  Random.rand(3).to_s + "_" + company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..20)-120).to_s + "px;") %>
     <% end %>
@@ -281,7 +281,7 @@
       <div class="person-name">担当者 : <%= company_info[:chief] %></div>
       <div class="phone">電　話 : <%= company_info[:phone] %></div>
     </div>
-    <% if current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed") %>
+    <% if params[:sign] != "none" && (current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed")) %>
       <%= image_tag(::Rails.root.join('public',  Random.rand(3).to_s + "_" + company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..30)-110).to_s + "px;") %>
       <%= image_tag(::Rails.root.join('public',  Random.rand(3).to_s + "_" + company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..20)-120).to_s + "px;") %>
     <% end %>
@@ -315,7 +315,7 @@
         <div class="person-name">担当者 : <%= company_info[:chief] %></div>
         <div class="phone">電　話 : <%= company_info[:phone] %></div>
       </div>
-      <% if current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed") %>
+      <% if params[:sign] != "none" && (current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed")) %>
         <%= image_tag(::Rails.root.join('public',  Random.rand(3).to_s + "_" + company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..30)-110).to_s + "px;") %>
         <%= image_tag(::Rails.root.join('public',  Random.rand(3).to_s + "_" + company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..20)-120).to_s + "px;") %>
       <% end %>
@@ -347,7 +347,7 @@
         <div class="person-name">担当者 : <%= company_info[:chief] %></div>
         <div class="phone">電　話 : <%= company_info[:phone] %></div>
       </div>
-      <% if current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed") %>
+      <% if params[:sign] != "none" && (current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed")) %>
         <%= image_tag(::Rails.root.join('public',  Random.rand(3).to_s + "_" + company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..30)-110).to_s + "px;") %>
         <%= image_tag(::Rails.root.join('public',  Random.rand(3).to_s + "_" + company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..20)-120).to_s + "px;") %>
       <% end %>
@@ -412,7 +412,7 @@
       <div class="person-name">担当者 : <%= company_info[:chief] %></div>
       <div class="phone">電　話 : <%= company_info[:phone] %></div>
     </div>
-    <% if current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed") %>
+    <% if params[:sign] != "none" && (current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed")) %>
       <%= image_tag(::Rails.root.join('public', Random.rand(3).to_s + "_" + company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..20)-110).to_s + "px;") %>
       <%= image_tag(::Rails.root.join('public', Random.rand(3).to_s + "_" +  company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..20)-120).to_s + "px;") %>
     <% end %>
@@ -466,7 +466,7 @@
       <div class="person-name">担当者 : <%= company_info[:chief] %></div>
       <div class="phone">電　話 : <%= company_info[:phone] %></div>
     </div>
-    <% if current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed") %>
+    <% if params[:sign] != "none" && (current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed")) %>
       <%= image_tag(::Rails.root.join('public', Random.rand(3).to_s + "_" + company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..20)-110).to_s + "px;") %>
       <%= image_tag(::Rails.root.join('public', Random.rand(3).to_s + "_" +  company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..20)-120).to_s + "px;") %>
     <% end %>
@@ -506,7 +506,7 @@
         <div class="person-name">担当者 : <%= company_info[:chief] %></div>
         <div class="phone">電　話 : <%= company_info[:phone] %></div>
       </div>
-      <% if current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed") %>
+      <% if params[:sign] != "none" && (current_trader.work_mode == "auto" || (current_trader.work_mode == "manual" && @project.status == "committed")) %>
         <%= image_tag(::Rails.root.join('public', Random.rand(3).to_s + "_" + company_info[:signature_1]), :class => "signature1", :style => "right:" + (180+rand(0..20)).to_s + "px; margin-top:" + (rand(0..20)-110).to_s + "px;") %>
         <%= image_tag(::Rails.root.join('public', Random.rand(3).to_s + "_" +  company_info[:signature_2]), :class => "signature2", :style => "right:" + (30+rand(0..40)).to_s + "px; margin-top:" + (rand(0..20)-120).to_s + "px;") %>
       <% end %>
