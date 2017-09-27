@@ -15,7 +15,7 @@
 
     <div id="nav-content" class="collapse navbar-collapse">
       <ul class="nav navbar-nav navbar-right">
-        <li><%= link_to " 翻译", translate_path, :class => "fa fa-graduation-cap require-loading" %></li>
+        <!--<li><%= link_to " 翻译", translate_path, :class => "fa fa-graduation-cap require-loading" %></li>-->
         <% if logged_in? %> 
           <% if current_trader.authority != "self" %>
             <li><%= link_to " 分析", analysis_path, :class => "fa fa-signal require-loading" %></li>
