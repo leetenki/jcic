@@ -8,8 +8,8 @@ module Constants
   FAKE_ACCOUNT = [107, 116, 126]
   SPECIAL_ACCOUNT = [236]
   SPECIAL_WEIGHT = 0.7
-  GROUP_VISA = [:jtg, :jki, :jcic]
-  INDIVIDUAL_VISA = [:jtg, :jki, :jcic] #:jki
+  GROUP_VISA = [:jtg, :jki, :jcic, :gi]
+  INDIVIDUAL_VISA = [:jtg, :jki, :jcic, :gi] #:jki
   JAPAN_SIDE_COMPANY = {
     :jtg => {
       :company_name => "ジェーティージー華信株式会社",
@@ -100,6 +100,38 @@ module Constants
       :bank_english_5 => "CRANE　INTERNATIONAL CO., LTD",
       :bank_english_6 => "BOTKJPJT"
     },
+    :gi => {
+      :company_name => "グローバルIBARAKI",
+      :site_top_name => "グローバルIBARAKI",
+      :logo => "",
+      :code => "1501-001",
+      :phone => "029-350-2242",
+      :fax => "029-350-2241",
+      :chief => "関　理江",
+      :gender => "女",
+      :job => "代表",
+      :country => "日本国籍",
+      :stay => "",
+      :birthday => "1967年3月22日",
+      :signature_1 => "jcic_signature1.png",
+      :signature_2 => "jcic_signature2.png",
+      :address_1 => "〒310-0067茨城県水戸市根本2丁目780番地",
+      :address_2 => "星野ビル 202号室",
+
+
+      :bank_1 => "三菱東京UFJ銀行　六本木支店",
+      :bank_2 => "普通口座　0685088",
+      :bank_3 => "クレーンインターナショナルカブシキガイシャ",
+      :bank_english_1 => "BANK OF TOKYO MITSUBISHI UFJ, LTD.",
+      :bank_english_2 => "Roppongi Branch Office, Tokyo Japan",
+      :bank_english_3 => "045",
+      :bank_english_4 => "0685088",
+      :bank_english_5 => "CRANE　INTERNATIONAL CO., LTD",
+      :bank_english_6 => "BOTKJPJT",
+      :china_bank_1 => "中国银行 启东支行",
+      :china_bank_2 => "6217 8561 0007 2400291",
+      :china_bank_3 => "施 秀珍"
+    },
     :test => {
       :company_name => "クレーンインターナショナル (株)",
       :site_top_name => "飞鹤",
@@ -129,7 +161,7 @@ module Constants
       :china_bank_1 => "中国银行 启东支行",
       :china_bank_2 => "6217 8561 0007 2400291",
       :china_bank_3 => "施 秀珍"
-    }
+    },
   }
 
   #JCICサイト上のお知らせ、緊急連絡先
