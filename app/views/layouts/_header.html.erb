@@ -30,7 +30,7 @@
             <li><%= link_to " 会员", traders_path, :class => 'fa fa-lock require-loading' %></li>
             <!--<li><%= link_to " 操作步骤", description_path, :class => 'fa fa-flag' %></li>-->
           <% elsif has_authority? %>
-            <li><%= link_to " 会計", admin_check_invoice_path, :class => 'fa fa-dollar require-loading' %></li>
+              <li><%= link_to " 会計", admin_check_invoice_path, :class => 'fa fa-dollar require-loading', :company => current_trader.authority %></li>
           <% else %>
             <li><%= link_to " 电子签证", projects_path, :class => 'fa fa-users' %></li>
             <% if current_trader.authority == "self" %>
