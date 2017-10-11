@@ -117,20 +117,18 @@ module Constants
       :signature_2 => "jcic_signature2.png",
       :address_1 => "〒310-0067茨城県水戸市根本2丁目780番地",
       :address_2 => "星野ビル 202号室",
-
-
-      :bank_1 => "三菱東京UFJ銀行　六本木支店",
-      :bank_2 => "普通口座　0685088",
-      :bank_3 => "クレーンインターナショナルカブシキガイシャ",
-      :bank_english_1 => "BANK OF TOKYO MITSUBISHI UFJ, LTD.",
-      :bank_english_2 => "Roppongi Branch Office, Tokyo Japan",
-      :bank_english_3 => "045",
-      :bank_english_4 => "0685088",
-      :bank_english_5 => "CRANE　INTERNATIONAL CO., LTD",
-      :bank_english_6 => "BOTKJPJT",
-      :china_bank_1 => "中国银行 启东支行",
-      :china_bank_2 => "6217 8561 0007 2400291",
-      :china_bank_3 => "施 秀珍"
+      :bank_1 => "常陽銀行　本店営業部",
+      :bank_2 => "普通口座　3744296",
+      :bank_3 => "カ）グローバルイバラキ",
+      :bank_english_1 => "The Joyo Bank, Ltd.",
+      :bank_english_2 => "Head office sales department",
+      :bank_english_3 => "004",
+      :bank_english_4 => "3744296",
+      :bank_english_5 => "Global ibaraki Co., Ltd",
+      :bank_english_6 => "JOYOJPJT",
+      :china_bank_1 => "华夏银行 济南分行",
+      :china_bank_2 => "6230 2200 6006 2117",
+      :china_bank_3 => "黄 玲"
     },
     :test => {
       :company_name => "クレーンインターナショナル (株)",
