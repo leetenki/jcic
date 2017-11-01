@@ -8,8 +8,8 @@ module Constants
   FAKE_ACCOUNT = [107, 116, 126]
   SPECIAL_ACCOUNT = [236]
   SPECIAL_WEIGHT = 0.7
-  GROUP_VISA = [:jtg, :jki, :jcic, :gi]
-  INDIVIDUAL_VISA = [:jtg, :jki, :jcic, :gi] #:jki
+  GROUP_VISA = [:jtg, :jki, :jcic, :gi, :ctrip]
+  INDIVIDUAL_VISA = [:jtg, :jki, :jcic, :gi, :ctrip] #:jki
   JAPAN_SIDE_COMPANY = {
     :jtg => {
       :company_name => "ジェーティージー華信株式会社",
@@ -129,6 +129,36 @@ module Constants
       :china_bank_1 => "华夏银行 济南分行",
       :china_bank_2 => "6230 2200 6006 2117",
       :china_bank_3 => "黄 玲"
+    },
+    :ctrip => {
+      :company_name => "株式会社Ｃｔｒｉｐ　Ｊａｐａｎ",
+      :site_top_name => "携程",
+      :logo => "",
+      :code => "1512-002",
+      :phone => "03-5643-8557",
+      :fax => "03-5695-9388",
+      :chief => "梁　穎希",
+      :gender => "男",
+      :job => "代表取締役",
+      :country => "日本永住",
+      :stay => "",
+      :birthday => "1977年12月7日",
+      :signature_1 => "gi_signature1.png",
+      :signature_2 => "gi_signature2.png",
+      :address_1 => "〒100-8228東京都千代田区大手町2-6-2",
+      :address_2 => "日本ビル6階 654号室",
+      :bank_1 => "",
+      :bank_2 => "",
+      :bank_3 => "",
+      :bank_english_1 => "",
+      :bank_english_2 => "",
+      :bank_english_3 => "",
+      :bank_english_4 => "",
+      :bank_english_5 => "",
+      :bank_english_6 => "",
+      :china_bank_1 => "",
+      :china_bank_2 => "",
+      :china_bank_3 => ""
     },
     :test => {
       :company_name => "クレーンインターナショナル (株)",
