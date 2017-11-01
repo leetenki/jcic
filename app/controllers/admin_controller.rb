@@ -225,7 +225,7 @@ class AdminController < ApplicationController
   end
 
   def get_committed_waiting_projects
-    @projects = Project.where(status: 'committed', pdf: nil, delete_request: false).where("id > 120000 and japan_company = ?", params[:japan_company])
+    @projects = Project.where(status: 'committed', pdf: nil, delete_request: false).where("id > 390000 and japan_company = ?", params[:japan_company])
     if(params[:mode] == "2")
       @projects = @projects.where(trader_id: Constants::FAKE_ACCOUNT + Constants::SPECIAL_ACCOUNT)
     end
