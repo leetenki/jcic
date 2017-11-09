@@ -104,7 +104,7 @@ module Constants
       :company_name => "グローバルIBARAKI",
       :site_top_name => "グローバルIBARAKI",
       :logo => "",
-      :code => "1501-001",
+      :code => "1510-001",
       :phone => "029-350-2242",
       :fax => "029-350-2241",
       :chief => "関　理江",
