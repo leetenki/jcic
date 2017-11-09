@@ -400,6 +400,18 @@ class ProjectsController < ApplicationController
     if params[:person_in_charge_phone]
         @project.in_charge_phone = params[:person_in_charge_phone]
     end
+    if params[:date_arrival]
+        begin
+            @project.date_arrival = Date.strptime(params[:date_arrival])
+        rescue
+        end
+    end
+    if params[:date_leaving]
+        begin
+            @project.date_leaving = Date.strptime(params[:date_leaving])
+        rescue
+        end
+    end
 
     respond_to do |format|
       format.html
