@@ -308,7 +308,7 @@ class ProjectsController < ApplicationController
 
   def index
     if current_trader.invoice_company == "jcic" and not current_trader.id.in?(Constants::FAKE_ACCOUNT + Constants::SPECIAL_ACCOUNT)
-        flash[:danger] = "紧急通知: 11月15日起, 个人签证地接社转为クレーンインターンナショナル株式会社"
+        flash[:danger] = "紧急通知: 11月15日起, 您所使用的个人签证地接社转为クレーンインターンナショナル株式会社, 团体签证地接社转为株式会社ジェイ・ケイ・アイ"
     end
 
     if logged_in?
