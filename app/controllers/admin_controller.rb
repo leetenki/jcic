@@ -100,7 +100,7 @@ class AdminController < ApplicationController
   def check_invoice
     @traders = Trader.where(invoice_company: params[:company] || 'jtg').order(id: :desc)
     @traders = @traders.select do |trader|
-      trader.projects.size > 0
+      trader.projects.size > 0 and not Constants::NOT_SHOW_TO_JTG_ACCOUNT.include?(trader.id)
     end
   end
 

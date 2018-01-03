@@ -6,6 +6,7 @@ module Constants
   #身元保証書用 & 自動入力用
   WHITELIST_IP = ["127.0.0.1", "111.89.165.40"]
   FAKE_ACCOUNT = [107, 116, 126]
+  NOT_SHOW_TO_JTG_ACCOUNT = [127, 234] # 优签，WIN
   SPECIAL_ACCOUNT = [236]
   SPECIAL_WEIGHT = 0.7
   GROUP_VISA = [:jtg, :jki, :jcic, :gi, :ctrip]
