@@ -1,7 +1,7 @@
 class AdminController < ApplicationController
   before_action :logged_in_admin, :only => [:index, :paid_all, :unpaid_all, :useragent, :get_uncommitted_projects_immediately, :upload_pdf, :renew_company_codes, :update_company_codes, :invoice_internal]
   before_action :initial_search, :only => [:paid_all, :unpaid_all]
-  before_action :logged_in, :only => [:invoice, :analysis, :create_payoff, :delete_payoff, :create_confirmation, :delete_confirmation, :check_invoice, :activate]
+  before_action :logged_in, :only => [:invoice, :invoice_excel, :analysis, :create_payoff, :delete_payoff, :create_confirmation, :delete_confirmation, :check_invoice, :activate]
 
   def index
     if !params[:trader_id].present? && !params[:from].present? && !params[:to].present?
@@ -119,6 +119,35 @@ class AdminController < ApplicationController
 
   def invoice_internal
     @traders = Trader.where(invoice_sign_company: ["jcic", "jki"])
+  end
+
+  def invoice_excel
+    if(is_admin? || has_authority?)
+      if !params[:trader_id].present? || !(is_number? params[:trader_id]) || !params[:from].present? || !params[:to].present?
+        flash[:danger] = "请正确选择旅行社，开始日期，结束日期。"
+        redirect_to "/admin?" + URI.encode_www_form([["trader_id", params[:trader_id]], ["from", params[:from]], ["to", params[:to]]])
+        return
+      else
+        @trader = Trader.find_by(:id => params[:trader_id])
+      end
+    else
+      #admin以外はparams[:trader_id]を使わない。current_traderを使う
+      if !params[:from].present? || !params[:to].present?
+        flash[:danger] = "日期不正确。"
+        redirect_to "/my_invoice"
+        return
+      else
+        @trader = current_trader
+      end
+    end
+
+    if params[:include_paid]
+      @projects = search_projects(@trader.id, params[:from], params[:to]).order("id asc")   
+    else
+      @projects = search_projects(@trader.id, params[:from], params[:to]).where("payment = ?", 'unpaid').order("id asc")   
+    end
+
+    render "excel", :layout => false;
   end
 
   def invoice

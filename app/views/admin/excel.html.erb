@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <title>Japan VISA</title>
+  <link rel="shortcut icon" type="image/x-icon" href="/ico.png" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <style>
+    tr {
+        color: black;
+        font-size: 15px;
+    }
+    td {
+        padding: 10px;
+    }
+    input {
+        padding: 10px;
+        margin: 10px;
+        color: #ff6600;
+    }
+  </style>
+</head>
+
+<body>
+<div style="padding-top:30px; padding-bottom: 40px;" class="col-md-6 col-md-offset-3">
+      <button type="button" id="dl-xlsx" class="btn btn-lg btn-primary" style="margin-left: 10px;">下载账单Excel</button>
+</div>
+
+<% total_price_convert = 0 %>
+<% total_price = 0 %>
+<% total_count = 0 %>
+<% @projects.each do |project| %>
+  <% if project.status != "deleted" && !project.delete_request %>
+    <% if params[:include_paid] || project.payment == "unpaid" %>
+      <% total_price += get_project_price(project) %>
+      <% total_price_convert = total_price / @trader.china_japan_rate %>
+      <% total_count += 1 %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<table class="table-to-export" data-sheet-name="数量统计" style="display: none">
+<thead>
+  <tr>
+    <th class="status">状态</th>
+    <th class="no">数次</th>
+    <th class="company">公司</th>
+    <th class="date">日付</th>
+    <th class="description">明細</th>
+    <th class="pax">人数</th>
+    <th class="unit">单价</th>
+    <th class="amount">金額</th>
+    <th class="during">期间</th>
+  </tr>
+</thead>
+<tbody>
+  <% index = 0 %>
+  <% all_people = 0 %>
+  <% @projects.each_with_index do |project, index| %>
+    <% if project[:delete_request] || project[:status] == "deleted" %>
+      <tr style="text-decoration:line-through">
+      <td class="status">无效</td>
+    <% else %>
+      <tr>
+      <% all_people += project.clients.length %>
+      <td class="status">有效</td>
+    <% end %>
+      <td class="no"><%= index + 1 %></td>
+      <td class="company"><%= project[:china_company_name] %></td>
+      <td class="date"><%= project[:created_at].strftime("%m月%d日") %></td>
+      <td class="description">(<%= visa_type_str_short(project[:visa_type]) %>) <%= project[:representative_name_chinese] %></td>
+      <td class="pax"><%= project[:total_people] %></td>
+      <td class="unit"><%= get_unit_price(project) %></td>
+      <td class="amount"><%= get_project_price(project) %></td>
+      <td class="during"><%= project[:date_arrival].to_era("%O%E年%m月%d日") %>から<%= project[:date_leaving].to_era("%O%E年%m月%d日") %></td>
+    </tr>
+  <% end %>
+</tbody>
+</table>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.9.10/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"></script>
+<script>
+document.getElementById('dl-xlsx').addEventListener('click', function () {
+  var wopts = {
+    bookType: 'xlsx',
+    bookSST: false,
+    type: 'binary'
+  };
+
+  var workbook = {SheetNames: [], Sheets: {}};
+
+  document.querySelectorAll('table.table-to-export').forEach(function (currentValue, index) {
+    // sheet_to_workbook()の実装を参考に記述
+    var n = currentValue.getAttribute('data-sheet-name');
+    if (!n) {
+      n = 'Sheet' + index;
+    }
+    workbook.SheetNames.push(n);
+    workbook.Sheets[n] = XLSX.utils.table_to_sheet(currentValue, wopts);
+  });
+
+  var wbout = XLSX.write(workbook, wopts);
+
+  function s2ab(s) {
+    var buf = new ArrayBuffer(s.length);
+    var view = new Uint8Array(buf);
+    for (var i = 0; i != s.length; ++i) {
+      view[i] = s.charCodeAt(i) & 0xFF;
+    }
+    return buf;
+  }
+
+  saveAs(new Blob([s2ab(wbout)], {type: 'application/octet-stream'}), '数量统计.xlsx');
+}, false);
+</script>
+</body>
