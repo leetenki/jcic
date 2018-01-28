@@ -48,7 +48,7 @@
           <% end %>
 
           <div style="text-align:center; height:60px;">
-            <% if current_trader.bank.match(/警告/) %>
+            <% if current_trader.bank.match(/警告/) or current_trader.bank.match(/紧急/) %>
             <% else %>
               <a href="/projects/new" style="position:absolute; left:20px; margin-top:25px;" class="btn btn-success btn-large require-loading" id="new-project">
               <i class="fa fa-user-plus"></i> 申请
